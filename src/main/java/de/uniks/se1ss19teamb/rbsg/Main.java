@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb;
+package de.uniks.se1ss19teamb.rbsg;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
