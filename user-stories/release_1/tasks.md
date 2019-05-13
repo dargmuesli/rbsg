@@ -6,3 +6,6 @@ A webclient implementation needs to exist so that requests can be sent to the RE
 
 # Error Handling
 Error messages returned by the webclient need to be visually represented to the user.
+
+# Persistence
+A data storage model needs to be designed that can be used to store the user's application configuration like login credentials.
