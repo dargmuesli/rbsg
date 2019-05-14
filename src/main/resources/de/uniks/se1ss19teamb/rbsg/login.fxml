@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.Controller">
+   <children>
+      <VBox fx:id="headLineBox" alignment="TOP_CENTER" prefHeight="165.0" prefWidth="400.0">
+         <children>
+            <Label fx:id="headLine" prefHeight="50.0" prefWidth="241.0" text="Welcome to our game">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorMessage" prefHeight="99.0" prefWidth="346.0" />
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="400.0" style="-fx-spacing: 10;">
+         <children>
+            <Label text="Username:" />
+            <TextField fx:id="userName" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="400.0" style="-fx-spacing: 10;">
+         <children>
+            <Label text="Password:" />
+            <TextField fx:id="password" />
+         </children>
+      </HBox>
+      <HBox fx:id="buttonBox" prefHeight="100.0" prefWidth="200.0" />
+   </children>
+</VBox>
