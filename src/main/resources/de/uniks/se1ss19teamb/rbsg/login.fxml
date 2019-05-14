@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.LoginController">
+<AnchorPane fx:id="loginScreen" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.LoginController">
    <children>
       <VBox fx:id="headLineBox" alignment="TOP_CENTER" layoutX="6.0" prefHeight="165.0" prefWidth="400.0" AnchorPane.bottomAnchor="235.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,13 +19,13 @@
             <Label fx:id="errorMessage" prefHeight="99.0" prefWidth="346.0" />
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutY="155.0" prefHeight="45.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="155.0">
+      <HBox fx:id="userNameBox" alignment="CENTER" layoutY="155.0" prefHeight="45.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="155.0">
          <children>
             <Label text="Username:" />
             <TextField fx:id="userName" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutY="200.0" prefHeight="41.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+      <HBox fx:id="passwordBox" alignment="CENTER" layoutY="200.0" prefHeight="41.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
          <children>
             <Label text="Password:" />
             <TextField fx:id="password" />

@@ -5,26 +5,26 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.RegisterController">
+<AnchorPane fx:id="registerScreen" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.RegisterController">
    <children>
-      <HBox alignment="CENTER" layoutX="100.0" layoutY="124.0" prefHeight="45.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.bottomAnchor="231.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="124.0">
+      <HBox fx:id="userNameBox" alignment="CENTER" layoutX="100.0" layoutY="124.0" prefHeight="45.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Label text="Username:" />
             <TextField fx:id="userName" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="100.0" layoutY="169.0" prefHeight="41.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox fx:id="oasswordBox" alignment="CENTER" layoutX="100.0" layoutY="169.0" prefHeight="41.0" prefWidth="400.0" style="-fx-spacing: 10;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Label text="Password:" />
             <TextField fx:id="password" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="-22.0" layoutY="210.0" prefHeight="41.0" prefWidth="421.0" style="-fx-spacing: 10;" AnchorPane.leftAnchor="-23.0" AnchorPane.rightAnchor="23.0">
+      <HBox fx:id="confirmPasswordBox" alignment="CENTER" layoutX="-22.0" layoutY="210.0" prefHeight="41.0" prefWidth="421.0" style="-fx-spacing: 10;" AnchorPane.leftAnchor="-23.0" AnchorPane.rightAnchor="23.0">
          <children>
             <Label text="Confirm Password:" />
             <TextField fx:id="confirmPassword" />
          </children>
       </HBox>
-      <HBox fx:id="buttonBox" layoutX="124.0" layoutY="313.0" prefHeight="41.0" prefWidth="365.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="313.0" />
+      <HBox fx:id="buttonBox" layoutX="124.0" layoutY="313.0" prefHeight="41.0" prefWidth="365.0" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="111.0" />
    </children>
 </AnchorPane>
