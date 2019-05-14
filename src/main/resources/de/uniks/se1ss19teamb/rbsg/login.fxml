@@ -31,6 +31,6 @@
             <TextField fx:id="password" />
          </children>
       </HBox>
-      <HBox fx:id="buttonBox" layoutX="103.0" layoutY="266.0" prefHeight="50.0" prefWidth="400.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <HBox fx:id="buttonBox" layoutX="103.0" layoutY="266.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
    </children>
 </AnchorPane>
