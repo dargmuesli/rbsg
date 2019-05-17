@@ -12,10 +12,10 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SaveTest {
+public class SaveandLoadTest {
 
 	@Test
-	public void saveTest() {
+	public void saveandloadTest() {
 		Game game = new Game();
 		Player alice = new Player().setName("Alice");
 		Platform p1 = new Platform();
