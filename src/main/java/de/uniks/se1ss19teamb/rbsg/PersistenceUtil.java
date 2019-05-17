@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import de.uniks.se1ss19teamb.test.saveTest.testmodel.Game;
+import de.uniks.se1ss19teamb.test.saveTest.testmodel.Game; //needs to be changed when we implement the game
 import org.fulib.yaml.YamlIdMap;
 
 import java.io.File;
@@ -9,6 +9,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class PersistenceUtil {
+
+	public static void main(String[] args) {
+		PersistenceUtil p = new PersistenceUtil();
+		Game game = p.load();
+
+		System.out.print(game.getPlayers());
+	}
 
 	public static final String SAVEGAME_YAML = "./savegame.yaml";
 	private YamlIdMap yamlIdMap = new YamlIdMap(Game.class.getPackage().getName());
@@ -32,7 +39,7 @@ public class PersistenceUtil {
 		}
 	}
 
-	public Game load() {
+	private Game load() {
 		File file = new File(SAVEGAME_YAML);
 
 		if(!file.exists()) {
@@ -52,6 +59,8 @@ public class PersistenceUtil {
 			return null;
 		}
 	}
-
-
+	public Game loader() {
+		PersistenceUtil p = new PersistenceUtil();
+		return p.load();
+	}
 }
