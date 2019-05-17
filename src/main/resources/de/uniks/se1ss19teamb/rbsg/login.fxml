@@ -11,7 +11,7 @@
    <children>
       <VBox fx:id="headLineBox" alignment="TOP_CENTER" layoutX="6.0" prefHeight="165.0" prefWidth="400.0" AnchorPane.bottomAnchor="235.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="headLine" prefHeight="50.0" prefWidth="241.0" text="Welcome to our game">
+            <Label fx:id="headLine" text="Welcome to our game">
                <font>
                   <Font size="24.0" />
                </font>
