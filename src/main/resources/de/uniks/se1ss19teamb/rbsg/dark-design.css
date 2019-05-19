@@ -4,9 +4,9 @@
     -fx-secondary: #FFFF8d;
     -fx-primarytext: #B2B2B2;
 }
+
 . root{
     -fx-background-color: -fx-primary;
-
 }
 
 .glyph-icon{
@@ -35,12 +35,7 @@
     -fx-text-fill: derive(-fx-secondary,20%);
 }
 
-
 .wrong-credentials{
     -jfx-unfocuse-color: #ef5350;
     -jfx-focuse-color: #ef5350;
 }
-
-
-
-
