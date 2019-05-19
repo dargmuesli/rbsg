@@ -1,13 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -31,13 +30,11 @@ public class HTTPManager {
         httpGet.setHeaders(headers);
 
         HttpResponse response = httpClient.execute(httpGet);
-        //String responseBody = getResponseBody(execute(httpGet));
+        String responseBody = getResponseBody(execute(httpGet));
 
         httpGet.releaseConnection();
 
-        // TODO: responseBody
-        //return responseBody;
-        return null;
+        return responseBody;
     }
 
     public String post(URI uri, Header[] headers, HttpEntity body) throws
@@ -52,13 +49,11 @@ public class HTTPManager {
         httpPost.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpPost);
-        //String responseBody = getResponseBody(execute(httpPost));
+        String responseBody = getResponseBody(execute(httpPost));
 
         httpPost.releaseConnection();
 
-        // TODO: responseBody
-        //return responseBody;
-        return null;
+        return responseBody;
     }
 
 
@@ -74,12 +69,25 @@ public class HTTPManager {
         //httpDelete.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpDelete);
-        //String responseBody = getResponseBody(execute(httpDelete));
+        String responseBody = getResponseBody(execute(httpDelete));
 
         httpDelete.releaseConnection();
 
-        //TODO: responseBody
-        //return responseBody;
-        return null;
+        return responseBody;
+    }
+
+    private String getResponseBody(HttpResponse httpResponse) throws Exception {
+        int status = httpResponse.getStatusLine().getStatusCode();
+        String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
+        String response = httpResponse.getEntity() != null
+                ? EntityUtils.toString(httpResponse.getEntity(),"UTF-8") : null;
+
+        if(status >= 200 && status < 300){
+            return response;
+        }else if(status >= 400){
+            throw new Exception(errorMessage);
+        }else{
+            return response;
+        }
     }
 }
