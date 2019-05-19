@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.test.saveTest;
 
-
 import de.uniks.se1ss19teamb.rbsg.PersistenceUtil;
 import de.uniks.se1ss19teamb.test.saveTest.testmodel.Game;
 import de.uniks.se1ss19teamb.test.saveTest.testmodel.Platform;
@@ -12,10 +11,12 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 public class SaveandLoadTest {
 
 	@Test
 	public void saveandloadTest() {
+		
 		Game game = new Game();
 		Player alice = new Player().setName("Alice");
 		Platform p1 = new Platform();
@@ -41,6 +42,5 @@ public class SaveandLoadTest {
 
 		File file = new File("./savegame.yaml");
 		file.delete();
-
 	}
 }
