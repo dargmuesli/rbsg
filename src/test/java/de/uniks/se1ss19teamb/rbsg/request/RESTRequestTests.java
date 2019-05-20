@@ -3,8 +3,11 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import java.io.IOException;
 
 import org.json.simple.parser.ParseException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+
+import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 public class RESTRequestTests {
 
@@ -94,5 +97,67 @@ public class RESTRequestTests {
 		} catch (Exception e) {
 			Assert.fail(e.toString());
 		}
+	}
+	
+	@Test
+	public void queryGamesTest() throws IOException, ParseException {
+		LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+		login.sendRequest();
+		
+		CreateGameRequest creategame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+		creategame.sendRequest();
+		
+		QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
+		try {
+			req.sendRequest();
+			
+			Assert.assertEquals(true, req.getSuccessful());
+			
+			boolean hasTeamBTestGame = false;
+			for(Game game : req.getGames()) {
+				hasTeamBTestGame |= game.getName().equals("testTeamBGame");
+			}
+			Assert.assertTrue(hasTeamBTestGame);
+		} catch (Exception e) {
+			Assert.fail(e.toString());
+		}
+	}
+	
+	@Test
+	public void deleteGameTest() throws IOException, ParseException {
+		LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+		login.sendRequest();
+		
+		CreateGameRequest creategame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+		creategame.sendRequest();
+		
+		DeleteGameRequest req = new DeleteGameRequest(creategame.getGameId(), login.getUserKey());
+		try {
+			req.sendRequest();
+			
+			Assert.assertEquals(true, req.getSuccessful());
+			Assert.assertEquals("Game deleted", req.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.toString());
+		}
+	}
+	
+	@After
+	public void cleanupGames() throws IOException, ParseException {
+		LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+		login.sendRequest();
+		
+		QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
+		query.sendRequest();
+		
+		query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame")).forEach((game) -> {
+			System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
+			DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
+			try {
+				req.sendRequest();
+			} catch (IOException | ParseException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

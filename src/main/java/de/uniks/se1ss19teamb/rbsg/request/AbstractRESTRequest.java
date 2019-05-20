@@ -42,7 +42,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
 				result = httpManager.post(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, new StringEntity(buildJSON().toString()));
 				break;
 			case "delete":
-				result = httpManager.post(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, null);
+				result = httpManager.delete(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, null);
 				break;
 				
 			default:
