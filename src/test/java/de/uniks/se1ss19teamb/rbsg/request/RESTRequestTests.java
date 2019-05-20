@@ -45,8 +45,6 @@ public class RESTRequestTests {
 		} catch (Exception e) {
 			Assert.fail(e.toString());
 		}
-		
-		
 	}
 	
 	@Test
@@ -58,6 +56,7 @@ public class RESTRequestTests {
 		try {
 			req.sendRequest();
 			
+			Assert.assertEquals(true, req.getSuccessful());
 			Assert.assertTrue(req.getUsersInLobby().contains("testTeamB"));
 		} catch (Exception e) {
 			Assert.fail(e.toString());
@@ -75,6 +74,23 @@ public class RESTRequestTests {
 			
 			Assert.assertEquals(true, req.getSuccessful());
 			Assert.assertEquals("Logged out", req.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.toString());
+		}
+	}
+	
+	@Test
+	public void createGameTest() throws IOException, ParseException {
+		LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+		login.sendRequest();
+		
+		CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+		try {
+			//Query Request
+			req.sendRequest();
+			
+			Assert.assertEquals(true, req.getSuccessful());
+			Assert.assertEquals(24, req.getGameId().length());
 		} catch (Exception e) {
 			Assert.fail(e.toString());
 		}
