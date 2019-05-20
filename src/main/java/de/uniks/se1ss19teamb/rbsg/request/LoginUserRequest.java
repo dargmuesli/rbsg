@@ -40,5 +40,10 @@ public class LoginUserRequest extends AbstractRESTRequest{
 	protected String getUserToken() {
 		return null;
 	}
+	
+	//Custom Request Helpers
+	public String getUserKey() {
+		return ((String) ((JSONObject)getResponse().get("data")).get("userKey"));
+	}
 
 }

@@ -11,4 +11,12 @@ public interface RESTRequest {
 	public void sendRequest(RESTRequestResponseHandler callback) throws IOException, ParseException;
 	
 	public JSONObject getResponse();
+	
+	public default boolean getSuccessful() {
+		return getResponse().get("status").equals("success");
+	}
+	
+	public default String getMessage() {
+		return (String) getResponse().get("message");
+	}
 }

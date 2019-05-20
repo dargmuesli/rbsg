@@ -40,5 +40,4 @@ public class RegisterUserRequest extends AbstractRESTRequest{
 	protected String getUserToken() {
 		return null;
 	}
-
 }
