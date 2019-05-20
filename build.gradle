@@ -1,23 +1,13 @@
-import org.gradle.plugins.ide.eclipse.model.AccessRule
-
 plugins {
     id 'java'
-    id 'eclipse'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 group 'de.uniks.se1ss19teamb'
 version '0.0.0'
 
-eclipse {
-    classpath {
-        file {
-            whenMerged {
-            	//Needed to allow JFX Access in Eclipse
-                def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
-                jre.accessRules.add(new AccessRule('0', 'javafx/**'))
-            }
-        }
-    }
+javafx {
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml' ]
 }
 
 sourceCompatibility = 1.8
