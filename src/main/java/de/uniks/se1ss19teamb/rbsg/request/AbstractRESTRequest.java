@@ -58,6 +58,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
 	
 	@Override
 	public void sendRequest(RESTRequestResponseHandler callback) throws IOException, ParseException {
+
 		sendRequest();
 		
 		callback.handle(response);
