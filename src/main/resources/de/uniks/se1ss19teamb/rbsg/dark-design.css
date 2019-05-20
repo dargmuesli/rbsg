@@ -1,0 +1,41 @@
+
+*{
+    -fx-primary: #2A2E37;
+    -fx-secondary: #FFFF8d;
+    -fx-primarytext: #B2B2B2;
+}
+
+. root{
+    -fx-background-color: -fx-primary;
+}
+
+.glyph-icon{
+    -fx-fill: -fx-primarytext;
+}
+
+.button{
+    -fx-text-fill: -fx-primarytext;
+    -fx-background-color: -fx-primary;
+    -fx-border-color: -fx-secondary;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 12px;
+}
+
+.button:hover, .button:focused{
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.text-field{
+    -fx-text-fill: -fx-primary;
+    -fx-font-size: 12pt;
+    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: derive(-fx-secondary,20%);
+}
+
+.wrong-credentials{
+    -jfx-unfocuse-color: #ef5350;
+    -jfx-focuse-color: #ef5350;
+}
