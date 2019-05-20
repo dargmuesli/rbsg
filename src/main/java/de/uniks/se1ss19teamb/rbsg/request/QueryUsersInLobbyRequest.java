@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import java.util.ArrayList;
+
 import org.json.simple.JSONObject;
 
 public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
@@ -28,6 +30,13 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
 	@Override
 	protected String getUserToken() {
 		return userToken;
+	}
+	
+	//Custom Request Helper
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getUsersInLobby(){
+		return ((ArrayList<String>)getResponse().get("data"));
 	}
 
 }
