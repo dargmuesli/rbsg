@@ -9,7 +9,7 @@ import org.junit.Test;
 public class RESTRequestTests {
 
 	@Test
-	public void registerUserRequestTest() {
+	public void registerUserTest() {
 		
 		RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz");
 		try {
@@ -21,6 +21,8 @@ public class RESTRequestTests {
 			});
 			
 			//Test Request Helpers
+			//This is the way one should query information from the Request Handlers
+			//ALWAYS!!! check getSuccessful first, since if it returns false, all other methods except getMessage have undefined behaviour or might throw Exceptions
 			Assert.assertEquals(false, req.getSuccessful());
 			Assert.assertEquals("Name already taken", req.getMessage());
 		} catch (Exception e) {
@@ -30,7 +32,7 @@ public class RESTRequestTests {
 	}
 	
 	@Test
-	public void loginUserRequestTest() {
+	public void loginUserTest() {
 
 		LoginUserRequest req = new LoginUserRequest("testTeamB", "qwertz");
 		try {
@@ -57,7 +59,22 @@ public class RESTRequestTests {
 			req.sendRequest();
 			
 			Assert.assertTrue(req.getUsersInLobby().contains("testTeamB"));
+		} catch (Exception e) {
+			Assert.fail(e.toString());
+		}
+	}
+	
+	@Test
+	public void logoutUserTest() throws IOException, ParseException {
+		LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+		login.sendRequest();
+		
+		LogoutUserRequest req = new LogoutUserRequest(login.getUserKey());
+		try {
+			req.sendRequest();
 			
+			Assert.assertEquals(true, req.getSuccessful());
+			Assert.assertEquals("Logged out", req.getMessage());
 		} catch (Exception e) {
 			Assert.fail(e.toString());
 		}
