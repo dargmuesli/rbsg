@@ -1,10 +1,10 @@
-package de.uniks.se1ss19teamb.test.saveTest;
+package java.de.uniks.se1ss19.teamb.rbsg.testsave;
 
 import de.uniks.se1ss19teamb.rbsg.PersistenceUtil;
-import de.uniks.se1ss19teamb.test.saveTest.testmodel.Game;
-import de.uniks.se1ss19teamb.test.saveTest.testmodel.Platform;
-import de.uniks.se1ss19teamb.test.saveTest.testmodel.Player;
-import de.uniks.se1ss19teamb.test.saveTest.testmodel.Unit;
+import de.uniks.se1ss19teamb.rbsg.testmodel.Game;
+import de.uniks.se1ss19teamb.rbsg.testmodel.Platform;
+import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
+import de.uniks.se1ss19teamb.rbsg.testmodel.Unit;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import de.uniks.se1ss19teamb.test.saveTest.testmodel.Game; //TODO needs to be changed when we implement the game
+import de.uniks.se1ss19teamb.rbsg.testmodel.Game; //TODO needs to be changed when we implement the game
 import org.fulib.yaml.YamlIdMap;
 
 import java.io.File;
