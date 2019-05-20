@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.7'
-
 }
 
 group 'de.uniks.se1ss19teamb'
@@ -15,13 +14,18 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
-	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
-	compile 'com.jfoenix:jfoenix:8.0.8'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.fulib', name: 'fulib', version: '1.0+'
+    implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
+    
+    compile 'com.jfoenix:jfoenix:8.0.8'
+    
     compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
     runtime group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
