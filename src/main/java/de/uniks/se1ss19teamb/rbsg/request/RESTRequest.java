@@ -13,10 +13,10 @@ public interface RESTRequest {
 	public JSONObject getResponse();
 	
 	public default boolean getSuccessful() {
-		return getResponse().get("status").equals("success");
+		return getResponse() == null ? false : getResponse().get("status").equals("success");
 	}
 	
 	public default String getMessage() {
-		return (String) getResponse().get("message");
+		return getResponse() == null ? "Request not yet sent to Server" : (String) getResponse().get("message");
 	}
 }
