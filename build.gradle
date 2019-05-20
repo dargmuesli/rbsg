@@ -1,14 +1,20 @@
+import org.gradle.internal.jvm.Jvm
+
 plugins {
     id 'java'
- //   id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'org.openjfx.javafxplugin' version '0.0.7' apply false
 }
 
 group 'de.uniks.se1ss19teamb'
 version '0.0.0'
 
-//javafx {
-//    modules = [ 'javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml' ]
-//}
+if (Jvm.current().javaVersion.java11Compatible) {
+    apply plugin: 'org.openjfx.javafxplugin'
+
+    javafx {
+        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml']
+    }
+}
 
 sourceCompatibility = 1.8
 
