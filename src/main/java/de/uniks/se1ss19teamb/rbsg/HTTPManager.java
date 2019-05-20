@@ -20,7 +20,7 @@ public class HTTPManager {
     private final CloseableHttpClient httpClient;
 
     public String get(URI uri, Header[] headers) throws
-            IOException {
+            Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -30,7 +30,7 @@ public class HTTPManager {
         httpGet.setHeaders(headers);
 
         HttpResponse response = httpClient.execute(httpGet);
-        String responseBody = getResponseBody(execute(httpGet));
+        String responseBody = getResponseBody(response);
 
         httpGet.releaseConnection();
 
@@ -38,7 +38,7 @@ public class HTTPManager {
     }
 
     public String post(URI uri, Header[] headers, HttpEntity body) throws
-            IOException {
+            Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -49,7 +49,7 @@ public class HTTPManager {
         httpPost.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpPost);
-        String responseBody = getResponseBody(execute(httpPost));
+        String responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
 
@@ -58,7 +58,7 @@ public class HTTPManager {
 
 
     public String delete(URI uri, Header[] headers, HttpEntity body) throws
-            IOException {
+            Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -69,7 +69,7 @@ public class HTTPManager {
         //httpDelete.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpDelete);
-        String responseBody = getResponseBody(execute(httpDelete));
+        String responseBody = getResponseBody(response);
 
         httpDelete.releaseConnection();
 
