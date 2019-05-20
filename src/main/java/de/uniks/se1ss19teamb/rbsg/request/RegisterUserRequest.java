@@ -23,7 +23,7 @@ public class RegisterUserRequest extends AbstractRESTRequest{
 		JSONObject json = new JSONObject();
 		json.put("name", username);
 		json.put("password", password);
-		return null;
+		return json;
 	}
 
 	@Override
