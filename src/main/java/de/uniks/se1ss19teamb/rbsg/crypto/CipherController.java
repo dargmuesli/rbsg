@@ -30,7 +30,6 @@ public class CipherController {
                 secretchars[i] = (char) secret[i];
             }
 
-
             //4.Stores the secret message into text file
             FileWriter fw = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/secrets.txt");
             fw.write(Base64.encodeBase64String(secret));
@@ -61,7 +60,6 @@ public class CipherController {
         String decrypted_message = "NOT_DECRYPTED!!!!" ;
 
         //1.Reads the encrypted message
-        //here files location need to be given
         try {
             FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/secrets.txt");
             BufferedReader br = new BufferedReader(fr);
