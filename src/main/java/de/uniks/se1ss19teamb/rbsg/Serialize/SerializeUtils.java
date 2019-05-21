@@ -31,6 +31,28 @@ public class SerializeUtils{
     }
   }
 
+  public static Game deSerializeGame(String file, Game game){
+    JSONParser parser = new JSONParser();
+
+    try {
+      FileReader fileReader = new FileReader(file);
+      JSONObject json = (JSONObject) parser.parse(fileReader);
+
+      long joinedPlayers = (long) json.get("joinedPlayers");
+      String name = (String) json.get("name");
+      String id = (String) json.get("id");
+      long neededPlayers = (long) json.get("neededPlayers");
+
+      game.setJoinedPlayers(joinedPlayers);
+      game.setName(name);
+      game.setId(id);
+      game.setNeededPlayers(neededPlayers);
+    } catch (Exception ex){
+      ex.printStackTrace();
+    }
+    return game;
+  }
+
 }
 
 
