@@ -65,7 +65,7 @@ public class WebSocketClient {
     
     @OnMessage
     public void OnMessage(String message) {
-
+        //TODO implement messagehandler
     }
     
     @OnError
