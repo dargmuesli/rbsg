@@ -1,21 +1,36 @@
 package de.uniks.se1ss19teamb.rbsg.Serialize;
 
-import com.google.gson.Gson;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
 
-/* TODO
- *   complete Serializatioon test for all the Objects in the game */
+/* TODO 1
+ *   complete Serializatioon test for all the Objects in the game
+ * */
 
-public class SerializeUtils {
+public class SerializeUtils{
 
-    private static Object deserialization(String jsonString, Object obj) {
-        Gson gson = new Gson();
-        Object fromJson = gson.fromJson(jsonString, obj.getClass());
-        return fromJson;
+  public static void serializeGame(String file, Game game){
+    JSONObject json = new JSONObject();
+    json.put("joinedPlayers", game.getJoinedPlayers());
+    json.put("name", game.getName());
+    json.put("id", game.getId());
+    json.put("neededPlayers", game.getNeededPlayers());
+
+    try{
+      FileWriter jsonFileWriter = new FileWriter(file);
+      jsonFileWriter.write(json.toJSONString());
+      jsonFileWriter.flush();
+      jsonFileWriter.close();
+    }catch(IOException e){
+      e.printStackTrace();
     }
+  }
 
-    private static String serialization(Object obj) {
-        Gson gson = new Gson();
-        String toJson = gson.toJson(obj);
-        return toJson;
-    }
 }
+
+
