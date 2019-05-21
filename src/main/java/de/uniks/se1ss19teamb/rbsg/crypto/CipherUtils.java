@@ -37,7 +37,7 @@ public class CipherUtils {
 
     }
 
-    //encrypt using public key and returns it as byte
+    //encrypts using public key and returns it as byte
     public static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE,key);
