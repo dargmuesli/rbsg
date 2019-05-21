@@ -17,14 +17,13 @@ public class CipherController {
         String messagetobeSaved = msg;
 
         try{
-            //Turned the desired message into a byte Array
+            //Turns the desired message into a byte Array
             byte[]  message = messagetobeSaved.getBytes("UTF8");
 
-            //2.Encrypt the desired message
+            //2.Encrypts the desired message
             byte[] secret = CipherUtils.encrypt(CipherConstant.publicKey,message);
-            System.out.print(new String(secret,"UTF8"));
 
-            //3 Turn the encrypted message into Array
+            //3 Turns the encrypted message into Array
             char[] secretchars = new char[secret.length];
 
             for(int i = 0;i<secret.length;i++){
@@ -32,7 +31,7 @@ public class CipherController {
             }
 
 
-            //4.Store the secret message into text file for now
+            //4.Stores the secret message into text file
             FileWriter fw = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/secrets.txt");
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
@@ -58,17 +57,16 @@ public class CipherController {
 
     //decrypt the message
     public String decryptMessage(){
-        //System.out.println("decrypt message : ");
 
         String decrypted_message = "NOT_DECRYPTED!!!!" ;
 
-        //1.Read the encrypted message
+        //1.Reads the encrypted message
         //here files location need to be given
         try {
             FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/secrets.txt");
             BufferedReader br = new BufferedReader(fr);
 
-            //2.Construct the encrypted message
+            //2.Constructs the encrypted message
             int t;
             char c;
             String recoveredSecret = "";
@@ -79,14 +77,12 @@ public class CipherController {
 
             byte[] recSecret = Base64.decodeBase64(recoveredSecret);
 
-            //4.Decrypt the message and print it on the users screen
+            //4.Decrypts the message
             byte[] recovered_message = CipherUtils.decrypt(CipherConstant.privateKey,recSecret);
 
             decrypted_message =(new String(recovered_message,"UTF8"));
             br.close();
             fr.close();
-
-            //return (new String(recovered_message,"UTF8"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
