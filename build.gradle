@@ -13,4 +13,6 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.5'
+    //compile files( "/snap/intellij-idea-community/146/jre64/lib/ext/jfxrt.jar" )
 }
