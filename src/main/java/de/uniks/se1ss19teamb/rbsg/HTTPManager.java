@@ -48,7 +48,7 @@ public class HTTPManager {
         httpPost.setHeaders(headers);
         httpPost.setEntity(body);
 
-        HttpResponse response = httpClient.execute(httpPost);
+        HttpResponse response = executePost(httpPost);
         String responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
@@ -89,5 +89,11 @@ public class HTTPManager {
         }else{
             return response;
         }
+    }
+
+    // outsource the HttpClient#execute() Method for better testing
+    public HttpResponse executePost(HttpPost httpPost) throws IOException {
+        return httpClient.execute(httpPost);
+
     }
 }

@@ -1,15 +1,79 @@
 package de.uniks.se1ss19teamb.rbsg;
 
 import de.uniks.se1ss19teamb.rbsg.HTTPManager;
+import org.apache.http.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHttpResponse;
 import org.json.simple.JSONObject;
+import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 
 public class HTTPManagerTests {
+
+    // used in last method
+    @InjectMocks
+    HTTPManager httpManager = new HTTPManager();
+    @Mock
+    CloseableHttpClient httpClient;
+    // not used after
+
+
+    @Mock
+    HttpPost httpPost;
+    @Mock
+    HttpResponse httpResponse;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    URI uri;
+
+    {
+        try {
+            uri = new URI("https://rbsg.uniks.de/api/get");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    JSONObject json = new JSONObject();
+
+    /*
+    @Test
+    public void testExecute() throws Exception {
+        json.put("name", "TestUsername");
+        json.put("password", "TestPassword");
+
+        HTTPManager httpManager = new HTTPManager();
+        HTTPManager spiedManager = Mockito.spy(httpManager);
+        Mockito.when(spiedManager.executePost(httpPost))
+                .thenReturn(httpResponse);
+        String response = httpManager.post(uri, null, new StringEntity(json.toString()));
+        httpClient = HttpClients.createDefault();
+        Assert.assertNotNull(response);
+        System.out.println(response.toString());
+    }
+
 
     @Test
     public void postTest() throws Exception {
@@ -20,16 +84,45 @@ public class HTTPManagerTests {
                 .setPath("/api/user")
                 .build();
 
+
+
+        StringEntity httpEntity = new StringEntity(json.toString());
+
+        String responseBody = httpManager.post(uri, null, httpEntity);
+    }
+    */
+
+
+    @Test
+    public void testExecutePost() throws Exception {
+        // Mock the CloseableHttpClient so you can control its return.. done
+        // create the return value for the httpClient.execute(httpPost) Method.. done
+        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
+                HttpStatus.SC_OK, "OK");
+        httpResponse.addHeader("TestHeader", "1");
+
+        // HTTP Body json
         JSONObject json = new JSONObject();
         json.put("name", "Test");
         json.put("password", "Test");
         json.toString();
 
-        StringEntity httpEntity = new StringEntity(json.toString());
+        // A Header for the Method
+        Header[] headers = new Header[1];
+        headers[0] = httpResponse.getFirstHeader("TestHeader");
 
-        String responseBody = httpManager.post(uri, null, httpEntity);
+        // building the HttpGet Object to pass it to the Mockito Rule
+        HttpPost httpPost = new HttpPost();
+        httpPost.setURI(uri);
+        httpPost.setHeaders(headers);
+        HttpEntity httpEntity = new StringEntity(json.toString());
+        httpPost.setEntity(httpEntity);
 
+        // Mocking rule
+        when(httpManager.executePost(httpPost)).thenReturn(httpResponse);
 
+        String response = httpManager.post(uri, headers, httpEntity);
 
     }
+
 }
