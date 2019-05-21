@@ -13,8 +13,8 @@ public class CipherConstant {
 
     static {
         try {
-            publicKey = CipherUtils.readPublicKey("public.der");
-            privateKey = CipherUtils.readPrivateKey("private.der");
+            publicKey = CipherUtils.readPublicKey("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/public.der");
+            privateKey = CipherUtils.readPrivateKey("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/private.der");
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
