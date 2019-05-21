@@ -8,6 +8,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
 public class CipherConstant {
+    //Constant
     static PublicKey publicKey;
     static PrivateKey privateKey;
 
