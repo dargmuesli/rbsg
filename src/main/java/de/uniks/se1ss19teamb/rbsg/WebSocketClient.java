@@ -26,6 +26,22 @@ public class WebSocketClient {
         }
     }
     
+    public void sendMessage(JsonObject message) {
+        if (this.mySession != null && this.mySession.isOpen()) {
+            try {
+                this.mySession.getBasicRemote().sendText(message.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void stop() throws Exception {
+        if (this.mySession != null && this.mySession.isOpen()) {
+            this.mySession.close();
+            this.noopTimer.cancel();
+        }
+    }
     
     @OnOpen
     public void OnOpen(Session session) {
