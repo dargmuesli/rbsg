@@ -1,16 +1,17 @@
-package java.de.uniks.se1ss19.teamb.rbsg.testsave;
+package de.uniks.se1ss19.teamb.rbsg.testsave;
 
 import de.uniks.se1ss19teamb.rbsg.PersistenceUtil;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Game;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Platform;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Unit;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 public class SaveandLoadTest {
 
