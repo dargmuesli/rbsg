@@ -20,7 +20,7 @@ public class CipherUtils {
         return Files.readAllBytes(path);
     }
 
-    //read Strings and generates public key for that
+    //read Strings and generates public key for the given Strings
 
     public static PublicKey readPublicKey(String filename) throws InvalidKeySpecException, NoSuchAlgorithmException,IOException{
         X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(readFileBytes(filename));
@@ -29,7 +29,7 @@ public class CipherUtils {
     }
 
 
-    //reads Strings and generates Private key for that
+    //reads Strings and generates Private key for the given Strings
     public static PrivateKey readPrivateKey(String filename) throws IOException,NoSuchAlgorithmException,InvalidKeySpecException{
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(readFileBytes(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -37,7 +37,7 @@ public class CipherUtils {
 
     }
 
-    //encrypts using public key and returns it as byte
+    //encrypts using public key and returns as Byte
     public static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE,key);
