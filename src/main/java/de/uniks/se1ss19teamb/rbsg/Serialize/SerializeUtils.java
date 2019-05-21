@@ -14,6 +14,40 @@ import java.util.Iterator;
 
 public class SerializeUtils{
 
+  public class Game {
+
+    //Fields defined by Server
+    private long joinedPlayers;
+    private String name;
+    private String id;
+    private long neededPlayers;
+
+    public long getJoinedPlayers() {
+      return joinedPlayers;
+    }
+    public void setJoinedPlayers(Long joinedPlayers) {
+      this.joinedPlayers = joinedPlayers;
+    }
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+    public long getNeededPlayers() {
+      return neededPlayers;
+    }
+    public void setNeededPlayers(long neededPlayers) {
+      this.neededPlayers = neededPlayers;
+    }
+  }
+
   public static void serializeGame(String file, Game game){
     JSONObject json = new JSONObject();
     json.put("joinedPlayers", game.getJoinedPlayers());
@@ -31,7 +65,7 @@ public class SerializeUtils{
     }
   }
 
-  public static Game deSerializeGame(String file, Game game){
+  public static Game deSerializeGameFromFile(String file, Game game){
     JSONParser parser = new JSONParser();
 
     try {
