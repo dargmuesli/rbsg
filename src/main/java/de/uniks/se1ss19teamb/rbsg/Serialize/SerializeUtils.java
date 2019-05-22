@@ -8,8 +8,8 @@ import java.io.Reader;
 
 public class SerializeUtils{
 
-  /*
-  public class Game {
+
+  public static class Game {
 
     //Fields defined by Server
     private long joinedPlayers;
@@ -42,7 +42,7 @@ public class SerializeUtils{
       this.neededPlayers = neededPlayers;
     }
   }
-
+  /*
   // Method 1
   public static void serializeGame(String file, Game game){
     JSONObject json = new JSONObject();
@@ -84,22 +84,22 @@ public class SerializeUtils{
   }
   */
 
-  public static Object deserialize(String fileUrl, Object obj) {
+  public static Game deserialize(String fileUrl, Game game) {
     Gson gson = new Gson();
     try (Reader reader = new FileReader(fileUrl)) {
-      Object fromJson = gson.fromJson(reader, obj.getClass());
+      Game fromJson = gson.fromJson(reader, game.getClass());
       return fromJson;
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    return obj;
+    return game;
   }
 
-  public static void serialize(String fileUrl, Object obj) {
+  public static void serialize(String fileUrl, Game game) {
     Gson gson = new Gson();
     try (FileWriter writer = new FileWriter(fileUrl)) {
-      gson.toJson(obj, writer);
+      gson.toJson(game, writer);
     } catch (IOException e) {
       e.printStackTrace();
     }
