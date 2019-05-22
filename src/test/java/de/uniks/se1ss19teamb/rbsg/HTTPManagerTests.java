@@ -59,7 +59,7 @@ public class HTTPManagerTests {
 
     {
         try {
-            uri = new URI("https://rbsg.uniks.de/api/get");
+            uri = new URI("https://rbsg.uniks.de/api/user");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -155,7 +155,7 @@ public class HTTPManagerTests {
 
 
         // Mocking rules
-        when(httpClient.execute(httpPost)).thenReturn(httpResponse);
+        //when(httpClient.execute(httpPost)).thenReturn(httpResponse);
 
         // A Header for the Method
         Header[] headers = new Header[1];
@@ -170,8 +170,43 @@ public class HTTPManagerTests {
         HttpEntity httpEntity = new StringEntity(json.toString());
 
         HTTPManager httpManager = new HTTPManager();
-        String response = httpManager.post(uri, null, httpEntity);
+        try {
+            String response = httpManager.post(uri, null, httpEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        verify(httpClient).execute(any());
+
+
+    }
+
+    // Test if Mocking works with the HttpClient.execute() Method. Looks like it does..
+    @Test
+    public void testExecuteMocking() {
+        HttpClient httpClient = mock(HttpClient.class);
+        HttpGet httpGet = mock(HttpGet.class);
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        try {
+            when(httpClient.execute(httpGet)).thenReturn(httpResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        HttpResponse response = null;
+        try {
+            response = httpClient.execute(httpGet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            verify(httpClient).execute(httpGet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(response);
+        System.out.println(response.toString());
 
     }
 
