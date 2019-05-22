@@ -18,6 +18,10 @@ public class HTTPManager {
         this.httpClient = HttpClients.createDefault();
     }
 
+    public HTTPManager(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
     private final HttpClient httpClient;
 
     public String get(URI uri, Header[] headers) throws

@@ -145,17 +145,13 @@ public class HTTPManagerTests {
     */
 
     @Test
-    public void testHTTPManagerPost() throws Exception{
-        // Mocking
+    public void testHTTPManagerPost() throws Exception {
         HttpClient httpClient = mock(HttpClient.class);
-        HttpPost httpPost = mock(HttpPost.class);
-        HttpResponse httpResponse = mock(HttpResponse.class);
+        HTTPManager httpManager = new HTTPManager(httpClient);
+        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
+                HttpStatus.SC_OK, "OK");
 
-        // Mock also the uri, headers and httpEntity
-
-
-        // Mocking rules
-        //when(httpClient.execute(httpPost)).thenReturn(httpResponse);
+        httpResponse.addHeader("TestHeader", "1");
 
         // A Header for the Method
         Header[] headers = new Header[1];
@@ -169,13 +165,12 @@ public class HTTPManagerTests {
 
         HttpEntity httpEntity = new StringEntity(json.toString());
 
-        HTTPManager httpManager = new HTTPManager();
-        try {
-            String response = httpManager.post(uri, null, httpEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        httpResponse.setEntity(httpEntity);
 
+        when(httpClient.execute(any())).thenReturn(httpResponse);
+
+        String managerResponse = httpManager.post(uri, headers, httpEntity);
+        Assert.assertNotNull(managerResponse);
         verify(httpClient).execute(any());
 
 
@@ -189,7 +184,7 @@ public class HTTPManagerTests {
         HttpResponse httpResponse = mock(HttpResponse.class);
         HttpPost httpPost = mock(HttpPost.class);
 
-        HTTPManager httpManager = new HTTPManager();
+        HTTPManager httpManager = new HTTPManager(httpClient);
 
         // Direct call httpClient.execute(httpGet)
         try {
@@ -218,14 +213,21 @@ public class HTTPManagerTests {
         // which returns httpClient.execute(httpPost).
         // Not working. Executes real httpClient.execute(httpPost) method.
         HttpResponse response1 = null;
+        String httpManagerResponse = null;
         try {
             response1 = httpManager.executePost(httpPost);
-        } catch (IOException e) {
+            httpManagerResponse = httpManager.post(uri, null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Assert.assertNotNull(response1);
+        Assert.assertNotNull(httpManagerResponse);
         System.out.println(response1.toString());
-
+        try {
+            verify(httpClient).execute(httpPost);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
