@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class SerializeUtils{
-  
+
+  // Method 2, can be used on any Object in java
   public static Object deserialization(String fileUrl, Object obj) {
     Gson gson = new Gson();
     try (Reader reader = new FileReader(fileUrl)) {
