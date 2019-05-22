@@ -1,11 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.Serialize;
 
+import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Iterator;
 
 /* TODO 1
@@ -48,6 +50,7 @@ public class SerializeUtils{
     }
   }
 
+  // Method 1
   public static void serializeGame(String file, Game game){
     JSONObject json = new JSONObject();
     json.put("joinedPlayers", game.getJoinedPlayers());
@@ -85,6 +88,30 @@ public class SerializeUtils{
       ex.printStackTrace();
     }
     return game;
+  }
+
+  // Method 2, can be used on any Object in java
+  private static Object deserialization(String fileUrl, Object obj) {
+    Gson gson = new Gson();
+    try (Reader reader = new FileReader(fileUrl)) {
+      // Convert JSON File to Java Object
+      Object fromJson = gson.fromJson(reader, obj.getClass());
+      // return object
+      return fromJson;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return obj;
+  }
+
+  private static void serialization(String fileUrl, Object obj) {
+    Gson gson = new Gson();
+    try (FileWriter writer = new FileWriter(fileUrl)) {
+      gson.toJson(obj, writer);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }
