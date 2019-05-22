@@ -173,6 +173,36 @@ public class HTTPManagerTests {
         Assert.assertNotNull(managerResponse);
         verify(httpClient).execute(any());
 
+    }
+
+    @Test
+    public void testHTTPManagerGet() throws Exception {
+        HttpClient httpClient = mock(HttpClient.class);
+        HTTPManager httpManager = new HTTPManager(httpClient);
+        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
+                HttpStatus.SC_OK, "OK");
+
+        httpResponse.addHeader("TestHeader", "1");
+
+        // A Header for the Method
+        Header[] headers = new Header[1];
+        headers[0] = httpResponse.getFirstHeader("TestHeader");
+
+        // HTTP Body json
+        JSONObject json = new JSONObject();
+        json.put("name", "Test");
+        json.put("password", "Test");
+        json.toString();
+
+        HttpEntity httpEntity = new StringEntity(json.toString());
+
+        httpResponse.setEntity(httpEntity);
+
+        when(httpClient.execute(any())).thenReturn(httpResponse);
+
+        String managerResponse = httpManager.get(uri, headers);
+        Assert.assertNotNull(managerResponse);
+        verify(httpClient).execute(any());
 
     }
 
