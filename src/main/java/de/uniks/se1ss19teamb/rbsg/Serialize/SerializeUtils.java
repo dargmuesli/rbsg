@@ -1,21 +1,16 @@
 package de.uniks.se1ss19teamb.rbsg.Serialize;
 
 import com.google.gson.Gson;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
-
-/* TODO 1
- *   complete Serializatioon test for all the Objects in the game
- * */
 
 public class SerializeUtils{
 
+  /*
   public class Game {
 
     //Fields defined by Server
@@ -89,8 +84,8 @@ public class SerializeUtils{
     }
     return game;
   }
-
-  // Method 2, can be used on any Object in java
+  */
+  
   private static Object deserialization(String fileUrl, Object obj) {
     Gson gson = new Gson();
     try (Reader reader = new FileReader(fileUrl)) {
