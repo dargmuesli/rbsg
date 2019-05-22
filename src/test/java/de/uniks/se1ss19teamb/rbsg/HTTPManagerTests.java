@@ -12,11 +12,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHttpResponse;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -30,6 +32,8 @@ import static org.mockito.Mockito.*;
 
 public class HTTPManagerTests {
 
+    /*
+
     // used in last method
     @InjectMocks
     HTTPManager httpManager = new HTTPManager();
@@ -38,13 +42,18 @@ public class HTTPManagerTests {
     // not used after
 
 
+
     @Mock
     HttpPost httpPost;
     @Mock
     HttpResponse httpResponse;
 
+     */
+
+    /*
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+    */
 
     URI uri;
 
@@ -93,13 +102,16 @@ public class HTTPManagerTests {
     */
 
 
+    /*
     @Test
     public void testExecutePost() throws Exception {
         // Mock the CloseableHttpClient so you can control its return.. done
         // create the return value for the httpClient.execute(httpPost) Method.. done
+
         HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
                 HttpStatus.SC_OK, "OK");
         httpResponse.addHeader("TestHeader", "1");
+
 
         // HTTP Body json
         JSONObject json = new JSONObject();
@@ -112,16 +124,54 @@ public class HTTPManagerTests {
         headers[0] = httpResponse.getFirstHeader("TestHeader");
 
         // building the HttpGet Object to pass it to the Mockito Rule
-        HttpPost httpPost = new HttpPost();
+        HttpPost httpPost = mock(HttpPost.class);
+        CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
+        HttpEntity httpEntity = mock(HttpEntity.class);
+        //HttpResponse httpResponse = mock(HttpResponse.class);
+        /*
         httpPost.setURI(uri);
         httpPost.setHeaders(headers);
         HttpEntity httpEntity = new StringEntity(json.toString());
         httpPost.setEntity(httpEntity);
-
+        */
+/*
         // Mocking rule
-        when(httpManager.executePost(httpPost)).thenReturn(httpResponse);
+        when(httpClient.execute(httpPost)).thenReturn(httpResponse);
 
         String response = httpManager.post(uri, headers, httpEntity);
+
+    }
+
+    */
+
+    @Test
+    public void testHTTPManagerPost() throws Exception{
+        // Mocking
+        HttpClient httpClient = mock(HttpClient.class);
+        HttpPost httpPost = mock(HttpPost.class);
+        HttpResponse httpResponse = mock(HttpResponse.class);
+
+        // Mock also the uri, headers and httpEntity
+
+
+        // Mocking rules
+        when(httpClient.execute(httpPost)).thenReturn(httpResponse);
+
+        // A Header for the Method
+        Header[] headers = new Header[1];
+        headers[0] = httpResponse.getFirstHeader("TestHeader");
+
+        // HTTP Body json
+        JSONObject json = new JSONObject();
+        json.put("name", "Test");
+        json.put("password", "Test");
+        json.toString();
+
+        HttpEntity httpEntity = new StringEntity(json.toString());
+
+        HTTPManager httpManager = new HTTPManager();
+        String response = httpManager.post(uri, null, httpEntity);
+
 
     }
 

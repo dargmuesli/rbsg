@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg;
 
 import org.apache.http.*;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -17,7 +18,7 @@ public class HTTPManager {
         this.httpClient = HttpClients.createDefault();
     }
 
-    private final CloseableHttpClient httpClient;
+    private final HttpClient httpClient;
 
     public String get(URI uri, Header[] headers) throws
             Exception {
@@ -48,7 +49,7 @@ public class HTTPManager {
         httpPost.setHeaders(headers);
         httpPost.setEntity(body);
 
-        HttpResponse response = executePost(httpPost);
+        HttpResponse response = httpClient.execute(httpPost);
         String responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
