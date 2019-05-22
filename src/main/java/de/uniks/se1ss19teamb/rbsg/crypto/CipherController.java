@@ -57,7 +57,7 @@ public class CipherController {
     //decrypt the message
     public String decryptMessage(){
 
-        String decrypted_message = "NOT_DECRYPTED!!!!" ;
+        String decrypted_message = "!!!Error....Nothing to decrypt!!!!" ;
 
         //1.Reads the encrypted message
         try {
