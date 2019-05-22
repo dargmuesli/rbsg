@@ -187,8 +187,14 @@ public class HTTPManagerTests {
         HttpClient httpClient = mock(HttpClient.class);
         HttpGet httpGet = mock(HttpGet.class);
         HttpResponse httpResponse = mock(HttpResponse.class);
+        HttpPost httpPost = mock(HttpPost.class);
+
+        HTTPManager httpManager = new HTTPManager();
+
+        // Direct call httpClient.execute(httpGet)
         try {
             when(httpClient.execute(httpGet)).thenReturn(httpResponse);
+            when(httpClient.execute(httpPost)).thenReturn(httpResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,7 +212,21 @@ public class HTTPManagerTests {
             e.printStackTrace();
         }
         Assert.assertNotNull(response);
-        System.out.println(response.toString());
+        System.out.println("Direct call on mocked object: " + response.toString());
+
+        // Try to pass httpPost in executePost() of HTTPManager
+        // which returns httpClient.execute(httpPost).
+        // Not working. Executes real httpClient.execute(httpPost) method.
+        HttpResponse response1 = null;
+        try {
+            response1 = httpManager.executePost(httpPost);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(response1);
+        System.out.println(response1.toString());
+
+
 
     }
 

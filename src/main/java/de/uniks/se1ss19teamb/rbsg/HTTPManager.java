@@ -92,7 +92,7 @@ public class HTTPManager {
         }
     }
 
-    // outsource the HttpClient#execute() Method for better testing
+    // outsource the HttpClient.execute() Method for better testing
     public HttpResponse executePost(HttpPost httpPost) throws IOException {
         return httpClient.execute(httpPost);
 
