@@ -142,5 +142,3 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/gradle
-src/main/java/de/uniks/se1ss19teamb/rbsg/Serialize/JSONDemo.java
-book.json
