@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg;
 
+import com.google.gson.Gson;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
@@ -16,7 +17,12 @@ import static org.mockito.Mockito.*;
 
 public class HTTPManagerTests {
 
-    URI uri;
+    class Body {
+        public String name = "Test";
+        public String password = "Test";
+    }
+
+    private URI uri;
 
     {
         try {
@@ -39,13 +45,16 @@ public class HTTPManagerTests {
         Header[] headers = new Header[1];
         headers[0] = httpResponse.getFirstHeader("TestHeader");
 
-        // HTTP Body json
-        JSONObject json = new JSONObject();
-        json.put("name", "Test");
-        json.put("password", "Test");
-        json.toString();
+        // HTTP Body in gson
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(new Body());
 
-        HttpEntity httpEntity = new StringEntity(json.toString());
+        Body body = gson.fromJson(jsonString, Body.class);
+        System.out.println("Body name: " + body.name);
+        System.out.println("Gson produced String: " + jsonString);
+
+
+        HttpEntity httpEntity = new StringEntity(jsonString);
 
         httpResponse.setEntity(httpEntity);
 
@@ -54,6 +63,9 @@ public class HTTPManagerTests {
         String managerResponse = httpManager.post(uri, headers, httpEntity);
         Assert.assertNotNull(managerResponse);
         verify(httpClient).execute(any());
+        Body responeBody = gson.fromJson(managerResponse, Body.class);
+        System.out.println("Responsename: " + responeBody.name);
+        Assert.assertTrue(managerResponse.contains("name"));
 
     }
 
