@@ -1,28 +1,61 @@
 package de.uniks.de1ss19.teamb.rbsg.serialize;
 
+import com.google.gson.Gson;
 import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 
 public class SerializeTest {
 
+  public class TestClass{
+    String name;
+    int mtr;
+
+    public void setMtr(int mtr) {
+      this.mtr = mtr;
+    }
+
+    public int getMtr() {
+      return mtr;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
+  }
+
   @Test
   public void serializeTest() throws FileNotFoundException {
-    SerializeUtils.Game game1 = new SerializeUtils.Game();
-    game1.setJoinedPlayers(2L);
-    game1.setName("Blabla");
-    game1.setId("12345MYID");
-    game1.setNeededPlayers(4);
 
-    SerializeUtils.serialize("file.json", game1);
-    SerializeUtils.Game game2 = new SerializeUtils.Game();
-    game2 = SerializeUtils.deserialize("file.json", new SerializeUtils.Game());
+    TestClass testClass = new TestClass();
+    testClass.setName("My Very Long Name");
+    testClass.setMtr(12345678);
 
-    Assert.assertEquals(game1.getName(), game2.getName());
-    Assert.assertEquals(game1.getId(), game2.getId());
-    Assert.assertEquals(game1.getJoinedPlayers(), game2.getJoinedPlayers());
-    Assert.assertEquals(game1.getNeededPlayers(), game2.getNeededPlayers());
+    // test serialization
+    SerializeUtils.serialize("file.json", testClass);
+
+    Reader reader = new FileReader("file.json");
+    Gson gson = new Gson();
+    Object object = gson.fromJson(reader, testClass.getClass());
+
+    TestClass thisTestClass = (TestClass) object;
+
+    Assert.assertEquals(testClass.getName(), thisTestClass.getName());
+    Assert.assertEquals(testClass.getMtr(), thisTestClass.getMtr());
+
+    // test deserialization
+    TestClass otherTestClass =(TestClass) SerializeUtils.deserialize("file.json", new TestClass());
+
+    Assert.assertEquals(testClass.getName(), otherTestClass.getName());
+    Assert.assertEquals(testClass.getMtr(), otherTestClass.getMtr());
+    System.out.println();
   }
 }

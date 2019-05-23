@@ -8,7 +8,7 @@ import java.io.Reader;
 
 public class SerializeUtils{
 
-
+  /*
   public static class Game {
 
     //Fields defined by Server
@@ -84,22 +84,22 @@ public class SerializeUtils{
   }
   */
 
-  public static Game deserialize(String fileUrl, Game game) {
+  public static Object deserialize(String fileUrl, Object object) {
     Gson gson = new Gson();
     try (Reader reader = new FileReader(fileUrl)) {
-      Game fromJson = gson.fromJson(reader, game.getClass());
+      Object fromJson = gson.fromJson(reader, object.getClass());
       return fromJson;
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    return game;
+    return object;
   }
 
-  public static void serialize(String fileUrl, Game game) {
+  public static void serialize(String fileUrl, Object object) {
     Gson gson = new Gson();
     try (FileWriter writer = new FileWriter(fileUrl)) {
-      gson.toJson(game, writer);
+      gson.toJson(object, writer);
     } catch (IOException e) {
       e.printStackTrace();
     }
