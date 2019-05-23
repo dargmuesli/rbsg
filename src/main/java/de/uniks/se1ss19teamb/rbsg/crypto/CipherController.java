@@ -11,7 +11,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class CipherController {
 
-
     //This string needs to be related with data
     public void encryptMessage(String msg){
         String messagetobeSaved = msg;
@@ -35,21 +34,8 @@ public class CipherController {
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
 
-
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch ( NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException |
+                BadPaddingException | IllegalBlockSizeException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -57,7 +43,7 @@ public class CipherController {
     //decrypt the message
     public String decryptMessage(){
 
-        String decrypted_message = "!!!Error....Nothing to decrypt!!!!" ;
+        String decrypted_message = "" ;
 
         //1.Reads the encrypted message
         try {
@@ -68,8 +54,9 @@ public class CipherController {
             int t;
             char c;
             String recoveredSecret = "";
+
             while((t = fr.read()) != -1){
-                c=  (char) t;
+                c =  (char) t;
                 recoveredSecret += c;
             }
 
@@ -77,27 +64,14 @@ public class CipherController {
 
             //4.Decrypts the message
             byte[] recovered_message = CipherUtils.decrypt(CipherConstant.privateKey,recSecret);
-
             decrypted_message =(new String(recovered_message,"UTF8"));
             br.close();
             fr.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
+
+        } catch (IOException | NoSuchAlgorithmException |InvalidKeyException | NoSuchPaddingException |
+                BadPaddingException | IllegalBlockSizeException e ) {
             e.printStackTrace();
         }
         return decrypted_message;
-
     }
-
 }
