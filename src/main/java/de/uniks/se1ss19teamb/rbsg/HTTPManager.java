@@ -1,18 +1,20 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
 import java.net.URI;
 
 public class HTTPManager {
+
+    private final HttpClient httpClient;
 
     public HTTPManager() {
         this.httpClient = HttpClients.createDefault();
@@ -21,8 +23,6 @@ public class HTTPManager {
     public HTTPManager(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
-
-    private final HttpClient httpClient;
 
     public String get(URI uri, Header[] headers) throws
             Exception {
@@ -85,13 +85,13 @@ public class HTTPManager {
         int status = httpResponse.getStatusLine().getStatusCode();
         String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
         String response = httpResponse.getEntity() != null
-                ? EntityUtils.toString(httpResponse.getEntity(),"UTF-8") : null;
+                ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
 
-        if(status >= 200 && status < 300){
+        if (status >= 200 && status < 300) {
             return response;
-        }else if(status >= 400){
+        } else if (status >= 400) {
             throw new Exception(errorMessage);
-        }else{
+        } else {
             return response;
         }
     }

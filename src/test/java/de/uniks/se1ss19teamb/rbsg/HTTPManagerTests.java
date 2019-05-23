@@ -5,8 +5,8 @@ import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpResponse;
-import org.json.simple.JSONObject;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URI;
@@ -18,8 +18,8 @@ import static org.mockito.Mockito.*;
 public class HTTPManagerTests {
 
     class Body {
-        public String name = "Test";
-        public String password = "Test";
+        public String name = "Test Name";
+        public String password = "Test Password";
     }
 
     private URI uri;
@@ -32,102 +32,67 @@ public class HTTPManagerTests {
         }
     }
 
-    @Test
-    public void testHTTPManagerPost() throws Exception {
-        HttpClient httpClient = mock(HttpClient.class);
-        HTTPManager httpManager = new HTTPManager(httpClient);
-        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
+    HttpClient httpClient;
+    HTTPManager httpManager;
+    HttpResponse httpResponse;
+    Header[] headers;
+    Gson gson;
+    String jsonString;
+    Body body;
+    HttpEntity httpEntity;
+
+    @Before
+    public void setupTests() throws Exception{
+        httpClient = mock(HttpClient.class);
+        httpManager = new HTTPManager(httpClient);
+        httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
                 HttpStatus.SC_OK, "OK");
 
         httpResponse.addHeader("TestHeader", "1");
 
         // A Header for the Method
-        Header[] headers = new Header[1];
+        headers = new Header[1];
         headers[0] = httpResponse.getFirstHeader("TestHeader");
 
         // HTTP Body in gson
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(new Body());
+        gson = new Gson();
+        jsonString = gson.toJson(new Body());
 
-        Body body = gson.fromJson(jsonString, Body.class);
-        System.out.println("Body name: " + body.name);
-        System.out.println("Gson produced String: " + jsonString);
+        body = gson.fromJson(jsonString, Body.class);
 
-
-        HttpEntity httpEntity = new StringEntity(jsonString);
+        httpEntity = new StringEntity(jsonString);
 
         httpResponse.setEntity(httpEntity);
 
         when(httpClient.execute(any())).thenReturn(httpResponse);
+    }
 
+    @Test
+    public void testHTTPManagerPost() throws Exception {
         String managerResponse = httpManager.post(uri, headers, httpEntity);
         Assert.assertNotNull(managerResponse);
-        verify(httpClient).execute(any());
-        Body responeBody = gson.fromJson(managerResponse, Body.class);
-        System.out.println("Responsename: " + responeBody.name);
-        Assert.assertTrue(managerResponse.contains("name"));
+        Body responseBody = gson.fromJson(managerResponse, Body.class);
+        Assert.assertEquals("Test Name", responseBody.name);
+        Assert.assertEquals("Test Password", responseBody.password);
 
     }
 
     @Test
     public void testHTTPManagerGet() throws Exception {
-        HttpClient httpClient = mock(HttpClient.class);
-        HTTPManager httpManager = new HTTPManager(httpClient);
-        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
-                HttpStatus.SC_OK, "OK");
-
-        httpResponse.addHeader("TestHeader", "1");
-
-        // A Header for the Method
-        Header[] headers = new Header[1];
-        headers[0] = httpResponse.getFirstHeader("TestHeader");
-
-        // HTTP Body json
-        JSONObject json = new JSONObject();
-        json.put("name", "Test");
-        json.put("password", "Test");
-        json.toString();
-
-        HttpEntity httpEntity = new StringEntity(json.toString());
-
-        httpResponse.setEntity(httpEntity);
-
-        when(httpClient.execute(any())).thenReturn(httpResponse);
-
         String managerResponse = httpManager.get(uri, headers);
         Assert.assertNotNull(managerResponse);
-        verify(httpClient).execute(any());
-
+        Body responseBody = gson.fromJson(managerResponse, Body.class);
+        Assert.assertEquals("Test Name", responseBody.name);
+        Assert.assertEquals("Test Password", responseBody.password);
     }
 
     @Test
     public void testHTTPManagerDelete() throws Exception {
-        HttpClient httpClient = mock(HttpClient.class);
-        HTTPManager httpManager = new HTTPManager(httpClient);
-        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
-                HttpStatus.SC_OK, "OK");
-
-        httpResponse.addHeader("TestHeader", "1");
-
-        // A Header for the Method
-        Header[] headers = new Header[1];
-        headers[0] = httpResponse.getFirstHeader("TestHeader");
-
-        // HTTP Body json
-        JSONObject json = new JSONObject();
-        json.put("name", "Test");
-        json.put("password", "Test");
-        json.toString();
-
-        HttpEntity httpEntity = new StringEntity(json.toString());
-
-        httpResponse.setEntity(httpEntity);
-
-        when(httpClient.execute(any())).thenReturn(httpResponse);
-
         String managerResponse = httpManager.delete(uri, headers, httpEntity);
         Assert.assertNotNull(managerResponse);
-        verify(httpClient).execute(any());
+        Body responseBody = gson.fromJson(managerResponse, Body.class);
+        Assert.assertEquals("Test Name", responseBody.name);
+        Assert.assertEquals("Test Password", responseBody.password);
 
     }
 }
