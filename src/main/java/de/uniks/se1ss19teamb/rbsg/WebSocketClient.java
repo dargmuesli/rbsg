@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import javax.json.JsonObject;
+import com.google.gson.JsonObject;
 import javax.websocket.*;
 import java.net.URI;
 import java.util.Timer;
