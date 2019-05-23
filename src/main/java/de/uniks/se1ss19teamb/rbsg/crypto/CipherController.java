@@ -30,7 +30,7 @@ public class CipherController {
             }
 
             //4.Stores the secret message into text file
-            FileWriter fw = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/secrets.txt");
+            FileWriter fw = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
 
@@ -47,7 +47,7 @@ public class CipherController {
 
         //1.Reads the encrypted message
         try {
-            FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/secrets.txt");
+            FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
             BufferedReader br = new BufferedReader(fr);
 
             //2.Constructs the encrypted message
