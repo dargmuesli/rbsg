@@ -50,13 +50,15 @@ public class SerializeTest {
 
     // test serialization
     SerializeUtils.serialize("file.json", testClass);
+    String thatTest = SerializeUtils.serialize(testClass);
 
-    // test json string
-    String test = SerializeUtils.serialize(testClass);
+    // test json string that should be equal to the serialized one
+    String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
     try {
       String thisTest = readFile("file.json", StandardCharsets.UTF_8);
 
       Assert.assertEquals(test,thisTest);
+      Assert.assertEquals(test,thatTest);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -65,6 +67,7 @@ public class SerializeTest {
     Reader reader = new FileReader("file.json");
     Gson gson = new Gson();
     Object object = gson.fromJson(reader, testClass.getClass());
+    reader.close();
 
     TestClass thisTestClass = (TestClass) object;
 
@@ -72,17 +75,16 @@ public class SerializeTest {
     Assert.assertEquals(testClass.getMtr(), thisTestClass.getMtr());
 
     // test deserialization
-    TestClass fromFile = (TestClass) SerializeUtils.deserialize("file.json", new TestClass());
+    TestClass fromFile = (TestClass) SerializeUtils.deserialize("file.json", TestClass.class);
 
     // test deserialization from string
-    TestClass fromString = (TestClass) SerializeUtils.deserialize(test, new TestClass());
+    TestClass fromString = (TestClass) SerializeUtils.deserialize(test, TestClass.class);
 
     Assert.assertEquals(testClass.getName(), fromFile.getName());
     Assert.assertEquals(testClass.getMtr(), fromFile.getMtr());
     Assert.assertEquals(testClass.getName(), fromString.getName());
     Assert.assertEquals(testClass.getMtr(), fromString.getMtr());
 
-    reader.close();
     try {
       Files.delete(Paths.get("file.json"));
     } catch (NoSuchFileException x) {

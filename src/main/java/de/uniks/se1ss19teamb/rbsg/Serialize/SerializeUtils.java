@@ -84,21 +84,21 @@ public class SerializeUtils{
   }
   */
 
-  public static Object deserialize(String fileUrl, Object object) {
+  public static Object deserialize(String fileUrl, Class myClass) {
     Gson gson = new Gson();
     try (Reader reader = new FileReader(fileUrl)) {
-      Object fromJson = gson.fromJson(reader, object.getClass());
+      Object fromJson = gson.fromJson(reader, myClass);
       return fromJson;
     } catch (IOException e) {
       if (fileUrl instanceof String ){
-        Object fromJson = gson.fromJson(fileUrl, object.getClass());
+        Object fromJson = gson.fromJson(fileUrl, myClass);
         return fromJson;
       } else {
         e.printStackTrace();
       }
     }
 
-    return object;
+    return myClass;
   }
 
   public static void serialize(String fileUrl, Object object) {
@@ -111,9 +111,7 @@ public class SerializeUtils{
   }
 
   public static String serialize(Object object) {
-    Gson gson = new Gson();
-    String string = gson.toJson(object);
-    return string;
+    return new Gson().toJson(object);
   }
 
 }
