@@ -5,13 +5,12 @@ import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class SerializeTest {
@@ -43,7 +42,7 @@ public class SerializeTest {
   }
 
   @Test
-  public void serializeTest() throws FileNotFoundException {
+  public void serializeTest() throws IOException {
 
     TestClass testClass = new TestClass();
     testClass.setName("My Very Long Name");
@@ -73,15 +72,26 @@ public class SerializeTest {
     Assert.assertEquals(testClass.getMtr(), thisTestClass.getMtr());
 
     // test deserialization
-    TestClass fromFile =(TestClass) SerializeUtils.deserialize("file.json", new TestClass());
+    TestClass fromFile = (TestClass) SerializeUtils.deserialize("file.json", new TestClass());
 
     // test deserialization from string
-    TestClass fromString =(TestClass) SerializeUtils.deserialize(test, new TestClass());
+    TestClass fromString = (TestClass) SerializeUtils.deserialize(test, new TestClass());
 
     Assert.assertEquals(testClass.getName(), fromFile.getName());
     Assert.assertEquals(testClass.getMtr(), fromFile.getMtr());
     Assert.assertEquals(testClass.getName(), fromString.getName());
     Assert.assertEquals(testClass.getMtr(), fromString.getMtr());
-    System.out.println();
+
+    reader.close();
+    try {
+      Files.delete(Paths.get("file.json"));
+    } catch (NoSuchFileException x) {
+      System.err.format("%s: no such" + " file or directory%n", Paths.get("file.json"));
+    } catch (DirectoryNotEmptyException x) {
+      System.err.format("%s not empty%n", Paths.get("file.json"));
+    } catch (IOException x) {
+      // File permission problems are caught here.
+      System.err.println(x);
+    }
   }
 }
