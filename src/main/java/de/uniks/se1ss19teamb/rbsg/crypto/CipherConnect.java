@@ -9,7 +9,7 @@ public class CipherConnect {
         String download1 =("Schreibtisch/private.der");
         FTPClient client = new FTPClient();
         try (OutputStream os = new FileOutputStream(string)) {
-            client.connect("10.10.161.73");
+            client.connect("10.10.155.88");
             client.login("kip", "ilmysk911");
 
             // Download file from FTP server.
