@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class LogoutUserRequest extends AbstractRESTRequest {
 
@@ -11,7 +11,7 @@ public class LogoutUserRequest extends AbstractRESTRequest {
     }
     
     @Override
-    protected JSONObject buildJSON() {
+    protected JsonObject buildJson() {
         return null;
     }
 
