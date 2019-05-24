@@ -13,7 +13,7 @@ public interface RESTRequest {
     public JsonObject getResponse();
     
     public default boolean getSuccessful() {
-        return getResponse() == null ? false : getResponse().get("status").equals("success");
+        return getResponse() == null ? false : getResponse().get("status").getAsString().equals("success");
     }
     
     public default String getMessage() {

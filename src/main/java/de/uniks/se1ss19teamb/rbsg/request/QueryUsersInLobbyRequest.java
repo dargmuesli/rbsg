@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import java.util.ArrayList;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
@@ -36,7 +37,11 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     
     @SuppressWarnings("unchecked")
     public ArrayList<String> getUsersInLobby(){
-        return ((ArrayList<String>)getResponse().get("data"));
+        ArrayList<String> usersInLobby = new ArrayList<>();
+        for(JsonElement lobby: getResponse().get("data").getAsJsonArray()) {
+            usersInLobby.add(lobby.getAsString());
+        }
+        return usersInLobby;
     }
 
 }

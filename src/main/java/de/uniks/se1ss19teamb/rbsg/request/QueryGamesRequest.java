@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import java.util.ArrayList;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
@@ -39,12 +40,13 @@ public class QueryGamesRequest extends AbstractRESTRequest {
     public ArrayList<Game> getGames(){
         ArrayList<Game> games = new ArrayList<Game>();
         
-        for(JsonObject game : (ArrayList<JsonObject>)getResponse().get("data")) {
+        for(JsonElement g : getResponse().get("data").getAsJsonArray()) {
             Game current = new Game();
-            current.setId((String) game.get("id"));
-            current.setName((String) game.get("name"));
-            current.setJoinedPlayers((Long) game.get("joinedPlayer"));
-            current.setNeededPlayers((Long) game.get("neededPlayer"));
+            JsonObject game = g.getAsJsonObject();
+            current.setId( game.get("id").getAsString());
+            current.setName( game.get("name").getAsString());
+            current.setJoinedPlayers(game.get("joinedPlayer").getAsLong());
+            current.setNeededPlayers(game.get("neededPlayer").getAsLong());
             games.add(current);
         }
         

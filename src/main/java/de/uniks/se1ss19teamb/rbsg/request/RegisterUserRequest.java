@@ -17,7 +17,6 @@ public class RegisterUserRequest extends AbstractRESTRequest{
         this.password = password;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     protected JsonObject buildJson() {
         JsonObject json = new JsonObject();
