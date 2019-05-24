@@ -1,33 +1,32 @@
 package de.uniks.se1ss19teamb.rbsg;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 public class ErrorPopupController {
 
     @FXML
+    AnchorPane errorPopup;
+
+    @FXML
     Label errorLabel;
 
-    String errorMessage;
-
-    class ErrorMessageThread implements Runnable {
-        @Override
-        public void run()
-        {
-            errorLabel.setText(errorMessage);
-            errorLabel.setVisible(true);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            errorLabel.setVisible(false);
-        }
-    }
-
     public void displayErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-        Thread errorThread = new Thread(new ErrorMessageThread());
-        errorThread.start();
+        errorLabel.setText(errorMessage);
+        errorPopup.setVisible(true);
+        new Thread(new Task<Void>() {
+            @Override
+            public Void call() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                errorPopup.setVisible(false);
+                return null;
+            }
+        }).start();
     }
 }

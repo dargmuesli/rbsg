@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.MainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.MainController">
    <children>
       <VBox fx:id="playerList" layoutY="-2.0" prefHeight="400.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
@@ -14,7 +14,10 @@
             <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="errorContainer" layoutX="250.0" layoutY="0.0" prefHeight="45.0" prefWidth="199.0" />
+         </children></AnchorPane>
       <HBox fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="CENTER" prefHeight="23.0" prefWidth="96.0" text="Players" textFill="#756e6e" />
