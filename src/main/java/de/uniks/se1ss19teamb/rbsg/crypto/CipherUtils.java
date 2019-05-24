@@ -15,6 +15,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 public class CipherUtils {
 
+
     public static byte[] readFileBytes(String filename) throws IOException{
         Path path =  Paths.get(filename);
         return Files.readAllBytes(path);
