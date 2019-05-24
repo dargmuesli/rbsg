@@ -9,7 +9,7 @@ import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class CipherController {
+public class CipherController{
 
     //This string needs to be related with data
     public void encryptMessage(String msg){
@@ -17,7 +17,7 @@ public class CipherController {
 
         try{
             //Turns the desired message into a byte Array
-            byte[]  message = messagetobeSaved.getBytes("UTF8");
+            byte[] message = messagetobeSaved.getBytes("UTF8");
 
             //2.Encrypts the desired message
             byte[] secret = CipherUtils.encrypt(CipherConstant.publicKey,message);
@@ -47,15 +47,15 @@ public class CipherController {
 
         //1.Reads the encrypted message
         try {
-            FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
-            BufferedReader br = new BufferedReader(fr);
+            //FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+            BufferedReader br = new BufferedReader(readFile());
 
             //2.Constructs the encrypted message
             int t;
             char c;
             String recoveredSecret = "";
 
-            while((t = fr.read()) != -1){
+            while((t = readFile().read()) != -1){
                 c =  (char) t;
                 recoveredSecret += c;
             }
@@ -65,15 +65,20 @@ public class CipherController {
             //4.Decrypts the message
             byte[] recovered_message = CipherUtils.decrypt(CipherConstant.privateKey,recSecret);
             decrypted_message =(new String(recovered_message,"UTF8"));
-            PrintWriter pw = new PrintWriter("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/Dummy.der");
-            pw.close();
+            //PrintWriter pw = new PrintWriter("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/Dummy.der");
+            //pw.close();
             br.close();
-            fr.close();
+            readFile().close();
 
         } catch (IOException | NoSuchAlgorithmException |InvalidKeyException | NoSuchPaddingException |
                 BadPaddingException | IllegalBlockSizeException e ) {
             e.printStackTrace();
         }
         return decrypted_message;
+    }
+
+    public static FileReader readFile() throws FileNotFoundException {
+        FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+        return fr;
     }
 }
