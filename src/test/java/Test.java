@@ -2,8 +2,6 @@ import de.uniks.se1ss19teamb.rbsg.crypto.CipherController;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
