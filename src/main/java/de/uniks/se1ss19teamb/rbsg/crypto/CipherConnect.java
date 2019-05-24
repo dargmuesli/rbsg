@@ -6,7 +6,7 @@ import java.io.*;
 public class CipherConnect {
     public static void connect() throws Exception {
         String string = "src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/Dummy.der";
-        String download1 =("Schreibtisch/private.der");
+        String download1 = "Schreibtisch/private.der";
         FTPClient client = new FTPClient();
         try (OutputStream os = new FileOutputStream(string)) {
             client.connect("10.10.155.88");
