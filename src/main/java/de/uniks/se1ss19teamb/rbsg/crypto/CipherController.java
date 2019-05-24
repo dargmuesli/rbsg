@@ -30,7 +30,7 @@ public class CipherController{
             }
 
             //4.Stores the secret message into text file
-            FileWriter fw = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+            FileWriter fw = writeFile();
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
 
@@ -47,15 +47,15 @@ public class CipherController{
 
         //1.Reads the encrypted message
         try {
-            //FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
             BufferedReader br = new BufferedReader(readFile());
+            FileReader fr = readFile();
 
             //2.Constructs the encrypted message
             int t;
             char c;
             String recoveredSecret = "";
 
-            while((t = readFile().read()) != -1){
+            while((t = fr.read()) != -1){
                 c =  (char) t;
                 recoveredSecret += c;
             }
@@ -68,7 +68,7 @@ public class CipherController{
             //PrintWriter pw = new PrintWriter("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/Dummy.der");
             //pw.close();
             br.close();
-            readFile().close();
+            fr.close();
 
         } catch (IOException | NoSuchAlgorithmException |InvalidKeyException | NoSuchPaddingException |
                 BadPaddingException | IllegalBlockSizeException e ) {
@@ -80,5 +80,10 @@ public class CipherController{
     public static FileReader readFile() throws FileNotFoundException {
         FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
         return fr;
+    }
+
+    public static FileWriter writeFile() throws IOException {
+        FileWriter wr = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+        return wr;
     }
 }
