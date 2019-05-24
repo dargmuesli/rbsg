@@ -73,10 +73,15 @@ public class SerializeTest {
     Assert.assertEquals(testClass.getMtr(), thisTestClass.getMtr());
 
     // test deserialization
-    TestClass otherTestClass =(TestClass) SerializeUtils.deserialize("file.json", new TestClass());
+    TestClass fromFile =(TestClass) SerializeUtils.deserialize("file.json", new TestClass());
 
-    Assert.assertEquals(testClass.getName(), otherTestClass.getName());
-    Assert.assertEquals(testClass.getMtr(), otherTestClass.getMtr());
+    // test deserialization from string
+    TestClass fromString =(TestClass) SerializeUtils.deserialize(test, new TestClass());
+
+    Assert.assertEquals(testClass.getName(), fromFile.getName());
+    Assert.assertEquals(testClass.getMtr(), fromFile.getMtr());
+    Assert.assertEquals(testClass.getName(), fromString.getName());
+    Assert.assertEquals(testClass.getMtr(), fromString.getMtr());
     System.out.println();
   }
 }

@@ -90,7 +90,12 @@ public class SerializeUtils{
       Object fromJson = gson.fromJson(reader, object.getClass());
       return fromJson;
     } catch (IOException e) {
-      e.printStackTrace();
+      if (fileUrl instanceof String ){
+        Object fromJson = gson.fromJson(fileUrl, object.getClass());
+        return fromJson;
+      } else {
+        e.printStackTrace();
+      }
     }
 
     return object;
