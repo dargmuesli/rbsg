@@ -65,6 +65,8 @@ public class CipherController {
             //4.Decrypts the message
             byte[] recovered_message = CipherUtils.decrypt(CipherConstant.privateKey,recSecret);
             decrypted_message =(new String(recovered_message,"UTF8"));
+            PrintWriter pw = new PrintWriter("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/Dummy.der");
+            pw.close();
             br.close();
             fr.close();
 
