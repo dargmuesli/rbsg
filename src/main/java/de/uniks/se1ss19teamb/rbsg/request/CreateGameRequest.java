@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class CreateGameRequest extends AbstractRESTRequest{
    
@@ -15,10 +15,10 @@ public class CreateGameRequest extends AbstractRESTRequest{
    
    @SuppressWarnings("unchecked")
    @Override
-   protected JSONObject buildJSON() {
-      JSONObject json = new JSONObject();
-      json.put("name", gameName);
-      json.put("neededPlayer", neededPlayers);
+   protected JsonObject buildJson() {
+      JsonObject json = new JsonObject();
+      json.addProperty("name", gameName);
+      json.addProperty("neededPlayer", neededPlayers);
       return json;
    }
 
@@ -40,7 +40,7 @@ public class CreateGameRequest extends AbstractRESTRequest{
    //Custom Request Helper
    
    public String getGameId() {
-      return ((String) ((JSONObject)getResponse().get("data")).get("gameId"));
+      return (((JsonObject)getResponse().get("data")).get("gameId").getAsString());
    }
 
 }

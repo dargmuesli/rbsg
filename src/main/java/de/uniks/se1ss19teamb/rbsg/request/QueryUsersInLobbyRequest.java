@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import java.util.ArrayList;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
 
@@ -13,7 +13,7 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     }
     
     @Override
-    protected JSONObject buildJSON() {
+    protected JsonObject buildJson() {
         return null;
     }
 

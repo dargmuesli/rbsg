@@ -2,8 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import java.util.ArrayList;
 
-import org.json.simple.JSONObject;
-
+import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 public class QueryGamesRequest extends AbstractRESTRequest {
@@ -15,7 +14,7 @@ public class QueryGamesRequest extends AbstractRESTRequest {
     }
     
     @Override
-    protected JSONObject buildJSON() {
+    protected JsonObject buildJson() {
         return null;
     }
 
@@ -40,7 +39,7 @@ public class QueryGamesRequest extends AbstractRESTRequest {
     public ArrayList<Game> getGames(){
         ArrayList<Game> games = new ArrayList<Game>();
         
-        for(JSONObject game : (ArrayList<JSONObject>)getResponse().get("data")) {
+        for(JsonObject game : (ArrayList<JsonObject>)getResponse().get("data")) {
             Game current = new Game();
             current.setId((String) game.get("id"));
             current.setName((String) game.get("name"));

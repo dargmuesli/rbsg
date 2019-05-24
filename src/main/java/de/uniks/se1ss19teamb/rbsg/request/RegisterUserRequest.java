@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class RegisterUserRequest extends AbstractRESTRequest{
     
@@ -19,10 +19,10 @@ public class RegisterUserRequest extends AbstractRESTRequest{
     
     @SuppressWarnings("unchecked")
     @Override
-    protected JSONObject buildJSON() {
-        JSONObject json = new JSONObject();
-        json.put("name", username);
-        json.put("password", password);
+    protected JsonObject buildJson() {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", username);
+        json.addProperty("password", password);
         return json;
     }
 
