@@ -29,6 +29,8 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.5'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile 'commons-net:commons-net:3.6'        
 
     testCompile group: 'org.fulib', name: 'fulib', version: '1.0+'
     implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
