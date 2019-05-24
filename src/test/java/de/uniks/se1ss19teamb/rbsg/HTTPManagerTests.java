@@ -18,8 +18,8 @@ import static org.mockito.Mockito.*;
 public class HTTPManagerTests {
 
     class Body {
-        public String name = "Test Name";
-        public String password = "Test Password";
+        String name = "Test Name";
+        String password = "Test Password";
     }
 
     private URI uri;
@@ -32,20 +32,16 @@ public class HTTPManagerTests {
         }
     }
 
-    HttpClient httpClient;
-    HTTPManager httpManager;
-    HttpResponse httpResponse;
-    Header[] headers;
-    Gson gson;
-    String jsonString;
-    Body body;
-    HttpEntity httpEntity;
+    private HTTPManager httpManager;
+    private Header[] headers;
+    private Gson gson;
+    private HttpEntity httpEntity;
 
     @Before
-    public void setupTests() throws Exception{
-        httpClient = mock(HttpClient.class);
+    public void setupTests() throws Exception {
+        HttpClient httpClient = mock(HttpClient.class);
         httpManager = new HTTPManager(httpClient);
-        httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
+        HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
                 HttpStatus.SC_OK, "OK");
 
         httpResponse.addHeader("TestHeader", "1");
@@ -56,9 +52,7 @@ public class HTTPManagerTests {
 
         // HTTP Body in gson
         gson = new Gson();
-        jsonString = gson.toJson(new Body());
-
-        body = gson.fromJson(jsonString, Body.class);
+        String jsonString = gson.toJson(new Body());
 
         httpEntity = new StringEntity(jsonString);
 
@@ -74,7 +68,6 @@ public class HTTPManagerTests {
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
         Assert.assertEquals("Test Password", responseBody.password);
-
     }
 
     @Test
@@ -93,6 +86,5 @@ public class HTTPManagerTests {
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
         Assert.assertEquals("Test Password", responseBody.password);
-
     }
 }
