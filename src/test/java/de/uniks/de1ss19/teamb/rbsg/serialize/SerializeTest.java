@@ -7,11 +7,16 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class SerializeTest {
 
-  public class TestClass{
+  public class TestClass {
     String name;
     int mtr;
 
@@ -32,6 +37,11 @@ public class SerializeTest {
     }
   }
 
+  static String readFile(String path, Charset encoding) throws IOException {
+    byte[] encoded = Files.readAllBytes(Paths.get(path));
+    return new String(encoded, encoding);
+  }
+
   @Test
   public void serializeTest() throws FileNotFoundException {
 
@@ -42,6 +52,17 @@ public class SerializeTest {
     // test serialization
     SerializeUtils.serialize("file.json", testClass);
 
+    // test json string
+    String test = SerializeUtils.serialize(testClass);
+    try {
+      String thisTest = readFile("file.json", StandardCharsets.UTF_8);
+
+      Assert.assertEquals(test,thisTest);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    // other test
     Reader reader = new FileReader("file.json");
     Gson gson = new Gson();
     Object object = gson.fromJson(reader, testClass.getClass());

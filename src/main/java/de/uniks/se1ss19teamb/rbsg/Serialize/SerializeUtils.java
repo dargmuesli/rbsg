@@ -105,6 +105,12 @@ public class SerializeUtils{
     }
   }
 
+  public static String serialize(Object object) {
+    Gson gson = new Gson();
+    String string = gson.toJson(object);
+    return string;
+  }
+
 }
 
 
