@@ -41,11 +41,11 @@ public class LoginController {
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
-            slideNextScene("main.fxml",100);
+            //slideNextScene("main.fxml",100);
             //makeFadeOutTransition();
         }
         if(event.getSource().equals(btnRegistration)){
-            slideNextScene("register.fxml",400);
+            //slideNextScene("register.fxml",400);
             //makeFadeOutTransition();
         }
 
