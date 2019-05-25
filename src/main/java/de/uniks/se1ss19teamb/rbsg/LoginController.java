@@ -2,10 +2,7 @@ package de.uniks.se1ss19teamb.rbsg;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,16 +41,18 @@ public class LoginController {
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
-            setNextScene("main.fxml", 100);
+            slideNextScene("main.fxml",100);
+            //makeFadeOutTransition();
         }
         if(event.getSource().equals(btnRegistration)){
-            setNextScene("register.fxml", 400);
+            slideNextScene("register.fxml",400);
+            //makeFadeOutTransition();
         }
 
     }
 
 
-    private void setNextScene(String path, int xValue) throws IOException {
+    private void slideNextScene(String path, int xValue) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
         if(randomValue){
@@ -85,6 +84,32 @@ public class LoginController {
 
             stage.setScene(scene);
         }
+    }
+
+
+    private void makeFadeOutTransition(){
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(loginScreen);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.setOnFinished(event -> {
+            try {
+                fadeNextScene();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        fadeTransition.play();
+    }
+
+    private void fadeNextScene() throws IOException {
+        Parent nextScene = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Scene scene = new Scene(nextScene);
+        Stage currentStage = (Stage) loginScreen.getScene().getWindow();
+
+        currentStage.setScene(scene);
 
     }
+
 }
