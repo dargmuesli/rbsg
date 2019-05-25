@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 public class CipherController{
 
     //This string needs to be related with data
-    public void encryptMessage(String msg){
+    public void encryptMessage(String msg,String filename){
         String messagetobeSaved = msg;
 
         try{
@@ -30,7 +30,7 @@ public class CipherController{
             }
 
             //4.Stores the secret message into text file
-            FileWriter fw = writeFile();
+            FileWriter fw = writeFile(filename);
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
 
@@ -41,14 +41,14 @@ public class CipherController{
     }
 
     //decrypt the message
-    public String decryptMessage(){
+    public String decryptMessage(String filename){
 
         String decrypted_message = "" ;
 
         //1.Reads the encrypted message
         try {
-            BufferedReader br = new BufferedReader(readFile());
-            FileReader fr = readFile();
+            BufferedReader br = new BufferedReader(readFile(filename));
+            FileReader fr = readFile(filename);
 
             //2.Constructs the encrypted message
             int t;
@@ -77,13 +77,13 @@ public class CipherController{
         return decrypted_message;
     }
 
-    public static FileReader readFile() throws FileNotFoundException {
-        FileReader fr = new FileReader("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+    public static FileReader readFile(String filename) throws FileNotFoundException {
+        FileReader fr = new FileReader(filename);
         return fr;
     }
 
-    public static FileWriter writeFile() throws IOException {
-        FileWriter wr = new FileWriter("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+    public static FileWriter writeFile(String filename) throws IOException {
+        FileWriter wr = new FileWriter(filename);
         return wr;
     }
 }
