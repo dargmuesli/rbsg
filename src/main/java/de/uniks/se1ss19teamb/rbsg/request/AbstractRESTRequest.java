@@ -3,13 +3,14 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import java.io.IOException;
 import java.net.URI;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.http.Header;
 import org.apache.http.MethodNotSupportedException;
+import org.apache.http.ParseException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
 
 import de.uniks.se1ss19teamb.rbsg.HTTPManager;
 
@@ -17,11 +18,11 @@ public abstract class AbstractRESTRequest implements RESTRequest{
    
    private static final String url = "https://rbsg.uniks.de/api";
    
-   private JSONObject response = null;
+   private JsonObject response = null;
    
    private static HTTPManager httpManager = new HTTPManager();
    
-   protected abstract JSONObject buildJSON();
+   protected abstract JsonObject buildJson();
    
    protected abstract String getHTTPMethod(); //"get", "post", "delete", "put"
    
@@ -39,7 +40,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
             result = httpManager.get(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) });
             break;
          case "post":
-            result = httpManager.post(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, new StringEntity(buildJSON().toString()));
+            result = httpManager.post(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, new StringEntity(buildJson().toString()));
             break;
          case "delete":
             result = httpManager.delete(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, null);
@@ -51,8 +52,8 @@ public abstract class AbstractRESTRequest implements RESTRequest{
       } catch(Exception e) {
          throw new IOException(e);
       } finally {
-         JSONParser parser = new JSONParser();
-         response = (JSONObject) parser.parse(result);
+         JsonParser parser = new JsonParser();
+         response = (JsonObject) parser.parse(result);
       }
    }
    
@@ -65,7 +66,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
    }
    
    @Override
-   public JSONObject getResponse() {
+   public JsonObject getResponse() {
       return response;
    }
    

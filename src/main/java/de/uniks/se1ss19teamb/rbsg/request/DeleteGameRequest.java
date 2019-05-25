@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class DeleteGameRequest extends AbstractRESTRequest{
     
@@ -12,7 +12,7 @@ public class DeleteGameRequest extends AbstractRESTRequest{
     }
     
     @Override
-    protected JSONObject buildJSON() {
+    protected JsonObject buildJson() {
         return null;
     }
 
