@@ -2,6 +2,7 @@ import de.uniks.se1ss19teamb.rbsg.crypto.CipherController;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ public class Test {
         String encrypted_message = "";
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();
-        cip.encryptMessage(msg);
+        cip.encryptMessage(msg,"src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
 
         //1.Reads the encrypted message
         try {
@@ -32,7 +33,7 @@ public class Test {
             byte[] recSecret = Base64.decodeBase64(recoveredSecret);
             encrypted_message = (new String(recSecret, "UTF8"));
             System.out.println(encrypted_message);
-            Assert.assertNotEquals(encrypted_message, msg);
+            Assert.assertNotEquals(encrypted_message,msg);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,8 +47,8 @@ public class Test {
         String decrypted_message = "";
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();
-        cip.encryptMessage(msg);
-        decrypted_message = cip.decryptMessage();
+        cip.encryptMessage(msg,"src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
+        decrypted_message = cip.decryptMessage("src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt");
 
         //1.Reads the encrypted message
         try {
@@ -67,7 +68,7 @@ public class Test {
             encrypted_message = (new String(recSecret, "UTF8"));
             System.out.println(encrypted_message);
 
-            Assert.assertNotEquals(encrypted_message, msg);
+            Assert.assertNotEquals(encrypted_message,msg);
 
             System.out.println(decrypted_message);
             Assert.assertEquals(decrypted_message,msg);
@@ -76,4 +77,6 @@ public class Test {
             e.printStackTrace();
         }
     }
+
+
 }
