@@ -14,7 +14,7 @@
          <font>
             <Font size="16.0" />
          </font></JFXButton>
-      <JFXButton fx:id="btnCancel" alignment="CENTER" layoutX="217.0" layoutY="292.0" onMouseClicked="#cancelClick" prefHeight="50.0" prefWidth="150.0" text="Cancel">
+      <JFXButton fx:id="btnCancel" alignment="CENTER" layoutX="217.0" layoutY="292.0" prefHeight="50.0" prefWidth="150.0" text="Cancel">
          <font>
             <Font size="16.0" />
          </font></JFXButton>

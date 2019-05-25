@@ -30,8 +30,4 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
-    public void cancelClick() {
-        errorHandler.sendError("Test Error");
-    }
 }
