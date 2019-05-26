@@ -16,21 +16,14 @@ public class CipherController{
     //This string needs to be related with data
     public void encryptMessage(String msg, String filename){
         Charset utf8 = StandardCharsets.UTF_8;
-        String messageToBeSaved = msg;
+        //String messageToBeSaved = msg;
 
         try {
             //Turns the desired message into a byte Array
-            byte[] message = messageToBeSaved.getBytes(utf8);
+            byte[] message = msg.getBytes(utf8);
 
             //2.Encrypts the desired message
             byte[] secret = CipherUtils.encrypt(CipherConstant.publicKey,message);
-
-            //3 Turns the encrypted message into Array
-            char[] secretchars = new char[secret.length];
-
-            for(int i = 0;i<secret.length;i++){
-                secretchars[i] = (char) secret[i];
-            }
 
             //4.Stores the secret message into text file
             FileWriter fw = new FileWriter(filename);
