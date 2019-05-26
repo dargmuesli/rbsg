@@ -8,29 +8,29 @@
 
 <AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.LoginController">
    <children>
-      <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" styleClass="root" stylesheets="@dark-design.css">
+      <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@dark-design.css">
          <children>
-            <JFXTextField fx:id="username" labelFloat="true" layoutX="113.0" layoutY="109.0" prefHeight="25.0" prefWidth="254.0" promptText="Username" />
-            <JFXTextField fx:id="passwort" labelFloat="true" layoutX="113.0" layoutY="181.0" prefHeight="25.0" prefWidth="254.0" promptText="Passwort" />
-            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="113.0" layoutY="265.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
+            <JFXTextField fx:id="username" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
+            <JFXTextField fx:id="passwort" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Passwort" />
+            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="156.0" layoutY="265.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="btnCancel" alignment="CENTER" layoutX="267.0" layoutY="265.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Cancel">
+            <JFXButton fx:id="btnCancel" alignment="CENTER" layoutX="334.0" layoutY="265.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Cancel">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <FontAwesomeIconView glyphName="LOCK" layoutX="172.0" layoutY="59.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
-            <FontAwesomeIconView glyphName="USER" layoutX="34.0" layoutY="154.0" size="25" />
-            <FontAwesomeIconView glyphName="KEY" layoutX="39.0" layoutY="226.0" size="25" />
-            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="285.0" layoutY="349.0" onAction="#setOnAction" text="Registration">
+            <FontAwesomeIconView glyphName="USER" layoutX="69.0" layoutY="159.0" size="25" />
+            <FontAwesomeIconView glyphName="KEY" layoutX="66.0" layoutY="227.0" size="25" />
+            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="352.0" layoutY="335.0" onAction="#setOnAction" text="Registration">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <AnchorPane fx:id="errorContainer" layoutX="100.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
+            <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
+            <FontAwesomeIconView glyphName="LOCK" layoutX="272.0" layoutY="55.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
          </children>
       </AnchorPane>
    </children>
