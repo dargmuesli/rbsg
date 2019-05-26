@@ -32,9 +32,10 @@ dependencies {
     implementation group: 'javax.websocket', name: 'javax.websocket-client-api', version: '1.0'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
     implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
+    implementation group: 'io.github.typhon0', name:'AnimateFX', version: '1.2.1'
     
     runtime group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
-
+    
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
     testImplementation group: 'org.fulib', name: 'fulib', version: '1.0+'
