@@ -1,0 +1,85 @@
+package de.uniks.de1ss19.teamb.rbsg.serialize;
+
+import com.google.gson.Gson;
+import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.sound.midi.Patch;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+public class SerializeTest {
+
+  public class TestClass {
+    String name = "My Very Long Name";
+    int mtr = 12345678;
+  }
+
+  @Test
+  public void serializeTest() throws IOException {
+
+    TestClass testClass = new TestClass();
+
+    // test serialization
+    SerializeUtils.serialize("file.json", testClass);
+    String serializedToJsonString = SerializeUtils.serialize(testClass);
+
+    // test json string that should be equal to the serialized one
+    String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
+    try {
+      byte[] encoded = Files.readAllBytes(Paths.get("file.json"));
+      String serializedToFile = new String(encoded, StandardCharsets.UTF_8);
+
+      Assert.assertEquals(test, serializedToFile);
+      Assert.assertEquals(test, serializedToJsonString);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      Files.delete(Paths.get("file.json"));
+    } catch (NoSuchFileException x) {
+      System.err.format("%s: no such" + " file or directory%n", Paths.get("file.json"));
+    } catch (DirectoryNotEmptyException x) {
+      System.err.format("%s not empty%n", Paths.get("file.json"));
+    } catch (IOException x) {
+      // File permission problems are caught here.
+      System.err.println(x);
+    }
+  }
+
+  @Test
+  public void deserializeTest() throws IOException {
+
+    TestClass testClass = new TestClass();
+
+    SerializeUtils.serialize("file.json", testClass);
+
+    // test deserialization
+    Path path = FileSystems.getDefault().getPath("jsons" ,"file.json");
+    TestClass fromFile = SerializeUtils.deserialize(path, TestClass.class);
+
+    // test deserialization from string
+    String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
+    TestClass fromString = SerializeUtils.deserialize(test, TestClass.class);
+
+    Assert.assertEquals(testClass.name, fromFile.name);
+    Assert.assertEquals(testClass.mtr, fromFile.mtr);
+    Assert.assertEquals(testClass.name, fromString.name);
+    Assert.assertEquals(testClass.mtr, fromString.mtr);
+
+    try {
+      Files.delete(Paths.get("file.json"));
+    } catch (NoSuchFileException x) {
+      x.printStackTrace();
+    } catch (DirectoryNotEmptyException x) {
+      x.printStackTrace();
+    } catch (IOException x) {
+      // File permission problems are caught here.
+      x.printStackTrace();
+    }
+  }
+}
