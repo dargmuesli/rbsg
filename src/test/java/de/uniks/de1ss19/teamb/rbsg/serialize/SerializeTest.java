@@ -16,29 +16,27 @@ import java.nio.file.Paths;
 public class SerializeTest {
 
   public class TestClass {
-    String name;
-    int mtr;
+    String name = "My Very Long Name";
+    int mtr = 12345678;
   }
 
   @Test
   public void serializeTest() throws IOException {
 
     TestClass testClass = new TestClass();
-    testClass.name = "My Very Long Name";
-    testClass.mtr = 12345678;
 
     // test serialization
     SerializeUtils.serialize("file.json", testClass);
-    String thatTest = SerializeUtils.serialize(testClass);
+    String serializedToJsonString = SerializeUtils.serialize(testClass);
 
     // test json string that should be equal to the serialized one
     String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
     try {
       byte[] encoded = Files.readAllBytes(Paths.get("file.json"));
-      String thisTest =  new String(encoded, StandardCharsets.UTF_8);
+      String serializedToFile = new String(encoded, StandardCharsets.UTF_8);
 
-      Assert.assertEquals(test, thisTest);
-      Assert.assertEquals(test, thatTest);
+      Assert.assertEquals(test, serializedToFile);
+      Assert.assertEquals(test, serializedToJsonString);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -56,11 +54,9 @@ public class SerializeTest {
   }
 
   @Test
-  public void deSerializeTest() throws IOException {
+  public void deserializeTest() throws IOException {
 
     TestClass testClass = new TestClass();
-    testClass.name = "Not So Very Long Name";
-    testClass.mtr = 87654321;
 
     SerializeUtils.serialize("file.json", testClass);
 
@@ -68,8 +64,8 @@ public class SerializeTest {
     TestClass fromFile = SerializeUtils.deserialize("file.json", TestClass.class);
 
     // test deserialization from string
-    String test = "{\"name\":\"Not So Very Long Name\",\"mtr\":87654321}";
-    TestClass fromString = SerializeUtils.deserialize(test, TestClass.class);
+    String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
+    TestClass fromString = SerializeUtils.deserializeFromJsonString(test, TestClass.class);
 
     Assert.assertEquals(testClass.name, fromFile.name);
     Assert.assertEquals(testClass.mtr, fromFile.mtr);

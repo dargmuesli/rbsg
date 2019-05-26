@@ -85,24 +85,27 @@ public class SerializeUtils{
   */
 
     public static <T> T deserialize(String fileUrl, Class<T> myClass) {
-        Gson gson = new Gson();
         try (Reader reader = new FileReader(fileUrl)) {
-            return gson.fromJson(reader, myClass);
+            return new Gson().fromJson(reader, myClass);
         } catch (IOException e) {
-            return gson.fromJson(fileUrl, myClass);
+            e.printStackTrace();
         }
+        return null;
     }
 
-    public static void serialize(String fileUrl, Object object) {
-        Gson gson = new Gson();
+    public static <T> T deserializeFromJsonString(String jsonString, Class<T> myClass) {
+        return new Gson().fromJson(jsonString, myClass);
+    }
+
+    public static <T> void serialize(String fileUrl, T object) {
         try (FileWriter writer = new FileWriter(fileUrl)) {
-            gson.toJson(object, writer);
+            new Gson().toJson(object, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String serialize(Object object) {
+    public static <T> String serialize(T object) {
         return new Gson().toJson(object);
     }
 
