@@ -55,7 +55,7 @@ public class Test {
         String decrypted_message ;
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();
-        cip.encryptMessage(msg,dataPath);
+        cip.encryptMessage(msg, dataPath);
         decrypted_message = cip.decryptMessage(dataPath);
 
         //1.Reads the encrypted message
@@ -89,6 +89,6 @@ public class Test {
 
     public String encryptReturn (String m) throws FileNotFoundException {
         byte[] recSecret = Base64.decodeBase64(m);
-        return(new String(recSecret, utf8));
+        return new String(recSecret, utf8);
     }
 }
