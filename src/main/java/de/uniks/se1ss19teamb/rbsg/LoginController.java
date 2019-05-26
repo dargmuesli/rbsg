@@ -42,11 +42,11 @@ public class LoginController {
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //slideNextScene("main.fxml",100);
-            makeFadeOutTransition();
+            makeFadeOutTransition("main.fxml");
         }
         if(event.getSource().equals(btnRegistration)){
             //slideNextScene("register.fxml",400);
-            makeFadeOutTransition();
+            makeFadeOutTransition("register.fxml");
         }
 
     }
@@ -87,7 +87,7 @@ public class LoginController {
     }
 
 
-    private void makeFadeOutTransition(){
+    private void makeFadeOutTransition(String path){
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(loginScreen);
@@ -95,7 +95,7 @@ public class LoginController {
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             try {
-                fadeNextScene();
+                fadeNextScene(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,8 +103,8 @@ public class LoginController {
         fadeTransition.play();
     }
 
-    private void fadeNextScene() throws IOException {
-        Parent nextScene = FXMLLoader.load(getClass().getResource("main.fxml"));
+    private void fadeNextScene(String path) throws IOException {
+        Parent nextScene = FXMLLoader.load(getClass().getResource(path));
         Scene scene = new Scene(nextScene);
         Stage currentStage = (Stage) loginScreen.getScene().getWindow();
 
