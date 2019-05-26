@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 
 import java.io.FileNotFoundException;
+import java.io.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
