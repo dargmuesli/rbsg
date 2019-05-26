@@ -15,8 +15,10 @@ public class Test {
    Charset utf8 = StandardCharsets.UTF_8;
 
     @org.junit.Test
-    public void testEncryption() {
-
+    public void testEncryption() throws IOException {
+        FileWriter fileR = new FileWriter(dataPath);
+        File file = new File(dataPath);
+        
         String encrypted_message ;
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();
@@ -40,8 +42,9 @@ public class Test {
             System.out.println(encrypted_message);
             Assert.assertEquals(encrypted_message, msg, "gå til helvete!!!");
             Assert.assertNotEquals(encrypted_message, msg);
-            PrintWriter pw = new PrintWriter(dataPath);
-            pw.close();
+            
+            file.delete();
+            fileR.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,8 +52,10 @@ public class Test {
     }
 
     @org.junit.Test
-    public void testDecryption(){
-
+    public void testDecryption() throws IOException {
+        FileWriter fileR = new FileWriter(dataPath);
+        File file = new File(dataPath);
+        
         String encrypted_message ;
         String decrypted_message ;
         String msg = "gå til helvete!!!";
@@ -79,8 +84,9 @@ public class Test {
 
             System.out.println(decrypted_message);
             Assert.assertEquals(decrypted_message, msg);
-            PrintWriter pw = new PrintWriter(dataPath);
-            pw.close();;
+            
+            file.delete();
+            fileR.close();
 
         } catch (IOException e) {
             e.printStackTrace();
