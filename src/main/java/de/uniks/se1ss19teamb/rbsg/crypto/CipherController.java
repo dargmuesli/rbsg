@@ -6,18 +6,21 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class CipherController{
 
     //This string needs to be related with data
-    public void encryptMessage(String msg,String filename){
-        String messagetobeSaved = msg;
+    public void encryptMessage(String msg, String filename){
+        Charset utf8 = StandardCharsets.UTF_8;
+        String messageToBeSaved = msg;
 
-        try{
+        try {
             //Turns the desired message into a byte Array
-            byte[] message = messagetobeSaved.getBytes("UTF8");
+            byte[] message = messageToBeSaved.getBytes(utf8);
 
             //2.Encrypts the desired message
             byte[] secret = CipherUtils.encrypt(CipherConstant.publicKey,message);
@@ -30,7 +33,7 @@ public class CipherController{
             }
 
             //4.Stores the secret message into text file
-            FileWriter fw = writeFile(filename);
+            FileWriter fw = new FileWriter(filename);
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
 
@@ -44,31 +47,29 @@ public class CipherController{
     public String decryptMessage(String filename){
 
         String decrypted_message = "" ;
+        Charset utf8 = StandardCharsets.UTF_8;
 
         //1.Reads the encrypted message
         try {
-            BufferedReader br = new BufferedReader(readFile(filename));
-            FileReader fr = readFile(filename);
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            //FileReader fr = new FileReader(filename);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            String line ;
 
             //2.Constructs the encrypted message
-            int t;
-            char c;
-            String recoveredSecret = "";
-
-            while((t = fr.read()) != -1){
-                c =  (char) t;
-                recoveredSecret += c;
+            while((line = br.readLine()) != null){
+                stringBuilder.append(line);
             }
+            String recoveredSecret = stringBuilder.toString();
 
             byte[] recSecret = Base64.decodeBase64(recoveredSecret);
 
             //4.Decrypts the message
             byte[] recovered_message = CipherUtils.decrypt(CipherConstant.privateKey,recSecret);
-            decrypted_message =(new String(recovered_message,"UTF8"));
-            //PrintWriter pw = new PrintWriter("src/main/java/de/uniks/se1ss19teamb/rbsg/crypto/Dummy.der");
-            //pw.close();
+            decrypted_message = (new String(recovered_message, utf8));
             br.close();
-            fr.close();
+            //fr.close();
 
         } catch (IOException | NoSuchAlgorithmException |InvalidKeyException | NoSuchPaddingException |
                 BadPaddingException | IllegalBlockSizeException e ) {
@@ -77,13 +78,4 @@ public class CipherController{
         return decrypted_message;
     }
 
-    public static FileReader readFile(String filename) throws FileNotFoundException {
-        FileReader fr = new FileReader(filename);
-        return fr;
-    }
-
-    public static FileWriter writeFile(String filename) throws IOException {
-        FileWriter wr = new FileWriter(filename);
-        return wr;
-    }
 }
