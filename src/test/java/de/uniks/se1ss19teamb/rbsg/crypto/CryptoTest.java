@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class Test {
+public class CryptoTest {
     String dataPath = "src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt";
    Charset utf8 = StandardCharsets.UTF_8;
 
