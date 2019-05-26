@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class Test {
-    String dataPath = "src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txts";
+    String dataPath = "src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt";
    Charset utf8 = StandardCharsets.UTF_8;
 
     @org.junit.Test
