@@ -21,5 +21,6 @@
       <FontAwesomeIconView glyphName="LOCK" layoutX="172.0" layoutY="59.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
       <FontAwesomeIconView glyphName="USER" layoutX="34.0" layoutY="154.0" size="25" />
       <FontAwesomeIconView glyphName="KEY" layoutX="39.0" layoutY="226.0" size="25" />
+      <AnchorPane fx:id="errorContainer" layoutX="100.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
