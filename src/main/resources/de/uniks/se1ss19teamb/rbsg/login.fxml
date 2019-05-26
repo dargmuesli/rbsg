@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.LoginController">
    <children>
       <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" styleClass="root" stylesheets="@dark-design.css">
@@ -31,6 +30,7 @@
                   <Font size="16.0" />
                </font>
             </JFXButton>
+            <AnchorPane fx:id="errorContainer" layoutX="100.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </children>

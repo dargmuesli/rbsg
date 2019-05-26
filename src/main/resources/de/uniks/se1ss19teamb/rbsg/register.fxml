@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.RegisterController">
    <children>
       <AnchorPane fx:id="registerScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" stylesheets="@dark-design.css">
@@ -21,6 +20,7 @@
             <JFXTextField fx:id="confirmPasswort" labelFloat="true" layoutX="56.0" layoutY="238.0" prefHeight="37.0" prefWidth="300.0" promptText="Confirm Passwort" />
             <JFXTextField fx:id="passwort" labelFloat="true" layoutX="56.0" layoutY="163.0" prefHeight="37.0" prefWidth="300.0" promptText="Passwort" />
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="56.0" layoutY="100.0" prefHeight="37.0" prefWidth="300.0" promptText="Username" />
+            <AnchorPane fx:id="errorContainer" layoutX="100.0" layoutY="25.0" prefHeight="50.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </children>

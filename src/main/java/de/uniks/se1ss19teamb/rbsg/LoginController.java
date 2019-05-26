@@ -37,6 +37,23 @@ public class LoginController {
     @FXML
     private Button btnRegistration;
 
+    @FXML
+    private AnchorPane errorContainer;
+
+    public void initialize(){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ErrorPopup.fxml"));
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            ErrorPopupController controller = fxmlLoader.getController();
+            ErrorHandler errorHandler = new ErrorHandler();
+            errorHandler.setErrorPopupController(controller);
+            errorContainer.getChildren().add(parent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
