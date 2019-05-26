@@ -33,14 +33,14 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
     implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
 
-    compile 'com.jfoenix:jfoenix:8.0.8'
-    compile 'io.github.typhon0:AnimateFX:1.2.1'
-    
-    compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
+    implementation 'com.jfoenix:jfoenix:8.0.8'
+    implementation 'io.github.typhon0:AnimateFX:1.2.1'
+
+    implementation group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
     runtime group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
 
     runtime group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
 
