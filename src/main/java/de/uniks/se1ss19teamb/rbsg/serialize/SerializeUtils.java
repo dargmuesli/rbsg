@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SerializeUtils{
 
@@ -84,8 +86,8 @@ public class SerializeUtils{
   }
   */
 
-    public static <T> T deserialize(String fileUrl, Class<T> myClass) {
-        try (Reader reader = new FileReader(fileUrl)) {
+    public static <T> T deserialize(Path path, Class<T> myClass) {
+        try (Reader reader = new FileReader(String.valueOf(path.getFileName()))) {
             return new Gson().fromJson(reader, myClass);
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,7 +95,7 @@ public class SerializeUtils{
         return null;
     }
 
-    public static <T> T deserializeFromJsonString(String jsonString, Class<T> myClass) {
+    public static <T> T deserialize(String jsonString, Class<T> myClass) {
         return new Gson().fromJson(jsonString, myClass);
     }
 

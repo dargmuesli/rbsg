@@ -5,13 +5,11 @@ import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.sound.midi.Patch;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 public class SerializeTest {
 
@@ -61,11 +59,12 @@ public class SerializeTest {
     SerializeUtils.serialize("file.json", testClass);
 
     // test deserialization
-    TestClass fromFile = SerializeUtils.deserialize("file.json", TestClass.class);
+    Path path = FileSystems.getDefault().getPath("jsons" ,"file.json");
+    TestClass fromFile = SerializeUtils.deserialize(path, TestClass.class);
 
     // test deserialization from string
     String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
-    TestClass fromString = SerializeUtils.deserializeFromJsonString(test, TestClass.class);
+    TestClass fromString = SerializeUtils.deserialize(test, TestClass.class);
 
     Assert.assertEquals(testClass.name, fromFile.name);
     Assert.assertEquals(testClass.mtr, fromFile.mtr);
