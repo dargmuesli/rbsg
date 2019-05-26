@@ -12,30 +12,33 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.util.Random;
-
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import java.io.IOException;
 
 public class LoginController {
 
     @FXML
     private AnchorPane loginScreen;
-
     @FXML
     private JFXTextField username;
-
     @FXML
     private JFXTextField passwort;
-
     @FXML
     private JFXButton btnLogin;
-
     @FXML
     private JFXButton btnCancel;
-
     @FXML
     private Button btnRegistration;
+    @FXML
+    private AnchorPane errorContainer;
+    @FXML
+    private ErrorHandler errorHandler;
 
 
     @FXML
@@ -112,4 +115,20 @@ public class LoginController {
 
     }
 
+    
+    public void initialize() {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ErrorPopup.fxml"));
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            ErrorPopupController controller = fxmlLoader.getController();
+            errorHandler = new ErrorHandler();
+            errorHandler.setErrorPopupController(controller);
+            errorContainer.getChildren().add(parent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
