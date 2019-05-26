@@ -16,7 +16,6 @@ public class CipherController{
     //This string needs to be related with data
     public void encryptMessage(String msg, String filename){
         Charset utf8 = StandardCharsets.UTF_8;
-        //String messageToBeSaved = msg;
 
         try {
             //Turns the desired message into a byte Array
@@ -45,7 +44,6 @@ public class CipherController{
         //1.Reads the encrypted message
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
-            //FileReader fr = new FileReader(filename);
 
             StringBuilder stringBuilder = new StringBuilder();
             String line ;
@@ -62,7 +60,6 @@ public class CipherController{
             byte[] recovered_message = CipherUtils.decrypt(CipherConstant.privateKey,recSecret);
             decrypted_message = (new String(recovered_message, utf8));
             br.close();
-            //fr.close();
 
         } catch (IOException | NoSuchAlgorithmException |InvalidKeyException | NoSuchPaddingException |
                 BadPaddingException | IllegalBlockSizeException e ) {
