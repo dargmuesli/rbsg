@@ -11,12 +11,10 @@ public class ChatLogTest {
 
     @Test
     public void testChat() throws IOException, InterruptedException {
-        Chat chat = new Chat();
-        TimeUnit.SECONDS.sleep(5);
-        Chat.Message message1 = new Chat.Message("Erste nachricht", "Vadim", new Date());
-        Chat.Message message2 = new Chat.Message("Zweite nachricht", "Christoph", new Date());
-        Chat.Message message3 = new Chat.Message("Dritte nachricht", "Albert", new Date());
-        Chat.Message message4 = new Chat.Message("Vierte nachricht", "Clemens", new Date());
+        Chat chat = new Chat("My Name");
+        //TimeUnit.SECONDS.sleep(5);
+
+
 
         chat.writeLog("test.txt");
 
