@@ -1,4 +1,4 @@
-package de.uniks.de1ss19.teamb.rbsg.serialize;
+package de.uniks.se1ss19teamb.rbsg;
 
 import com.google.gson.Gson;
 import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
