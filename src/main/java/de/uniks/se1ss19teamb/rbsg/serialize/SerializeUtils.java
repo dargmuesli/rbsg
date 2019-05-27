@@ -5,11 +5,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SerializeUtils{
 
   /*
-  public class Game {
+  public static class Game {
 
     //Fields defined by Server
     private long joinedPlayers;
@@ -42,7 +44,7 @@ public class SerializeUtils{
       this.neededPlayers = neededPlayers;
     }
   }
-
+  /*
   // Method 1
   public static void serializeGame(String file, Game game){
     JSONObject json = new JSONObject();
@@ -84,27 +86,29 @@ public class SerializeUtils{
   }
   */
 
-  public static Object deserialize(String fileUrl, Object obj) {
-    Gson gson = new Gson();
-    try (Reader reader = new FileReader(fileUrl)) {
-      Object fromJson = gson.fromJson(reader, obj.getClass());
-      return fromJson;
-    } catch (IOException e) {
-      e.printStackTrace();
+    public static <T> T deserialize(Path path, Class<T> myClass) {
+        try (Reader reader = new FileReader(String.valueOf(path.getFileName()))) {
+            return new Gson().fromJson(reader, myClass);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    return obj;
-  }
-
-  public static void serialize(String fileUrl, Object obj) {
-    Gson gson = new Gson();
-    try (FileWriter writer = new FileWriter(fileUrl)) {
-      gson.toJson(obj, writer);
-    } catch (IOException e) {
-      e.printStackTrace();
+    public static <T> T deserialize(String jsonString, Class<T> myClass) {
+        return new Gson().fromJson(jsonString, myClass);
     }
-  }
+
+    public static <T> void serialize(String fileUrl, T object) {
+        try (FileWriter writer = new FileWriter(fileUrl)) {
+            new Gson().toJson(object, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T> String serialize(T object) {
+        return new Gson().toJson(object);
+    }
 
 }
-
-

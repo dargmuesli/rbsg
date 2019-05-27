@@ -1,4 +1,4 @@
-package de.uniks.se1ss19.teamb.rbsg.testsave;
+package de.uniks.se1ss19teamb.rbsg;
 
 import de.uniks.se1ss19teamb.rbsg.PersistenceUtil;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Game;
