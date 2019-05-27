@@ -43,4 +43,3 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
     testImplementation group: 'org.fulib', name: 'fulib', version: '1.0+'
 }
-
