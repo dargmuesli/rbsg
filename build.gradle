@@ -1,6 +1,7 @@
 import org.gradle.internal.jvm.*
 
 plugins {
+    id 'checkstyle'
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.7' apply false
 }
@@ -24,7 +25,16 @@ repositories {
     jcenter()
 }
 
+//configurations {
+//    checkstyleOverride
+//}
+
+//tasks.withType(Checkstyle) {
+//    checkstyleClasspath = project.configurations.checkstyleOverride
+//}
+
 dependencies {
+//    checkstyleOverride('com.puppycrawl.tools:checkstyle:8.21')
 
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
     implementation group: 'com.jfoenix', name: 'jfoenix', version: '8.0.8'
@@ -35,7 +45,7 @@ dependencies {
     implementation group: 'io.github.typhon0', name:'AnimateFX', version: '1.2.1'
 
     runtime group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
-    
+
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
     testImplementation group: 'org.fulib', name: 'fulib', version: '1.0+'
