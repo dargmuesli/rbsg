@@ -18,7 +18,7 @@ public class Chat {
         this.userName = userName;
     }
 
-  public void setMessage(String message) {
+  public void setMessage (String message) {
     this.message = message;
     chatLog.add("\"" + userName + ": " + this.message + "\" gesendet am: " + new Date());
   }
@@ -31,7 +31,7 @@ public class Chat {
     // send Message (private)
   }
 
-  public void writeLog(Path path) throws IOException {
+  public void writeLog (Path path) throws IOException {
     PrintWriter out = new PrintWriter(path.toString());
     out.println("Chat log seit dem " + date + "\n");
     for (String s : chatLog) {

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class ChatLogTest {
 
     @Test
-    public void testChat() throws IOException, InterruptedException {
+    public void testChat() throws IOException {
 
         Chat chat = new Chat("Admin");
         //TimeUnit.SECONDS.sleep(5);
@@ -21,13 +21,12 @@ public class ChatLogTest {
         chat.setMessage("Hi Vadim, gut das du es erwähnst");
         chat.setMessage("Es ist kein Problem, hir sind alle Hilfsbereit und können dir gerne Weiterhelfen =)");
 
-
         Path path = Paths.get("stories/test.txt");
 
         chat.writeLog(path);
 
-        //File file = new File(String.valueOf(path));
-        //file.delete();
+        File file = new File(String.valueOf(path));
+        file.delete();
     }
 
 }
