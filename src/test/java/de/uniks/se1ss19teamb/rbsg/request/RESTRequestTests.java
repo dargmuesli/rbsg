@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import java.io.IOException;
 
-import org.json.simple.parser.ParseException;
+import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,11 +16,11 @@ public class RESTRequestTests {
         
         RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz");
         try {
-            //Test Returning JSON
-            //Demonstration on how to directly process JSON with Lambda
+            //Test Returning Json
+            //Demonstration on how to directly process Json with Lambda
             req.sendRequest((response) -> {
-                Assert.assertEquals("failure", response.get("status"));
-                Assert.assertEquals("Name already taken", response.get("message"));
+                Assert.assertEquals("failure", response.get("status").getAsString());
+                Assert.assertEquals("Name already taken", response.get("message").getAsString());
             });
             
             //Test Request Helpers
@@ -104,8 +104,8 @@ public class RESTRequestTests {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
         
-        CreateGameRequest creategame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
-        creategame.sendRequest();
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        createGame.sendRequest();
         
         QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
         try {
@@ -128,10 +128,10 @@ public class RESTRequestTests {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
         
-        CreateGameRequest creategame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
-        creategame.sendRequest();
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        createGame.sendRequest();
         
-        DeleteGameRequest req = new DeleteGameRequest(creategame.getGameId(), login.getUserKey());
+        DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
         try {
             req.sendRequest();
             
@@ -147,10 +147,10 @@ public class RESTRequestTests {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
         
-        CreateGameRequest creategame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
-        creategame.sendRequest();
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        createGame.sendRequest();
         
-        JoinGameRequest req = new JoinGameRequest(creategame.getGameId(), login.getUserKey());
+        JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
         try {
             req.sendRequest();
             
@@ -161,7 +161,7 @@ public class RESTRequestTests {
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
             
-            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(creategame.getGameId())).findFirst().get().getJoinedPlayers());
+            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
