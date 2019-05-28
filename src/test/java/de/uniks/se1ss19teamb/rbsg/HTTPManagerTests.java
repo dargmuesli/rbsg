@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class HTTPManagerTests {
+public class HttpManagerTests {
 
     class Body {
         String name = "Test Name";
