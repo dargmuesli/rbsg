@@ -41,11 +41,12 @@ public class CryptoTest {
             Assert.assertEquals(encryptedMessage, msg, "gå til helvete!!!");
             Assert.assertNotEquals(encryptedMessage, msg);
 
+            fr.close();
+            fileR.close();
+
             if (!file.delete()) {
                 throw new IOException("Could not delete file!");
             }
-
-            fileR.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,11 +82,12 @@ public class CryptoTest {
             Assert.assertNotEquals(encryptedMessage, msg);
             Assert.assertEquals(decryptedMessage, msg);
 
+            fr.close();
+            fileR.close();
+
             if (!file.delete()) {
                 throw new IOException("Could not delete file!");
             }
-
-            fileR.close();
 
         } catch (IOException e) {
             e.printStackTrace();
