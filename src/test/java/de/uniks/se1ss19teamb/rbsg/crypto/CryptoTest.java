@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-//import java.io.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,7 +17,7 @@ public class CryptoTest {
     public void testEncryption() throws IOException {
         FileWriter fileR = new FileWriter(dataPath);
         File file = new File(dataPath);
-        
+
         String encryptedMessage;
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();

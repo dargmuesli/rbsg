@@ -2,7 +2,15 @@ package de.uniks.se1ss19teamb.rbsg;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.animation.*;
+
+import java.io.IOException;
+import java.util.Random;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.IOException;
-import java.util.Random;
 
 
 public class LoginController {
@@ -40,7 +45,7 @@ public class LoginController {
     @FXML
     private AnchorPane errorContainer;
 
-    public void initialize(){
+    public void initialize() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
@@ -61,7 +66,7 @@ public class LoginController {
             //slideNextScene("main.fxml",100);
             makeFadeOutTransition("main.fxml");
         }
-        if(event.getSource().equals(btnRegistration)){
+        if (event.getSource().equals(btnRegistration)) {
             //slideNextScene("register.fxml",400);
             makeFadeOutTransition("register.fxml");
         }
@@ -69,10 +74,10 @@ public class LoginController {
     }
 
 
-    private void slideNextScene(String path, int xValue) throws IOException {
+    private void slideNextScene(String path, int xvalue) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
-        if(randomValue){
+        if (randomValue) {
             Parent root = FXMLLoader.load(getClass().getResource(path));
             Scene scene = new Scene(root);
             Stage stage = (Stage) loginScreen.getScene().getWindow();
@@ -80,18 +85,18 @@ public class LoginController {
             root.translateYProperty().setValue(-400);
 
             Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateYProperty(),0,Interpolator.EASE_IN);
+            KeyValue keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
             timeline.getKeyFrames().add(keyFrame);
             timeline.play();
 
             stage.setScene(scene);
-        }else {
+        } else {
             Parent root = FXMLLoader.load(getClass().getResource(path));
             Scene scene = new Scene(root);
             Stage stage = (Stage) loginScreen.getScene().getWindow();
 
-            root.translateXProperty().setValue(-xValue);
+            root.translateXProperty().setValue(-xvalue);
 
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
@@ -104,7 +109,7 @@ public class LoginController {
     }
 
 
-    private void makeFadeOutTransition(String path){
+    private void makeFadeOutTransition(String path) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(loginScreen);

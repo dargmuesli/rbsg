@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg;
 
+import java.net.URI;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -10,7 +12,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.net.URI;
 
 public class HTTPManager {
 
