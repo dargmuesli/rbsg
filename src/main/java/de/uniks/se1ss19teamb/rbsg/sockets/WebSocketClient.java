@@ -1,6 +1,8 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.websocket.*;
 import java.net.URI;
 import java.util.Timer;
@@ -12,9 +14,11 @@ public class WebSocketClient {
     public static final String NOOP = "noop";
     private Session mySession;
     private Timer noopTimer;
+    private WebSocketResponseHandler initialHandler;
     
-    public WebSocketClient(URI endpoint) {
+    public WebSocketClient(URI endpoint, WebSocketResponseHandler initialHandler) {
         this.noopTimer = new Timer();
+        this.initialHandler = initialHandler;
         
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
@@ -63,7 +67,9 @@ public class WebSocketClient {
     
     @OnMessage
     public void OnMessage(String message) {
-        //TODO implement messagehandler
+    	JsonParser parser = new JsonParser();
+        JsonObject response = (JsonObject) parser.parse(message);
+        initialHandler.handle(response);
     }
     
     @OnError
