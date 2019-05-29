@@ -34,7 +34,7 @@ public abstract class AbstractWebSocket implements WebSocket {
 			}
 		}
 		else {
-			//TODO Should not Occur without Bugs
+			throw new IllegalStateException("Cannot connect to an already connected Websocket");
 		}
 	}
 
