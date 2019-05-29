@@ -1,6 +1,7 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.Gson;
+
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
@@ -63,7 +64,7 @@ public class HTTPManagerTests {
 
     @Test
     public void testHTTPManagerPost() throws Exception {
-        String managerResponse = httpManager.post(uri, headers, httpEntity);
+        String managerResponse = httpManager.post(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
@@ -72,7 +73,7 @@ public class HTTPManagerTests {
 
     @Test
     public void testHTTPManagerGet() throws Exception {
-        String managerResponse = httpManager.get(uri, headers);
+        String managerResponse = httpManager.get(uri, headers).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
@@ -81,7 +82,7 @@ public class HTTPManagerTests {
 
     @Test
     public void testHTTPManagerDelete() throws Exception {
-        String managerResponse = httpManager.delete(uri, headers, httpEntity);
+        String managerResponse = httpManager.delete(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);

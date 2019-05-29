@@ -1,7 +1,9 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.util;
 
 import com.google.gson.Gson;
-import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
+
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+
 import org.junit.Assert;
 import org.junit.Test;
 

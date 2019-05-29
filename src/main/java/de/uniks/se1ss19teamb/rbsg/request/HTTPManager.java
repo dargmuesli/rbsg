@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.request;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -24,7 +24,7 @@ public class HTTPManager {
         this.httpClient = httpClient;
     }
 
-    public String get(URI uri, Header[] headers) throws
+    public HTTPRequestResponse get(URI uri, Header[] headers) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -35,14 +35,14 @@ public class HTTPManager {
         httpGet.setHeaders(headers);
 
         HttpResponse response = httpClient.execute(httpGet);
-        String responseBody = getResponseBody(response);
+        HTTPRequestResponse responseBody = getResponseBody(response);
 
         httpGet.releaseConnection();
 
         return responseBody;
     }
 
-    public String post(URI uri, Header[] headers, HttpEntity body) throws
+    public HTTPRequestResponse post(URI uri, Header[] headers, HttpEntity body) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -54,7 +54,7 @@ public class HTTPManager {
         httpPost.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpPost);
-        String responseBody = getResponseBody(response);
+        HTTPRequestResponse responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
 
@@ -62,7 +62,7 @@ public class HTTPManager {
     }
 
 
-    public String delete(URI uri, Header[] headers, HttpEntity body) throws
+    public HTTPRequestResponse delete(URI uri, Header[] headers, HttpEntity body) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -74,25 +74,20 @@ public class HTTPManager {
         //httpDelete.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpDelete);
-        String responseBody = getResponseBody(response);
+        HTTPRequestResponse responseBody = getResponseBody(response);
 
         httpDelete.releaseConnection();
 
         return responseBody;
     }
 
-    private String getResponseBody(HttpResponse httpResponse) throws Exception {
+    private HTTPRequestResponse getResponseBody(HttpResponse httpResponse) throws Exception {
         int status = httpResponse.getStatusLine().getStatusCode();
         String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
         String response = httpResponse.getEntity() != null
                 ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
 
-        if (status >= 200 && status < 300) {
-            return response;
-        } else if (status >= 400) {
-            throw new Exception(errorMessage);
-        } else {
-            return response;
-        }
+        return new HTTPRequestResponse(response, status, errorMessage);
+        
     }
 }
