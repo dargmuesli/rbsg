@@ -4,7 +4,6 @@ import de.uniks.se1ss19teamb.rbsg.testmodel.Game;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Platform;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Unit;
-import de.uniks.se1ss19teamb.rbsg.util.PersistenceUtil;
 
 import org.junit.Test;
 
