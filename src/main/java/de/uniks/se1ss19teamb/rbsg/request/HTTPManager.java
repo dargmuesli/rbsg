@@ -10,8 +10,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import de.uniks.se1ss19teamb.rbsg.request.HTTPRequestResponse;
-
 import java.net.URI;
 
 public class HTTPManager {
