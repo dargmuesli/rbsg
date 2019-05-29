@@ -14,9 +14,9 @@ public class WebSocketClient {
     public static final String NOOP = "noop";
     private Session mySession;
     private Timer noopTimer;
-    private WebSocketResponseHandler initialHandler;
+    private WebSocketMessageHandler initialHandler;
     
-    public WebSocketClient(URI endpoint, WebSocketResponseHandler initialHandler) {
+    public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
         this.noopTimer = new Timer();
         this.initialHandler = initialHandler;
         
@@ -47,7 +47,7 @@ public class WebSocketClient {
     
     @OnOpen
     public void OnOpen(Session session) {
-        this.mySession = mySession;
+        this.mySession = session;
         System.out.println("WS connected to " + this.mySession.getRequestURI());
         TimerTask task = new TimerTask() {
             @Override
@@ -79,8 +79,8 @@ public class WebSocketClient {
     
     @OnClose
     public void onClose(Session session) {
-        this.mySession = null;
         System.out.println("WS " + mySession.getRequestURI() + "closed.");
+        this.mySession = null;
         
         this.noopTimer.cancel();
     }

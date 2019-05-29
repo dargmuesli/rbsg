@@ -9,7 +9,7 @@ public abstract class AbstractWebSocket implements WebSocket {
 
 	private static final String url = "wss://rbsg.uniks.de/ws";
 	
-	private	List<WebSocketResponseHandler> handlers = new ArrayList<WebSocketResponseHandler>();
+	private	List<WebSocketMessageHandler> handlers = new ArrayList<WebSocketMessageHandler>();
 	
 	protected WebSocketClient websocket;
 	
@@ -26,7 +26,7 @@ public abstract class AbstractWebSocket implements WebSocket {
 		if(websocket == null) {
 			try {
 				websocket = new WebSocketClient(new URI(url + getEndpoint()), (response) ->  {
-					for(WebSocketResponseHandler handler : handlers)
+					for(WebSocketMessageHandler handler : handlers)
 						handler.handle(response);
 				});
 			} catch (URISyntaxException e) {
@@ -49,7 +49,7 @@ public abstract class AbstractWebSocket implements WebSocket {
 	}
 
 	@Override
-	public void registerWebSocketHandler(WebSocketResponseHandler handler) {
+	public void registerWebSocketHandler(WebSocketMessageHandler handler) {
 		handlers.add(handler);
 	}
 	

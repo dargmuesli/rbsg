@@ -7,7 +7,7 @@ public interface WebSocket {
 	
 	public void disconnect();
 	
-	public void registerWebSocketHandler(WebSocketResponseHandler handler);
+	public void registerWebSocketHandler(WebSocketMessageHandler handler);
 	
 	public static void changeUserKey(String userKey) {
 		CustomWebSocketConfigurator.setUserKey(userKey);
