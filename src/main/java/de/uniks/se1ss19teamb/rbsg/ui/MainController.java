@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.ui;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
@@ -8,6 +8,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
+
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 
 public class MainController {
     @FXML

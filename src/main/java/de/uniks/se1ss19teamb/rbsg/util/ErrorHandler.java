@@ -1,4 +1,6 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.util;
+
+import de.uniks.se1ss19teamb.rbsg.ui.ErrorPopupController;
 
 public class ErrorHandler {
 

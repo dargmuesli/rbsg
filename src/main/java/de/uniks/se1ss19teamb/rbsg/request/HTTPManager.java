@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.request;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
