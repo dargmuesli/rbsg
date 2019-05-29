@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.ui;
 
 import animatefx.animation.*;
 import animatefx.util.ParallelAnimationFX;

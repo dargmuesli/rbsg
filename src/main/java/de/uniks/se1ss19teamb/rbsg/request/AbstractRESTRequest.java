@@ -11,9 +11,6 @@ import org.apache.http.ParseException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 
-
-import de.uniks.se1ss19teamb.rbsg.HTTPManager;
-
 public abstract class AbstractRESTRequest implements RESTRequest{
    
    private static final String url = "https://rbsg.uniks.de/api";

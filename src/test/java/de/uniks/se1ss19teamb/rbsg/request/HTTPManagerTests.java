@@ -1,6 +1,7 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.Gson;
+
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;

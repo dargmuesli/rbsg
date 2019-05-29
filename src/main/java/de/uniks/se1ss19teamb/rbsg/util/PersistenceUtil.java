@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.util;
 
 import de.uniks.se1ss19teamb.rbsg.testmodel.Game; //TODO needs to be changed when we implement the game
 import org.fulib.yaml.YamlIdMap;

@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.serialize;
+package de.uniks.se1ss19teamb.rbsg.util;
 
 import com.google.gson.Gson;
 import java.io.FileReader;
