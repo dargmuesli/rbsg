@@ -8,6 +8,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
+import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
+import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
+import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryUsersInLobbyRequest;
+import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 
 public class RESTRequestTests {
 

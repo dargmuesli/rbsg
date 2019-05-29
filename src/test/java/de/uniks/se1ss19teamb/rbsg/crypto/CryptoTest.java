@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.crypto;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherController;
+
 import java.io.*;
 import java.io.FileReader;
 import java.io.IOException;
