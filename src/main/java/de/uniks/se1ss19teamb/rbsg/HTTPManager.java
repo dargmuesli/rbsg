@@ -10,7 +10,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import de.uniks.se1ss19teamb.rbsg.request.HTTPResponse;
+import de.uniks.se1ss19teamb.rbsg.request.HTTPRequestResponse;
 
 import java.net.URI;
 
@@ -26,7 +26,7 @@ public class HTTPManager {
         this.httpClient = httpClient;
     }
 
-    public HTTPResponse get(URI uri, Header[] headers) throws
+    public HTTPRequestResponse get(URI uri, Header[] headers) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -37,14 +37,14 @@ public class HTTPManager {
         httpGet.setHeaders(headers);
 
         HttpResponse response = httpClient.execute(httpGet);
-        HTTPResponse responseBody = getResponseBody(response);
+        HTTPRequestResponse responseBody = getResponseBody(response);
 
         httpGet.releaseConnection();
 
         return responseBody;
     }
 
-    public HTTPResponse post(URI uri, Header[] headers, HttpEntity body) throws
+    public HTTPRequestResponse post(URI uri, Header[] headers, HttpEntity body) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -56,7 +56,7 @@ public class HTTPManager {
         httpPost.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpPost);
-        HTTPResponse responseBody = getResponseBody(response);
+        HTTPRequestResponse responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
 
@@ -64,7 +64,7 @@ public class HTTPManager {
     }
 
 
-    public HTTPResponse delete(URI uri, Header[] headers, HttpEntity body) throws
+    public HTTPRequestResponse delete(URI uri, Header[] headers, HttpEntity body) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -76,20 +76,20 @@ public class HTTPManager {
         //httpDelete.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpDelete);
-        HTTPResponse responseBody = getResponseBody(response);
+        HTTPRequestResponse responseBody = getResponseBody(response);
 
         httpDelete.releaseConnection();
 
         return responseBody;
     }
 
-    private HTTPResponse getResponseBody(HttpResponse httpResponse) throws Exception {
+    private HTTPRequestResponse getResponseBody(HttpResponse httpResponse) throws Exception {
         int status = httpResponse.getStatusLine().getStatusCode();
         String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
         String response = httpResponse.getEntity() != null
                 ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
 
-        return new HTTPResponse(response, status, errorMessage);
+        return new HTTPRequestResponse(response, status, errorMessage);
         
     }
 }

@@ -32,7 +32,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
    
    @Override
    public void sendRequest() throws IOException, ParseException {
-      HTTPResponse result = null;
+      HTTPRequestResponse result = null;
       String token = getUserToken();
       try {
          switch(getHTTPMethod()) {
