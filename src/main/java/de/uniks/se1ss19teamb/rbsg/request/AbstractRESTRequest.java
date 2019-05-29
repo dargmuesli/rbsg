@@ -11,9 +11,6 @@ import org.apache.http.ParseException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 
-
-import de.uniks.se1ss19teamb.rbsg.HTTPManager;
-
 public abstract class AbstractRESTRequest implements RESTRequest{
    
    private static final String url = "https://rbsg.uniks.de/api";
@@ -32,7 +29,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
    
    @Override
    public void sendRequest() throws IOException, ParseException {
-      String result = "";
+      HTTPRequestResponse result = null;
       String token = getUserToken();
       try {
          switch(getHTTPMethod()) {
@@ -53,7 +50,9 @@ public abstract class AbstractRESTRequest implements RESTRequest{
          throw new IOException(e);
       } finally {
          JsonParser parser = new JsonParser();
-         response = (JsonObject) parser.parse(result);
+         response = (JsonObject) parser.parse(result == null ? "" : result.body);
+         
+         //TODO Handle result status codes
       }
    }
    

@@ -1,6 +1,5 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.util;
 
-import de.uniks.se1ss19teamb.rbsg.serialize.SerializeUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryNotEmptyException;
@@ -9,6 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import com.google.gson.Gson;
+
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+
 import org.junit.Assert;
 import org.junit.Test;
 

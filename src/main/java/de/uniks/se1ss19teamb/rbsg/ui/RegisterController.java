@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.ui;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 
 public class RegisterController {
     @FXML

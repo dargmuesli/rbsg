@@ -11,7 +11,7 @@ import org.junit.Test;
 
 
 
-public class RestRequestTests {
+public class RESTRequestTests {
 
     @Test
     public void registerUserTest() {

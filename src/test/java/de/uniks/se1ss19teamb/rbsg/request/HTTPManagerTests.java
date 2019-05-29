@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.request;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class HttpManagerTests {
+public class HTTPManagerTests {
 
     class Body {
         String name = "Test Name";
@@ -67,8 +67,8 @@ public class HttpManagerTests {
     }
 
     @Test
-    public void testHttpManagerPost() throws Exception {
-        String managerResponse = httpManager.post(uri, headers, httpEntity);
+    public void testHTTPManagerPost() throws Exception {
+        String managerResponse = httpManager.post(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
@@ -76,8 +76,8 @@ public class HttpManagerTests {
     }
 
     @Test
-    public void testHttpManagerGet() throws Exception {
-        String managerResponse = httpManager.get(uri, headers);
+    public void testHTTPManagerGet() throws Exception {
+        String managerResponse = httpManager.get(uri, headers).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
@@ -85,8 +85,8 @@ public class HttpManagerTests {
     }
 
     @Test
-    public void testHttpManagerDelete() throws Exception {
-        String managerResponse = httpManager.delete(uri, headers, httpEntity);
+    public void testHTTPManagerDelete() throws Exception {
+        String managerResponse = httpManager.delete(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);

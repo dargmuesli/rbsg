@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg;
+package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import java.util.ArrayList;
 import java.util.List;
