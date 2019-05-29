@@ -63,7 +63,7 @@ public class HTTPManagerTests {
 
     @Test
     public void testHTTPManagerPost() throws Exception {
-        String managerResponse = httpManager.post(uri, headers, httpEntity);
+        String managerResponse = httpManager.post(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
@@ -72,7 +72,7 @@ public class HTTPManagerTests {
 
     @Test
     public void testHTTPManagerGet() throws Exception {
-        String managerResponse = httpManager.get(uri, headers);
+        String managerResponse = httpManager.get(uri, headers).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
@@ -81,7 +81,7 @@ public class HTTPManagerTests {
 
     @Test
     public void testHTTPManagerDelete() throws Exception {
-        String managerResponse = httpManager.delete(uri, headers, httpEntity);
+        String managerResponse = httpManager.delete(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);

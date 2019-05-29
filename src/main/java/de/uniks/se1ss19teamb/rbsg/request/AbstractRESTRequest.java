@@ -32,7 +32,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
    
    @Override
    public void sendRequest() throws IOException, ParseException {
-      String result = "";
+      HTTPRequestResponse result = null;
       String token = getUserToken();
       try {
          switch(getHTTPMethod()) {
@@ -53,7 +53,9 @@ public abstract class AbstractRESTRequest implements RESTRequest{
          throw new IOException(e);
       } finally {
          JsonParser parser = new JsonParser();
-         response = (JsonObject) parser.parse(result);
+         response = (JsonObject) parser.parse(result == null ? "" : result.body);
+         
+         //TODO Handle result status codes
       }
    }
    
