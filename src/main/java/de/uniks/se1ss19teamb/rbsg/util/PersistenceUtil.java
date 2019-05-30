@@ -25,7 +25,7 @@ public class PersistenceUtil {
                     file.createNewFile();
             }
 
-            Files.write(Paths.get(file.toURI()), yaml.getBytes("UTF-16"));
+            Files.write(Paths.get(file.toURI()), yaml.getBytes("UTF-8"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class PersistenceUtil {
 
         try {
             byte[] bytes = Files.readAllBytes(Paths.get(file.toURI()));
-            String yaml = new String(bytes, "UTF-16");
+            String yaml = new String(bytes, "UTF-8");
             yamlIdMap.decode(yaml, game);
             return game;
 
