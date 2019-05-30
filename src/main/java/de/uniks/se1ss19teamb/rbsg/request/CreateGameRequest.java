@@ -13,7 +13,6 @@ public class CreateGameRequest extends AbstractRESTRequest{
       this.gameName = gameName;
    }
    
-   @SuppressWarnings("unchecked")
    @Override
    protected JsonObject buildJson() {
       JsonObject json = new JsonObject();

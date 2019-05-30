@@ -36,7 +36,6 @@ public class QueryGamesRequest extends AbstractRESTRequest {
     
     //Custom Request Helper
     
-    @SuppressWarnings("unchecked")
     public ArrayList<Game> getGames(){
         ArrayList<Game> games = new ArrayList<Game>();
         
