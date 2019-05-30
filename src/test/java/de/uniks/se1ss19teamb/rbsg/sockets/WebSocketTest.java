@@ -55,7 +55,7 @@ public class WebSocketTest {
 		LogoutUserRequest logout = new LogoutUserRequest(login2.getUserKey());
 		logout.sendRequest();
 		
-		Thread.sleep(250); //Wait for Msg
+		Thread.sleep(1000); //Wait for Msg
 		
 		system.disconnect();
 		
@@ -92,7 +92,7 @@ public class WebSocketTest {
 		chat.sendMessage("Hello World!");
 		chat.sendPrivateMessage("Hello World! Private", "testTeamB2");
 		
-		Thread.sleep(250);
+		Thread.sleep(1000);
 		
 		chat.disconnect();
 		chat2.disconnect();
