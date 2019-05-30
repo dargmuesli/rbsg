@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 public class ChatLogTest {
 
     @Test
-    public void testChat() throws IOException {
+    public void testChat() throws IOException, InterruptedException {
 
         Chat chat = new Chat("Admin");
-        //TimeUnit.SECONDS.sleep(5);
         chat.setMessage("Hi ich bin der Vadim und ich kann Java nicht.");
+        TimeUnit.SECONDS.sleep(1);
         chat.setMessage("Hi Vadim, gut das du es erwähnst");
         chat.setMessage("Es ist kein Problem, hir sind alle Hilfsbereit und können dir gerne Weiterhelfen =)");
 
