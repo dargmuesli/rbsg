@@ -5,13 +5,15 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 public abstract class AbstractWebSocket implements WebSocket {
 
 	private static final String url = "wss://rbsg.uniks.de/ws";
 	
 	private	List<WebSocketMessageHandler> handlers = new ArrayList<WebSocketMessageHandler>();
 	
-	protected WebSocketClient websocket;
+	private WebSocketClient websocket;
 	
 	protected abstract String getEndpoint();
 	
@@ -51,6 +53,10 @@ public abstract class AbstractWebSocket implements WebSocket {
 	@Override
 	public void registerWebSocketHandler(WebSocketMessageHandler handler) {
 		handlers.add(handler);
+	}
+	
+	protected void sendToWebsocket(JsonObject msg) {
+		websocket.sendMessage(msg);
 	}
 	
 }
