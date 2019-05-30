@@ -18,6 +18,6 @@ public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurat
     }
     
     protected static void setUserKey(String key) {
-    	userKey = key;
+        userKey = key;
     }
 }

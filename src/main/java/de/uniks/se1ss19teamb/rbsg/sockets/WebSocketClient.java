@@ -67,7 +67,7 @@ public class WebSocketClient {
     
     @OnMessage
     public void OnMessage(String message) {
-    	JsonParser parser = new JsonParser();
+        JsonParser parser = new JsonParser();
         JsonObject response = (JsonObject) parser.parse(message);
         initialHandler.handle(response);
     }
