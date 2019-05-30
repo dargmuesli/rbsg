@@ -8,9 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import com.google.gson.Gson;
-
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
