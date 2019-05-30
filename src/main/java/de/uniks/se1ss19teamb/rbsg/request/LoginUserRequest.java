@@ -1,14 +1,15 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-
 import com.google.gson.JsonObject;
 
-public class LoginUserRequest extends AbstractRESTRequest{
+public class LoginUserRequest extends AbstractRESTRequest {
     
-    private String username, password;
+    private String username;
+    private String password;
     
     /**
-     * Returns an empty "data" array, a "status" ("success" | "failure"), and a human readable "message"
+     * Returns an empty "data" array, a "status" ("success" | "failure"), and a human readable
+     * "message".
      * 
      * @param username The User to be logged in
      * @param password The Password associated with the user

@@ -2,9 +2,10 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class DeleteGameRequest extends AbstractRESTRequest{
+public class DeleteGameRequest extends AbstractRESTRequest {
     
-    private String userToken, gameId;
+    private String userToken;
+    private String gameId;
     
     public DeleteGameRequest(String gameId, String userToken) {
         this.userToken = userToken;
