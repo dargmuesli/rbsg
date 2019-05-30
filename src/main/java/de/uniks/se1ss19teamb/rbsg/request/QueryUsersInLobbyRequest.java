@@ -34,8 +34,7 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     }
     
     //Custom Request Helper
-    
-    @SuppressWarnings("unchecked")
+
     public ArrayList<String> getUsersInLobby(){
         ArrayList<String> usersInLobby = new ArrayList<>();
         for(JsonElement lobby: getResponse().get("data").getAsJsonArray()) {

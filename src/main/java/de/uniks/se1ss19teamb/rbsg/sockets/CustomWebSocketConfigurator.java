@@ -16,4 +16,8 @@ public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurat
         key.add(userKey);
         headers.put("userKey", key);
     }
+    
+    protected static void setUserKey(String key) {
+        userKey = key;
+    }
 }

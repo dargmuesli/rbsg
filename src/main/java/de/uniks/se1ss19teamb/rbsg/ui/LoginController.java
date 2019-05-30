@@ -43,7 +43,7 @@ public class LoginController {
     private AnchorPane errorContainer;
 
     public void initialize(){
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ErrorPopup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
@@ -61,11 +61,11 @@ public class LoginController {
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //slideNextScene("main.fxml",100);
-            makeFadeOutTransition("main.fxml");
+            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml");
         }
         if(event.getSource().equals(btnRegistration)){
             //slideNextScene("register.fxml",400);
-            makeFadeOutTransition("register.fxml");
+            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml");
         }
 
     }
