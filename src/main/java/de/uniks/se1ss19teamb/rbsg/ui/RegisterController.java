@@ -60,20 +60,19 @@ public class RegisterController {
     
     private void makeFadeInTransition () {
         FadeTransition fadeTransition = new FadeTransition();
-        setFadeParameters(fadeTransition);
-        fadeTransition.play();
-    }
-    
-    private void setFadeParameters(FadeTransition fadeTransition) {
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(registerScreen);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
+        fadeTransition.play();
     }
     
     private void makeFadeOutTransition(String path) {
         FadeTransition fadeTransition = new FadeTransition();
-        setFadeParameters(fadeTransition);
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(registerScreen);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             try {
                 fadeNextScene(path);

@@ -111,7 +111,10 @@ public class LoginController {
 
     private void makeFadeOutTransition(String path){
         FadeTransition fadeTransition = new FadeTransition();
-        setFadeParameters(fadeTransition);
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(loginScreen);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             try {
                 fadeNextScene(path);
@@ -124,17 +127,13 @@ public class LoginController {
     
     private void makeFadeInTransition () {
         FadeTransition fadeTransition = new FadeTransition();
-        setFadeParameters(fadeTransition);
-        fadeTransition.play();
-    }
-    
-    private void setFadeParameters(FadeTransition fadeTransition) {
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(loginScreen);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
+        fadeTransition.play();
     }
-    
+
     private void fadeNextScene(String path) throws IOException {
         Parent nextScene = FXMLLoader.load(getClass().getResource(path));
         Scene scene = new Scene(nextScene);
