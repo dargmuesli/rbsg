@@ -73,9 +73,8 @@ public class WebSocketClient {
     
     @OnClose
     public void onClose(Session session) {
-        this.mySession = null;
         System.out.println("WS " + mySession.getRequestURI() + "closed.");
-        
+        this.mySession = null;
         this.noopTimer.cancel();
     }
 }
