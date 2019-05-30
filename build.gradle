@@ -33,6 +33,10 @@ tasks.withType(Checkstyle) {
     checkstyleClasspath = project.configurations.checkstyleOverride
 }
 
+tasks.checkstyleMain {
+    maxWarnings = 0
+}
+
 dependencies {
     checkstyleOverride('com.puppycrawl.tools:checkstyle:8.21')
 
