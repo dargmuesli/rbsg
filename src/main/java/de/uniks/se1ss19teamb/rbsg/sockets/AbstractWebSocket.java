@@ -1,11 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
+import com.google.gson.JsonObject;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.JsonObject;
 
 public abstract class AbstractWebSocket implements WebSocket {
 
@@ -21,21 +21,21 @@ public abstract class AbstractWebSocket implements WebSocket {
     
     @Override
     public void connect() {
-        if(getUserKey() != null) {
+        if (getUserKey() != null) {
             WebSocket.changeUserKey(getUserKey());
         }
         
-        if(websocket == null) {
+        if (websocket == null) {
             try {
                 websocket = new WebSocketClient(new URI(url + getEndpoint()), (response) ->  {
-                    for(WebSocketMessageHandler handler : handlers)
+                    for (WebSocketMessageHandler handler : handlers) {
                         handler.handle(response);
+                    }
                 });
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             throw new IllegalStateException("Cannot connect to an already connected Websocket");
         }
     }
