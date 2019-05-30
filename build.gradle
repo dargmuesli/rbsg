@@ -31,9 +31,6 @@ configurations {
 
 tasks.withType(Checkstyle) {
     checkstyleClasspath = project.configurations.checkstyleOverride
-}
-
-tasks.checkstyleMain {
     maxWarnings = 0
 }
 
