@@ -43,6 +43,9 @@ public class LoginController {
     private AnchorPane errorContainer;
 
     public void initialize(){
+        loginScreen.setOpacity(0);
+        makeFadeInTransition();
+        
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
@@ -88,7 +91,7 @@ public class LoginController {
             timeline.play();
 
             stage.setScene(scene);
-        }else {
+        } else {
             Parent root = FXMLLoader.load(getClass().getResource(path));
             Scene scene = new Scene(root);
             Stage stage = (Stage) loginScreen.getScene().getWindow();
@@ -121,6 +124,15 @@ public class LoginController {
         });
         fadeTransition.play();
     }
+    
+    private void makeFadeInTransition () {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(loginScreen);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+        fadeTransition.play();
+    }
 
     private void fadeNextScene(String path) throws IOException {
         Parent nextScene = FXMLLoader.load(getClass().getResource(path));
@@ -128,7 +140,6 @@ public class LoginController {
         Stage currentStage = (Stage) loginScreen.getScene().getWindow();
 
         currentStage.setScene(scene);
-
     }
 
 }
