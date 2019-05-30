@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
+<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@de/uniks/se1ss19teamb/rbsg/dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
    <children>
-      <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@dark-design.css">
+      <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@de/uniks/se1ss19teamb/rbsg/dark-design.css">
          <children>
             <JFXTextField fx:id="username" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
             <JFXTextField fx:id="passwort" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Passwort" />

@@ -61,11 +61,11 @@ public class LoginController {
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //slideNextScene("main.fxml",100);
-            makeFadeOutTransition("main.fxml");
+            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml");
         }
         if(event.getSource().equals(btnRegistration)){
             //slideNextScene("register.fxml",400);
-            makeFadeOutTransition("register.fxml");
+            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml");
         }
 
     }
