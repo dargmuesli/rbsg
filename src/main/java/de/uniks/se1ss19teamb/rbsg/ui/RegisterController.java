@@ -1,16 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
-import de.uniks.se1ss19teamb.rbsg.util.Fades;
-import javafx.animation.FadeTransition;
+import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -32,7 +28,7 @@ public class RegisterController {
     
     public void initialize() {
         registerScreen.setOpacity(0);
-        Fades.makeFadeInTransition(registerScreen);
+        UserInterfaceUtils.makeFadeInTransition(registerScreen);
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -52,7 +48,7 @@ public class RegisterController {
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnCancel)) {
-            Fades.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
             //TODO register user

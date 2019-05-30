@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.util;
 
 import java.io.IOException;
 
+import de.uniks.se1ss19teamb.rbsg.ui.ErrorPopupController;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Fades {
+public class UserInterfaceUtils {
     
     public static void makeFadeOutTransition(String path, AnchorPane node){
         FadeTransition fadeTransition = new FadeTransition();
@@ -38,7 +39,7 @@ public class Fades {
     }
     
     public static void fadeNextScene(String path, AnchorPane stage) throws IOException {
-        Parent nextScene = FXMLLoader.load(Fades.class.getResource(path));
+        Parent nextScene = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
         Scene scene = new Scene(nextScene);
         Stage currentStage = (Stage) stage.getScene().getWindow();
         

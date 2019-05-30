@@ -1,11 +1,10 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import javafx.animation.FadeTransition;
+import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -20,7 +19,7 @@ public class MainController {
 
     public void initialize(){
         mainScreen.setOpacity(0);
-        makeFadeInTransition();
+        UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -34,14 +33,5 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void makeFadeInTransition() {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
-        fadeTransition.setNode(mainScreen);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-        fadeTransition.play();
     }
 }

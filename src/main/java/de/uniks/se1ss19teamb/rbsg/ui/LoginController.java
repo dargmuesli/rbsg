@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-import de.uniks.se1ss19teamb.rbsg.util.Fades;
+import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,8 +45,8 @@ public class LoginController {
 
     public void initialize(){
         loginScreen.setOpacity(0);
-        Fades.makeFadeInTransition(loginScreen);
-        
+        UserInterfaceUtils.makeFadeInTransition(loginScreen);
+    
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
@@ -55,21 +55,23 @@ public class LoginController {
             ErrorHandler errorHandler = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
-
+        
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        
     }
 
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //slideNextScene("main.fxml",100);
-            Fades.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
         }
         if(event.getSource().equals(btnRegistration)){
             //slideNextScene("register.fxml",400);
-            Fades.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
         }
 
     }
