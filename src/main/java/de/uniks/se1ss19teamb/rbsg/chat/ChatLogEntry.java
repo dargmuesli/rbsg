@@ -15,7 +15,9 @@ public class ChatLogEntry {
     public String sender;
     public String message;
 
-    public ChatLogEntry() {}
+    public ChatLogEntry() {
+
+    }
 
     public ChatLogEntry(String sender, String message) {
         this.sender = sender;
