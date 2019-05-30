@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class DeleteGameRequest extends AbstractRESTRequest {
+public class DeleteGameRequest extends AbstractRestRequest {
     
     private String userToken;
     private String gameId;
@@ -18,7 +18,7 @@ public class DeleteGameRequest extends AbstractRESTRequest {
     }
 
     @Override
-    protected String getHTTPMethod() {
+    protected String getHttpMethod() {
         return "delete";
     }
 

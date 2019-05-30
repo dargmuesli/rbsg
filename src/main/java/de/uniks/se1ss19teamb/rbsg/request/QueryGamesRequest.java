@@ -6,7 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import java.util.ArrayList;
 
-public class QueryGamesRequest extends AbstractRESTRequest {
+public class QueryGamesRequest extends AbstractRestRequest {
 
     private String userToken;
     
@@ -20,7 +20,7 @@ public class QueryGamesRequest extends AbstractRESTRequest {
     }
 
     @Override
-    protected String getHTTPMethod() {
+    protected String getHttpMethod() {
         return "get";
     }
 

@@ -12,17 +12,17 @@ import org.apache.http.ParseException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 
-public abstract class AbstractRESTRequest implements RESTRequest {
+public abstract class AbstractRestRequest implements RestRequest {
     
     private static final String url = "https://rbsg.uniks.de/api";
     
     private JsonObject response = null;
     
-    private static HTTPManager httpManager = new HTTPManager();
+    private static HttpManager httpManager = new HttpManager();
     
     protected abstract JsonObject buildJson();
     
-    protected abstract String getHTTPMethod(); //"get", "post", "delete", "put"
+    protected abstract String getHttpMethod(); //"get", "post", "delete", "put"
     
     protected abstract String getEndpoint(); //"/user", "/user/login", etc.
     
@@ -30,10 +30,10 @@ public abstract class AbstractRESTRequest implements RESTRequest {
     
     @Override
     public void sendRequest() throws IOException, ParseException {
-        HTTPRequestResponse result = null;
+        HttpRequestResponse result = null;
         String token = getUserToken();
         try {
-            switch (getHTTPMethod()) {
+            switch (getHttpMethod()) {
               case "get":
                   result = httpManager.get(new URI(url + getEndpoint()), token == null ? null
                           : new Header[] { new BasicHeader("userKey", token) });
@@ -49,7 +49,7 @@ public abstract class AbstractRESTRequest implements RESTRequest {
                   break;
 
               default:
-                  throw new MethodNotSupportedException("Method not Supported: " + getHTTPMethod());
+                  throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
             throw new IOException(e);
@@ -62,7 +62,7 @@ public abstract class AbstractRESTRequest implements RESTRequest {
     }
     
     @Override
-    public void sendRequest(RESTRequestResponseHandler callback) throws IOException,
+    public void sendRequest(RestRequestResponseHandler callback) throws IOException,
             ParseException {
 
         sendRequest();

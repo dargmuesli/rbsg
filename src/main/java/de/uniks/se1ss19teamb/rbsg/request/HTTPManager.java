@@ -13,19 +13,19 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 
-public class HTTPManager {
+public class HttpManager {
 
     private final HttpClient httpClient;
 
-    public HTTPManager() {
+    public HttpManager() {
         this.httpClient = HttpClients.createDefault();
     }
 
-    public HTTPManager(HttpClient httpClient) {
+    public HttpManager(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
-    public HTTPRequestResponse get(URI uri, Header[] headers) throws
+    public HttpRequestResponse get(URI uri, Header[] headers) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -36,14 +36,14 @@ public class HTTPManager {
         httpGet.setHeaders(headers);
 
         HttpResponse response = httpClient.execute(httpGet);
-        HTTPRequestResponse responseBody = getResponseBody(response);
+        HttpRequestResponse responseBody = getResponseBody(response);
 
         httpGet.releaseConnection();
 
         return responseBody;
     }
 
-    public HTTPRequestResponse post(URI uri, Header[] headers, HttpEntity body) throws
+    public HttpRequestResponse post(URI uri, Header[] headers, HttpEntity body) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -55,7 +55,7 @@ public class HTTPManager {
         httpPost.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpPost);
-        HTTPRequestResponse responseBody = getResponseBody(response);
+        HttpRequestResponse responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
 
@@ -63,7 +63,7 @@ public class HTTPManager {
     }
 
 
-    public HTTPRequestResponse delete(URI uri, Header[] headers, HttpEntity body) throws
+    public HttpRequestResponse delete(URI uri, Header[] headers, HttpEntity body) throws
             Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
@@ -75,20 +75,20 @@ public class HTTPManager {
         //httpDelete.setEntity(body);
 
         HttpResponse response = httpClient.execute(httpDelete);
-        HTTPRequestResponse responseBody = getResponseBody(response);
+        HttpRequestResponse responseBody = getResponseBody(response);
 
         httpDelete.releaseConnection();
 
         return responseBody;
     }
 
-    private HTTPRequestResponse getResponseBody(HttpResponse httpResponse) throws Exception {
+    private HttpRequestResponse getResponseBody(HttpResponse httpResponse) throws Exception {
         int status = httpResponse.getStatusLine().getStatusCode();
         String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
         String response = httpResponse.getEntity() != null
                 ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
 
-        return new HTTPRequestResponse(response, status, errorMessage);
+        return new HttpRequestResponse(response, status, errorMessage);
         
     }
 }

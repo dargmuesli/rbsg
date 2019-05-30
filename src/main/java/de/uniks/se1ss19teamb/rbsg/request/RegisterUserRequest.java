@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class RegisterUserRequest extends AbstractRESTRequest {
+public class RegisterUserRequest extends AbstractRestRequest {
     
     private String username;
     private String password;
@@ -28,7 +28,7 @@ public class RegisterUserRequest extends AbstractRESTRequest {
     }
 
     @Override
-    protected String getHTTPMethod() {
+    protected String getHttpMethod() {
         return "post";
     }
 

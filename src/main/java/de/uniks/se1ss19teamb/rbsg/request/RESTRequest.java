@@ -4,10 +4,10 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import org.apache.http.ParseException;
 
-public interface RESTRequest {
+public interface RestRequest {
     void sendRequest() throws IOException, ParseException;
     
-    void sendRequest(RESTRequestResponseHandler callback) throws IOException, ParseException;
+    void sendRequest(RestRequestResponseHandler callback) throws IOException, ParseException;
     
     JsonObject getResponse();
     

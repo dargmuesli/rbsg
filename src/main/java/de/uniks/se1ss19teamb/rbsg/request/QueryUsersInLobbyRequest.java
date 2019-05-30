@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
+public class QueryUsersInLobbyRequest extends AbstractRestRequest {
 
     private String userToken;
     
@@ -19,7 +19,7 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     }
 
     @Override
-    protected String getHTTPMethod() {
+    protected String getHttpMethod() {
         return "get";
     }
 

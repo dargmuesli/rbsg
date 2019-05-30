@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class HTTPManagerTests {
+public class HttpManagerTests {
 
     class Body {
         String name = "Test Name";
@@ -37,7 +37,7 @@ public class HTTPManagerTests {
         }
     }
 
-    private HTTPManager httpManager;
+    private HttpManager httpManager;
     private Header[] headers;
     private Gson gson;
     private HttpEntity httpEntity;
@@ -45,7 +45,7 @@ public class HTTPManagerTests {
     @Before
     public void setupTests() throws Exception {
         HttpClient httpClient = mock(HttpClient.class);
-        httpManager = new HTTPManager(httpClient);
+        httpManager = new HttpManager(httpClient);
         HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
                 HttpStatus.SC_OK, "OK");
 
@@ -67,7 +67,7 @@ public class HTTPManagerTests {
     }
 
     @Test
-    public void testHTTPManagerPost() throws Exception {
+    public void testHttpManagerPost() throws Exception {
         String managerResponse = httpManager.post(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
@@ -76,7 +76,7 @@ public class HTTPManagerTests {
     }
 
     @Test
-    public void testHTTPManagerGet() throws Exception {
+    public void testHttpManagerGet() throws Exception {
         String managerResponse = httpManager.get(uri, headers).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
@@ -85,7 +85,7 @@ public class HTTPManagerTests {
     }
 
     @Test
-    public void testHTTPManagerDelete() throws Exception {
+    public void testHttpManagerDelete() throws Exception {
         String managerResponse = httpManager.delete(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
