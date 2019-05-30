@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.util.Fades;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class RegisterController {
     
     public void initialize() {
         registerScreen.setOpacity(0);
-        makeFadeInTransition();
+        Fades.makeFadeInTransition(registerScreen);
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -51,43 +52,13 @@ public class RegisterController {
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnCancel)) {
-            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml");
+            Fades.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
             //TODO register user
         }
     }
+   
     
-    private void makeFadeInTransition () {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
-        fadeTransition.setNode(registerScreen);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-        fadeTransition.play();
-    }
     
-    private void makeFadeOutTransition(String path) {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
-        fadeTransition.setNode(registerScreen);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.setOnFinished(event -> {
-            try {
-                fadeNextScene(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        fadeTransition.play();
-    }
-    
-    private void fadeNextScene(String path) throws IOException {
-        Parent nextScene = FXMLLoader.load(getClass().getResource(path));
-        Scene scene = new Scene(nextScene);
-        Stage currentStage = (Stage) registerScreen.getScene().getWindow();
-        
-        currentStage.setScene(scene);
-    }
 }

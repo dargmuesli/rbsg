@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.Fades;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +45,7 @@ public class LoginController {
 
     public void initialize(){
         loginScreen.setOpacity(0);
-        makeFadeInTransition();
+        Fades.makeFadeInTransition(loginScreen);
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -64,11 +65,11 @@ public class LoginController {
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //slideNextScene("main.fxml",100);
-            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml");
+            Fades.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
         }
         if(event.getSource().equals(btnRegistration)){
             //slideNextScene("register.fxml",400);
-            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml");
+            Fades.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
         }
 
     }
@@ -109,37 +110,6 @@ public class LoginController {
     }
 
 
-    private void makeFadeOutTransition(String path){
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
-        fadeTransition.setNode(loginScreen);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.setOnFinished(event -> {
-            try {
-                fadeNextScene(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        fadeTransition.play();
-    }
     
-    private void makeFadeInTransition () {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
-        fadeTransition.setNode(loginScreen);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-        fadeTransition.play();
-    }
-
-    private void fadeNextScene(String path) throws IOException {
-        Parent nextScene = FXMLLoader.load(getClass().getResource(path));
-        Scene scene = new Scene(nextScene);
-        Stage currentStage = (Stage) loginScreen.getScene().getWindow();
-
-        currentStage.setScene(scene);
-    }
 
 }
