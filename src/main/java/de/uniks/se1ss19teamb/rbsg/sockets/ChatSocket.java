@@ -9,7 +9,7 @@ public class ChatSocket extends AbstractWebSocket {
 
 	private String userKey, userName;
 	
-	private List<ChatMessageHandler> handlers = new ArrayList<ChatMessageHandler>();
+	private List<ChatMessageHandler> handlers = new ArrayList<>();
 
 	private boolean ignoreOwn;
 	

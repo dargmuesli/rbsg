@@ -9,10 +9,10 @@ public class SystemSocket extends AbstractWebSocket {
 
     private String userKey;
     
-    private List<SystemSocketMessageHandler.SystemSocketUserJoinHandler> handlersUserJoin = new ArrayList<SystemSocketMessageHandler.SystemSocketUserJoinHandler>();
-    private List<SystemSocketMessageHandler.SystemSocketUserLeftHandler> handlersUserLeft = new ArrayList<SystemSocketMessageHandler.SystemSocketUserLeftHandler>();
-    private List<SystemSocketMessageHandler.SystemSocketGameCreateHandler> handlersGameCreate = new ArrayList<SystemSocketMessageHandler.SystemSocketGameCreateHandler>();
-    private List<SystemSocketMessageHandler.SystemSocketGameDeleteHandler> handlersGameDelete = new ArrayList<SystemSocketMessageHandler.SystemSocketGameDeleteHandler>();
+    private List<SystemSocketMessageHandler.SystemSocketUserJoinHandler> handlersUserJoin = new ArrayList<>();
+    private List<SystemSocketMessageHandler.SystemSocketUserLeftHandler> handlersUserLeft = new ArrayList<>();
+    private List<SystemSocketMessageHandler.SystemSocketGameCreateHandler> handlersGameCreate = new ArrayList<>();
+    private List<SystemSocketMessageHandler.SystemSocketGameDeleteHandler> handlersGameDelete = new ArrayList<>();
     
     public SystemSocket(String userKey) {
         this.userKey = userKey;
