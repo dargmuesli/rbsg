@@ -23,7 +23,7 @@ public class WebSocketTest {
 		
 		SystemSocket system = new SystemSocket(login.getUserKey());
 		
-		List<String> msg = new ArrayList<String>();
+		List<String> msg = new ArrayList<>();
 		
 		system.registerUserJoinHandler((name) -> {
 			msg.add("userJoin|" + name);
@@ -80,7 +80,7 @@ public class WebSocketTest {
 		
 		ChatSocket chat2 = new ChatSocket("testTeamB2", login2.getUserKey());
 		
-		List<String> msg = new ArrayList<String>();
+		List<String> msg = new ArrayList<>();
 		
 		chat2.registerChatMessageHandler((message, from, isPrivate) -> {
 			msg.add(message + '|' + from + '|' + isPrivate);
