@@ -1,9 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
 import java.io.IOException;
+import java.util.Random;
 
-import de.uniks.se1ss19teamb.rbsg.ui.ErrorPopupController;
-import javafx.animation.FadeTransition;
+import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -44,5 +44,39 @@ public class UserInterfaceUtils {
         Stage currentStage = (Stage) stage.getScene().getWindow();
         
         currentStage.setScene(scene);
+    }
+    
+    private void slideNextScene(String path, int xValue, AnchorPane pane) throws IOException {
+        Random r = new Random();
+        boolean randomValue = r.nextBoolean();
+        if(randomValue){
+            Parent root = FXMLLoader.load(getClass().getResource(path));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) pane.getScene().getWindow();
+            
+            root.translateYProperty().setValue(-400);
+            
+            Timeline timeline = new Timeline();
+            KeyValue keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
+            timeline.getKeyFrames().add(keyFrame);
+            timeline.play();
+            
+            stage.setScene(scene);
+        } else {
+            Parent root = FXMLLoader.load(getClass().getResource(path));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) pane.getScene().getWindow();
+            
+            root.translateXProperty().setValue(-xValue);
+            
+            Timeline timeline = new Timeline();
+            KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
+            timeline.getKeyFrames().add(keyFrame);
+            timeline.play();
+            
+            stage.setScene(scene);
+        }
     }
 }

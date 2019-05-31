@@ -54,7 +54,4 @@ public class RegisterController {
             //TODO register user
         }
     }
-   
-    
-    
 }

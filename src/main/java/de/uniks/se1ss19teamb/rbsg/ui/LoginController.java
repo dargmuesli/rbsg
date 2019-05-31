@@ -5,19 +5,14 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
-import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Random;
 
 
 public class LoginController {
@@ -75,43 +70,4 @@ public class LoginController {
         }
 
     }
-
-
-    private void slideNextScene(String path, int xValue) throws IOException {
-        Random r = new Random();
-        boolean randomValue = r.nextBoolean();
-        if(randomValue){
-            Parent root = FXMLLoader.load(getClass().getResource(path));
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) loginScreen.getScene().getWindow();
-
-            root.translateYProperty().setValue(-400);
-
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateYProperty(),0,Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-
-            stage.setScene(scene);
-        } else {
-            Parent root = FXMLLoader.load(getClass().getResource(path));
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) loginScreen.getScene().getWindow();
-
-            root.translateXProperty().setValue(-xValue);
-
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-
-            stage.setScene(scene);
-        }
-    }
-
-
-    
-
 }
