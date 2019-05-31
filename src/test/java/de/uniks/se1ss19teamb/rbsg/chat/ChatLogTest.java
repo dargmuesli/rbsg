@@ -16,10 +16,12 @@ public class ChatLogTest {
     public void testChat() throws IOException, InterruptedException {
 
         Chat chat = new Chat("Admin");
-        chat.setMessage("Hi ich bin der Vadim und ich kann Java nicht.");
+        chat.sendMessage("Hi ich bin der Vadim und ich kann Java nicht.");
         TimeUnit.SECONDS.sleep(1);
-        chat.setMessage("Hi Vadim, gut das du es erwähnst");
-        chat.setMessage("Es ist kein Problem, hir sind alle Hilfsbereit und können dir gerne Weiterhelfen =)");
+        chat.sendMessage("Hi Vadim, gut das du es erwähnst");
+        chat.sendMessage("Es ist kein Problem, hir sind alle Hilfsbereit und können dir gerne Weiterhelfen =)");
+
+        chat.sendMessage("Albert", "Ich würde gerne Fragen was mit dem Server los ist");
 
         Path path = Paths.get("stories/test.txt");
 
