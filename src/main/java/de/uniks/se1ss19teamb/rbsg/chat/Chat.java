@@ -28,7 +28,7 @@ public class Chat {
         // TODO send action (private)
         addToChatLog(this.sender, receiver, message);
     }
-    
+
     public void addToChatLog(String sender, String message) {
         chatLog.add(new ChatLogEntry(sender, message));
     }
