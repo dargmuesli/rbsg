@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import de.uniks.se1ss19teamb.rbsg.model.Game;
+
 import java.io.IOException;
 
 import org.apache.http.ParseException;
@@ -7,9 +9,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.uniks.se1ss19teamb.rbsg.model.Game;
 
-public class RESTRequestTests {
+
+public class RestRequestTests {
 
     @Test
     public void registerUserTest() {
@@ -25,7 +27,8 @@ public class RESTRequestTests {
             
             //Test Request Helpers
             //This is the way one should query information from the Request Handlers
-            //ALWAYS!!! check getSuccessful first, since if it returns false, all other methods except getMessage have undefined behaviour or might throw Exceptions
+            //ALWAYS!!! check getSuccessful first, since if it returns false, all other methods
+            // except getMessage have undefined behaviour or might throw Exceptions
             Assert.assertEquals(false, req.getSuccessful());
             Assert.assertEquals("Name already taken", req.getMessage());
         } catch (Exception e) {
@@ -104,7 +107,8 @@ public class RESTRequestTests {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
         
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame",
+                2, login.getUserKey());
         createGame.sendRequest();
         
         QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
@@ -114,7 +118,7 @@ public class RESTRequestTests {
             Assert.assertEquals(true, req.getSuccessful());
             
             boolean hasTeamBTestGame = false;
-            for(Game game : req.getGames()) {
+            for (Game game : req.getGames()) {
                 hasTeamBTestGame |= game.getName().equals("testTeamBGame");
             }
             Assert.assertTrue(hasTeamBTestGame);
@@ -128,7 +132,8 @@ public class RESTRequestTests {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
         
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame",
+                2, login.getUserKey());
         createGame.sendRequest();
         
         DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
@@ -147,7 +152,8 @@ public class RESTRequestTests {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
         
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2,
+                login.getUserKey());
         createGame.sendRequest();
         
         JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
@@ -155,13 +161,16 @@ public class RESTRequestTests {
             req.sendRequest();
             
             Assert.assertEquals(true, req.getSuccessful());
-            Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
+            Assert.assertEquals("Game joined, you will be disconnected from the chat and the"
+                    + " system socket. Please connect to /ws/game?gameId=GAME_ID",
+                    req.getMessage());
         
             //Check if we actually joined the game
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
             
-            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
+            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game
+                    .getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -175,14 +184,16 @@ public class RESTRequestTests {
         QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
         query.sendRequest();
         
-        query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame")).forEach((game) -> {
-            System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
-            DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
-            try {
-                req.sendRequest();
-            } catch (IOException | ParseException e) {
-                e.printStackTrace();
-            }
-        });
+        query.getGames().stream().filter((game) ->
+                game.getName().equals("testTeamBGame")).forEach((game) -> {
+                    System.out.println("Tidying up Game " + game.getName() + " with id "
+                            + game.getId() + "...");
+                    DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
+                    try {
+                        req.sendRequest();
+                    } catch (IOException | ParseException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 }

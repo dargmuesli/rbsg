@@ -11,7 +11,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/login.fxml"));
+        Parent root = FXMLLoader
+                .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/login.fxml"));
         primaryStage.setTitle("RSBG-Team B");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.setResizable(false);

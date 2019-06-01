@@ -1,13 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import org.apache.commons.codec.binary.Base64;
-import org.junit.Assert;
-
-import java.io.*;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.codec.binary.Base64;
+import org.junit.Assert;
 
 public class CryptoTest {
     private String dataPath = "src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt";
@@ -17,8 +17,8 @@ public class CryptoTest {
     public void testEncryption() throws IOException {
         FileWriter fileR = new FileWriter(dataPath);
         File file = new File(dataPath);
-        
-        String encrypted_message ;
+
+        String encryptedMessage;
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();
         cip.encryptMessage(msg, dataPath);
@@ -37,15 +37,16 @@ public class CryptoTest {
                 recoveredSecret.append(c);
             }
 
-            encrypted_message = encryptReturn(recoveredSecret.toString());
-            Assert.assertEquals(encrypted_message, msg, "gå til helvete!!!");
-            Assert.assertNotEquals(encrypted_message, msg);
-            
+            encryptedMessage = encryptReturn(recoveredSecret.toString());
+            Assert.assertEquals(encryptedMessage, msg, "gå til helvete!!!");
+            Assert.assertNotEquals(encryptedMessage, msg);
+
+            fr.close();
+            fileR.close();
+
             if (!file.delete()) {
                 throw new IOException("Could not delete file!");
             }
-
-            fileR.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class CryptoTest {
         String msg = "gå til helvete!!!";
         CipherController cip = new CipherController();
         cip.encryptMessage(msg, dataPath);
-        String decrypted_message = cip.decryptMessage(dataPath);
+        String decryptedMessage = cip.decryptMessage(dataPath);
 
         //1.Reads the encrypted message
         try {
@@ -76,23 +77,24 @@ public class CryptoTest {
                 recoveredSecret.append(c);
             }
 
-            String encrypted_message = encryptReturn(recoveredSecret.toString());
+            String encryptedMessage = encryptReturn(recoveredSecret.toString());
 
-            Assert.assertNotEquals(encrypted_message, msg);
-            Assert.assertEquals(decrypted_message, msg);
+            Assert.assertNotEquals(encryptedMessage, msg);
+            Assert.assertEquals(decryptedMessage, msg);
+
+            fr.close();
+            fileR.close();
 
             if (!file.delete()) {
                 throw new IOException("Could not delete file!");
             }
-
-            fileR.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String encryptReturn (String m) {
+    public String encryptReturn(String m) {
         byte[] recSecret = Base64.decodeBase64(m);
         return new String(recSecret, utf8);
     }
