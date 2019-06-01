@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
+import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
@@ -21,10 +22,10 @@ public class LoginController {
     private AnchorPane loginScreen;
 
     @FXML
-    private JFXTextField username;
+    private JFXTextField userName;
 
     @FXML
-    private JFXTextField passwort;
+    private JFXTextField password;
 
     @FXML
     private JFXButton btnLogin;
@@ -37,6 +38,10 @@ public class LoginController {
 
     @FXML
     private AnchorPane errorContainer;
+    
+    private ErrorHandler errorHandler;
+    
+    private ErrorPopupController controller;
 
     public void initialize(){
         loginScreen.setOpacity(0);
@@ -46,24 +51,35 @@ public class LoginController {
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
-            ErrorPopupController controller = fxmlLoader.getController();
-            ErrorHandler errorHandler = new ErrorHandler();
+            controller = fxmlLoader.getController();
+            errorHandler  = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
         
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
     }
 
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //slideNextScene("main.fxml",100);
-            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+            if(!userName.getText().isEmpty() && !password.getText().isEmpty()) {
+                LoginUserRequest login = new LoginUserRequest(userName.getText(), password.getText());
+                login.sendRequest();
+                if (login.getSuccessful()) {
+                    UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+                    errorHandler.sendError("Login erfolgreich!");
+                    
+                } else {
+                    errorHandler.sendError("Login fehlgeschlagen.");
+                }
+            } else {
+                errorHandler.sendError("Bitte geben Sie etwas ein.");
+            }
         }
+    
         if(event.getSource().equals(btnRegistration)){
             //slideNextScene("register.fxml",400);
             UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);

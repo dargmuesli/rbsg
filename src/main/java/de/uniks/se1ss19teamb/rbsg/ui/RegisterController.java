@@ -67,7 +67,6 @@ public class RegisterController {
         }
         if (event.getSource().equals(btnConfirm)) {
             if(!userName.getText().isEmpty() && !password.getText().isEmpty() && !confirmPassword.getText().isEmpty()) {
-                System.out.println(userName.getText());
                 if(password.getText().equals(confirmPassword.getText())) {
                     RegisterUserRequest register = new RegisterUserRequest(userName.getText(), password.getText());
                     register.sendRequest();
@@ -83,6 +82,8 @@ public class RegisterController {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
             
+            } else {
+                errorHandler.sendError("Bitte geben Sie etwas ein.");
             }
         }
     }
