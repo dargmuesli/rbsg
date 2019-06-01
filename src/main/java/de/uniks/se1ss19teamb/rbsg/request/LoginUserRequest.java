@@ -17,6 +17,12 @@ public class LoginUserRequest extends AbstractRESTRequest{
         this.username = username;
         this.password = password;
     }
+
+    public LoginUserRequest(String username, String password, HTTPManager httpManager) {
+        this.username = username;
+        this.password = password;
+        this.httpManager = httpManager;
+    }
     
     @Override
     protected JsonObject buildJson() {

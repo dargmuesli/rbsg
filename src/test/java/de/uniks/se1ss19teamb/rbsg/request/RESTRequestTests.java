@@ -2,19 +2,44 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import java.io.IOException;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
 import org.apache.http.ParseException;
+import org.apache.http.message.BasicHttpResponse;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
+import static org.mockito.Mockito.*;
+
 public class RESTRequestTests {
+
+    HTTPManager httpManager;
+
+    @Before
+    public void setupTests() {
+        httpManager = mock(HTTPManager.class);
+        String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
+        int status = 400;
+        String errorMsg = "Bad Request";
+        HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void registerUserTest() {
         
-        RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz");
+        RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz", httpManager);
+
         try {
             //Test Returning Json
             //Demonstration on how to directly process Json with Lambda
@@ -37,7 +62,18 @@ public class RESTRequestTests {
     @Test
     public void loginUserTest() {
 
-        LoginUserRequest req = new LoginUserRequest("testTeamB", "qwertz");
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Name already taken\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 400;
+        String errorMsg = "Bad Request";
+        HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        try {
+            when(httpManager.post(any(),any(), any())).thenReturn(httpRequestResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LoginUserRequest req = new LoginUserRequest("testTeamB", "qwertz", httpManager);
         try {
             //Query Request
             req.sendRequest();
@@ -52,10 +88,24 @@ public class RESTRequestTests {
     
     @Test
     public void queryUsersInLobbyTest() throws IOException, ParseException {
+
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
+        int status = 400;
+        String errorMsg = "Bad Request";
+        HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        try {
+            when(httpManager.get(any(), any())).thenReturn(httpRequestResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         login.sendRequest();
         
-        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getUserKey());
+        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getUserKey(), httpManager);
         try {
             req.sendRequest();
             
@@ -99,7 +149,7 @@ public class RESTRequestTests {
         }
     }
     
-    @Test
+    @Tes
     public void queryGamesTest() throws IOException, ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
@@ -167,6 +217,7 @@ public class RESTRequestTests {
         }
     }
     
+    /*
     @After
     public void cleanupGames() throws IOException, ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
@@ -185,4 +236,5 @@ public class RESTRequestTests {
             }
         });
     }
+     */
 }

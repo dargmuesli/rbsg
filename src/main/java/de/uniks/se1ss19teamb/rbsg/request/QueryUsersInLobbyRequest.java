@@ -12,6 +12,11 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     public QueryUsersInLobbyRequest(String userToken) {
         this.userToken = userToken;
     }
+
+    public QueryUsersInLobbyRequest(String userToken, HTTPManager httpManager) {
+        this.userToken = userToken;
+        this.httpManager = httpManager;
+    }
     
     @Override
     protected JsonObject buildJson() {

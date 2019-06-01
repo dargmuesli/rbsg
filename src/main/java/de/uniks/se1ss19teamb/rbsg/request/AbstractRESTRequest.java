@@ -17,7 +17,7 @@ public abstract class AbstractRESTRequest implements RESTRequest{
    
    private JsonObject response = null;
    
-   private static HTTPManager httpManager = new HTTPManager();
+   HTTPManager httpManager = new HTTPManager();
    
    protected abstract JsonObject buildJson();
    
