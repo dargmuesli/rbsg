@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +27,19 @@ public class RegisterController {
     @FXML
     AnchorPane errorContainer;
     
+    @FXML
+    private JFXButton userName;
+    
+    @FXML
+    private JFXButton password;
+    
+    @FXML
+    private JFXButton confirmPassword;
+    
+    private ErrorPopupController controller;
+    
+    private ErrorHandler errorHandler;
+    
     public void initialize() {
         registerScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
@@ -34,8 +48,8 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
-            ErrorPopupController controller = fxmlLoader.getController();
-            ErrorHandler errorHandler = new ErrorHandler();
+            controller = fxmlLoader.getController();
+            errorHandler = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
             
@@ -51,7 +65,20 @@ public class RegisterController {
             UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
-            //TODO register user
+            if(userName.getText() != null && password.getText() != null ) {
+                if(password.getText().equals(confirmPassword.getText())) {
+                    RegisterUserRequest register = new RegisterUserRequest(userName.getText(), password.getText());
+                    register.sendRequest();
+                    if (register.getSuccessful()) {
+                        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
+                    } else {
+                        errorHandler.sendError("Entschuldigung. Es ist etwas bei der Registrierung schief gelaufen. Bitte versuchen Sie er erneut.");
+                    }
+                } else {
+                    errorHandler.sendError("Die Passwörter sind verschieden!");
+                }
+                
+            }
         }
     }
 }

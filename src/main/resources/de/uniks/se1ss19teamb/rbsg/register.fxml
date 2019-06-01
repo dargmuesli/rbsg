@@ -17,8 +17,8 @@
             </Label>
             <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="confirm" />
             <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="cancel" />
-            <JFXTextField fx:id="confirmPasswort" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Passwort" />
-            <JFXTextField fx:id="passwort" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Passwort" />
+            <JFXTextField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
+            <JFXTextField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
             <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
          </children>
