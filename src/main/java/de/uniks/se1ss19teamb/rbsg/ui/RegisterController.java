@@ -73,9 +73,12 @@ public class RegisterController {
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
-                    } else {
-                        errorHandler.sendError("Entschuldigung. Es ist etwas bei der Registrierung schief gelaufen. Bitte versuchen Sie er erneut.");
-                    }
+                        errorHandler.sendError("Registrierung erfolgreich!");
+                    } /*else {
+                        errorHandler.sendError("Entschuldigung.
+                         Es ist etwas bei der Registrierung schief gelaufen.
+                        Bitte versuchen Sie er erneut.");
+                    }*/
                 } else {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
