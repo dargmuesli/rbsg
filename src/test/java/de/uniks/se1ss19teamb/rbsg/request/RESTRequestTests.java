@@ -89,15 +89,22 @@ public class RESTRequestTests {
     @Test
     public void queryUsersInLobbyTest() throws IOException, ParseException {
 
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
 
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
         int status = 400;
         String errorMsg = "Bad Request";
-        HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseGet = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        httpReqRepBody = "{\"status\":\"success\",\"message\":\"Name already taken\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        status = 200;
+        errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
 
         try {
-            when(httpManager.get(any(), any())).thenReturn(httpRequestResponse);
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
+            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseGet);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,7 +156,7 @@ public class RESTRequestTests {
         }
     }
     
-    @Tes
+    @Test
     public void queryGamesTest() throws IOException, ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
