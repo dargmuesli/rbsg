@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
@@ -28,13 +29,13 @@ public class RegisterController {
     AnchorPane errorContainer;
     
     @FXML
-    private JFXButton userName;
+    private JFXTextField userName;
     
     @FXML
-    private JFXButton password;
+    private JFXTextField password;
     
     @FXML
-    private JFXButton confirmPassword;
+    private JFXTextField confirmPassword;
     
     private ErrorPopupController controller;
     
@@ -65,7 +66,8 @@ public class RegisterController {
             UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
-            if(userName.getText() != null && password.getText() != null ) {
+            if(!userName.getText().isEmpty() && !password.getText().isEmpty() && !confirmPassword.getText().isEmpty()) {
+                System.out.println(userName.getText());
                 if(password.getText().equals(confirmPassword.getText())) {
                     RegisterUserRequest register = new RegisterUserRequest(userName.getText(), password.getText());
                     register.sendRequest();
@@ -77,7 +79,7 @@ public class RegisterController {
                 } else {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
-                
+            
             }
         }
     }
