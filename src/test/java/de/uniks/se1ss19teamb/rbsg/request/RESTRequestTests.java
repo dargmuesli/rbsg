@@ -25,7 +25,7 @@ public class RESTRequestTests {
 
     private HTTPRequestResponse getHttpCreateGameResponse() {
         String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "[{\"gameId\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
+                "{\"gameId\":\"123456789012345678901234\"}}";
         int status = 200;
         String errorMsg = "test";
         HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
@@ -309,24 +309,59 @@ public class RESTRequestTests {
 
     @Test
     public void joinGameTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+
+        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
+
+        HTTPRequestResponse httpRequestResponseCreateGame = getHttpCreateGameResponse();
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         createGame.sendRequest();
 
-        JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
+        JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey(), httpManager);
+
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseJoinGame = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        try {
+            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseJoinGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             req.sendRequest();
 
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
 
-            //Check if we actually joined the game
+            // Check if we actually joined the game
+            // Can be deleted because the test is mocked an we don't really register to the server.
+
+            /*
+
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
 
             Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
+
+             */
         } catch (Exception e) {
             Assert.fail(e.toString());
         }

@@ -10,6 +10,12 @@ public class JoinGameRequest extends AbstractRESTRequest{
         this.userToken = userToken;
         this.gameId = gameId;
     }
+
+    public JoinGameRequest(String gameId, String userToken, HTTPManager httpManager) {
+        this.userToken = userToken;
+        this.gameId = gameId;
+        this.httpManager = httpManager;
+    }
     
     @Override
     protected JsonObject buildJson() {
