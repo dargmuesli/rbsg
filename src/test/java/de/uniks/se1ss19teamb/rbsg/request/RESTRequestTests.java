@@ -12,15 +12,14 @@ import static org.mockito.Mockito.*;
 
 public class RESTRequestTests {
 
-    HTTPManager httpManager;
+    private HTTPManager httpManager;
 
     private HTTPRequestResponse getHttpLoginResponse() {
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
                 "{\"userKey\":\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
-        return httpRequestResponseLogin;
+        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
     }
 
     private HTTPRequestResponse getHttpCreateGameResponse() {
@@ -28,8 +27,7 @@ public class RESTRequestTests {
                 "{\"gameId\":\"123456789012345678901234\"}}";
         int status = 200;
         String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
-        return httpRequestResponseCreateGame;
+        return new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
     }
 
     @Before
