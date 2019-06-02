@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Chat  {
 
-    ArrayList<ChatLogEntry> chatLog = new ArrayList<ChatLogEntry>();
+    ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     public String sender;
     LoginUserRequest login;
     LogoutUserRequest logout;

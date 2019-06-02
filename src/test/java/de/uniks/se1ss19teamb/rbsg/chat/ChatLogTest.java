@@ -13,7 +13,7 @@ import org.junit.Test;
 public class ChatLogTest {
 
     @Test
-    public void testChat() throws IOException, InterruptedException {
+    public void chatTest() throws IOException, InterruptedException {
 
         Chat chat = new Chat("testTeamB", "qwertz");
         TimeUnit.SECONDS.sleep(1);
@@ -31,13 +31,12 @@ public class ChatLogTest {
         chat.sendMessage(message3);
         TimeUnit.SECONDS.sleep(1);
 
-        /*
-        TODO private message wirft NullPointerException
+
+        /* TODO private message wirft NullPointerException
         String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
-        chat.sendMessage(message4, "Albert);
-        System.out.println("nach der message 4");
+        chat.sendMessage(message4, "Albert");
         TimeUnit.SECONDS.sleep(1);
-         */
+        */
 
         chat.disconnect();
 
@@ -63,8 +62,6 @@ public class ChatLogTest {
         Assert.assertEquals(message2, chatLogEntries.get(1).message);
         Assert.assertEquals(message3, chatLogEntries.get(2).message);
         // Assert.assertEquals(message4, chatLogEntries.get(3).message);
-
-        //chat.writeLog(path);
 
         File file = new File(String.valueOf(path));
         file.delete();
