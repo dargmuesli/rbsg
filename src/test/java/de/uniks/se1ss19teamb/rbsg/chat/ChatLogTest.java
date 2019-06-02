@@ -34,6 +34,7 @@ public class ChatLogTest {
         /*
         TODO private message wirft NullPointerException
         String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
+        chat.sendMessage(message4, "Albert);
         System.out.println("nach der message 4");
         TimeUnit.SECONDS.sleep(1);
          */
