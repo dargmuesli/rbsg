@@ -1,24 +1,27 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
+import de.uniks.se1ss19teamb.rbsg.model.Game;
 import org.apache.http.ParseException;
-import org.apache.http.message.BasicHttpResponse;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 
 public class RESTRequestTests {
 
     HTTPManager httpManager;
+
+    private HTTPRequestResponse getHttpLoginResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        return httpRequestResponseLogin;
+    }
 
     @Before
     public void setupTests() {
@@ -69,7 +72,7 @@ public class RESTRequestTests {
         HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
 
         try {
-            when(httpManager.post(any(),any(), any())).thenReturn(httpRequestResponse);
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,11 +99,7 @@ public class RESTRequestTests {
         String errorMsg = "Bad Request";
         HTTPRequestResponse httpRequestResponseGet = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
 
-        httpReqRepBody = "{\"status\":\"success\",\"message\":\"Name already taken\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        status = 200;
-        errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
 
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
@@ -125,11 +124,7 @@ public class RESTRequestTests {
 
     @Test
     public void logoutUserTest() throws IOException, ParseException {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
 
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
         try {
@@ -165,12 +160,9 @@ public class RESTRequestTests {
 
     @Test
     public void createGameTest() throws IOException, ParseException {
-
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
 
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
         try {
@@ -218,7 +210,7 @@ public class RESTRequestTests {
             Assert.assertEquals(true, req.getSuccessful());
 
             boolean hasTeamBTestGame = false;
-            for(Game game : req.getGames()) {
+            for (Game game : req.getGames()) {
                 hasTeamBTestGame |= game.getName().equals("testTeamBGame");
             }
             Assert.assertTrue(hasTeamBTestGame);
