@@ -32,11 +32,9 @@ public class ChatLogTest {
         TimeUnit.SECONDS.sleep(1);
 
 
-        /* TODO private message wirft NullPointerException
         String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
         chat.sendMessage(message4, "Albert");
         TimeUnit.SECONDS.sleep(1);
-        */
 
         chat.disconnect();
 
