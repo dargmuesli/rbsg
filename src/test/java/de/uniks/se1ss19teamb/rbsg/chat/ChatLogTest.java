@@ -1,16 +1,14 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
-import com.google.gson.stream.JsonReader;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
-import org.junit.Assert;
-import org.junit.Test;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ChatLogTest {
 
@@ -28,7 +26,8 @@ public class ChatLogTest {
         chat.sendMessage(message2);
         TimeUnit.SECONDS.sleep(1);
 
-        String message3 = "Es ist kein Problem, hir sind alle Hilfsbereit und können dir gerne Weiterhelfen =)";
+        String message3 = "Es ist kein Problem, hir sind alle Hilfsbereit und können dir"
+                + " gerne Weiterhelfen =)";
         chat.sendMessage(message3);
         TimeUnit.SECONDS.sleep(1);
 

@@ -20,7 +20,7 @@ public class Chat  {
     ChatSocket chatSocket;
     Path path = Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
-    public Chat (String sender, String password) throws IOException {
+    public Chat(String sender, String password) throws IOException {
         this.sender = sender;
         // Login
         this.login = new LoginUserRequest(sender, password);
@@ -64,7 +64,7 @@ public class Chat  {
         chatLog.add(new ChatLogEntry(message, sender, receiver));
     }
 
-    public void writeLog (Path path) throws IOException {
+    public void writeLog(Path path) throws IOException {
         PrintWriter out = new PrintWriter(path.toString());
         for (ChatLogEntry cle : chatLog) {
             out.println(SerializeUtils.serialize(cle));
