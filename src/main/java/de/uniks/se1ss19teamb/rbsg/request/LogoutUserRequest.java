@@ -9,6 +9,11 @@ public class LogoutUserRequest extends AbstractRESTRequest {
     public LogoutUserRequest(String userToken) {
         this.userToken = userToken;
     }
+
+    public LogoutUserRequest(String userToken, HTTPManager httpManager) {
+        this.userToken = userToken;
+        this.httpManager = httpManager;
+    }
     
     @Override
     protected JsonObject buildJson() {

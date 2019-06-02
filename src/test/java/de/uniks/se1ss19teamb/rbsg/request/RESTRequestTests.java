@@ -125,10 +125,34 @@ public class RESTRequestTests {
     
     @Test
     public void logoutUserTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         login.sendRequest();
-        
-        LogoutUserRequest req = new LogoutUserRequest(login.getUserKey());
+
+        String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":" +
+                "{}}";
+        int statusLogout = 200;
+        String errorMsgLogout = "test";
+        HTTPRequestResponse httpRequestResponseLogout = new HTTPRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
+
+        try {
+            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseLogout);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LogoutUserRequest req = new LogoutUserRequest(login.getUserKey(), httpManager);
         try {
             req.sendRequest();
             
