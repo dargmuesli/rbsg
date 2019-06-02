@@ -31,7 +31,6 @@ public class ChatLogTest {
         chat.sendMessage(message3);
         TimeUnit.SECONDS.sleep(1);
 
-
         String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
         chat.sendMessage(message4, "Albert");
         TimeUnit.SECONDS.sleep(1);
@@ -59,7 +58,7 @@ public class ChatLogTest {
         Assert.assertEquals(message1, chatLogEntries.get(0).message);
         Assert.assertEquals(message2, chatLogEntries.get(1).message);
         Assert.assertEquals(message3, chatLogEntries.get(2).message);
-        // Assert.assertEquals(message4, chatLogEntries.get(3).message);
+        Assert.assertEquals(message4, chatLogEntries.get(3).message);
 
         File file = new File(String.valueOf(path));
         file.delete();

@@ -5,6 +5,8 @@ import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
@@ -46,7 +48,7 @@ public class Chat  {
     }
 
     public void sendMessage(String message, String receiver) {
-        // TODO send action (private)
+        addToChatLog(message, this.sender, receiver);
         this.chatSocket.sendPrivateMessage(message, receiver);
     }
 
@@ -65,10 +67,15 @@ public class Chat  {
     }
 
     public void writeLog(Path path) throws IOException {
-        PrintWriter out = new PrintWriter(path.toString());
-        for (ChatLogEntry cle : chatLog) {
-            out.println(SerializeUtils.serialize(cle));
+        try (FileWriter fw = new FileWriter(path.toString(), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)) {
+            for (ChatLogEntry cle : chatLog) {
+                out.println(SerializeUtils.serialize(cle));
+            }
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        out.close();
     }
 }
