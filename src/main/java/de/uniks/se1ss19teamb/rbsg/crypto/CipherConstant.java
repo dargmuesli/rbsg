@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.chatencryption.GenerateKeys;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -13,13 +13,12 @@ class CipherConstant {
     private static final Logger logger = LogManager.getLogger();
     static PublicKey publicKey;
     static PrivateKey privateKey;
-
+    static  GenerateKeys keys = new GenerateKeys();
     static {
         try {
-            publicKey = CipherUtils
-                .readPublicKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/public.der");
-            privateKey = CipherUtils
-                .readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
+            keys.createKeys();
+            publicKey = keys.getPublicKey();
+            privateKey = keys.getPrivateKey();
         } catch (Exception e) {
             NotificationHandler.sendError("A key could not be read!", logger, e);
         }
