@@ -1,8 +1,17 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import com.google.gson.Gson;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.apache.http.*;
+import com.google.gson.Gson;
+import java.net.URI;
+import java.net.URISyntaxException;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpResponse;
@@ -10,13 +19,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 
-import static org.mockito.Mockito.*;
-
-
-public class HTTPManagerTests {
+public class HttpManagerTests {
 
     class Body {
         String name = "Test Name";
@@ -33,7 +37,7 @@ public class HTTPManagerTests {
         }
     }
 
-    private HTTPManager httpManager;
+    private HttpManager httpManager;
     private Header[] headers;
     private Gson gson;
     private HttpEntity httpEntity;
@@ -41,7 +45,7 @@ public class HTTPManagerTests {
     @Before
     public void setupTests() throws Exception {
         HttpClient httpClient = mock(HttpClient.class);
-        httpManager = new HTTPManager(httpClient);
+        httpManager = new HttpManager(httpClient);
         HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
                 HttpStatus.SC_OK, "OK");
 
@@ -63,7 +67,7 @@ public class HTTPManagerTests {
     }
 
     @Test
-    public void testHTTPManagerPost() throws Exception {
+    public void testHttpManagerPost() throws Exception {
         String managerResponse = httpManager.post(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
@@ -72,7 +76,7 @@ public class HTTPManagerTests {
     }
 
     @Test
-    public void testHTTPManagerGet() throws Exception {
+    public void testHttpManagerGet() throws Exception {
         String managerResponse = httpManager.get(uri, headers).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);
@@ -81,7 +85,7 @@ public class HTTPManagerTests {
     }
 
     @Test
-    public void testHTTPManagerDelete() throws Exception {
+    public void testHttpManagerDelete() throws Exception {
         String managerResponse = httpManager.delete(uri, headers, httpEntity).body;
         Assert.assertNotNull(managerResponse);
         Body responseBody = gson.fromJson(managerResponse, Body.class);

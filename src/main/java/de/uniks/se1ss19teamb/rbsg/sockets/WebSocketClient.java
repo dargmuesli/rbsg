@@ -3,10 +3,10 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import javax.websocket.*;
 import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.websocket.*;
 
 @ClientEndpoint(configurator = CustomWebSocketConfigurator.class)
 public class WebSocketClient {
@@ -46,27 +46,27 @@ public class WebSocketClient {
     }
     
     @OnOpen
-    public void OnOpen(Session session) {
+    public void onOpen(Session session) {
         this.mySession = session;
         System.out.println("WS connected to " + this.mySession.getRequestURI());
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(mySession.isOpen()) {
+                if (mySession.isOpen()) {
                     try {
                         mySession.getBasicRemote().sendText(NOOP);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         System.err.println("Can not send NOOP");
                     }
                 }
             }
             
         };
-        this.noopTimer.schedule(task , 0, 1000 * 60 * 4);
+        this.noopTimer.schedule(task, 0, 1000 * 60 * 4);
     }
     
     @OnMessage
-    public void OnMessage(String message) {
+    public void onMessage(String message) {
         JsonParser parser = new JsonParser();
         JsonObject response = (JsonObject) parser.parse(message);
         initialHandler.handle(response);

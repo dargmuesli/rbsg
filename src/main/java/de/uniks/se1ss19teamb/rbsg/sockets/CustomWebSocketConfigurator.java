@@ -1,9 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
-import javax.websocket.ClientEndpointConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.websocket.ClientEndpointConfig;
 
 public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
     
