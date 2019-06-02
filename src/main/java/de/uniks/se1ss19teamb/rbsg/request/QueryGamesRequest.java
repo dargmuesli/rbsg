@@ -13,6 +13,11 @@ public class QueryGamesRequest extends AbstractRESTRequest {
     public QueryGamesRequest(String userToken) {
         this.userToken = userToken;
     }
+
+    public QueryGamesRequest(String userToken, HTTPManager httpManager) {
+        this.userToken = userToken;
+        this.httpManager = httpManager;
+    }
     
     @Override
     protected JsonObject buildJson() {

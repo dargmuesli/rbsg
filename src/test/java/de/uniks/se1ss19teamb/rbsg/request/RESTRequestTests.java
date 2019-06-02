@@ -197,13 +197,38 @@ public class RESTRequestTests {
 
     @Test
     public void queryGamesTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
+
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
+        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, 200, "test");
+
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         createGame.sendRequest();
 
-        QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
+        QueryGamesRequest req = new QueryGamesRequest(login.getUserKey(), httpManager);
+        try {
+            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseCreateGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             req.sendRequest();
 
