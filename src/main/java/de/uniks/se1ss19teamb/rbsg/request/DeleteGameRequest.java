@@ -10,6 +10,12 @@ public class DeleteGameRequest extends AbstractRESTRequest{
         this.userToken = userToken;
         this.gameId = gameId;
     }
+
+    public DeleteGameRequest(String gameId, String userToken, HTTPManager httpManager) {
+        this.userToken = userToken;
+        this.gameId = gameId;
+        this.httpManager = httpManager;
+    }
     
     @Override
     protected JsonObject buildJson() {

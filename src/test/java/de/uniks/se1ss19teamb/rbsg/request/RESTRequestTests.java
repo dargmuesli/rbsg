@@ -23,6 +23,15 @@ public class RESTRequestTests {
         return httpRequestResponseLogin;
     }
 
+    private HTTPRequestResponse getHttpCreateGameResponse() {
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "[{\"gameId\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
+        int status = 200;
+        String errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+        return httpRequestResponseCreateGame;
+    }
+
     @Before
     public void setupTests() {
         httpManager = mock(HTTPManager.class);
@@ -246,13 +255,48 @@ public class RESTRequestTests {
 
     @Test
     public void deleteGameTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+
+        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
+
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
+
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "{\"gameId\":\"123456789012345678901234\"}}";
+        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, 200, "test");
+
+
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         createGame.sendRequest();
 
-        DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
+        DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey(), httpManager);
+
+
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseDelete = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        try {
+            when(httpManager.delete(any(), any(), any())).thenReturn(httpRequestResponseDelete);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             req.sendRequest();
 
