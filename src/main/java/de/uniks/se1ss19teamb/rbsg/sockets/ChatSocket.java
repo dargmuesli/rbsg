@@ -23,6 +23,11 @@ public class ChatSocket extends AbstractWebSocket {
         this.userName = userName;
         this.ignoreOwn = ignoreOwn;
         registerWebSocketHandler((response) -> {
+        	if(response.get("msg") != null ) {
+        		//TODO Handle error in MSG
+        		return;
+        	}
+        	
             String from = response.get("from").getAsString();
             if (this.ignoreOwn && from.equals(userName)) { 
                 return; 
