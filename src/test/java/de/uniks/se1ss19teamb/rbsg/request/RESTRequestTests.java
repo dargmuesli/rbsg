@@ -37,7 +37,7 @@ public class RESTRequestTests {
 
     @Test
     public void registerUserTest() {
-        
+
         RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz", httpManager);
 
         try {
@@ -47,7 +47,7 @@ public class RESTRequestTests {
                 Assert.assertEquals("failure", response.get("status").getAsString());
                 Assert.assertEquals("Name already taken", response.get("message").getAsString());
             });
-            
+
             //Test Request Helpers
             //This is the way one should query information from the Request Handlers
             //ALWAYS!!! check getSuccessful first, since if it returns false, all other methods except getMessage have undefined behaviour or might throw Exceptions
@@ -56,9 +56,9 @@ public class RESTRequestTests {
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
-        
+
     }
-    
+
     @Test
     public void loginUserTest() {
 
@@ -77,7 +77,7 @@ public class RESTRequestTests {
         try {
             //Query Request
             req.sendRequest();
-            
+
             //Test Request Helpers
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertEquals(36, req.getUserKey().length());
@@ -85,7 +85,7 @@ public class RESTRequestTests {
             Assert.fail(e.toString());
         }
     }
-    
+
     @Test
     public void queryUsersInLobbyTest() throws IOException, ParseException {
 
@@ -111,18 +111,18 @@ public class RESTRequestTests {
 
 
         login.sendRequest();
-        
+
         QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getUserKey(), httpManager);
         try {
             req.sendRequest();
-            
+
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertTrue(req.getUsersInLobby().contains("testTeamB"));
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
     }
-    
+
     @Test
     public void logoutUserTest() throws IOException, ParseException {
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
@@ -155,45 +155,68 @@ public class RESTRequestTests {
         LogoutUserRequest req = new LogoutUserRequest(login.getUserKey(), httpManager);
         try {
             req.sendRequest();
-            
+
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertEquals("Logged out", req.getMessage());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
     }
-    
+
     @Test
     public void createGameTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        HTTPRequestResponse httpRequestResponseLogin = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         login.sendRequest();
-        
-        CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+                "{\"gameId\":\"123456789012345678901234\"}}";
+        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
         try {
             //Query Request
             req.sendRequest();
-            
+
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertEquals(24, req.getGameId().length());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
     }
-    
+
     @Test
     public void queryGamesTest() throws IOException, ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
-        
+
         CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
-        
+
         QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
         try {
             req.sendRequest();
-            
+
             Assert.assertEquals(true, req.getSuccessful());
-            
+
             boolean hasTeamBTestGame = false;
             for(Game game : req.getGames()) {
                 hasTeamBTestGame |= game.getName().equals("testTeamBGame");
@@ -203,45 +226,45 @@ public class RESTRequestTests {
             Assert.fail(e.toString());
         }
     }
-    
+
     @Test
     public void deleteGameTest() throws IOException, ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
-        
+
         CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
-        
+
         DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
         try {
             req.sendRequest();
-            
+
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertEquals("Game deleted", req.getMessage());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
     }
-    
+
     @Test
     public void joinGameTest() throws IOException, ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
-        
+
         CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
-        
+
         JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
         try {
             req.sendRequest();
-            
+
             Assert.assertEquals(true, req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
-        
+
             //Check if we actually joined the game
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
-            
+
             Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
         } catch (Exception e) {
             Assert.fail(e.toString());

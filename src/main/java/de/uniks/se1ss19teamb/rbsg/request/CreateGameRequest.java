@@ -12,6 +12,13 @@ public class CreateGameRequest extends AbstractRESTRequest{
       this.neededPlayers = neededPlayers;
       this.gameName = gameName;
    }
+
+   public CreateGameRequest(String gameName, int neededPlayers, String userToken, HTTPManager httpManager) {
+      this.userToken = userToken;
+      this.neededPlayers = neededPlayers;
+      this.gameName = gameName;
+      this.httpManager = httpManager;
+   }
    
    @Override
    protected JsonObject buildJson() {
