@@ -5,7 +5,9 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-
 
 public class LoginController {
 
@@ -50,6 +51,7 @@ public class LoginController {
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
     
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
@@ -82,8 +84,8 @@ public class LoginController {
                 errorHandler.sendError("Bitte geben Sie etwas ein.");
             }
         }
-    
-        if(event.getSource().equals(btnRegistration)){
+
+        if (event.getSource().equals(btnRegistration)) {
             //slideNextScene("register.fxml",400);
             UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
         }
