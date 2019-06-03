@@ -16,15 +16,12 @@ public class ChatLogTest {
     public void chatTest() throws IOException, InterruptedException {
 
         Chat chat = new Chat("testTeamB", "qwertz");
-        TimeUnit.SECONDS.sleep(1);
 
         String message1 = "Hi ich bin der testTeamB und ich kann Java nicht.";
         chat.sendMessage(message1);
-        TimeUnit.SECONDS.sleep(1);
 
         String message2 = "Hi testTeamB, gut das du es erwähnst";
         chat.sendMessage(message2);
-        TimeUnit.SECONDS.sleep(1);
 
         String message3 = "Es ist kein Problem, hir sind alle Hilfsbereit und können dir"
                 + " gerne Weiterhelfen =)";
@@ -33,7 +30,9 @@ public class ChatLogTest {
 
         String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
         chat.sendMessage(message4, "Albert");
-        TimeUnit.SECONDS.sleep(1);
+
+        String message5 = "AddToChatLog test string.";
+        chat.addToChatLog(message5, "Me");
 
         chat.disconnect();
 
@@ -46,8 +45,8 @@ public class ChatLogTest {
         String strLine;
 
         //Read File Line By Line
-        ArrayList<ChatLogEntry> chatLogEntries = new ArrayList<ChatLogEntry>();
-        while ((strLine = br.readLine()) != null)   {
+        ArrayList<ChatLogEntry> chatLogEntries = new ArrayList<>();
+        while ((strLine = br.readLine()) != null) {
             // deserialize chatLog
             ChatLogEntry entry = SerializeUtils.deserialize(strLine, ChatLogEntry.class);
             chatLogEntries.add(entry);
@@ -59,6 +58,7 @@ public class ChatLogTest {
         Assert.assertEquals(message2, chatLogEntries.get(1).message);
         Assert.assertEquals(message3, chatLogEntries.get(2).message);
         Assert.assertEquals(message4, chatLogEntries.get(3).message);
+        Assert.assertEquals(message5, chatLogEntries.get(4).message);
 
         File file = new File(String.valueOf(path));
         file.delete();

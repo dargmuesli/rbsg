@@ -16,11 +16,11 @@ import java.util.ArrayList;
 public class Chat  {
 
     ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
-    public String sender;
-    LoginUserRequest login;
-    LogoutUserRequest logout;
-    ChatSocket chatSocket;
-    Path path = Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+    private String sender;
+    private LoginUserRequest login;
+    private LogoutUserRequest logout;
+    private ChatSocket chatSocket;
+    private Path path = Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     public Chat(String sender, String password) throws IOException {
         this.sender = sender;
@@ -66,14 +66,13 @@ public class Chat  {
         chatLog.add(new ChatLogEntry(message, sender, receiver));
     }
 
-    public void writeLog(Path path) throws IOException {
+    public void writeLog(Path path) {
         try (FileWriter fw = new FileWriter(path.toString(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)) {
             for (ChatLogEntry cle : chatLog) {
                 out.println(SerializeUtils.serialize(cle));
             }
-            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
