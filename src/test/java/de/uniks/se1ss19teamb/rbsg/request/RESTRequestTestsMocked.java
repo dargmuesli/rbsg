@@ -77,6 +77,8 @@ public class RESTRequestTestsMocked {
 
     @Test
     public void loginUserTest() {
+    	
+    	Assert.fail();
 
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Name already taken\",\"data\":" +
                 "{\"userKey\":\"111111111111111111111111111111111111\"}}";
