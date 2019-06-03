@@ -13,7 +13,7 @@ import javafx.util.Duration;
 
 public class UserInterfaceUtils {
     
-    public static void makeFadeOutTransition(String path, AnchorPane node){
+    public static void makeFadeOutTransition(String path, AnchorPane node) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(node);
@@ -42,18 +42,14 @@ public class UserInterfaceUtils {
         Parent nextScene = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
         Scene scene = new Scene(nextScene);
         Stage currentStage = (Stage) stage.getScene().getWindow();
-        
         currentStage.setScene(scene);
     }
     
-    private void slideNextScene(String path, int xValue, AnchorPane pane) throws IOException {
+    private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
-        if(randomValue){
+        if (randomValue) {
             Parent root = FXMLLoader.load(getClass().getResource(path));
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) pane.getScene().getWindow();
-            
             root.translateYProperty().setValue(-400);
             
             Timeline timeline = new Timeline();
@@ -62,13 +58,12 @@ public class UserInterfaceUtils {
             timeline.getKeyFrames().add(keyFrame);
             timeline.play();
             
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) pane.getScene().getWindow();
             stage.setScene(scene);
         } else {
             Parent root = FXMLLoader.load(getClass().getResource(path));
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) pane.getScene().getWindow();
-            
-            root.translateXProperty().setValue(-xValue);
+            root.translateXProperty().setValue(-value);
             
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
@@ -76,6 +71,8 @@ public class UserInterfaceUtils {
             timeline.getKeyFrames().add(keyFrame);
             timeline.play();
             
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) pane.getScene().getWindow();
             stage.setScene(scene);
         }
     }
