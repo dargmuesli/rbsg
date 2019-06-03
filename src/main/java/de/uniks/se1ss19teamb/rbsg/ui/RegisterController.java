@@ -1,9 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import java.io.IOException;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
