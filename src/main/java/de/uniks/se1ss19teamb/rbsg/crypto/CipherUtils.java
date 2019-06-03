@@ -1,40 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.security.*;
 
 class CipherUtils {
-
-    private static byte[] readFileBytes(String filename) throws IOException {
-        Path path = Paths.get(filename);
-        return Files.readAllBytes(path);
-    }
-
-    //read Strings and generates public key for the given Strings
-    static PublicKey readPublicKey(String filename) throws InvalidKeySpecException,
-        NoSuchAlgorithmException, IOException {
-        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(readFileBytes(filename));
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        return keyFactory.generatePublic(publicSpec);
-    }
-
-    //reads Strings and generates Private key for the given Strings
-    static PrivateKey readPrivateKey(String filename) throws IOException,
-        NoSuchAlgorithmException, InvalidKeySpecException {
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(readFileBytes(filename));
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        return keyFactory.generatePrivate(keySpec);
-    }
 
     //encrypts using public key and returns as Byte
     static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException,
