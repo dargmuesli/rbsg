@@ -26,7 +26,7 @@ public class RESTRequestTestsReal {
             //Test Request Helpers
             //This is the way one should query information from the Request Handlers
             //ALWAYS!!! check getSuccessful first, since if it returns false, all other methods except getMessage have undefined behaviour or might throw Exceptions
-            Assert.assertEquals(false, req.getSuccessful());
+            Assert.assertFalse(req.getSuccessful());
             Assert.assertEquals("Name already taken", req.getMessage());
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -43,7 +43,7 @@ public class RESTRequestTestsReal {
             req.sendRequest();
 
             //Test Request Helpers
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals(36, req.getUserKey().length());
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -59,7 +59,7 @@ public class RESTRequestTestsReal {
         try {
             req.sendRequest();
 
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
             Assert.assertTrue(req.getUsersInLobby().contains("testTeamB"));
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -75,7 +75,7 @@ public class RESTRequestTestsReal {
         try {
             req.sendRequest();
 
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Logged out", req.getMessage());
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -92,7 +92,7 @@ public class RESTRequestTestsReal {
             //Query Request
             req.sendRequest();
 
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals(24, req.getGameId().length());
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -111,7 +111,7 @@ public class RESTRequestTestsReal {
         try {
             req.sendRequest();
 
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
 
             boolean hasTeamBTestGame = false;
             for(Game game : req.getGames()) {
@@ -135,7 +135,7 @@ public class RESTRequestTestsReal {
         try {
             req.sendRequest();
 
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Game deleted", req.getMessage());
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -154,7 +154,7 @@ public class RESTRequestTestsReal {
         try {
             req.sendRequest();
 
-            Assert.assertEquals(true, req.getSuccessful());
+            Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
 
             //Check if we actually joined the game
