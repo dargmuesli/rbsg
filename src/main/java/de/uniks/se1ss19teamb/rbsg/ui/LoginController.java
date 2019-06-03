@@ -42,7 +42,9 @@ public class LoginController {
     private ErrorHandler errorHandler;
     
     private ErrorPopupController controller;
-
+    
+    public static String userKey;
+    
     public void initialize(){
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
@@ -69,6 +71,7 @@ public class LoginController {
                 LoginUserRequest login = new LoginUserRequest(userName.getText(), password.getText());
                 login.sendRequest();
                 if (login.getSuccessful()) {
+                    userKey = login.getUserKey();
                     UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
                     errorHandler.sendError("Login erfolgreich!");
                     
