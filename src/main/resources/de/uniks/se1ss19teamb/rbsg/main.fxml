@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+<AnchorPane minHeight="400.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
    <children>
       <AnchorPane fx:id="mainScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
@@ -13,7 +16,21 @@
             <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <AnchorPane fx:id="chat" prefHeight="180.0" prefWidth="225.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="1.0" />
-                  <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: grey;" text="Create Game" />
+                        <HBox alignment="CENTER" layoutX="1.0" layoutY="89.0" prefHeight="45.0" prefWidth="224.0">
+                           <children>
+                              <RadioButton fx:id="twoPlayers" contentDisplay="BOTTOM" ellipsisString="" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" selected="true" text="2">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="playerNumberToggleGroup" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="threePlayers" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" text="3" toggleGroup="$playerNumberToggleGroup" />
+                              <RadioButton fx:id="fourPlayers" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" text="4" toggleGroup="$playerNumberToggleGroup" />
+                           </children>
+                        </HBox>
+                     </children></AnchorPane>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
