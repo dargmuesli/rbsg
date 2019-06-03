@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
@@ -9,10 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
-
-import java.io.IOException;
-
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 
 public class RegisterController {
     
@@ -56,8 +53,7 @@ public class RegisterController {
             
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        
+        }      
     }
     
     @FXML

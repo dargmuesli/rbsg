@@ -6,10 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
-
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-
 public class MainController {
     @FXML
     private AnchorPane mainScreen;
@@ -17,11 +13,12 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
 
-    public void initialize(){
+    public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
