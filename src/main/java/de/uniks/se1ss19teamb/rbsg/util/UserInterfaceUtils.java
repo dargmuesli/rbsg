@@ -70,7 +70,7 @@ public class UserInterfaceUtils {
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
             timeline.getKeyFrames().add(keyFrame);
             timeline.play();
-            
+    
             Scene scene = new Scene(root);
             Stage stage = (Stage) pane.getScene().getWindow();
             stage.setScene(scene);

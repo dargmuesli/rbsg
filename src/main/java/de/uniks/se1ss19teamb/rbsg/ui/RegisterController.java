@@ -50,14 +50,14 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-            
+    
             controller = fxmlLoader.getController();
             errorHandler = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }      
     }
     
     @FXML
@@ -89,7 +89,7 @@ public class RegisterController {
                 } else {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
-                
+            
             } else {
                 errorHandler.sendError("Bitte geben Sie etwas ein.");
             }
