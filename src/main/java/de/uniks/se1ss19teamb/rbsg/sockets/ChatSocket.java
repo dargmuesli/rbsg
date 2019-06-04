@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ChatSocket extends AbstractWebSocket {
 
-    private String userKey; 
+    private String userKey;
     private String userName;
     
     private List<ChatMessageHandler> handlersChat = new ArrayList<>();
@@ -47,8 +47,12 @@ public class ChatSocket extends AbstractWebSocket {
     }
 
     @Override
-    protected String getUserKey() {
+    public String getUserKey() {
         return userKey;
+    }
+
+    public String getUserName() {
+        return userName;
     }
     
     //Custom Helpers
