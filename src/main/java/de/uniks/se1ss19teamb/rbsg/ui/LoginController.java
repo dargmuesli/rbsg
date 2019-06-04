@@ -50,6 +50,10 @@ public class LoginController {
         return userKey;
     }
     
+    public static void setUserKey(String key) {
+        userKey = key;
+    }
+    
     public void initialize() {
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
@@ -79,7 +83,7 @@ public class LoginController {
                         userName.getText(), password.getText());
                 login.sendRequest();
                 if (login.getSuccessful()) {
-                    userKey = login.getUserKey();
+                    setUserKey(login.getUserKey());
                     UserInterfaceUtils.makeFadeOutTransition(
                             "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
                     errorHandler.sendError("Login erfolgreich!");
