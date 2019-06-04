@@ -1,6 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,7 +21,11 @@ public abstract class AbstractWebSocket implements WebSocket {
     protected abstract String getEndpoint();
     
     protected abstract String getUserKey();
-    
+
+    private static final Logger logger = LogManager.getLogger(AbstractWebSocket.class);
+
+    private ErrorHandler errorHandler = new ErrorHandler();
+
     @Override
     public void connect() {
         if (getUserKey() != null) {
@@ -33,9 +40,11 @@ public abstract class AbstractWebSocket implements WebSocket {
                     }
                 });
             } catch (URISyntaxException e) {
-                e.printStackTrace();
+                errorHandler.sendError("Fehler URI stimmt nicht, ueberpruefe AbstractWebSocket Klasse");
+                logger.error(e);
             }
         } else {
+            errorHandler.sendError("Websocket Verbindung steht schon, keine Verbingung zum selben Socket");
             throw new IllegalStateException("Cannot connect to an already connected Websocket");
         }
     }
@@ -45,7 +54,8 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler Verbindung konnte nicht abgebrochen werden, ueberpruefe AbstractWebSocket Klasse");
+            logger.error(e);
         }
         websocket = null;
     }

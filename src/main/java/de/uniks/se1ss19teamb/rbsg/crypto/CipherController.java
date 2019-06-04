@@ -8,10 +8,14 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CipherController {
-
+    private static final Logger logger = LogManager.getLogger(CipherController.class);
+    ErrorHandler errorHandler = new ErrorHandler();
     //This string needs to be related with data
     public void encryptMessage(String msg, String filename) {
         try {
@@ -28,7 +32,8 @@ public class CipherController {
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler bei verschluesseln der Nachricht, ueberpruefe Klasse CipherController");
+            logger.error(e);
         }
     }
 
@@ -59,7 +64,8 @@ public class CipherController {
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
                 | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler bei entverschluesseln der Nachricht, ueberpruefe Klasse CipherController");
+            logger.error(e);
         }
         return decryptedMessage;
     }

@@ -6,11 +6,14 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.net.URI;
 
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import org.apache.http.Header;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.ParseException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractRestRequest implements RestRequest {
     
@@ -27,9 +30,12 @@ public abstract class AbstractRestRequest implements RestRequest {
     protected abstract String getEndpoint(); //"/user", "/user/login", etc.
     
     protected abstract String getUserToken();
-    
+
+    private static final Logger logger = LogManager.getLogger(AbstractRestRequest.class);
+    private ErrorHandler errorHandler = new ErrorHandler();
+
     @Override
-    public void sendRequest() throws IOException, ParseException {
+    public void sendRequest() throws ParseException {
         HttpRequestResponse result = null;
         String token = getUserToken();
         try {
@@ -52,7 +58,8 @@ public abstract class AbstractRestRequest implements RestRequest {
                   throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
-            throw new IOException(e);
+            errorHandler.sendError("Fehler beim request, ueberuefe AbstractRestRequest Klasse");
+            logger.error(e);
         } finally {
             JsonParser parser = new JsonParser();
             response = (JsonObject) parser.parse(result == null ? "" : result.body);
@@ -62,7 +69,7 @@ public abstract class AbstractRestRequest implements RestRequest {
     }
     
     @Override
-    public void sendRequest(RestRequestResponseHandler callback) throws IOException,
+    public void sendRequest(RestRequestResponseHandler callback) throws
             ParseException {
 
         sendRequest();
