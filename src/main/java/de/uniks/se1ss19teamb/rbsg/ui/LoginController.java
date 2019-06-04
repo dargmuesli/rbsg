@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class LoginController {
@@ -42,6 +44,7 @@ public class LoginController {
     @FXML
     private AnchorPane errorContainer;
 
+    Logger logger = LogManager.getLogger(LoginController.class);
     public void initialize() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
@@ -61,23 +64,23 @@ public class LoginController {
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
-            //slideNextScene("main.fxml",100);
+            //slideNextScene("/de/uniks/se1ss19teamb/rbsg/main.fxml",400);
             makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml");
         }
         if (event.getSource().equals(btnRegistration)) {
-            //slideNextScene("register.fxml",400);
+            //slideNextScene("/de/uniks/se1ss19teamb/rbsg/register.fxml",600);
             makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml");
         }
 
     }
 
 
-    private void slideNextScene(String path, int xvalue) throws IOException {
+    private void slideNextScene(String path, int xValue) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
         if (randomValue) {
             Parent root = FXMLLoader.load(getClass().getResource(path));
-            root.translateYProperty().setValue(-400);
+            root.translateYProperty().setValue(-xValue);
 
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateYProperty(),0,Interpolator.EASE_IN);
@@ -91,7 +94,7 @@ public class LoginController {
             stage.setScene(scene);
         } else {
             Parent root = FXMLLoader.load(getClass().getResource(path));
-            root.translateXProperty().setValue(-xvalue);
+            root.translateXProperty().setValue(-xValue);
 
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);

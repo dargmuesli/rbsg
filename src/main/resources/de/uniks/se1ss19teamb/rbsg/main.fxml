@@ -18,7 +18,7 @@
             </AnchorPane>
             <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <AnchorPane fx:id="errorContainer" layoutX="250.0" prefHeight="45.0" prefWidth="200.0" />
+                  <AnchorPane fx:id="errorContainer" layoutX="14.0" layoutY="94.0" prefHeight="50.0" prefWidth="400.0" />
                </children></AnchorPane>
             <HBox fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>

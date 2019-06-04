@@ -29,7 +29,7 @@
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
+            <AnchorPane fx:id="errorContainer" layoutX="125.0" layoutY="64.0" prefHeight="50.0" prefWidth="400.0" />
             <FontAwesomeIconView glyphName="LOCK" layoutX="272.0" layoutY="55.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
          </children>
       </AnchorPane>
