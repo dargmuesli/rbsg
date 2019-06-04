@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class CreateGameRequest extends AbstractRESTRequest{
+public class CreateGameRequest extends AbstractRestRequest{
    
    private String userToken, gameName;
    private int neededPlayers;
@@ -11,13 +11,6 @@ public class CreateGameRequest extends AbstractRESTRequest{
       this.userToken = userToken;
       this.neededPlayers = neededPlayers;
       this.gameName = gameName;
-   }
-
-   public CreateGameRequest(String gameName, int neededPlayers, String userToken, HTTPManager httpManager) {
-      this.userToken = userToken;
-      this.neededPlayers = neededPlayers;
-      this.gameName = gameName;
-      this.httpManager = httpManager;
    }
    
    @Override
@@ -28,25 +21,25 @@ public class CreateGameRequest extends AbstractRESTRequest{
       return json;
    }
 
-   @Override
-   protected String getHTTPMethod() {
-      return "post";
-   }
+    @Override
+    protected String getHttpMethod() {
+        return "post";
+    }
 
-   @Override
-   protected String getEndpoint() {
-      return "/game";
-   }
+    @Override
+    protected String getEndpoint() {
+        return "/game";
+    }
 
-   @Override
-   protected String getUserToken() {
-      return userToken;
-   }
-   
-   //Custom Request Helper
-   
-   public String getGameId() {
-      return (((JsonObject)getResponse().get("data")).get("gameId").getAsString());
-   }
+    @Override
+    protected String getUserToken() {
+        return userToken;
+    }
+    
+    //Custom Request Helper
+    
+    public String getGameId() {
+        return (((JsonObject)getResponse().get("data")).get("gameId").getAsString());
+    }
 
 }

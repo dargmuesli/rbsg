@@ -1,21 +1,16 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import java.util.ArrayList;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
+import java.util.ArrayList;
+
+public class QueryUsersInLobbyRequest extends AbstractRestRequest {
 
     private String userToken;
     
     public QueryUsersInLobbyRequest(String userToken) {
         this.userToken = userToken;
-    }
-
-    public QueryUsersInLobbyRequest(String userToken, HTTPManager httpManager) {
-        this.userToken = userToken;
-        this.httpManager = httpManager;
     }
     
     @Override
@@ -24,7 +19,7 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     }
 
     @Override
-    protected String getHTTPMethod() {
+    protected String getHttpMethod() {
         return "get";
     }
 
@@ -40,9 +35,9 @@ public class QueryUsersInLobbyRequest extends AbstractRESTRequest {
     
     //Custom Request Helper
 
-    public ArrayList<String> getUsersInLobby(){
+    public ArrayList<String> getUsersInLobby() {
         ArrayList<String> usersInLobby = new ArrayList<>();
-        for(JsonElement lobby: getResponse().get("data").getAsJsonArray()) {
+        for (JsonElement lobby: getResponse().get("data").getAsJsonArray()) {
             usersInLobby.add(lobby.getAsString());
         }
         return usersInLobby;

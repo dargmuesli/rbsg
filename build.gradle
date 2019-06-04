@@ -33,16 +33,17 @@ sourceSets {
     }
 }
 
-//configurations {
-//    checkstyleOverride
-//}
+configurations {
+    checkstyleOverride
+}
 
-//tasks.withType(Checkstyle) {
-//    checkstyleClasspath = project.configurations.checkstyleOverride
-//}
+tasks.withType(Checkstyle) {
+    checkstyleClasspath = project.configurations.checkstyleOverride
+    maxWarnings = 0
+}
 
 dependencies {
-//    checkstyleOverride('com.puppycrawl.tools:checkstyle:8.21')
+    checkstyleOverride('com.puppycrawl.tools:checkstyle:8.21')
 
     implementation group: 'commons-net', name: 'commons-net',version:'3.6'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.5'

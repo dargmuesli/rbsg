@@ -2,19 +2,14 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class JoinGameRequest extends AbstractRESTRequest{
+public class JoinGameRequest extends AbstractRestRequest {
     
-    private String userToken, gameId;
+    private String userToken;
+    private String gameId;
     
     public JoinGameRequest(String gameId, String userToken) {
         this.userToken = userToken;
         this.gameId = gameId;
-    }
-
-    public JoinGameRequest(String gameId, String userToken, HTTPManager httpManager) {
-        this.userToken = userToken;
-        this.gameId = gameId;
-        this.httpManager = httpManager;
     }
     
     @Override
@@ -23,7 +18,7 @@ public class JoinGameRequest extends AbstractRESTRequest{
     }
 
     @Override
-    protected String getHTTPMethod() {
+    protected String getHttpMethod() {
         return "get";
     }
 

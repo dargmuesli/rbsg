@@ -1,12 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
 import de.uniks.se1ss19teamb.rbsg.testmodel.Game; //TODO needs to be changed when we implement the game
-import org.fulib.yaml.YamlIdMap;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import org.fulib.yaml.YamlIdMap;
+
 
 public class PersistenceUtil {
 
@@ -21,8 +22,8 @@ public class PersistenceUtil {
 
             File file = new File(SAVEGAME_YAML);
 
-            if(!file.exists()) {
-                    file.createNewFile();
+            if (!file.exists()) {
+                file.createNewFile();
             }
 
             Files.write(Paths.get(file.toURI()), yaml.getBytes("UTF-8"));
@@ -35,7 +36,7 @@ public class PersistenceUtil {
     private Game load() {
         File file = new File(SAVEGAME_YAML);
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             return null;
         }
 
