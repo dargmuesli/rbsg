@@ -19,7 +19,7 @@ public class ChatLogTest {
 
         chat.deleteLog();
 
-        String message1 = "message1.";
+        String message1 = "message1";
         chat.sendMessage(message1);
 
         String message2 = "message2";
@@ -32,7 +32,7 @@ public class ChatLogTest {
         String message4 = "message4";
         chat.sendMessage(message4, "receiver");
 
-        String message5 = "message5.";
+        String message5 = "message5";
         chat.addToChatLog(message5, "sender");
 
         chat.disconnect();
