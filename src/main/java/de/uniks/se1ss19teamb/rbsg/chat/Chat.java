@@ -66,7 +66,7 @@ public class Chat  {
         chatLog.add(new ChatLogEntry(message, sender, receiver));
     }
 
-    public void writeLog(Path path) {
+    public void writeLog() {
         try (FileWriter fw = new FileWriter(path.toString(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)) {
@@ -75,6 +75,14 @@ public class Chat  {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteLog() {
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            new ErrorHandler().sendError("Chat log could not be deleted!");
         }
     }
 }

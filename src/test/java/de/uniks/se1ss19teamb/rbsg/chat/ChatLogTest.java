@@ -14,6 +14,7 @@ public class ChatLogTest {
 
     @Test
     public void chatTest() throws IOException, InterruptedException {
+        Path testChatLogPath = Paths.get("src/test/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
         Chat chat = new Chat("testTeamB", "qwertz");
 
@@ -35,10 +36,8 @@ public class ChatLogTest {
 
         chat.disconnect();
 
-        Path path = Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
-
         // Open the file
-        FileInputStream fstream = new FileInputStream(String.valueOf(path));
+        FileInputStream fstream = new FileInputStream(String.valueOf(testChatLogPath));
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;
@@ -59,8 +58,6 @@ public class ChatLogTest {
         Assert.assertEquals(message4, chatLogEntries.get(3).message);
         Assert.assertEquals(message5, chatLogEntries.get(4).message);
 
-        File file = new File(String.valueOf(path));
-        file.delete();
+        chat.deleteLog();
     }
-
 }
