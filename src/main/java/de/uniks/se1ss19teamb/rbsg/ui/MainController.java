@@ -65,14 +65,14 @@ public class MainController {
     
     public void setOnAction(ActionEvent event) throws IOException {
         
-        if(event.getSource().equals(btnCreate)) {
-            if(!gameName.getText().isEmpty()) {
+        if (event.getSource().equals(btnCreate)) {
+            if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
                 String userKey = LoginController.getUserKey();
                 CreateGameRequest game;
-                if(selected.equals(twoPlayers)) {
+                if (selected.equals(twoPlayers)) {
                     game = new CreateGameRequest(gameName.getText(), 2, userKey);
-                } else if(selected.equals(threePlayers)) {
+                } else if (selected.equals(threePlayers)) {
                     game = new CreateGameRequest(gameName.getText(), 3, userKey);
                 } else {
                     game = new CreateGameRequest(gameName.getText(), 4, userKey);
