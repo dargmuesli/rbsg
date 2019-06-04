@@ -17,22 +17,21 @@ public class ChatLogTest {
 
         Chat chat = new Chat("testTeamB", "qwertz");
 
-        String message1 = "Hi ich bin der testTeamB und ich kann Java nicht.";
+        String message1 = "message1.";
         chat.sendMessage(message1);
 
-        String message2 = "Hi testTeamB, gut das du es erwähnst";
+        String message2 = "message2";
         chat.sendMessage(message2);
 
-        String message3 = "Es ist kein Problem, hir sind alle Hilfsbereit und können dir"
-                + " gerne Weiterhelfen =)";
+        String message3 = "message3";
         chat.sendMessage(message3);
         TimeUnit.SECONDS.sleep(1);
 
-        String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
-        chat.sendMessage(message4, "Albert");
+        String message4 = "message4";
+        chat.sendMessage(message4, "receiver");
 
-        String message5 = "AddToChatLog test string.";
-        chat.addToChatLog(message5, "Me");
+        String message5 = "message5.";
+        chat.addToChatLog(message5, "sender");
 
         chat.disconnect();
 
