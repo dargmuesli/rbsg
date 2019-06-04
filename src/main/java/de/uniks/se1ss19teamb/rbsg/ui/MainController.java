@@ -61,7 +61,6 @@ public class MainController {
     }
 
     private Tab addTab(String tabname) {
-
         Pane pane = new Pane();
         pane.setMaxHeight(140);
         pane.setMaxWidth(180);
