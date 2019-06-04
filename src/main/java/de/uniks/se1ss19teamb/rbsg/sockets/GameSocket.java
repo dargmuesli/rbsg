@@ -9,13 +9,13 @@ public class GameSocket extends AbstractWebSocket {
 
     private String userKey, gameId;
     
-    private List<GameMessageHandler> handlers = new ArrayList<>();
+    private List<GameMessageHandler> handlersGame = new ArrayList<>();
     
     public GameSocket(String gameId, String userKey) {
         this.userKey = userKey;
         this.gameId = gameId;
         registerWebSocketHandler((response) -> {
-            for(GameMessageHandler handler : handlers)
+            for(GameMessageHandler handler : handlersGame)
                 handler.handle(response);
         });
     }
@@ -33,7 +33,7 @@ public class GameSocket extends AbstractWebSocket {
     //Custom Helpers
     
     public void registerGameMessageHandler(GameMessageHandler handler) {
-        handlers.add(handler);
+        handlersGame.add(handler);
     }
     
     //TODO Send and receive Handlers. Implement once more of this WS is known from Release 2

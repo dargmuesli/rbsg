@@ -13,7 +13,7 @@ import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 
-public class WebSocketTest {
+public class WebSocketTestsReal {
     
     @Test
     public void systemSocketTest() throws ParseException, IOException, InterruptedException {
