@@ -2,7 +2,6 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
@@ -43,6 +42,8 @@ public class MainController {
     @FXML
     private Toggle fourPlayers;
     
+    ErrorHandler errorHandler;
+    
     public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
@@ -53,7 +54,7 @@ public class MainController {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             ErrorPopupController controller = fxmlLoader.getController();
-            ErrorHandler errorHandler = new ErrorHandler();
+            errorHandler = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
             
@@ -62,19 +63,23 @@ public class MainController {
         }
     }
     
-    public void setOnAction(ActionEvent event) {
+    public void setOnAction(ActionEvent event) throws IOException {
         
         if(event.getSource().equals(btnCreate)) {
             if(!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
                 String userKey = LoginController.getUserKey();
+                CreateGameRequest game;
                 if(selected.equals(twoPlayers)) {
-                    CreateGameRequest game = new CreateGameRequest(gameName.getText(), 2, userKey);
+                    game = new CreateGameRequest(gameName.getText(), 2, userKey);
                 } else if(selected.equals(threePlayers)) {
-                    CreateGameRequest game = new CreateGameRequest(gameName.getText(), 3, userKey);
-                } else if(selected.equals(fourPlayers)) {
-                    CreateGameRequest game = new CreateGameRequest(gameName.getText(), 4, userKey);
+                    game = new CreateGameRequest(gameName.getText(), 3, userKey);
+                } else {
+                    game = new CreateGameRequest(gameName.getText(), 4, userKey);
                 }
+                game.sendRequest();
+            } else {
+                errorHandler.sendError("Bitte geben Sie etwas ein.");
             }
         }
     }
