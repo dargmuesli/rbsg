@@ -28,7 +28,7 @@ public class LoginController {
     private JFXTextField username;
 
     @FXML
-    private JFXTextField passwort;
+    private JFXTextField password;
 
     @FXML
     private JFXButton btnLogin;

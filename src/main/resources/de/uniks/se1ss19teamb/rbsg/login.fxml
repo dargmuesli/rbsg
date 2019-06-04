@@ -11,7 +11,7 @@
       <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@dark-design.css">
          <children>
             <JFXTextField fx:id="username" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="350.0" promptText="Username" />
-            <JFXTextField fx:id="passwort" labelFloat="true" layoutX="150.0" layoutY="198.0" prefHeight="40.0" prefWidth="350.0" promptText="Passwort" />
+            <JFXTextField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="198.0" prefHeight="40.0" prefWidth="350.0" promptText="Passwort" />
             <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="147.0" layoutY="300.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
                <font>
                   <Font size="16.0" />
