@@ -46,12 +46,10 @@ public class WebSocketTestsReal {
         LoginUserRequest login2 = new LoginUserRequest("testTeamB2", "qwertz");
         login2.sendRequest();
         
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2,
-                                                             login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
         
-        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getGameId(),
-                                                             login2.getUserKey());
+        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getGameId(), login2.getUserKey());
         deleteGame.sendRequest();
         
         LogoutUserRequest logout = new LogoutUserRequest(login2.getUserKey());
@@ -65,8 +63,7 @@ public class WebSocketTestsReal {
         
         Assert.assertTrue(msg.contains("userJoin|testTeamB2"));
         Assert.assertTrue(msg.contains("userLeft|testTeamB2"));
-        Assert.assertTrue(msg.contains("gameCreate|testTeamBGame|"
-                                          + createGame.getGameId() + "|2"));
+        Assert.assertTrue(msg.contains("gameCreate|testTeamBGame|" + createGame.getGameId() + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + createGame.getGameId()));
         
     }

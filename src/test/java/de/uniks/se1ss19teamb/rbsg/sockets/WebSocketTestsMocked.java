@@ -1,8 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,39 +16,36 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 public class WebSocketTestsMocked {
     
-	WebSocketClient client;
-	
-	@Before
-	public void prepareClient() {
-		client = mock(WebSocketClient.class);
-	}
-	
-	private void setupSocket(String answer, AbstractWebSocket socket) {
-		try {
-    		doAnswer(invocation -> {
-    			JsonParser parser = new JsonParser();
-    	        JsonObject response = (JsonObject) parser.parse(answer);
-    			
-    			for(WebSocketMessageHandler handler : socket.handlers) {
-    				handler.handle(response);
-    			}
-    	        return null;
-    	    }).when(client).sendMessage(any());
+    WebSocketClient client;
+    
+    @Before
+    public void prepareClient() {
+        client = mock(WebSocketClient.class);
+    }
+    
+    private void setupSocket(String answer, AbstractWebSocket socket) {
+        try {
+            doAnswer(invocation -> {
+                JsonParser parser = new JsonParser();
+                JsonObject response = (JsonObject) parser.parse(answer);
+                
+                for (WebSocketMessageHandler handler : socket.handlers) {
+                    handler.handle(response);
+                }
+                return null;
+            }).when(client).sendMessage(any());
         } catch (Exception e) {
             e.printStackTrace();
         }
-		
-		socket.websocket = client;
-	}
-	
+        
+        socket.websocket = client;
+    }
+    
     @Test
     public void systemSocketTest() throws ParseException, IOException, InterruptedException {
-    	SystemSocket system = new SystemSocket("111111111111111111111111111111111111");
+        SystemSocket system = new SystemSocket("111111111111111111111111111111111111");
         
         List<String> msg = new ArrayList<>();
         
@@ -65,17 +65,17 @@ public class WebSocketTestsMocked {
             msg.add("gameDelete|" + id);
         });
         
-    	setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"testTeamB2\"}}", system);
-    	system.sendToWebsocket(null);
-    	
-    	setupSocket("{\"action\":\"userLeft\",\"data\":{\"name\":\"testTeamB2\"}}", system);
-    	system.sendToWebsocket(null);
-    	
-    	setupSocket("{\"action\":\"gameCreated\",\"data\":{\"name\":\"testTeamBGame\",\"id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
-    	system.sendToWebsocket(null);
-    	
-    	setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}", system);
-    	system.sendToWebsocket(null);
+        setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"testTeamB2\"}}", system);
+        system.sendToWebsocket(null);
+        
+        setupSocket("{\"action\":\"userLeft\",\"data\":{\"name\":\"testTeamB2\"}}", system);
+        system.sendToWebsocket(null);
+        
+        setupSocket("{\"action\":\"gameCreated\",\"data\":{\"name\":\"testTeamBGame\",\"id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
+        system.sendToWebsocket(null);
+        
+        setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}", system);
+        system.sendToWebsocket(null);
         
         system.disconnect();
         

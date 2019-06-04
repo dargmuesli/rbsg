@@ -28,41 +28,42 @@ public class ChatSocket extends AbstractWebSocket {
                 return; 
             }
 
-			String msg = response.get("message").getAsString();
-			boolean isPrivate = response.get("channel").getAsString().equals("private");
-			for(ChatMessageHandler handler : handlersChat)
-				handler.handle(msg, from, isPrivate);
-		});
-	}
-	
-	@Override
-	protected String getEndpoint() {
-		return "/chat?user=" + userName;
-	}
+            String msg = response.get("message").getAsString();
+            boolean isPrivate = response.get("channel").getAsString().equals("private");
+            for (ChatMessageHandler handler : handlersChat) {
+                handler.handle(msg, from, isPrivate);
+            }
+        });
+    }
+    
+    @Override
+    protected String getEndpoint() {
+        return "/chat?user=" + userName;
+    }
 
-	@Override
-	protected String getUserKey() {
-		return userKey;
-	}
-	
-	//Custom Helpers
-	
-	public void registerChatMessageHandler(ChatMessageHandler handler) {
-		handlersChat.add(handler);
-	}
-	
-	public void sendMessage(String message) {
-		JsonObject json = new JsonObject();
-		json.addProperty("channel", "all");
-		json.addProperty("message", message);
-		sendToWebsocket(json);
-	}
-	
-	public void sendPrivateMessage(String message, String target) {
-		JsonObject json = new JsonObject();
-		json.addProperty("channel", "private");
-		json.addProperty("to", target);
-		json.addProperty("message", message);
-		sendToWebsocket(json);
-	}
+    @Override
+    protected String getUserKey() {
+        return userKey;
+    }
+    
+    //Custom Helpers
+    
+    public void registerChatMessageHandler(ChatMessageHandler handler) {
+        handlersChat.add(handler);
+    }
+    
+    public void sendMessage(String message) {
+        JsonObject json = new JsonObject();
+        json.addProperty("channel", "all");
+        json.addProperty("message", message);
+        sendToWebsocket(json);
+    }
+    
+    public void sendPrivateMessage(String message, String target) {
+        JsonObject json = new JsonObject();
+        json.addProperty("channel", "private");
+        json.addProperty("to", target);
+        json.addProperty("message", message);
+        sendToWebsocket(json);
+    }
 }

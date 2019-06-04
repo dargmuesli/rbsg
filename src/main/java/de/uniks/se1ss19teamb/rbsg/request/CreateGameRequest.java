@@ -2,24 +2,25 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class CreateGameRequest extends AbstractRestRequest{
+public class CreateGameRequest extends AbstractRestRequest {
    
-   private String userToken, gameName;
-   private int neededPlayers;
+    private String userToken;
+    private String gameName;
+    private int neededPlayers;
    
-   public CreateGameRequest(String gameName, int neededPlayers, String userToken) {
-      this.userToken = userToken;
-      this.neededPlayers = neededPlayers;
-      this.gameName = gameName;
-   }
+    public CreateGameRequest(String gameName, int neededPlayers, String userToken) {
+        this.userToken = userToken;
+        this.neededPlayers = neededPlayers;
+        this.gameName = gameName;
+    }
    
-   @Override
-   protected JsonObject buildJson() {
-      JsonObject json = new JsonObject();
-      json.addProperty("name", gameName);
-      json.addProperty("neededPlayer", neededPlayers);
-      return json;
-   }
+    @Override
+    protected JsonObject buildJson() {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", gameName);
+        json.addProperty("neededPlayer", neededPlayers);
+        return json;
+    }
 
     @Override
     protected String getHttpMethod() {

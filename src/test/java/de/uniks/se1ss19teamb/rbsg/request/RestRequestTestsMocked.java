@@ -1,79 +1,76 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import static org.mockito.Mockito.*;
+
 import de.uniks.se1ss19teamb.rbsg.model.Game;
+
+import java.io.IOException;
+
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.mockito.Mockito.*;
 
 public class RestRequestTestsMocked {
 
     private HttpManager httpManager;
 
     private HttpRequestResponse getHttpCreateGameResponse() {
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "{\"gameId\":\"123456789012345678901234\"}}";
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":{\"gameId\":\"123456789012345678901234\"}}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
     }
     
     private HttpRequestResponse getHttpRegisterUserResponse() {
-    	String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
+        String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
         int status = 400;
         String errorMsg = "Bad Request";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
     }
     
-	private HttpRequestResponse getHttpLoginUserResponse() {
-		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"userKey\":\"111111111111111111111111111111111111\"}}";
+    private HttpRequestResponse getHttpLoginUserResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"userKey\":\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "Bad Request";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-	}
-	
-	private HttpRequestResponse getHttpQueryUsersResponse() {
-		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
+    }
+    
+    private HttpRequestResponse getHttpQueryUsersResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-	}
+    }
 
-	private HttpRequestResponse getHttpLogoutUserResponse() {
-		String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":" +
-                "{}}";
+    private HttpRequestResponse getHttpLogoutUserResponse() {
+        String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":{}}";
         int statusLogout = 200;
         String errorMsgLogout = "test";
         return new HttpRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
-	}
-	
-	private HttpRequestResponse getHttpQueryGamesResponse() {
-		String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-	            "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
+    }
+    
+    private HttpRequestResponse getHttpQueryGamesResponse() {
+        String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
         int statusLogout = 200;
         String errorMsgLogout = "test";
         return new HttpRequestResponse(httpReqRepBodyQueryGames, statusLogout, errorMsgLogout);
-	}
-	
-	private HttpRequestResponse getHttpDeleteGameResponse() {
-		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+    }
+    
+    private HttpRequestResponse getHttpDeleteGameResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":{\"userKey\":\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-	}
-	
-	private HttpRequestResponse getHttpJoinGameResponse() {
-		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+    }
+    
+    private HttpRequestResponse getHttpJoinGameResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":{\"userKey\":\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-	}
+    }
 
     @Before
     public void setupTests() {
@@ -83,7 +80,7 @@ public class RestRequestTestsMocked {
 
     @Test
     public void registerUserTest() {
-    	HttpRequestResponse httpRequestResponse = getHttpRegisterUserResponse();
+        HttpRequestResponse httpRequestResponse = getHttpRegisterUserResponse();
 
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);

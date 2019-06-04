@@ -16,8 +16,9 @@ public class GameSocket extends AbstractWebSocket {
         this.userKey = userKey;
         this.gameId = gameId;
         registerWebSocketHandler((response) -> {
-            for(GameMessageHandler handler : handlersGame)
+            for (GameMessageHandler handler : handlersGame) {
                 handler.handle(response);
+            }
         });
     }
     

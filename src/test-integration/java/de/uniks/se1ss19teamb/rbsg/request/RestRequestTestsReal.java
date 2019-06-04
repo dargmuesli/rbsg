@@ -106,8 +106,7 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame
-                                = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
 
         QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
@@ -131,8 +130,7 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame
-                                = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
 
         DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
@@ -151,8 +149,7 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame
-                                = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
 
         JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
@@ -168,8 +165,7 @@ public class RestRequestTestsReal {
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
 
-            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId()
-                    .equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
+            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -185,8 +181,7 @@ public class RestRequestTestsReal {
 
         query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame"))
             .forEach((game) -> {
-                System.out.println("Tidying up Game " + game.getName() + " with id "
-                                + game.getId() + "...");
+                System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
                 DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
                 try {
                     req.sendRequest();
