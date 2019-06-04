@@ -14,14 +14,6 @@ public class RESTRequestTestsMocked {
 
     private HTTPManager httpManager;
 
-    private HTTPRequestResponse getHttpLoginResponse() {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
-    }
-
     private HTTPRequestResponse getHttpCreateGameResponse() {
         String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
                 "{\"gameId\":\"123456789012345678901234\"}}";
@@ -29,44 +21,80 @@ public class RESTRequestTestsMocked {
         String errorMsg = "test";
         return new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
     }
+    
+    private HTTPRequestResponse getHttpRegisterUserResponse() {
+    	String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
+        int status = 400;
+        String errorMsg = "Bad Request";
+        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+    
+	private HTTPRequestResponse getHttpLoginUserResponse() {
+		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "Bad Request";
+        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+	}
+	
+	private HTTPRequestResponse getHttpQueryUsersResponse() {
+		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+	}
+
+	private HTTPRequestResponse getHttpLogoutUserResponse() {
+		String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":" +
+                "{}}";
+        int statusLogout = 200;
+        String errorMsgLogout = "test";
+        return new HTTPRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
+	}
+	
+	private HTTPRequestResponse getHttpQueryGamesResponse() {
+		String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
+	            "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
+        int statusLogout = 200;
+        String errorMsgLogout = "test";
+        return new HTTPRequestResponse(httpReqRepBodyQueryGames, statusLogout, errorMsgLogout);
+	}
+	
+	private HTTPRequestResponse getHttpDeleteGameResponse() {
+		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+	}
+	
+	private HTTPRequestResponse getHttpJoinGameResponse() {
+		String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":" +
+                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+	}
 
     @Before
     public void setupTests() {
         httpManager = mock(HTTPManager.class);
-        String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
-        int status = 400;
-        String errorMsg = "Bad Request";
-        HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+
+    @Test
+    public void registerUserTest() {
+    	HTTPRequestResponse httpRequestResponse = getHttpRegisterUserResponse();
 
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void testCommandLineArguments() {
-        String value = System.getProperty("param");
-        System.out.println(value);
-    }
-
-    @Test
-    public void registerUserTest() {
 
         RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz", httpManager);
 
         try {
-            //Test Returning Json
-            //Demonstration on how to directly process Json with Lambda
-            req.sendRequest((response) -> {
-                Assert.assertEquals("failure", response.get("status").getAsString());
-                Assert.assertEquals("Name already taken", response.get("message").getAsString());
-            });
-
-            //Test Request Helpers
-            //This is the way one should query information from the Request Handlers
-            //ALWAYS!!! check getSuccessful first, since if it returns false, all other methods except getMessage have undefined behaviour or might throw Exceptions
+            req.sendRequest();
+            
             Assert.assertFalse(req.getSuccessful());
             Assert.assertEquals("Name already taken", req.getMessage());
         } catch (Exception e) {
@@ -78,11 +106,7 @@ public class RESTRequestTestsMocked {
     @Test
     public void loginUserTest() {
 
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Name already taken\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        int status = 400;
-        String errorMsg = "Bad Request";
-        HTTPRequestResponse httpRequestResponse = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponse = getHttpLoginUserResponse();
 
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);
@@ -105,26 +129,15 @@ public class RESTRequestTestsMocked {
     @Test
     public void queryUsersInLobbyTest() throws IOException, ParseException {
 
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
-
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
-        int status = 400;
-        String errorMsg = "Bad Request";
-        HTTPRequestResponse httpRequestResponseGet = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
-
-        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
+        HTTPRequestResponse httpRequestResponseGet = getHttpQueryUsersResponse();
 
         try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
             when(httpManager.get(any(), any())).thenReturn(httpRequestResponseGet);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        login.sendRequest();
-
-        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getUserKey(), httpManager);
+        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest("111111111111111111111111111111111111", httpManager);
         try {
             req.sendRequest();
 
@@ -137,22 +150,7 @@ public class RESTRequestTestsMocked {
 
     @Test
     public void logoutUserTest() throws IOException, ParseException {
-        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
-
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        login.sendRequest();
-
-        String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":" +
-                "{}}";
-        int statusLogout = 200;
-        String errorMsgLogout = "test";
-        HTTPRequestResponse httpRequestResponseLogout = new HTTPRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
+        HTTPRequestResponse httpRequestResponseLogout = getHttpLogoutUserResponse();
 
         try {
             when(httpManager.get(any(), any())).thenReturn(httpRequestResponseLogout);
@@ -160,7 +158,7 @@ public class RESTRequestTestsMocked {
             e.printStackTrace();
         }
 
-        LogoutUserRequest req = new LogoutUserRequest(login.getUserKey(), httpManager);
+        LogoutUserRequest req = new LogoutUserRequest("111111111111111111111111111111111111", httpManager);
         try {
             req.sendRequest();
 
@@ -173,22 +171,7 @@ public class RESTRequestTestsMocked {
 
     @Test
     public void createGameTest() throws IOException, ParseException {
-        int status = 200;
-        String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
-
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        login.sendRequest();
-
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "{\"gameId\":\"123456789012345678901234\"}}";
-        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseCreateGame = getHttpCreateGameResponse();
 
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
@@ -196,9 +179,8 @@ public class RESTRequestTestsMocked {
             e.printStackTrace();
         }
 
-        CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
+        CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, "111111111111111111111111111111111111", httpManager);
         try {
-            //Query Request
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
@@ -210,34 +192,11 @@ public class RESTRequestTestsMocked {
 
     @Test
     public void queryGamesTest() throws IOException, ParseException {
-        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
+        HTTPRequestResponse httpRequestResponseQueryGames = getHttpQueryGamesResponse();
 
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
-
+        QueryGamesRequest req = new QueryGamesRequest("111111111111111111111111111111111111", httpManager);
         try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        login.sendRequest();
-
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,\"joinedPlayer\":0}]}";
-        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, 200, "test");
-
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        createGame.sendRequest();
-
-        QueryGamesRequest req = new QueryGamesRequest(login.getUserKey(), httpManager);
-        try {
-            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseCreateGame);
+            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseQueryGames);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -259,41 +218,9 @@ public class RESTRequestTestsMocked {
 
     @Test
     public void deleteGameTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+        DeleteGameRequest req = new DeleteGameRequest("123456789012345678901234", "111111111111111111111111111111111111", httpManager);
 
-        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
-
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        login.sendRequest();
-
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
-
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":" +
-                "{\"gameId\":\"123456789012345678901234\"}}";
-        HTTPRequestResponse httpRequestResponseCreateGame = new HTTPRequestResponse(httpReqRepBodyCreateGame, 200, "test");
-
-
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        createGame.sendRequest();
-
-        DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey(), httpManager);
-
-
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseDelete = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseDelete = getHttpDeleteGameResponse();
 
         try {
             when(httpManager.delete(any(), any(), any())).thenReturn(httpRequestResponseDelete);
@@ -313,35 +240,9 @@ public class RESTRequestTestsMocked {
 
     @Test
     public void joinGameTest() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz", httpManager);
+        JoinGameRequest req = new JoinGameRequest("123456789012345678901234", "111111111111111111111111111111111111", httpManager);
 
-        HTTPRequestResponse httpRequestResponseLogin = getHttpLoginResponse();
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseLogin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        login.sendRequest();
-
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey(), httpManager);
-
-        HTTPRequestResponse httpRequestResponseCreateGame = getHttpCreateGameResponse();
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        createGame.sendRequest();
-
-        JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey(), httpManager);
-
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":" +
-                "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        HTTPRequestResponse httpRequestResponseJoinGame = new HTTPRequestResponse(httpReqRepBody, status, errorMsg);
+        HTTPRequestResponse httpRequestResponseJoinGame = getHttpJoinGameResponse();
 
         try {
             when(httpManager.get(any(), any())).thenReturn(httpRequestResponseJoinGame);
@@ -354,41 +255,8 @@ public class RESTRequestTestsMocked {
 
             Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
-
-            // Check if we actually joined the game
-            // Can be deleted because the test is mocked an we don't really register to the server.
-
-            /*
-
-            QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
-            query.sendRequest();
-
-            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
-
-             */
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
     }
-    
-    /*
-    @After
-    public void cleanupGames() throws IOException, ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
-        login.sendRequest();
-        
-        QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
-        query.sendRequest();
-        
-        query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame")).forEach((game) -> {
-            System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
-            DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
-            try {
-                req.sendRequest();
-            } catch (IOException | ParseException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-     */
 }
