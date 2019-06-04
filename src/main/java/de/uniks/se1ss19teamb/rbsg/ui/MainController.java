@@ -90,7 +90,7 @@ public class MainController {
         if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
-            if(logout.getSuccessful()) {
+            if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
