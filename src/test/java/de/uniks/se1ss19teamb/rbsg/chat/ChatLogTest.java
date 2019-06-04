@@ -15,8 +15,9 @@ public class ChatLogTest {
     @Test
     public void chatTest() throws IOException, InterruptedException {
         Path testChatLogPath = Paths.get("src/test/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+        Chat chat = new Chat("testTeamB", "qwertz", testChatLogPath);
 
-        Chat chat = new Chat("testTeamB", "qwertz");
+        chat.deleteLog();
 
         String message1 = "message1.";
         chat.sendMessage(message1);
