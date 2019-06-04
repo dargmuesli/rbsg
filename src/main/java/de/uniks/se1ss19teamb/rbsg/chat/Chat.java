@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Chat  {
 
-    ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
+    private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     private String sender;
     private LoginUserRequest login;
     private LogoutUserRequest logout;
