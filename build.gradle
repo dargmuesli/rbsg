@@ -48,6 +48,8 @@ dependencies {
     implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
     implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.15'
     implementation group: 'io.github.typhon0', name:'AnimateFX', version: '1.2.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
 
     runtime group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
 
