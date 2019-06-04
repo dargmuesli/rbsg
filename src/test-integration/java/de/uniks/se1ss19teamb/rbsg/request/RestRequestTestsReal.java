@@ -165,7 +165,8 @@ public class RestRequestTestsReal {
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
 
-            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId().equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
+            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId()
+                    .equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }

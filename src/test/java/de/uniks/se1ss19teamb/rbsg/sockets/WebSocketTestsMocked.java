@@ -71,7 +71,8 @@ public class WebSocketTestsMocked {
         setupSocket("{\"action\":\"userLeft\",\"data\":{\"name\":\"testTeamB2\"}}", system);
         system.sendToWebsocket(null);
         
-        setupSocket("{\"action\":\"gameCreated\",\"data\":{\"name\":\"testTeamBGame\",\"id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
+        setupSocket("{\"action\":\"gameCreated\",\"data\":{\"name\":\"testTeamBGame\",\""
+                + "id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
         system.sendToWebsocket(null);
         
         setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}", system);

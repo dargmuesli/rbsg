@@ -35,13 +35,17 @@ public abstract class AbstractRestRequest implements RestRequest {
         try {
             switch (getHttpMethod()) {
               case "get":
-                  result = httpManager.get(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) });
+                  result = httpManager.get(new URI(url + getEndpoint()), token == null 
+                      ? null : new Header[] { new BasicHeader("userKey", token) });
                   break;
               case "post":
-                  result = httpManager.post(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, new StringEntity(buildJson().toString()));
+                  result = httpManager.post(new URI(url + getEndpoint()), token == null 
+                      ? null : new Header[] { new BasicHeader("userKey", token) },
+                      new StringEntity(buildJson().toString()));
                   break;
               case "delete":
-                  result = httpManager.delete(new URI(url + getEndpoint()), token == null ? null : new Header[] { new BasicHeader("userKey", token) }, null);
+                  result = httpManager.delete(new URI(url + getEndpoint()), token == null
+                      ? null : new Header[] { new BasicHeader("userKey", token) }, null);
                   break;
               
               default:
