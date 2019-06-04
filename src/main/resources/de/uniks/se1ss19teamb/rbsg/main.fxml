@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -21,15 +23,16 @@
                         <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: grey;" text="Create Game" />
                         <HBox alignment="CENTER" layoutX="1.0" layoutY="89.0" prefHeight="45.0" prefWidth="224.0">
                            <children>
-                              <RadioButton fx:id="twoPlayers" contentDisplay="BOTTOM" ellipsisString="" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" selected="true" text="2">
+                              <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM" ellipsisString="" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" selected="true" text="2">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="playerNumberToggleGroup" />
                                  </toggleGroup>
-                              </RadioButton>
-                              <RadioButton fx:id="threePlayers" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" text="3" toggleGroup="$playerNumberToggleGroup" />
-                              <RadioButton fx:id="fourPlayers" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" text="4" toggleGroup="$playerNumberToggleGroup" />
+                              </JFXRadioButton>
+                              <RadioButton fx:id="threePlayers" accessibleText="3" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" text="3" toggleGroup="$playerNumberToggleGroup" />
+                              <RadioButton fx:id="fourPlayers" accessibleText="4" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" text="4" toggleGroup="$playerNumberToggleGroup" />
                            </children>
                         </HBox>
+                        <JFXTextField fx:id="gameName" alignment="CENTER" layoutX="45.0" layoutY="65.0" promptText="Game name" />
                      </children></AnchorPane>
                </children>
             </AnchorPane>

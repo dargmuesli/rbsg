@@ -1,6 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -10,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 
@@ -26,6 +30,18 @@ public class MainController {
     
     @FXML
     private ToggleGroup playerNumberToggleGroup;
+    
+    @FXML
+    private JFXTextField gameName;
+    
+    @FXML
+    private Toggle twoPlayers;
+    
+    @FXML
+    private Toggle threePlayers;
+    
+    @FXML
+    private Toggle fourPlayers;
     
     public void initialize() {
         mainScreen.setOpacity(0);
@@ -49,7 +65,17 @@ public class MainController {
     public void setOnAction(ActionEvent event) {
         
         if(event.getSource().equals(btnCreate)) {
-        
+            if(!gameName.getText().isEmpty()) {
+                Toggle selected = playerNumberToggleGroup.getSelectedToggle();
+                String userKey = LoginController.getUserKey();
+                if(selected.equals(twoPlayers)) {
+                    CreateGameRequest game = new CreateGameRequest(gameName.getText(), 2, userKey);
+                } else if(selected.equals(threePlayers)) {
+                    CreateGameRequest game = new CreateGameRequest(gameName.getText(), 3, userKey);
+                } else if(selected.equals(fourPlayers)) {
+                    CreateGameRequest game = new CreateGameRequest(gameName.getText(), 4, userKey);
+                }
+            }
         }
     }
 }
