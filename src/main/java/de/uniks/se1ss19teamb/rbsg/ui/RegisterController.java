@@ -1,5 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+
+import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,22 +11,20 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-import java.io.IOException;
-
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-
 public class RegisterController {
+    
     @FXML
     private AnchorPane registerScreen;
 
     @FXML
     AnchorPane errorContainer;
 
-    public void initialize(){
+    public void initialize() {
         registerScreen.setOpacity(0);
         makeFadeInTransition();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ErrorPopup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.RegisterController">
+<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegisterController">
    <children>
       <AnchorPane fx:id="registerScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design.css">
          <children>
@@ -16,7 +16,7 @@
                </font>
             </Label>
             <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" prefHeight="37.0" prefWidth="130.0" text="confirm" />
-            <JFXButton fx:id="btcCancel" layoutX="320.0" layoutY="336.0" prefHeight="37.0" prefWidth="130.0" text="cancel" />
+            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" prefHeight="37.0" prefWidth="130.0" text="cancel" />
             <JFXTextField fx:id="confirmPasswort" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Passwort" />
             <JFXTextField fx:id="passwort" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Passwort" />
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />

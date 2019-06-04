@@ -9,8 +9,10 @@ public class CipherConstant {
 
     static {
         try {
-            publicKey = CipherUtils.readPublicKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/public.der");
-            privateKey = CipherUtils.readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
+            publicKey = CipherUtils
+                    .readPublicKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/public.der");
+            privateKey = CipherUtils
+                    .readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
         } catch (Exception e) {
             e.printStackTrace();
         }
