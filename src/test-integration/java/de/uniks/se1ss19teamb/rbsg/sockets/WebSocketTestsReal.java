@@ -1,5 +1,10 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
+import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
+import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
+import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +12,6 @@ import java.util.List;
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
-
-import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 
 public class WebSocketTestsReal {
     
@@ -49,7 +49,8 @@ public class WebSocketTestsReal {
         CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
         createGame.sendRequest();
         
-        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getGameId(), login2.getUserKey());
+        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getGameId(),
+        														login2.getUserKey());
         deleteGame.sendRequest();
         
         LogoutUserRequest logout = new LogoutUserRequest(login2.getUserKey());
@@ -63,7 +64,8 @@ public class WebSocketTestsReal {
         
         Assert.assertTrue(msg.contains("userJoin|testTeamB2"));
         Assert.assertTrue(msg.contains("userLeft|testTeamB2"));
-        Assert.assertTrue(msg.contains("gameCreate|testTeamBGame|" + createGame.getGameId() + "|2"));
+        Assert.assertTrue(msg.contains("gameCreate|testTeamBGame|" +
+        								createGame.getGameId() + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + createGame.getGameId()));
         
     }
