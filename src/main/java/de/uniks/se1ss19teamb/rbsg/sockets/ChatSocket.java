@@ -9,7 +9,7 @@ public class ChatSocket extends AbstractWebSocket {
 
 	private String userKey, userName;
 	
-	private List<ChatMessageHandler> handlers = new ArrayList<>();
+	private List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
 	private boolean ignoreOwn;
 	
@@ -28,7 +28,7 @@ public class ChatSocket extends AbstractWebSocket {
 
 			String msg = response.get("message").getAsString();
 			boolean isPrivate = response.get("channel").getAsString().equals("private");
-			for(ChatMessageHandler handler : handlers)
+			for(ChatMessageHandler handler : handlersChat)
 				handler.handle(msg, from, isPrivate);
 		});
 	}
@@ -46,7 +46,7 @@ public class ChatSocket extends AbstractWebSocket {
 	//Custom Helpers
 	
 	public void registerChatMessageHandler(ChatMessageHandler handler) {
-		handlers.add(handler);
+		handlersChat.add(handler);
 	}
 	
 	public void sendMessage(String message) {
