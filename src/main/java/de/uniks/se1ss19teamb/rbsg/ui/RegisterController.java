@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXPasswordField;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 
 import java.io.IOException;
@@ -12,7 +13,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 public class RegisterController {
-    
+    @FXML
+    JFXPasswordField password;
+    @FXML
+    JFXPasswordField confirmPassword;
     @FXML
     private AnchorPane registerScreen;
 

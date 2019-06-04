@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
@@ -30,7 +31,7 @@ public class LoginController {
     private JFXTextField username;
 
     @FXML
-    private JFXTextField password;
+    private JFXPasswordField password;
 
     @FXML
     private JFXButton btnLogin;
