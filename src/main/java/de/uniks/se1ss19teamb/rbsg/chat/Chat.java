@@ -61,6 +61,14 @@ public class Chat  {
     }
 
     public void writeLog() {
+        if (Files.notExists(path.getParent())) {
+            try {
+                Files.createDirectories(path.getParent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try (FileWriter fw = new FileWriter(path.toString(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)) {
