@@ -1,45 +1,47 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
-import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class Chat  {
+public class Chat {
 
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
-    private String sender;
-    private LoginUserRequest login;
-    private LogoutUserRequest logout;
     private ChatSocket chatSocket;
-    private Path path = Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+    private Path path;
+    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
+        -> addToChatLog(message, from, isPrivate ? chatSocket.getUserName() : "All");
 
-    public Chat(String sender, String password) throws IOException {
-        this.sender = sender;
-        // Login
-        this.login = new LoginUserRequest(sender, password);
-        login.sendRequest();
+    public Chat(String sender, String userKey) {
+        this(new ChatSocket(sender, userKey), Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt"));
+    }
 
-        this.chatSocket = new ChatSocket(sender, login.getUserKey());
+    public Chat(String sender, String userKey, Path path) {
+        this(new ChatSocket(sender, userKey), path);
+    }
 
+    public Chat(ChatSocket chatSocket, Path path) {
+        this.chatSocket = chatSocket;
         this.chatSocket.connect();
-
-        this.receiveMessages();
+        this.chatSocket.registerChatMessageHandler(chatMessageHandler);
+        this.path = path;
     }
 
     public void disconnect() throws IOException {
-        writeLog(this.path);
         this.chatSocket.disconnect();
-        this.logout = new LogoutUserRequest(this.login.getUserKey());
-        this.logout.sendRequest();
+        writeLog();
+        new LogoutUserRequest(this.chatSocket.getUserKey()).sendRequest();
     }
 
     public void sendMessage(String message) {
@@ -48,14 +50,8 @@ public class Chat  {
     }
 
     public void sendMessage(String message, String receiver) {
-        addToChatLog(message, this.sender, receiver);
+        addToChatLog(message, this.chatSocket.getUserName(), receiver);
         this.chatSocket.sendPrivateMessage(message, receiver);
-    }
-
-    public void receiveMessages() {
-        this.chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
-            addToChatLog(message, from, this.sender);
-        });
     }
 
     public void addToChatLog(String message, String sender) {
@@ -66,7 +62,15 @@ public class Chat  {
         chatLog.add(new ChatLogEntry(message, sender, receiver));
     }
 
-    public void writeLog(Path path) {
+    public void writeLog() {
+        if (Files.notExists(path.getParent())) {
+            try {
+                Files.createDirectories(path.getParent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try (FileWriter fw = new FileWriter(path.toString(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)) {
@@ -75,6 +79,14 @@ public class Chat  {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteLog() {
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            new ErrorHandler().sendError("Chat log could not be deleted!");
         }
     }
 }

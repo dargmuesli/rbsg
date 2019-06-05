@@ -1,67 +1,86 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import de.uniks.se1ss19teamb.rbsg.sockets.*;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ChatLogTest {
 
+    private ChatSocket chatSocket;
+
+    @Before
+    public void prepareClient() {
+        chatSocket = mock(ChatSocket.class);
+
+        when(chatSocket.getUserName()).thenReturn("me");
+    }
+
+    private void setupSocket(Chat chat, String msg, String from) {
+        doAnswer(invocation -> {
+            chat.chatMessageHandler.handle(msg, from, false);
+            return null;
+        }).when(chatSocket).sendMessage(any());
+    }
+
     @Test
-    public void chatTest() throws IOException, InterruptedException {
+    public void chatTest() throws IOException {
+        Path testChatLogPath = Paths.get("src/test/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+        Chat chat = new Chat(chatSocket, testChatLogPath);
 
-        Chat chat = new Chat("testTeamB", "qwertz");
+        chat.deleteLog();
 
-        String message1 = "Hi ich bin der testTeamB und ich kann Java nicht.";
-        chat.sendMessage(message1);
+        ChatLogEntry chatLogEntry1 = new ChatLogEntry("message1", chatSocket.getUserName());
+        setupSocket(chat, chatLogEntry1.message, chatLogEntry1.sender);
+        chat.sendMessage(chatLogEntry1.message);
 
-        String message2 = "Hi testTeamB, gut das du es erwähnst";
-        chat.sendMessage(message2);
+        ChatLogEntry chatLogEntry2 = new ChatLogEntry("message2", chatSocket.getUserName(), "receiver2");
+        setupSocket(chat, chatLogEntry2.message, chatLogEntry2.sender);
+        chat.sendMessage(chatLogEntry2.message, chatLogEntry2.receiver);
 
-        String message3 = "Es ist kein Problem, hir sind alle Hilfsbereit und können dir"
-                + " gerne Weiterhelfen =)";
-        chat.sendMessage(message3);
-        TimeUnit.SECONDS.sleep(1);
-
-        String message4 = "Ich würde gerne Fragen was mit dem Server los ist";
-        chat.sendMessage(message4, "Albert");
-
-        String message5 = "AddToChatLog test string.";
-        chat.addToChatLog(message5, "Me");
+        ChatLogEntry chatLogEntry3 = new ChatLogEntry("message3", chatSocket.getUserName());
+        setupSocket(chat, chatLogEntry3.message, chatLogEntry3.sender);
+        chat.sendMessage(chatLogEntry3.message);
 
         chat.disconnect();
 
-        Path path = Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
-
         // Open the file
-        FileInputStream fstream = new FileInputStream(String.valueOf(path));
+        FileInputStream fstream = new FileInputStream(String.valueOf(testChatLogPath));
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;
 
         //Read File Line By Line
-        ArrayList<ChatLogEntry> chatLogEntries = new ArrayList<>();
+        ArrayList<ChatLogEntry> loggedEntries = new ArrayList<>();
         while ((strLine = br.readLine()) != null) {
             // deserialize chatLog
             ChatLogEntry entry = SerializeUtils.deserialize(strLine, ChatLogEntry.class);
-            chatLogEntries.add(entry);
+            loggedEntries.add(entry);
         }
         //Close the input stream
         fstream.close();
 
-        Assert.assertEquals(message1, chatLogEntries.get(0).message);
-        Assert.assertEquals(message2, chatLogEntries.get(1).message);
-        Assert.assertEquals(message3, chatLogEntries.get(2).message);
-        Assert.assertEquals(message4, chatLogEntries.get(3).message);
-        Assert.assertEquals(message5, chatLogEntries.get(4).message);
+        Assert.assertEquals(chatLogEntry1.message, loggedEntries.get(0).message);
+        Assert.assertEquals(chatLogEntry1.sender, loggedEntries.get(0).sender);
+        Assert.assertEquals(chatLogEntry1.receiver, loggedEntries.get(0).receiver);
 
-        File file = new File(String.valueOf(path));
-        file.delete();
+        Assert.assertEquals(chatLogEntry2.message, loggedEntries.get(1).message);
+        Assert.assertEquals(chatLogEntry2.sender, loggedEntries.get(1).sender);
+        Assert.assertEquals(chatLogEntry2.receiver, loggedEntries.get(1).receiver);
+
+        Assert.assertEquals(chatLogEntry3.message, loggedEntries.get(2).message);
+        Assert.assertEquals(chatLogEntry3.sender, loggedEntries.get(2).sender);
+        Assert.assertEquals(chatLogEntry3.receiver, loggedEntries.get(2).receiver);
+
+        chat.deleteLog();
     }
-
 }
