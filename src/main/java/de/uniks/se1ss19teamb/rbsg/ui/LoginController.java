@@ -46,6 +46,7 @@ public class LoginController {
     private AnchorPane errorContainer;
 
     Logger logger = LogManager.getLogger(LoginController.class);
+
     public void initialize() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
@@ -76,12 +77,12 @@ public class LoginController {
     }
 
 
-    private void slideNextScene(String path, int xValue) throws IOException {
+    private void slideNextScene(String path, int value) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
         if (randomValue) {
             Parent root = FXMLLoader.load(getClass().getResource(path));
-            root.translateYProperty().setValue(-xValue);
+            root.translateYProperty().setValue(-value);
 
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateYProperty(),0,Interpolator.EASE_IN);
@@ -95,7 +96,7 @@ public class LoginController {
             stage.setScene(scene);
         } else {
             Parent root = FXMLLoader.load(getClass().getResource(path));
-            root.translateXProperty().setValue(-xValue);
+            root.translateXProperty().setValue(-value);
 
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);

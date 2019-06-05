@@ -55,7 +55,6 @@ dependencies {
     implementation group: 'de.jensd', name: 'fontawesomefx-icons525', version: '3.0.0-4'
     implementation group: 'de.jensd', name: 'fontawesomefx-materialdesignfont', version: '1.7.22-4'
     implementation group: 'de.jensd', name: 'fontawesomefx-materialicons', version: '2.2.0-5'
-    implementation group: 'de.jensd', name: 'fontawesomefx-weathericonos', version: '2.0.10-5'
     implementation group: 'javax.websocket', name: 'javax.websocket-client-api', version: '1.0'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
     implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
