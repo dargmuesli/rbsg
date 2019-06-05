@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
    <children>
       <AnchorPane fx:id="mainScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
-            <VBox fx:id="playerList" layoutY="-2.0" prefHeight="400.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <VBox fx:id="playerList" layoutY="30.0" prefHeight="370.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
+               <children>
+                  <ListView fx:id="playerListView" prefHeight="375.0" prefWidth="148.0" />
+               </children></VBox>
             <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <AnchorPane fx:id="chat" prefHeight="180.0" prefWidth="225.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="1.0" />
                   <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="gameLounge" layoutX="151.0" layoutY="26.0" prefHeight="194.0" prefWidth="449.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="151.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
-                  <AnchorPane fx:id="errorContainer" layoutX="14.0" layoutY="94.0" prefHeight="50.0" prefWidth="400.0" />
+                  <AnchorPane fx:id="errorContainer" layoutX="25.0" layoutY="60.0" prefHeight="50.0" prefWidth="400.0" />
                </children></AnchorPane>
             <HBox fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="96.0" text="Players" textFill="#756e6e" />
-                  <Label alignment="CENTER" prefHeight="24.0" prefWidth="241.0" text="Running Games" textFill="#7c7676" />
+                  <Label alignment="CENTER" prefHeight="24.0" prefWidth="139.0" text="Players" textFill="#756e6e" />
+                  <Line endX="-257.5962219238281" endY="-593.4232788085938" startX="-265.8891296386719" startY="-616.7161865234375" />
+                  <Label alignment="CENTER" prefHeight="24.0" prefWidth="450.0" text="Running Games" textFill="#7c7676" />
                </children>
             </HBox>
          </children>
