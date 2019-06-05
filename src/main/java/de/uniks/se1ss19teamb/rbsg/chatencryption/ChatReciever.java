@@ -24,7 +24,8 @@ public class ChatReciever extends Thread {
                     chat.anotherPulbic = publicKey;
                 } else if (count == 1) {
                     if (!(prompt.equalsIgnoreCase("Client : "))) {
-                        System.out.println("Connected to Server: " + serverAdd + "\nStreams Established. Ready to Chat .. ");
+                        System.out.println("Connected to Server: " + serverAdd
+                            + "\nStreams Established. Ready to Chat .. ");
                     } else {
                         System.out.println("Keys Exchanged");
 

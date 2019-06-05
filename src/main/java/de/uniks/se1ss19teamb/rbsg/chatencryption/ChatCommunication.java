@@ -17,7 +17,8 @@ public class ChatCommunication {
     BufferedReader stdIn;
     Socket socket;
 
-    public ChatCommunication(Socket echoSochet, ObjectInputStream in, ObjectOutputStream out, String type, String filename) {
+    public ChatCommunication(
+        Socket echoSochet, ObjectInputStream in, ObjectOutputStream out, String type, String filename) {
         cp = new CipherController();
         this.type = type;
         this.socket = echoSochet;

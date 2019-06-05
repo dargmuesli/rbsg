@@ -14,6 +14,7 @@ class CipherConstant {
     static PublicKey publicKey;
     static PrivateKey privateKey;
     static  GenerateKeys keys = new GenerateKeys();
+
     static {
         try {
             keys.createKeys();
