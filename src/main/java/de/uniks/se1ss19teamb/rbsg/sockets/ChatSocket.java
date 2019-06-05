@@ -7,10 +7,10 @@ import java.util.List;
 
 public class ChatSocket extends AbstractWebSocket {
 
-    private String userKey; 
+    private String userKey;
     private String userName;
     
-    private List<ChatMessageHandler> handlers = new ArrayList<>();
+    private List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
     private boolean ignoreOwn;
     
@@ -22,7 +22,12 @@ public class ChatSocket extends AbstractWebSocket {
         this.userKey = userKey;
         this.userName = userName;
         this.ignoreOwn = ignoreOwn;
-        registerWebSocketHandler((response) -> {
+        registerWebSocketHandler((response) -> { 
+            if (response.get("msg") != null) {
+                //TODO Handle error in MSG
+                return;
+            }
+            
             String from = response.get("from").getAsString();
             if (this.ignoreOwn && from.equals(userName)) { 
                 return; 
@@ -30,7 +35,7 @@ public class ChatSocket extends AbstractWebSocket {
 
             String msg = response.get("message").getAsString();
             boolean isPrivate = response.get("channel").getAsString().equals("private");
-            for (ChatMessageHandler handler : handlers) {
+            for (ChatMessageHandler handler : handlersChat) {
                 handler.handle(msg, from, isPrivate);
             }
         });
@@ -42,14 +47,18 @@ public class ChatSocket extends AbstractWebSocket {
     }
 
     @Override
-    protected String getUserKey() {
+    public String getUserKey() {
         return userKey;
+    }
+
+    public String getUserName() {
+        return userName;
     }
     
     //Custom Helpers
     
     public void registerChatMessageHandler(ChatMessageHandler handler) {
-        handlers.add(handler);
+        handlersChat.add(handler);
     }
     
     public void sendMessage(String message) {
@@ -66,5 +75,4 @@ public class ChatSocket extends AbstractWebSocket {
         json.addProperty("message", message);
         sendToWebsocket(json);
     }
-    
 }
