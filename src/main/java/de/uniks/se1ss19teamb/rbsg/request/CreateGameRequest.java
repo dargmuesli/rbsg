@@ -3,17 +3,17 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonObject;
 
 public class CreateGameRequest extends AbstractRestRequest {
-    
+   
     private String userToken;
     private String gameName;
     private int neededPlayers;
-    
+   
     public CreateGameRequest(String gameName, int neededPlayers, String userToken) {
         this.userToken = userToken;
         this.neededPlayers = neededPlayers;
         this.gameName = gameName;
     }
-    
+   
     @Override
     protected JsonObject buildJson() {
         JsonObject json = new JsonObject();
