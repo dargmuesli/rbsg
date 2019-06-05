@@ -1,3 +1,0 @@
-{"date":"Jun 5, 2019 4:30:20 PM","message":"message1","sender":"me","receiver":"All"}
-{"date":"Jun 5, 2019 4:30:20 PM","message":"message2","sender":"me","receiver":"receiver2"}
-{"date":"Jun 5, 2019 4:30:20 PM","message":"message3","sender":"me","receiver":"All"}
