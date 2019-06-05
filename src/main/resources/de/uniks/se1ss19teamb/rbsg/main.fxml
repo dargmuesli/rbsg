@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -11,9 +12,13 @@
    <children>
       <AnchorPane fx:id="mainScreen" focusTraversable="true" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
-            <VBox fx:id="playerList" focusTraversable="true" layoutY="30.0" prefHeight="370.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
+            <VBox fx:id="playerList" focusTraversable="true" layoutY="26.0" prefHeight="374.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
-                  <ListView fx:id="playerListView" prefHeight="370.0" prefWidth="150.0" />
+                  <ScrollPane fx:id="scrollPanePlayer" prefHeight="432.0" prefWidth="148.0">
+                     <content>
+                        <ListView fx:id="playerListView" prefHeight="372.0" prefWidth="160.0" stylesheets="@dark-design2.css" />
+                     </content>
+                  </ScrollPane>
                </children></VBox>
             <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -21,7 +26,7 @@
                   <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="gameLounge" layoutX="151.0" layoutY="26.0" prefHeight="194.0" prefWidth="449.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="151.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+            <AnchorPane fx:id="gameLounge" layoutX="150.0" layoutY="26.0" prefHeight="194.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
                   <AnchorPane fx:id="errorContainer" layoutX="25.0" layoutY="60.0" prefHeight="50.0" prefWidth="400.0" />
                </children></AnchorPane>
