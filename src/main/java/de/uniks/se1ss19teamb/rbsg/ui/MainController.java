@@ -43,7 +43,7 @@ public class MainController {
     private Toggle fourPlayers;
     
     ErrorHandler errorHandler;
-    
+
     public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
