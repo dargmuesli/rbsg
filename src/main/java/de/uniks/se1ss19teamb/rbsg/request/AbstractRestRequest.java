@@ -3,10 +3,10 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import java.io.IOException;
 import java.net.URI;
 
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import org.apache.http.Header;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.ParseException;

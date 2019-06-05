@@ -2,13 +2,12 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractWebSocket implements WebSocket {
 
@@ -54,7 +53,8 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            errorHandler.sendError("Fehler Verbindung konnte nicht abgebrochen werden, ueberpruefe AbstractWebSocket Klasse");
+            errorHandler.sendError("Fehler Verbindung konnte nicht abgebrochen werden, ueberpruefe "
+                  +  "AbstractWebSocket Klasse");
             logger.error(e);
         }
         websocket = null;
