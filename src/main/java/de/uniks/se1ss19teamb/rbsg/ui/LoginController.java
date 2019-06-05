@@ -10,11 +10,17 @@ import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
+import java.util.Random;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
@@ -49,9 +55,7 @@ public class LoginController {
     Logger logger = LogManager.getLogger(LoginController.class);
     
     private ErrorHandler errorHandler;
-    
-    private ErrorPopupController controller;
-    
+
     public static String userKey;
     
     public void initialize() {
@@ -64,8 +68,8 @@ public class LoginController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-            
-            controller = fxmlLoader.getController();
+
+            ErrorPopupController controller = fxmlLoader.getController();
             errorHandler  = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             
@@ -77,9 +81,8 @@ public class LoginController {
     @FXML
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
-            //slideNextScene("/de/uniks/se1ss19teamb/rbsg/main.fxml",400);
-            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml");
-            //slideNextScene("main.fxml",100);
+            //UserInterfaceUtils.slideNextScene("/de/uniks/se1ss19teamb/rbsg/main.fxml",400,loginScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml",loginScreen);
             if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
                 LoginUserRequest login = new LoginUserRequest(
                         userName.getText(), password.getText());
@@ -100,49 +103,9 @@ public class LoginController {
         }
         
         if (event.getSource().equals(btnRegistration)) {
-            //slideNextScene("/de/uniks/se1ss19teamb/rbsg/register.fxml",600);
-            makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml");
+            //UserInterfaceUtils.slideNextScene("/de/uniks/se1ss19teamb/rbsg/register.fxml",600,loginScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml",loginScreen);
         }
 
-    }
-
-
-    private void slideNextScene(String path, int value) throws IOException {
-        Random r = new Random();
-        boolean randomValue = r.nextBoolean();
-        if (randomValue) {
-            Parent root = FXMLLoader.load(getClass().getResource(path));
-            root.translateYProperty().setValue(-value);
-
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateYProperty(),0,Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) loginScreen.getScene().getWindow();
-
-            stage.setScene(scene);
-        } else {
-            Parent root = FXMLLoader.load(getClass().getResource(path));
-            root.translateXProperty().setValue(-value);
-
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) loginScreen.getScene().getWindow();
-
-            stage.setScene(scene);
-          
-            //slideNextScene("register.fxml",400);
-            UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
-        }
-        
     }
 }

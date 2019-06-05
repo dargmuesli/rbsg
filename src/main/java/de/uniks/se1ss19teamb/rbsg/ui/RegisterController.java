@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
@@ -33,15 +34,7 @@ public class RegisterController {
     
     @FXML
     private JFXTextField userName;
-    
-    @FXML
-    private JFXTextField password;
-    
-    @FXML
-    private JFXTextField confirmPassword;
-    
-    private ErrorPopupController controller;
-    
+
     private ErrorHandler errorHandler;
     
     public void initialize() {
@@ -53,8 +46,8 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-    
-            controller = fxmlLoader.getController();
+
+            ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = new ErrorHandler();
             errorHandler.setErrorPopupController(controller);
             

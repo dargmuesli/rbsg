@@ -45,15 +45,15 @@ public class UserInterfaceUtils {
         currentStage.setScene(scene);
     }
     
-    private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
+    public static void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
-        Parent root = FXMLLoader.load(getClass().getResource(path));
+        Parent root = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
         Timeline timeline;
         KeyValue keyValue;
 
         if (randomValue) {
-            root.translateYProperty().setValue(-400);
+            root.translateYProperty().setValue(-value);
             
             timeline = new Timeline();
             keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
