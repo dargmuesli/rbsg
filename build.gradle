@@ -25,6 +25,14 @@ repositories {
     jcenter()
 }
 
+sourceSets {
+    integration {
+        java {
+            srcDir 'src/test-integration/java'
+        }
+    }
+}
+
 configurations {
     checkstyleOverride
 }
@@ -56,4 +64,14 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
     testImplementation group: 'org.fulib', name: 'fulib', version: '1.0+'
+    
+    integrationImplementation sourceSets.main.output
+    integrationImplementation sourceSets.test.output
+    integrationImplementation configurations.testImplementation
+}
+
+task testIntegration(type: Test) {
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+    debug = false
 }

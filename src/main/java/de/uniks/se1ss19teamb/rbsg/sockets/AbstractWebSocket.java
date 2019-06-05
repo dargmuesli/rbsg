@@ -14,9 +14,9 @@ public abstract class AbstractWebSocket implements WebSocket {
 
     private static final String url = "wss://rbsg.uniks.de/ws";
     
-    private List<WebSocketMessageHandler> handlers = new ArrayList<>();
+    protected List<WebSocketMessageHandler> handlers = new ArrayList<>();
     
-    private WebSocketClient websocket;
+    protected WebSocketClient websocket;
     
     protected abstract String getEndpoint();
     
