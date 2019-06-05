@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.chatencryption;
+package de.uniks.se1ss19teamb.rbsg.chat.encryption;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.chatencryption;
+package de.uniks.se1ss19teamb.rbsg.chat.encryption;
 
 import de.uniks.se1ss19teamb.rbsg.crypto.CipherController;
 

@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import de.uniks.se1ss19teamb.rbsg.chatencryption.GenerateKeys;
+import de.uniks.se1ss19teamb.rbsg.chat.encryption.GenerateKeys;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
