@@ -8,7 +8,9 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.AnchorPane;
 
 public class MainController {
@@ -28,6 +30,8 @@ public class MainController {
         playerListView.setStyle("-fx-control-inner-background: #2A2E37;");
         playerListView.getItems().add("test player");
         playerListView.getItems().add("test player 2");
+        playerListView.getItems().add("test player 3");
+        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
