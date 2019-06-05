@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -14,11 +15,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class Chat  {
+public class Chat {
 
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     private ChatSocket chatSocket;
     private Path path;
+    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
+        -> addToChatLog(message, from, isPrivate ? chatSocket.getUserName() : "All");
 
     public Chat(String sender, String userKey) {
         this(new ChatSocket(sender, userKey), Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt"));
@@ -28,11 +31,10 @@ public class Chat  {
         this(new ChatSocket(sender, userKey), path);
     }
 
-    private Chat(ChatSocket chatSocket, Path path) {
+    public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
         this.chatSocket.connect();
-        this.chatSocket.registerChatMessageHandler((message, from, isPrivate)
-            -> addToChatLog(message, from, this.chatSocket.getUserName()));
+        this.chatSocket.registerChatMessageHandler(chatMessageHandler);
         this.path = path;
     }
 
