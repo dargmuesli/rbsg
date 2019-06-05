@@ -9,7 +9,7 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#52585e" height="58.0" layoutY="-3.0" stroke="BLACK" strokeType="INSIDE" width="400.0" />
       <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="62.0" layoutY="13.0" text="Error Label" textFill="#f22b2b">
-         <font>
+          <font>
             <Font size="16.0" />
          </font>
       </Label>
