@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXPasswordField?>
 <AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegisterController">
    <children>
       <AnchorPane fx:id="registerScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design.css">
@@ -16,12 +16,12 @@
                   <Font size="30.0" />
                </font>
             </Label>
+            <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
+            <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
+            <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
+            <JFXPasswordField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
             <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
             <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
-            <JFXPasswordField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
-            <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
-            <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
-            <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </children>

@@ -60,7 +60,7 @@ public class LoginController {
     
     public void initialize() {
         File file = new File(USER_DATA);
-        if(file.exists()) {
+        if (file.exists()) {
             try {
                 FileReader reader = new FileReader(file);
                 BufferedReader br = new BufferedReader(reader);
@@ -107,11 +107,11 @@ public class LoginController {
                     if (file.exists()) {
                         file.delete();
                     }
-                    if(rememberLogin.isSelected()) {
+                    if (rememberLogin.isSelected()) {
                         file.createNewFile();
                         FileWriter writer = new FileWriter(file);
                         writer.write(userName.getText());
-                        writer.write(System.getProperty( "line.separator" ));
+                        writer.write(System.getProperty("line.separator"));
                         writer.write(password.getText());
                         writer.flush();
                     }

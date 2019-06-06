@@ -14,13 +14,12 @@
          <children>
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
             <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
+            <JFXCheckBox fx:id="rememberLogin" layoutX="150.0" layoutY="238.0" mnemonicParsing="false" onAction="#setOnAction" text="Remember Login" />
             <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="172.0" layoutY="267.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <FontAwesomeIconView glyphName="USER" layoutX="69.0" layoutY="159.0" size="25" />
-            <FontAwesomeIconView glyphName="KEY" layoutX="66.0" layoutY="227.0" size="25" />
             <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="328.0" layoutY="267.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Registration">
                <font>
                   <Font size="16.0" />
@@ -28,7 +27,8 @@
             </JFXButton>
             <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
             <FontAwesomeIconView glyphName="LOCK" layoutX="272.0" layoutY="55.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
-            <JFXCheckBox fx:id="rememberLogin" layoutX="150.0" layoutY="238.0" mnemonicParsing="false" onAction="#setOnAction" text="Remember Login" />
+            <FontAwesomeIconView glyphName="USER" layoutX="69.0" layoutY="159.0" size="25" />
+            <FontAwesomeIconView glyphName="KEY" layoutX="66.0" layoutY="227.0" size="25" />
          </children>
       </AnchorPane>
    </children>
