@@ -19,11 +19,16 @@ public class ChatTabController {
     }
 
     @FXML
-    void setOnAction(ActionEvent event) {
+    public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnSend)) {
-            System.out.println(message.getText());
             textArea.appendText("SomeName: " + message.getText() + "\n");
+            message.setText("");
         }
+    }
+
+    @FXML
+    public void onEnter(ActionEvent event) {
+        btnSend.fire();
     }
 
 
