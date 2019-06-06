@@ -46,7 +46,7 @@ public class MainController {
         }
     }
 
-    private void setPlayerListView(){
+    private void setPlayerListView() {
         scrollPanePlayer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPanePlayer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPanePlayer.setStyle("-fx-background-color:transparent;");

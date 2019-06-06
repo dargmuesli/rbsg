@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
    <children>
       <AnchorPane fx:id="mainScreen" focusTraversable="true" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
