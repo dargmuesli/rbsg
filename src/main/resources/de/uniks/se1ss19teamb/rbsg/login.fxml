@@ -14,13 +14,13 @@
          <children>
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
             <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
-            <JFXCheckBox fx:id="rememberLogin" layoutX="150.0" layoutY="238.0" mnemonicParsing="false" onAction="#setOnAction" text="Remember Login" />
-            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="172.0" layoutY="267.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
+            <JFXCheckBox fx:id="rememberLogin" layoutX="150.0" layoutY="238.0" mnemonicParsing="false" onAction="#EventHandler" onKeyPressed="#KeyEventHandler" text="Remember Login" />
+            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="172.0" layoutY="267.0" onAction="#EventHandler" onKeyPressed="#KeyEventHandler" prefHeight="30.0" prefWidth="100.0" text="Login">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="328.0" layoutY="267.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Registration">
+            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="328.0" layoutY="267.0" onAction="#EventHandler" onKeyPressed="#KeyEventHandler" prefHeight="30.0" prefWidth="100.0" text="Registration">
                <font>
                   <Font size="16.0" />
                </font>
