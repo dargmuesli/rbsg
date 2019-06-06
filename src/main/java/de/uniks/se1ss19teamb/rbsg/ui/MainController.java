@@ -42,7 +42,7 @@ public class MainController {
     @FXML
     private Toggle fourPlayers;
     
-    ErrorHandler errorHandler;
+    private ErrorHandler errorHandler;
 
     public void initialize() {
         mainScreen.setOpacity(0);
@@ -79,7 +79,7 @@ public class MainController {
                 }
                 game.sendRequest();
             } else {
-                errorHandler.sendError("Bitte geben Sie etwas ein.");
+                errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
             }
         }
     }
