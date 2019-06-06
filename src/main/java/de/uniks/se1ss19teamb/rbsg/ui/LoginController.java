@@ -1,6 +1,8 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
@@ -8,6 +10,8 @@ import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -19,6 +23,8 @@ import javafx.scene.layout.AnchorPane;
 
 public class LoginController {
     
+    public static final String USER_DATA = "./userData.txt";
+    
     @FXML
     private AnchorPane loginScreen;
     
@@ -26,7 +32,7 @@ public class LoginController {
     private JFXTextField userName;
     
     @FXML
-    private JFXTextField password;
+    private JFXPasswordField password;
     
     @FXML
     private JFXButton btnLogin;
@@ -39,6 +45,9 @@ public class LoginController {
     
     @FXML
     private AnchorPane errorContainer;
+    
+    @FXML
+    private JFXCheckBox rememberLogin;
     
     private ErrorHandler errorHandler;
     
@@ -83,6 +92,7 @@ public class LoginController {
                         userName.getText(), password.getText());
                 login.sendRequest();
                 if (login.getSuccessful()) {
+                    
                     setUserKey(login.getUserKey());
                     UserInterfaceUtils.makeFadeOutTransition(
                             "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
