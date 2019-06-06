@@ -1,29 +1,30 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class ChatTabController {
     @FXML
-    private Button send;
+    private Button btnSend;
 
     @FXML
     private TextField message;
 
     @FXML
-    private ScrollPane textArea;
+    private TextArea textArea;
 
-    public void handleSend() {
-        send.onKeyPressedProperty();
-    }
-
-    public void handleMessage() {
+    public ChatTabController() {
 
     }
 
-    public void handleTextArea() {
-
+    @FXML
+    void setOnAction(ActionEvent event) {
+        if (event.getSource().equals(btnSend)) {
+            System.out.println(message.getText());
+            textArea.appendText("SomeName: " + message.getText() + "\n");
+        }
     }
+
+
 }
