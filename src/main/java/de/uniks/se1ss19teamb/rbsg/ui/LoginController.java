@@ -10,9 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,9 +36,6 @@ public class LoginController {
     private JFXButton btnLogin;
     
     @FXML
-    private JFXButton btnCancel;
-    
-    @FXML
     private Button btnRegistration;
     
     @FXML
@@ -64,6 +59,22 @@ public class LoginController {
     }
     
     public void initialize() {
+        File file = new File(USER_DATA);
+        if(file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                BufferedReader br = new BufferedReader(reader);
+                String userName = br.readLine();
+                String password = br.readLine();
+                this.userName.setText(userName);
+                this.password.setText(password);
+            } catch (FileNotFoundException e) {
+                errorHandler.sendError("Userdaten konnten nicht geladen werden.");
+            } catch (IOException e) {
+                errorHandler.sendError("Userdaten konnten nicht geladen werden.");
+            }
+            rememberLogin.setSelected(true);
+        }
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
         
@@ -92,6 +103,18 @@ public class LoginController {
                         userName.getText(), password.getText());
                 login.sendRequest();
                 if (login.getSuccessful()) {
+                    File file = new File(USER_DATA);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    if(rememberLogin.isSelected()) {
+                        file.createNewFile();
+                        FileWriter writer = new FileWriter(file);
+                        writer.write(userName.getText());
+                        writer.write(System.getProperty( "line.separator" ));
+                        writer.write(password.getText());
+                        writer.flush();
+                    }
                     
                     setUserKey(login.getUserKey());
                     UserInterfaceUtils.makeFadeOutTransition(
