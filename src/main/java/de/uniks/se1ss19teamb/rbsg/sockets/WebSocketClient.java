@@ -2,11 +2,13 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.websocket.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @ClientEndpoint(configurator = CustomWebSocketConfigurator.class)
 public class WebSocketClient {
@@ -15,6 +17,8 @@ public class WebSocketClient {
     private Session mySession;
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
+    private static final Logger logger = LogManager.getLogger(WebSocketClient.class);
+    private ErrorHandler errorHandler = new ErrorHandler();
     
     public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
         this.noopTimer = new Timer();
@@ -24,7 +28,8 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Erstellen des Websocket-Clients!");
+            logger.error(e);
         }
     }
     
@@ -33,7 +38,8 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                e.printStackTrace();
+                errorHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!");
+                logger.error(e);
             }
         }
     }

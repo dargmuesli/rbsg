@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -9,10 +10,15 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CipherController {
+    private static final Logger logger = LogManager.getLogger(CipherController.class);
 
+    private ErrorHandler errorHandler = new ErrorHandler();
     //This string needs to be related with data
+
     public void encryptMessage(String msg, String filename) {
         try {
             //Turns the desired message into a byte Array
@@ -28,7 +34,8 @@ public class CipherController {
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Verschlüsseln einer Nachricht!");
+            logger.error(e);
         }
     }
 
@@ -59,7 +66,8 @@ public class CipherController {
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
                 | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Entschlüsseln einer Nachricht!");
+            logger.error(e);
         }
         return decryptedMessage;
     }

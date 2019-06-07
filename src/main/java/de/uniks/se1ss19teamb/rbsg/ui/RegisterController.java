@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
@@ -13,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
     
@@ -32,14 +35,16 @@ public class RegisterController {
     private JFXTextField userName;
     
     @FXML
-    private JFXTextField password;
+    private JFXPasswordField password;
     
     @FXML
-    private JFXTextField confirmPassword;
+    private JFXPasswordField confirmPassword;
     
     private ErrorPopupController controller;
     
     private ErrorHandler errorHandler;
+
+    private static final Logger logger = LogManager.getLogger(RegisterController.class);
     
     public void initialize() {
         registerScreen.setOpacity(0);
@@ -56,8 +61,9 @@ public class RegisterController {
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
-            e.printStackTrace();
-        }      
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!");
+            logger.error(e);
+        }
     }
     
     @FXML
