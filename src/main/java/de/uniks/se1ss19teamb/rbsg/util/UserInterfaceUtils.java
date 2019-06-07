@@ -48,32 +48,28 @@ public class UserInterfaceUtils {
     private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
         Random r = new Random();
         boolean randomValue = r.nextBoolean();
+        Parent root = FXMLLoader.load(getClass().getResource(path));
+        Timeline timeline;
+        KeyValue keyValue;
+
         if (randomValue) {
-            Parent root = FXMLLoader.load(getClass().getResource(path));
             root.translateYProperty().setValue(-400);
             
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-            
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) pane.getScene().getWindow();
-            stage.setScene(scene);
+            timeline = new Timeline();
+            keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
         } else {
-            Parent root = FXMLLoader.load(getClass().getResource(path));
             root.translateXProperty().setValue(-value);
             
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-    
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) pane.getScene().getWindow();
-            stage.setScene(scene);
+            timeline = new Timeline();
+            keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
         }
+
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) pane.getScene().getWindow();
+        stage.setScene(scene);
     }
 }

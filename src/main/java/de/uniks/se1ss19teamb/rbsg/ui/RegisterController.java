@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
@@ -32,10 +33,10 @@ public class RegisterController {
     private JFXTextField userName;
     
     @FXML
-    private JFXTextField password;
+    private JFXPasswordField password;
     
     @FXML
-    private JFXTextField confirmPassword;
+    private JFXPasswordField confirmPassword;
     
     private ErrorPopupController controller;
     
@@ -61,7 +62,7 @@ public class RegisterController {
     }
     
     @FXML
-    void setOnAction(ActionEvent event) throws IOException {
+    void eventHandler(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);

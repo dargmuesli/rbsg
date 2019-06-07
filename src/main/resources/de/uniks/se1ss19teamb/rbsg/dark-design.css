@@ -39,3 +39,8 @@
     -jfx-unfocuse-color: #ef5350;
     -jfx-focuse-color: #ef5350;
 }
+
+.check-box{
+    -fx-text-fill: -fx-primarytext;
+    -jfx-checked-color: -fx-secondary;
+}
