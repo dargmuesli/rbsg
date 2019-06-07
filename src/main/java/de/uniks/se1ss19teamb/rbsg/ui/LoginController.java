@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
@@ -16,6 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LoginController {
     
@@ -26,8 +29,8 @@ public class LoginController {
     private JFXTextField userName;
     
     @FXML
-    private JFXTextField password;
-    
+    private JFXPasswordField password;
+
     @FXML
     private JFXButton btnLogin;
     
@@ -47,6 +50,8 @@ public class LoginController {
     private ChatTabController chatTabController;
     
     public static String userKey;
+
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
     
     public static String getUserKey() {
         return userKey;
@@ -68,7 +73,8 @@ public class LoginController {
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!");
+            logger.error(e);
         }
     }
     
