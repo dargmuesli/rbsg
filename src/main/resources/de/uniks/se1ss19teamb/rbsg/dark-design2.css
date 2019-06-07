@@ -47,3 +47,11 @@
 .label{
     -fx-text-fill: -fx-secondary;
 }
+
+.menu-button{
+    -fx-background-color: transparent;
+}
+
+.menu-item {
+    -fx-background-color: grey;
+}
