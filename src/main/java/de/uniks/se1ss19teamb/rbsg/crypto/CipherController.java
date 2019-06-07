@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class CipherController {
     private static final Logger logger = LogManager.getLogger(CipherController.class);
 
-    ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = new ErrorHandler();
     //This string needs to be related with data
 
     public void encryptMessage(String msg, String filename) {
@@ -34,7 +34,7 @@ public class CipherController {
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            errorHandler.sendError("Fehler bei verschluesseln der Nachricht, ueberpruefe Klasse CipherController");
+            errorHandler.sendError("Fehler bei Verschluesseln der Nachricht!");
             logger.error(e);
         }
     }
@@ -66,7 +66,7 @@ public class CipherController {
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
                 | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            errorHandler.sendError("Fehler bei entverschluesseln der Nachricht, ueberpruefe Klasse CipherController");
+            errorHandler.sendError("Fehler bei Entschluesseln einer Nachricht!");
             logger.error(e);
         }
         return decryptedMessage;

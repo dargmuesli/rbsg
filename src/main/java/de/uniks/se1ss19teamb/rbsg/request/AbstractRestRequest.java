@@ -60,7 +60,7 @@ public abstract class AbstractRestRequest implements RestRequest {
                   throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
-            errorHandler.sendError("Fehler beim request, ueberuefe AbstractRestRequest Klasse");
+            errorHandler.sendError("Fehler bei einer Webanfrage!");
             logger.error(e);
         } finally {
             JsonParser parser = new JsonParser();
