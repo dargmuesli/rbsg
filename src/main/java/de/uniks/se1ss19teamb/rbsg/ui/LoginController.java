@@ -10,26 +10,15 @@ import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
-import java.util.Random;
-
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class LoginController {
     
@@ -40,11 +29,7 @@ public class LoginController {
     private JFXTextField userName;
     
     @FXML
-<<<<<<< HEAD
     private JFXPasswordField password;
-=======
-    private JFXTextField password;
->>>>>>> aabb92b4544dcc23eeb37976210f547cba68b5b2
 
     @FXML
     private JFXButton btnLogin;
@@ -58,11 +43,8 @@ public class LoginController {
     @FXML
     private AnchorPane errorContainer;
 
-    Logger logger = LogManager.getLogger(LoginController.class);
-    
-    private ErrorHandler errorHandler;
-
     public static String userKey;
+    private ErrorHandler errorHandler = new ErrorHandler();
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
     
