@@ -6,11 +6,11 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-
-import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -25,8 +25,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LoginController {
-    
-    public static final String USER_DATA = "./userData.txt";
     
     @FXML
     private AnchorPane loginScreen;
@@ -57,8 +55,14 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
     
+    private static final String USER_DATA = "./userData.txt";
+    
     public void initialize() {
-        loadData();
+        File userData = new File(USER_DATA);
+        if (userData.exists()) {
+            loadUserData();
+            userData.delete();
+        }
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
         
@@ -82,8 +86,8 @@ public class LoginController {
     
     
     @FXML
-    void eventHandler(ActionEvent event) throws IOException {
-        
+    void eventHandler(ActionEvent event) {
+
         if (event.getSource().equals(btnLogin)) {
             login();
         }
@@ -91,9 +95,14 @@ public class LoginController {
             goToRegister();
         }
     }
+
+    @FXML
+    public void onEnter() {
+        login();
+    }
     
-    public void keyEventHandler(KeyEvent keyEvent) throws IOException {
-        
+    public void keyEventHandler(KeyEvent keyEvent) {
+
         if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             login();
         }
@@ -111,8 +120,7 @@ public class LoginController {
         }
     }
     
-    private void login() throws IOException {
-        //slideNextScene("main.fxml",100);
+    private void login() {
         if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
             LoginUserRequest login = new LoginUserRequest(
                     userName.getText(), password.getText());
@@ -123,55 +131,38 @@ public class LoginController {
                     file.delete();
                 }
                 if (rememberLogin.isSelected()) {
-                    saveData(file);
+                    saveUserData();
                 }
                 
                 setUserKey(login.getUserKey());
                 UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
-                errorHandler.sendError("Login erfolgreich!");
                 
             } else {
-                errorHandler.sendError("Login fehlgeschlagen.");
+                errorHandler.sendError("Login fehlgeschlagen!");
             }
         } else {
-            errorHandler.sendError("Bitte geben Sie etwas ein.");
+            errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
         }
     }
     
     private void goToRegister() {
-        //slideNextScene("register.fxml",400);
         UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
     }
     
-    private void saveData(File file) throws IOException {
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(userName.getText());
-        writer.write(System.getProperty("line.separator"));
-        writer.write(password.getText());
-        writer.flush();
+    private void saveUserData() {
+        UserData userData = new UserData(userName.getText(), password.getText());
+        SerializeUtils.serialize(USER_DATA, userData);
     }
-    
-    private void loadData() {
-        File file = new File(USER_DATA);
-        if (file.exists()) {
-            try {
-                FileReader reader = new FileReader(file);
-                BufferedReader br = new BufferedReader(reader);
-                String userName = br.readLine();
-                String password = br.readLine();
-                this.userName.setText(userName);
-                this.password.setText(password);
-            } catch (FileNotFoundException e) {
-                errorHandler.sendError("Userdaten konnten nicht geladen werden.");
-            } catch (IOException e) {
-                errorHandler.sendError("Userdaten konnten nicht geladen werden.");
-            }
-            rememberLogin.setSelected(true);
-            Platform.runLater(() -> btnLogin.requestFocus());
-        }
+
+    private void loadUserData() {
+        Path path = Paths.get(USER_DATA);
+        UserData userData = SerializeUtils.deserialize(path, UserData.class);
+        userName.setText(userData.getUserName());
+        password.setText(userData.getPassword());
+        rememberLogin.setSelected(true);
+        Platform.runLater(() -> btnLogin.requestFocus());
     }
     
     public static String getUserKey() {
