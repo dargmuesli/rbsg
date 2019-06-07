@@ -97,7 +97,7 @@ public class LoginController {
     }
 
     @FXML
-    public void onEnter(){
+    public void onEnter() {
         login();
     }
     
