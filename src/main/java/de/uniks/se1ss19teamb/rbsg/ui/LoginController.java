@@ -107,12 +107,28 @@ public class LoginController {
             UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml",loginScreen);
         }
 
+
     }
 
-    private void enterAction(){
+    private void enterAction() {
         loginScreen.addEventHandler(KeyEvent.KEY_PRESSED,event -> {
-            if (event.getCode() == KeyCode.ENTER){
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml",loginScreen);
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
+                    LoginUserRequest login = new LoginUserRequest(
+                            userName.getText(), password.getText());
+                    login.sendRequest();
+                    if (login.getSuccessful()) {
+                        userKey = login.getUserKey();
+                        UserInterfaceUtils.makeFadeOutTransition(
+                                "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+                        errorHandler.sendError("Login erfolgreich!");
+
+                    } else {
+                        errorHandler.sendError("Login fehlgeschlagen.");
+                    }
+                } else {
+                    errorHandler.sendError("Bitte geben Sie etwas ein.");
+                }
             }
         });
     }
