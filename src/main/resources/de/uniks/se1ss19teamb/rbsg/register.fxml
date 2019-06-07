@@ -15,8 +15,8 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="confirm" />
-            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="cancel" />
+            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
+            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
             <JFXTextField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
             <JFXTextField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
