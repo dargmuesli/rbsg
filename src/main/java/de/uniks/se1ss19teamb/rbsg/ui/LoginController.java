@@ -98,7 +98,7 @@ public class LoginController {
         }
         if (keyEvent.getSource().equals(rememberLogin)
                 && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            if(rememberLogin.isSelected()) {
+            if (rememberLogin.isSelected()) {
                 rememberLogin.setSelected(false);
             } else {
                 rememberLogin.setSelected(true);

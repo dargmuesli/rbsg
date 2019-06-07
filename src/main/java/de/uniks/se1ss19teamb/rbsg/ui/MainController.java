@@ -102,9 +102,5 @@ public class MainController {
                         "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
-    
-        if (event.getSource().equals(btnMenu)) {
-        
-        }
     }
 }
