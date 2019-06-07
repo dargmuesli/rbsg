@@ -20,8 +20,8 @@
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
             <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
             <JFXPasswordField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
-            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#EventHandler" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
-            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#EventHandler" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
+            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
+            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

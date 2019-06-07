@@ -77,7 +77,7 @@ public class LoginController {
     
     
     @FXML
-    void EventHandler(ActionEvent event) throws IOException {
+    void eventHandler(ActionEvent event) throws IOException {
         
         if (event.getSource().equals(btnLogin)) {
             login();
@@ -87,15 +87,17 @@ public class LoginController {
         }
     }
     
-    public void KeyEventHandler(KeyEvent keyEvent) throws IOException {
+    public void keyEventHandler(KeyEvent keyEvent) throws IOException {
         
-        if(keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
+        if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             login();
         }
-        if(keyEvent.getSource().equals(btnRegistration) && keyEvent.getCode().equals(KeyCode.ENTER)) {
+        if (keyEvent.getSource().equals(btnRegistration)
+                && keyEvent.getCode().equals(KeyCode.ENTER)) {
             goToRegister();
         }
-        if (keyEvent.getSource().equals(rememberLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
+        if (keyEvent.getSource().equals(rememberLogin)
+                && keyEvent.getCode().equals(KeyCode.ENTER)) {
             rememberLogin.setSelected(true);
         }
     }
