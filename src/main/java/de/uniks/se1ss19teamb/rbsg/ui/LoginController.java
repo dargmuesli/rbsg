@@ -6,12 +6,13 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-import de.uniks.se1ss19teamb.rbsg.util.UserData;
-import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,15 +57,11 @@ public class LoginController {
     
     private static final String USER_DATA = "./userData.txt";
     
-    private static final String PASSWORD_DATA = "./passwordData.txt";
-    
     public void initialize() {
-        File un = new File(USER_DATA);
-        File pw = new File(PASSWORD_DATA);
-        if (un.exists() && pw.exists()) {
-            UserData.loadUserData(USER_DATA, PASSWORD_DATA, rememberLogin,btnLogin, userName, password);
-            un.delete();
-            pw.delete();
+        File userData = new File(USER_DATA);
+        if (userData.exists()) {
+            loadUserData();
+            userData.delete();
         }
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
@@ -126,7 +123,7 @@ public class LoginController {
                     file.delete();
                 }
                 if (rememberLogin.isSelected()) {
-                    UserData.saveUserData(userName.getText(), password.getText(), USER_DATA, PASSWORD_DATA);
+                    saveUserData();
                 }
                 
                 setUserKey(login.getUserKey());
@@ -145,6 +142,20 @@ public class LoginController {
         //slideNextScene("register.fxml",400);
         UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
+    }
+    
+    public void saveUserData() {
+        UserData userData = new UserData(userName.getText(), password.getText());
+        SerializeUtils.serialize(USER_DATA, userData);
+    }
+    
+    public void loadUserData() {
+        Path path = Paths.get(USER_DATA);
+        UserData userData = SerializeUtils.deserialize(path, UserData.class);
+        userName.setText(userData.getUserName());
+        password.setText(userData.getPassword());
+        rememberLogin.setSelected(true);
+        Platform.runLater(() -> btnLogin.requestFocus());
     }
     
     public static String getUserKey() {
