@@ -25,9 +25,9 @@ public class ChatTabController {
 
     public static String userName;
 
-    private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
+    public final ChatSocket chatSocket = new ChatSocket(userName, userKey);
 
-    private final SystemSocket system = new SystemSocket(userKey);
+    public final SystemSocket system = new SystemSocket(userKey);
 
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
@@ -44,8 +44,12 @@ public class ChatTabController {
     @FXML
     public void initialize() {
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
-
-            textArea.appendText(from + ": " + message + "\n");
+            if(isPrivate) {
+                // TODO private
+                System.out.println(message);
+            } else {
+                textArea.appendText(from + ": " + message + "\n");
+            }
         });
 
         system.registerUserJoinHandler((name) -> {
