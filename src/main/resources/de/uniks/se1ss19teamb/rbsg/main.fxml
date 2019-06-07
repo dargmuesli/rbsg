@@ -13,27 +13,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
    <children>
-      <AnchorPane fx:id="mainScreen" focusTraversable="true" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
+      <AnchorPane fx:id="mainScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
-            <VBox fx:id="playerList" focusTraversable="true" layoutY="26.0" prefHeight="374.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
-               <children>
-                  <ScrollPane fx:id="scrollPanePlayer" hbarPolicy="NEVER" prefHeight="372.0" prefWidth="115.0" vbarPolicy="NEVER">
-                     <content>
-                        <ListView fx:id="playerListView" prefHeight="371.0" prefWidth="149.0" stylesheets="@dark-design2.css" />
-                     </content>
-                  </ScrollPane>
-               </children></VBox>
+            <VBox fx:id="playerList" layoutY="-2.0" prefHeight="400.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <AnchorPane fx:id="chat" prefHeight="180.0" prefWidth="225.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="1.0" />
                   <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Create Game" />
+                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Create Game" />
                         <HBox alignment="CENTER" layoutX="1.0" layoutY="89.0" prefHeight="45.0" prefWidth="224.0">
                            <children>
                               <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" selected="true" text="2">
@@ -53,31 +45,19 @@
                      </children></AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="gameLounge" layoutX="150.0" layoutY="26.0" prefHeight="194.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
-            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-: ;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0"  AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <AnchorPane fx:id="errorContainer" layoutX="25.0" layoutY="60.0" prefHeight="50.0" prefWidth="400.0" />
-                  <ScrollPane fx:id="gameScrollPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="450.0" vbarPolicy="NEVER">
-                     <content>
-                        <ListView fx:id="gameListView" prefHeight="200.0" prefWidth="450.0" stylesheets="@dark-design2.css" />
-                     </content>
-                  </ScrollPane>
+                  <AnchorPane fx:id="errorContainer" layoutX="250.0" prefHeight="45.0" prefWidth="200.0" />
                </children></AnchorPane>
-            <AnchorPane fx:id="header" layoutX="-2.0" layoutY="-4.0" prefHeight="20.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-4.0">
-               <children>
-                  <Label alignment="CENTER" layoutY="5.0" prefHeight="24.0" prefWidth="139.0" text="Players" textFill="#756e6e" />
-                  <Label alignment="CENTER" layoutX="205.0" layoutY="5.0" prefHeight="24.0" prefWidth="249.0" text="Running Games" textFill="#7c7676" />
-                  <JFXButton fx:id="btnLogout" alignment="CENTER" layoutX="532.0" layoutY="2.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="15.0" prefWidth="60.0" text="Logout" />
-                  <Line endX="-257.5962219238281" endY="-593.4232788085938" layoutX="406.0" layoutY="618.0" startX="-265.8891296386719" startY="-616.7161865234375" />
             <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <MenuButton contentDisplay="GRAPHIC_ONLY" layoutX="555.0" layoutY="2.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="26.0" style="-fx-background-color: transparent;">
-                    <items>
-                      <MenuItem mnemonicParsing="false">
+                     <items>
+                        <MenuItem mnemonicParsing="false">
                            <graphic>
-                              <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#eventHandler" text="Logout" />
+                              <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
                            </graphic></MenuItem>
-                    </items>
+                     </items>
                      <graphic>
                         <FontAwesomeIconView fx:id="cog" accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />
                      </graphic>

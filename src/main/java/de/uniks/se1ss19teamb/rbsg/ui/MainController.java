@@ -73,8 +73,8 @@ public class MainController {
         
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-        setGameListView();
-        setPlayerListView();
+        //setGameListView();
+        //setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
