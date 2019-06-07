@@ -86,8 +86,8 @@ public class LoginController {
     
     
     @FXML
-    void eventHandler(ActionEvent event) throws IOException {
-        
+    void eventHandler(ActionEvent event) {
+
         if (event.getSource().equals(btnLogin)) {
             login();
         }
@@ -95,9 +95,14 @@ public class LoginController {
             goToRegister();
         }
     }
+
+    @FXML
+    public void onEnter(){
+        login();
+    }
     
-    public void keyEventHandler(KeyEvent keyEvent) throws IOException {
-        
+    public void keyEventHandler(KeyEvent keyEvent) {
+
         if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             login();
         }
@@ -112,7 +117,6 @@ public class LoginController {
     }
     
     private void login() {
-        //slideNextScene("main.fxml",100);
         if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
             LoginUserRequest login = new LoginUserRequest(
                     userName.getText(), password.getText());
