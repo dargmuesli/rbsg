@@ -18,11 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
-    @FXML
-    private JFXPasswordField password;
-    
-    @FXML
-    private JFXPasswordField confirmPassword;
     
     @FXML
     private AnchorPane registerScreen;
@@ -34,14 +29,20 @@ public class RegisterController {
     private JFXButton btnConfirm;
     
     @FXML
-    private AnchorPane errorContainer;
+    AnchorPane errorContainer;
     
     @FXML
     private JFXTextField userName;
-
-    private ErrorHandler errorHandler;
-
+    
+    @FXML
+    private JFXPasswordField password;
+    
+    @FXML
+    private JFXPasswordField confirmPassword;
+    
     private ErrorPopupController controller;
+    
+    private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
     
@@ -54,7 +55,7 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-
+    
             controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
