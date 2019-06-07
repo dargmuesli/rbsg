@@ -35,7 +35,7 @@ public class PersistenceUtil {
             Files.write(Paths.get(file.toURI()), yaml.getBytes("UTF-8"));
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler konnte nicht in Datei schreiben!");
+            errorHandler.sendError("Spielstand konnte nicht in eine Datei geschrieben werden!");
             logger.error(e);
         }
     }
@@ -56,7 +56,7 @@ public class PersistenceUtil {
             return game;
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler konnte die Bytes nicht lesen!");
+            errorHandler.sendError("Spielstand konnte nicht geladen werden!");
             logger.error(e);
             return null;
         }

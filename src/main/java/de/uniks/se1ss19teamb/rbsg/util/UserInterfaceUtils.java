@@ -28,7 +28,7 @@ public class UserInterfaceUtils {
             try {
                 fadeNextScene(path, node);
             } catch (IOException e) {
-                errorHandler.sendError("Fehler beim Laden der FXML-Datei");
+                errorHandler.sendError("Übergang in die nächste Szene konnte nicht ausgeführt werden!");
                 e.printStackTrace();
             }
         });

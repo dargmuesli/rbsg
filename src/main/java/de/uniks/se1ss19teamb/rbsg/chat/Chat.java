@@ -75,7 +75,7 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                errorHandler.sendError("Fehler Verzeichnis konnte nicht erstellt werden!");
+                errorHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!");
                 logger.error(e);
             }
         }
@@ -87,7 +87,7 @@ public class Chat {
                 out.println(SerializeUtils.serialize(cle));
             }
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim schreiben im Verzeichnis!");
+            errorHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!");
             logger.error(e);
         }
     }

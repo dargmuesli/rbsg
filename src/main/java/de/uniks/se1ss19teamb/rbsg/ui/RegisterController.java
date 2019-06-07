@@ -60,7 +60,7 @@ public class RegisterController {
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei!");
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!");
             logger.error(e);
         }
     }

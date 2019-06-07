@@ -38,7 +38,7 @@ public class MainController {
             errorContainer.getChildren().add(parent);
             
         } catch (IOException e) {
-            errorHandler.sendError("Fehler konnte beim Laden der FXML-Datei!");
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
             logger.error(e);
         }
     }

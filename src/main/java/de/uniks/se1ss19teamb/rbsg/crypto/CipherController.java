@@ -34,7 +34,7 @@ public class CipherController {
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            errorHandler.sendError("Fehler bei Verschluesseln der Nachricht!");
+            errorHandler.sendError("Fehler beim Verschlüsseln einer Nachricht!");
             logger.error(e);
         }
     }
@@ -66,7 +66,7 @@ public class CipherController {
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
                 | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            errorHandler.sendError("Fehler bei Entschluesseln einer Nachricht!");
+            errorHandler.sendError("Fehler beim Entschlüsseln einer Nachricht!");
             logger.error(e);
         }
         return decryptedMessage;
