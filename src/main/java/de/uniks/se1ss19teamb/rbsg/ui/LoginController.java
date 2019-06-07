@@ -43,6 +43,8 @@ public class LoginController {
     private ErrorHandler errorHandler;
     
     private ErrorPopupController controller;
+
+    private ChatTabController chatTabController;
     
     public static String userKey;
     
@@ -80,6 +82,9 @@ public class LoginController {
                 login.sendRequest();
                 if (login.getSuccessful()) {
                     userKey = login.getUserKey();
+                    //chatTabController = new ChatTabController(userName.getText(), userKey);
+                    chatTabController.userKey = userKey;
+                    chatTabController.userName = userName.getText();
                     UserInterfaceUtils.makeFadeOutTransition(
                             "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
                     errorHandler.sendError("Login erfolgreich!");
