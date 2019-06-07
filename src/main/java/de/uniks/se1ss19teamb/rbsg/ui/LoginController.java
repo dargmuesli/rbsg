@@ -58,6 +58,10 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
     
+    public static String getUserKey() {
+        return userKey;
+    }
+
     public void initialize() {
         loginScreen.setOpacity(0);
         enterAction();
