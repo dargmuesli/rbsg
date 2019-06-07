@@ -38,15 +38,7 @@ public class RegisterController {
     
     @FXML
     private JFXTextField userName;
-    
-    @FXML
-    private JFXPasswordField password;
-    
-    @FXML
-    private JFXPasswordField confirmPassword;
-    
-    private ErrorPopupController controller;
-    
+
     private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
