@@ -4,16 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-<<<<<<< HEAD
 import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
-=======
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
->>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +32,6 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
 
-<<<<<<< HEAD
     @FXML
     private ListView playerListView;
 
@@ -49,8 +44,6 @@ public class MainController {
     @FXML
     private ListView gameListView;
 
-=======
->>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
     @FXML
     private JFXButton btnCreate;
     
@@ -68,25 +61,19 @@ public class MainController {
     
     @FXML
     private Toggle fourPlayers;
-<<<<<<< HEAD
 
-    private ErrorHandler errorHandler = new ErrorHandler();
-
-=======
-    
     @FXML
     private JFXButton btnLogout;
 
     private ErrorHandler errorHandler;
-  
->>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
+
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
     public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-        setGameListView();
-        setPlayerListView();
+        //setGameListView();
+        //setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -128,9 +115,8 @@ public class MainController {
         }
     }
 
-    
     public void setOnAction(ActionEvent event) throws IOException {
-        
+
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
@@ -148,7 +134,7 @@ public class MainController {
                 errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
             }
         }
-        
+
         if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
@@ -159,4 +145,6 @@ public class MainController {
             }
         }
     }
+
 }
+

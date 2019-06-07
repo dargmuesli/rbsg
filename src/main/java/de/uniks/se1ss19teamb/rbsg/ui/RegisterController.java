@@ -20,8 +20,10 @@ import org.apache.logging.log4j.Logger;
 public class RegisterController {
     @FXML
     JFXPasswordField password;
+
     @FXML
     JFXPasswordField confirmPassword;
+
     @FXML
     private AnchorPane registerScreen;
     
@@ -36,19 +38,9 @@ public class RegisterController {
     
     @FXML
     private JFXTextField userName;
-<<<<<<< HEAD
 
-=======
-    
-    @FXML
-    private JFXPasswordField password;
-    
-    @FXML
-    private JFXPasswordField confirmPassword;
-    
     private ErrorPopupController controller;
     
->>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
     private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
@@ -62,15 +54,9 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-<<<<<<< HEAD
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = new ErrorHandler();
-=======
-    
             controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
->>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
@@ -78,7 +64,7 @@ public class RegisterController {
             logger.error(e);
         }
     }
-    
+
     @FXML
     void eventHandler(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnCancel)) {
@@ -89,16 +75,16 @@ public class RegisterController {
             if (!userName.getText().isEmpty()
                     && !password.getText().isEmpty()
                     && !confirmPassword.getText().isEmpty()) {
-                
+
                 if (password.getText().equals(confirmPassword.getText())) {
                     RegisterUserRequest register = new RegisterUserRequest(
                             userName.getText(), password.getText());
-                    
+
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition(
                                 "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
-                        
+
                         errorHandler.sendError("Registrierung erfolgreich!");
                     } /*else {
                         errorHandler.sendError("Entschuldigung.
@@ -108,7 +94,7 @@ public class RegisterController {
                 } else {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
-            
+
             } else {
                 errorHandler.sendError("Bitte geben Sie etwas ein.");
             }
