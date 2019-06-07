@@ -64,12 +64,13 @@ public class MainController {
 
         LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                // TODO privates tab
+                /* TODO privates tab
                 Tab tab = new Tab();
                 tab.setText(from);
                 tab.setContent(new Label(message));
                 chat.getTabs().add(tab);
                 System.out.println(message);
+                */
             }
         });
         
