@@ -18,12 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
-    @FXML
-    JFXPasswordField password;
-
-    @FXML
-    JFXPasswordField confirmPassword;
-
+    
     @FXML
     private AnchorPane registerScreen;
     
@@ -38,7 +33,13 @@ public class RegisterController {
     
     @FXML
     private JFXTextField userName;
-
+    
+    @FXML
+    private JFXPasswordField password;
+    
+    @FXML
+    private JFXPasswordField confirmPassword;
+    
     private ErrorPopupController controller;
     
     private ErrorHandler errorHandler;
@@ -54,7 +55,7 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-
+    
             controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
@@ -64,7 +65,7 @@ public class RegisterController {
             logger.error(e);
         }
     }
-
+    
     @FXML
     void eventHandler(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnCancel)) {
@@ -75,16 +76,16 @@ public class RegisterController {
             if (!userName.getText().isEmpty()
                     && !password.getText().isEmpty()
                     && !confirmPassword.getText().isEmpty()) {
-
+                
                 if (password.getText().equals(confirmPassword.getText())) {
                     RegisterUserRequest register = new RegisterUserRequest(
                             userName.getText(), password.getText());
-
+                    
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition(
                                 "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
-
+                        
                         errorHandler.sendError("Registrierung erfolgreich!");
                     } /*else {
                         errorHandler.sendError("Entschuldigung.
@@ -94,7 +95,7 @@ public class RegisterController {
                 } else {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
-
+            
             } else {
                 errorHandler.sendError("Bitte geben Sie etwas ein.");
             }
