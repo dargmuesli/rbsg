@@ -26,10 +26,6 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
 
-    private ErrorHandler errorHandler = new ErrorHandler();
-
-    private static final Logger logger = LogManager.getLogger(MainController.class);
-    
     @FXML
     private JFXButton btnCreate;
     
@@ -47,8 +43,10 @@ public class MainController {
     
     @FXML
     private Toggle fourPlayers;
-    
-    private ErrorHandler errorHandler;
+
+    private ErrorHandler errorHandler = new ErrorHandler();
+
+    private static final Logger logger = LogManager.getLogger(MainController.class);
 
     public void initialize() {
         mainScreen.setOpacity(0);
