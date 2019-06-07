@@ -54,26 +54,26 @@ public class MainController {
     }
 
     private void setPlayerListView() {
-
         scrollPanePlayer.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;" + "-fx-padding: 0px;");
+        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         // TODO : put the real player into the playerListView, (i create something to check the method)
         playerListView.getItems().add("test player");
-        for (int i = 0; i<100; i++){
+        for (int i = 0; i < 100; i++) {
             playerListView.getItems().add("new Item");
         }
 
     }
 
-    private void setGameListView(){
-
+    private void setGameListView() {
         scrollPaneGame.setStyle("-fx-background-color:transparent;");
-        gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;" + "-fx-padding: 0px;");
+        gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //TODO : create Player and put into the gameListView; ( i put something to check the method )
         gameListView.getItems().add("Dies ist ein Test");
-        for (int i = 0; i< 120; i++){
+        for (int i = 0; i < 120; i++) {
             gameListView.getItems().add("mytest");
         }
 
