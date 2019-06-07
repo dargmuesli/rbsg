@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,26 +14,22 @@
       <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@dark-design.css">
          <children>
             <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
-            <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
-            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="156.0" layoutY="265.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
+            <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" onAction="#onEnter" />
+            <JFXCheckBox fx:id="rememberLogin" layoutX="150.0" layoutY="238.0" mnemonicParsing="false" onAction="#eventHandler" onKeyPressed="#keyEventHandler" text="Remember Login" />
+            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="172.0" layoutY="267.0" onAction="#eventHandler" onKeyPressed="#keyEventHandler" prefHeight="30.0" prefWidth="100.0" text="Login">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="btnCancel" alignment="CENTER" layoutX="334.0" layoutY="265.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Cancel">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-            <FontAwesomeIconView glyphName="USER" layoutX="69.0" layoutY="159.0" size="25" />
-            <FontAwesomeIconView glyphName="KEY" layoutX="66.0" layoutY="227.0" size="25" />
-            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="352.0" layoutY="335.0" onAction="#setOnAction" text="Registration">
+            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="328.0" layoutY="267.0" onAction="#eventHandler" onKeyPressed="#keyEventHandler" prefHeight="30.0" prefWidth="100.0" text="Registration">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
             <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
             <FontAwesomeIconView glyphName="LOCK" layoutX="272.0" layoutY="55.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
+            <FontAwesomeIconView glyphName="USER" layoutX="69.0" layoutY="159.0" size="25" />
+            <FontAwesomeIconView glyphName="KEY" layoutX="66.0" layoutY="227.0" size="25" />
          </children>
       </AnchorPane>
    </children>

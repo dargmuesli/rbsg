@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,12 +16,12 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
-            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
-            <JFXTextField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
-            <JFXTextField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
-            <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
             <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
+            <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
+            <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
+            <JFXPasswordField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
+            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
+            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

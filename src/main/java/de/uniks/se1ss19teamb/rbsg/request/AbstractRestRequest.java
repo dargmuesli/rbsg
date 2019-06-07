@@ -33,7 +33,7 @@ public abstract class AbstractRestRequest implements RestRequest {
 
     private static final Logger logger = LogManager.getLogger(AbstractRestRequest.class);
     
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
    
     @Override

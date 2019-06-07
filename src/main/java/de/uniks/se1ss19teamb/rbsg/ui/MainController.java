@@ -3,8 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
+import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -44,11 +43,14 @@ public class MainController {
     
     @FXML
     private Toggle fourPlayers;
+    
+    @FXML
+    private JFXButton btnLogout;
 
     @FXML
     private TabPane chat;
 
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
@@ -66,7 +68,7 @@ public class MainController {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = new ErrorHandler();
+            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
             
@@ -93,6 +95,16 @@ public class MainController {
                 game.sendRequest();
             } else {
                 errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
+            }
+        }
+        
+        if (event.getSource().equals(btnLogout)) {
+            LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
+            logout.sendRequest();
+            if (logout.getSuccessful()) {
+                LoginController.setUserKey(null);
+                UserInterfaceUtils.makeFadeOutTransition(
+                        "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
     }
