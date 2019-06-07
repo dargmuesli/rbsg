@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -34,7 +35,7 @@ public class MainController {
     private AnchorPane errorContainer;
 
     @FXML
-    private ListView<String> playerListView;
+    private ListView<String> listViewPlayer;
 
     @FXML
     private ScrollPane scrollPanePlayer;
@@ -90,11 +91,14 @@ public class MainController {
         scrollPanePlayer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPanePlayer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPanePlayer.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;");
+        listViewPlayer.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;");
         //(Test player) TODO : put the real player into the playerListView
-        playerListView.getItems().add("test player");
-        playerListView.getItems().add("test player 2");
-        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewPlayer.getItems().add("test player");
+        listViewPlayer.getItems().add("test player 2");
+        String userKey = LoginController.getUserKey();
+        QueryGamesRequest gamesRequest = new QueryGamesRequest(userKey);
+        //listViewPlayer.getItems().addAll(gamesRequest.getGames().get(0).getName());
+        listViewPlayer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
     
     public void eventHandler(ActionEvent event) throws IOException {
