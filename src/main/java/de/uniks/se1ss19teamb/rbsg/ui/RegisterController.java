@@ -41,6 +41,8 @@ public class RegisterController {
 
     private ErrorHandler errorHandler;
 
+    private ErrorPopupController controller;
+
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
     
     public void initialize() {
@@ -52,8 +54,7 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = new ErrorHandler();
+
             controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);

@@ -6,10 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -24,7 +20,7 @@
                <children>
                   <ScrollPane fx:id="scrollPanePlayer" prefHeight="432.0" prefWidth="148.0">
                      <content>
-                        <ListView fx:id="playerListView" prefHeight="372.0" prefWidth="160.0" stylesheets="@dark-design2.css" />
+                        <ListView fx:id="playerListView" prefHeight="374.0" prefWidth="148.0" stylesheets="@dark-design2.css" />
                      </content>
                   </ScrollPane>
                </children></VBox>
@@ -57,10 +53,10 @@
                <children>
                   <AnchorPane fx:id="errorContainer" layoutX="25.0" layoutY="60.0" prefHeight="50.0" prefWidth="400.0" />
                </children></AnchorPane>
-            <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="header" layoutY="-5.0" prefHeight="20.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
                <children>
-                  <Label alignment="CENTER" layoutX="21.0" layoutY="2.0" prefHeight="23.0" prefWidth="96.0" text="Players" textFill="#756e6e" />
-                  <Label alignment="CENTER" layoutX="149.0" layoutY="3.0" prefHeight="24.0" prefWidth="130.0" text="Running Games" textFill="#7c7676" />
+                  <Label alignment="CENTER" layoutX="27.0" layoutY="6.0" prefHeight="23.0" prefWidth="96.0" text="Players" textFill="#756e6e" />
+                  <Label alignment="CENTER" layoutX="161.0" layoutY="5.0" prefHeight="24.0" prefWidth="130.0" text="Running Games" textFill="#7c7676" />
                   <JFXButton fx:id="btnLogout" alignment="CENTER" layoutX="538.0" layoutY="2.0" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
                </children>
             </AnchorPane>
