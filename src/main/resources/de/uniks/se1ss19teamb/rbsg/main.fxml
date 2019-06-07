@@ -47,7 +47,7 @@
                <children>
                   <AnchorPane fx:id="errorContainer" layoutX="250.0" prefHeight="45.0" prefWidth="200.0" />
                </children></AnchorPane>
-            <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <MenuButton contentDisplay="GRAPHIC_ONLY" layoutX="555.0" layoutY="2.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="26.0" style="-fx-background-color: transparent;">
                     <items>

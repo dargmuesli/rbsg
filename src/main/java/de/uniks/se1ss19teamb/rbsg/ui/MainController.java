@@ -49,9 +49,6 @@ public class MainController {
     
     @FXML
     private JFXButton btnLogout;
-    
-    @FXML
-    private MenuButton btnMenu;
 
     private ErrorHandler errorHandler;
 
