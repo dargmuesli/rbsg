@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
@@ -50,10 +51,12 @@ public class LoginController {
     private ErrorHandler errorHandler;
     
     private ErrorPopupController controller;
-
-    private ChatTabController chatTabController;
     
     public static String userKey;
+
+    public static String user;
+
+    public static ChatSocket chatSocket;
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
     
@@ -133,8 +136,7 @@ public class LoginController {
                 }
                 
                 setUserKey(login.getUserKey());
-                chatTabController.userKey = login.getUserKey();
-                chatTabController.userName = userName.getText();
+                setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
                 
@@ -171,5 +173,21 @@ public class LoginController {
     
     public static void setUserKey(String key) {
         userKey = key;
+    }
+
+    public static String getUser() {
+        return user;
+    }
+
+    public static void setUser(String name) {
+        user = name;
+    }
+
+    public static ChatSocket getChatSocket() {
+        return chatSocket;
+    }
+
+    public static void setChatSocket(ChatSocket chatSocket) {
+        LoginController.chatSocket = chatSocket;
     }
 }

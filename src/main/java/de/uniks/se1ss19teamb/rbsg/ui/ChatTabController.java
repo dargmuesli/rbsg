@@ -26,9 +26,9 @@ public class ChatTabController {
     @FXML
     private TextArea textArea;
 
-    public static String userKey;
+    public static String userKey = LoginController.getUserKey();
 
-    public static String userName;
+    public static String userName = LoginController.getUser();
 
     public final ChatSocket chatSocket = new ChatSocket(userName, userKey);
 
@@ -78,13 +78,16 @@ public class ChatTabController {
         });
 
         system.connect();
+
+        LoginController.setChatSocket(chatSocket);
     }
 
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnSend)) {
-            //textArea.appendText("SomeName: " + message.getText() + "\n");
             chat.sendMessage(message.getText());
+            // if private
+            // chat.sendMessage(message.getText(), "sendTo");
             message.setText("");
         }
     }

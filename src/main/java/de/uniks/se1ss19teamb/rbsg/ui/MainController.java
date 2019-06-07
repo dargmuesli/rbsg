@@ -61,6 +61,17 @@ public class MainController {
         for (Tab t: chat.getTabs()) {
             System.out.println(t.getText());
         }
+
+        LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
+            if (isPrivate) {
+                // TODO privates tab
+                Tab tab = new Tab();
+                tab.setText(from);
+                tab.setContent(new Label(message));
+                chat.getTabs().add(tab);
+                System.out.println(message);
+            }
+        });
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
