@@ -10,8 +10,13 @@ import java.nio.file.Paths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 public class ChatTabController {
+
+    @FXML
+    private AnchorPane tabPane;
+
     @FXML
     private Button btnSend;
 
@@ -41,12 +46,16 @@ public class ChatTabController {
 
     }
 
+    public AnchorPane getTabPane() {
+        return tabPane;
+    }
+
     @FXML
     public void initialize() {
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
-            if(isPrivate) {
-                // TODO private
-                System.out.println(message);
+            if (isPrivate) {
+                // TODO privates tab
+                textArea.appendText(from + " to me: " + message + "\n");
             } else {
                 textArea.appendText(from + ": " + message + "\n");
             }
