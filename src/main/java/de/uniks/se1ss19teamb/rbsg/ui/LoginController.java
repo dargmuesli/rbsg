@@ -58,6 +58,10 @@ public class LoginController {
 
     public static String userKey;
     
+    public static String getUserKey() {
+        return userKey;
+    }
+
     public void initialize() {
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
