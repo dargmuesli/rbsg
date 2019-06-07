@@ -3,9 +3,12 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -27,7 +30,7 @@
                      </tabs></TabPane>
                   <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Create Game" />
+                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Create Game" />
                         <HBox alignment="CENTER" layoutX="1.0" layoutY="89.0" prefHeight="45.0" prefWidth="224.0">
                            <children>
                               <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" selected="true" text="2">
@@ -47,15 +50,28 @@
                      </children></AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-: ;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane fx:id="errorContainer" layoutX="250.0" prefHeight="45.0" prefWidth="200.0" />
                </children></AnchorPane>
-            <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
+                  <MenuButton contentDisplay="GRAPHIC_ONLY" layoutX="555.0" layoutY="2.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="26.0" style="-fx-background-color: transparent;">
+                    <items>
+                      <MenuItem mnemonicParsing="false">
+                           <graphic>
+                              <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#eventHandler" text="Logout" />
+                           </graphic></MenuItem>
+                    </items>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="cog" accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />
+                     </graphic>
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                  </MenuButton>
                   <Label alignment="CENTER" layoutX="21.0" layoutY="2.0" prefHeight="23.0" prefWidth="96.0" text="Players" textFill="#756e6e" />
                   <Label alignment="CENTER" layoutX="149.0" layoutY="3.0" prefHeight="24.0" prefWidth="130.0" text="Running Games" textFill="#7c7676" />
-                  <JFXButton fx:id="btnLogout" alignment="CENTER" layoutX="538.0" layoutY="2.0" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
                </children>
             </AnchorPane>
          </children>

@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
@@ -14,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,6 +58,7 @@ public class MainController {
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
     public void initialize() {
+        
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
@@ -90,7 +94,7 @@ public class MainController {
         }
     }
     
-    public void setOnAction(ActionEvent event) throws IOException {
+    public void eventHandler(ActionEvent event) throws IOException {
         
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
