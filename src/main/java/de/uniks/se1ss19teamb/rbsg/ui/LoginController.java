@@ -111,7 +111,7 @@ public class LoginController {
         }
     }
     
-    private void login() throws IOException {
+    private void login() {
         //slideNextScene("main.fxml",100);
         if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
             LoginUserRequest login = new LoginUserRequest(
@@ -139,17 +139,16 @@ public class LoginController {
     }
     
     private void goToRegister() {
-        //slideNextScene("register.fxml",400);
         UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
     }
     
-    public void saveUserData() {
+    private void saveUserData() {
         UserData userData = new UserData(userName.getText(), password.getText());
         SerializeUtils.serialize(USER_DATA, userData);
     }
-    
-    public void loadUserData() {
+
+    private void loadUserData() {
         Path path = Paths.get(USER_DATA);
         UserData userData = SerializeUtils.deserialize(path, UserData.class);
         userName.setText(userData.getUserName());

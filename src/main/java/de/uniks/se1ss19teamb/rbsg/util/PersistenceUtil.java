@@ -2,7 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.util;
 
 import de.uniks.se1ss19teamb.rbsg.testmodel.Game; //TODO needs to be changed when we implement the game
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -65,6 +66,4 @@ public class PersistenceUtil {
         PersistenceUtil p = new PersistenceUtil();
         return p.load();
     }
-    
-    
 }
