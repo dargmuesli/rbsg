@@ -13,6 +13,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainController {
     @FXML
@@ -21,6 +23,7 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
 
+<<<<<<< HEAD
     @FXML
     private ListView playerListView;
 
@@ -32,6 +35,11 @@ public class MainController {
 
     @FXML
     private ListView gameListView;
+=======
+    private ErrorHandler errorHandler = new ErrorHandler();
+
+    private static final Logger logger = LogManager.getLogger(MainController.class);
+>>>>>>> aabb92b4544dcc23eeb37976210f547cba68b5b2
     
     public void initialize() {
         mainScreen.setOpacity(0);
@@ -49,7 +57,8 @@ public class MainController {
             errorContainer.getChildren().add(parent);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
+            logger.error(e);
         }
     }
 

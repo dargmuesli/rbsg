@@ -13,10 +13,18 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.ArrayList;
 
-public class Chat {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+
+
+public class Chat {
+    private static final Logger logger = LogManager.getLogger(Chat.class);
+
+    private ErrorHandler errorHandler = new ErrorHandler();
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     private ChatSocket chatSocket;
     private Path path;
@@ -67,7 +75,8 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                e.printStackTrace();
+                errorHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!");
+                logger.error(e);
             }
         }
 
@@ -78,7 +87,8 @@ public class Chat {
                 out.println(SerializeUtils.serialize(cle));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!");
+            logger.error(e);
         }
     }
 
