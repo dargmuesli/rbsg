@@ -4,7 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
+<<<<<<< HEAD
 import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
+=======
+import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+>>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -32,6 +36,7 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
 
+<<<<<<< HEAD
     @FXML
     private ListView playerListView;
 
@@ -44,6 +49,8 @@ public class MainController {
     @FXML
     private ListView gameListView;
 
+=======
+>>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
     @FXML
     private JFXButton btnCreate;
     
@@ -61,9 +68,18 @@ public class MainController {
     
     @FXML
     private Toggle fourPlayers;
+<<<<<<< HEAD
 
     private ErrorHandler errorHandler = new ErrorHandler();
 
+=======
+    
+    @FXML
+    private JFXButton btnLogout;
+
+    private ErrorHandler errorHandler;
+  
+>>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
     public void initialize() {
@@ -77,7 +93,7 @@ public class MainController {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = new ErrorHandler();
+            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
             
@@ -130,6 +146,16 @@ public class MainController {
                 game.sendRequest();
             } else {
                 errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
+            }
+        }
+        
+        if (event.getSource().equals(btnLogout)) {
+            LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
+            logout.sendRequest();
+            if (logout.getSuccessful()) {
+                LoginController.setUserKey(null);
+                UserInterfaceUtils.makeFadeOutTransition(
+                        "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
     }

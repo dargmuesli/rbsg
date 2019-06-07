@@ -10,13 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class UserInterfaceUtils {
-    private static ErrorHandler errorHandler = new ErrorHandler();
-
-    private static final Logger logger = LogManager.getLogger(UserInterfaceUtils.class);
+    private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     public static void makeFadeOutTransition(String path, AnchorPane node) {
         FadeTransition fadeTransition = new FadeTransition();

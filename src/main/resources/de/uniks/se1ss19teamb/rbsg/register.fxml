@@ -10,6 +10,7 @@
    <children>
       <AnchorPane fx:id="registerScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design.css">
          <children>
+<<<<<<< HEAD
             <AnchorPane fx:id="errorContainer" layoutX="151.0" layoutY="74.0" prefHeight="50.0" prefWidth="400.0" />
             <JFXButton fx:id="btnConfirm" layoutX="176.0" layoutY="351.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="confirm" />
             <JFXButton fx:id="btnCancel" layoutX="369.0" layoutY="351.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="cancel" />
@@ -20,6 +21,19 @@
             <FontAwesomeIconView glyphName="ADDRESS_CARD" layoutX="176.0" layoutY="65.0" size="60" textAlignment="CENTER" wrappingWidth="315.7142868041992" />
             <JFXPasswordField fx:id="password" layoutX="176.0" layoutY="191.0" prefHeight="40.0" prefWidth="350.0" promptText="Password" />
             <JFXPasswordField fx:id="confirmPassword" layoutX="176.0" layoutY="270.0" prefHeight="40.0" prefWidth="350.0" promptText=" Confirm Passwort" />  
+=======
+            <Label alignment="CENTER" prefHeight="80.0" prefWidth="600.0" text="Register" textFill="#fffefe">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" prefWidth="200.0" />
+            <JFXTextField fx:id="userName" labelFloat="true" layoutX="150.0" layoutY="107.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
+            <JFXPasswordField fx:id="password" labelFloat="true" layoutX="150.0" layoutY="182.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
+            <JFXPasswordField fx:id="confirmPassword" labelFloat="true" layoutX="150.0" layoutY="247.0" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
+            <JFXButton fx:id="btnConfirm" layoutX="150.0" layoutY="336.0" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Confirm" />
+            <JFXButton fx:id="btnCancel" layoutX="320.0" layoutY="336.0" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Cancel" />
+>>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
          </children>
       </AnchorPane>
    </children>

@@ -36,7 +36,19 @@ public class RegisterController {
     
     @FXML
     private JFXTextField userName;
+<<<<<<< HEAD
 
+=======
+    
+    @FXML
+    private JFXPasswordField password;
+    
+    @FXML
+    private JFXPasswordField confirmPassword;
+    
+    private ErrorPopupController controller;
+    
+>>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
     private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
@@ -50,9 +62,15 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
+<<<<<<< HEAD
 
             ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = new ErrorHandler();
+=======
+    
+            controller = fxmlLoader.getController();
+            errorHandler = ErrorHandler.getErrorHandler();
+>>>>>>> 743c448e768b2437ec5cfa27d0b3045882ce3daa
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
@@ -62,7 +80,7 @@ public class RegisterController {
     }
     
     @FXML
-    void setOnAction(ActionEvent event) throws IOException {
+    void eventHandler(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
