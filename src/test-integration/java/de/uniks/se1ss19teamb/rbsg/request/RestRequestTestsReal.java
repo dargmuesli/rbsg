@@ -186,7 +186,7 @@ public class RestRequestTestsReal {
                 DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
                 try {
                     req.sendRequest();
-                } catch (IOException | ParseException e) {
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             });

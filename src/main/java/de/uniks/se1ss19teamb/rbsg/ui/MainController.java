@@ -18,6 +18,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainController {
     
@@ -26,7 +28,7 @@ public class MainController {
     
     @FXML
     private AnchorPane errorContainer;
-    
+
     @FXML
     private JFXButton btnCreate;
     
@@ -53,6 +55,8 @@ public class MainController {
 
     private ErrorHandler errorHandler;
 
+    private static final Logger logger = LogManager.getLogger(MainController.class);
+
     public void initialize() {
         
         mainScreen.setOpacity(0);
@@ -69,7 +73,8 @@ public class MainController {
             errorContainer.getChildren().add(parent);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
+            logger.error(e);
         }
     }
     
