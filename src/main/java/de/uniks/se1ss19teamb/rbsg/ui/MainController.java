@@ -12,15 +12,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-<<<<<<< HEAD
-
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
-=======
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
->>>>>>> 2288b7f73eb0e1354b8a231443086f6c98c630e3
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +29,6 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
 
-<<<<<<< HEAD
     @FXML
     private ListView playerListView;
 
@@ -45,12 +40,7 @@ public class MainController {
 
     @FXML
     private ListView gameListView;
-=======
-    private ErrorHandler errorHandler = new ErrorHandler();
 
-    private static final Logger logger = LogManager.getLogger(MainController.class);
->>>>>>> aabb92b4544dcc23eeb37976210f547cba68b5b2
-    
     @FXML
     private JFXButton btnCreate;
     
@@ -68,9 +58,11 @@ public class MainController {
     
     @FXML
     private Toggle fourPlayers;
-    
-    private ErrorHandler errorHandler;
 
+    private ErrorHandler errorHandler = new ErrorHandler();
+
+    private static final Logger logger = LogManager.getLogger(MainController.class);
+    
     public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
@@ -91,7 +83,6 @@ public class MainController {
             logger.error(e);
         }
     }
-<<<<<<< HEAD
 
     private void setPlayerListView() {
         scrollPanePlayer.setStyle("-fx-background-color:transparent;");
@@ -116,8 +107,8 @@ public class MainController {
         for (int i = 0; i < 120; i++) {
             gameListView.getItems().add("mytest");
         }
+    }
 
-=======
     
     public void setOnAction(ActionEvent event) throws IOException {
         
@@ -138,6 +129,5 @@ public class MainController {
                 errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
             }
         }
->>>>>>> 2288b7f73eb0e1354b8a231443086f6c98c630e3
     }
 }
