@@ -19,7 +19,7 @@
          <children>
             <VBox fx:id="playerList" focusTraversable="true" layoutY="26.0" prefHeight="374.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
-                  <ScrollPane fx:id="scrollPanePlayer" hbarPolicy="NEVER" prefHeight="432.0" prefWidth="148.0" vbarPolicy="NEVER">
+                  <ScrollPane fx:id="scrollPanePlayer" hbarPolicy="NEVER" prefHeight="372.0" prefWidth="115.0" vbarPolicy="NEVER">
                      <content>
                         <ListView fx:id="playerListView" prefHeight="371.0" prefWidth="149.0" stylesheets="@dark-design2.css" />
                      </content>
@@ -53,17 +53,17 @@
             <AnchorPane fx:id="gameLounge" layoutX="150.0" layoutY="26.0" prefHeight="194.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
                   <AnchorPane fx:id="errorContainer" layoutX="25.0" layoutY="60.0" prefHeight="50.0" prefWidth="400.0" />
-                  <ScrollPane fx:id="scrollPaneGame" hbarPolicy="NEVER" prefHeight="190.0" prefWidth="450.0" vbarPolicy="NEVER">
+                  <ScrollPane fx:id="gameScrollPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="450.0" vbarPolicy="NEVER">
                      <content>
-                        <ListView fx:id="gameListView" prefHeight="190.0" prefWidth="450.0" stylesheets="@dark-design2.css" />
+                        <ListView fx:id="gameListView" prefHeight="200.0" prefWidth="450.0" stylesheets="@dark-design2.css" />
                      </content>
                   </ScrollPane>
                </children></AnchorPane>
-            <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="header" layoutX="-2.0" layoutY="-4.0" prefHeight="20.0" prefWidth="600.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-4.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="24.0" prefWidth="139.0" text="Players" textFill="#756e6e" />
-                  <Label alignment="CENTER" layoutX="201.0" prefHeight="24.0" prefWidth="249.0" text="Running Games" textFill="#7c7676" />
-                  <JFXButton fx:id="btnLogout" alignment="CENTER" layoutX="538.0" layoutY="2.0" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
+                  <Label alignment="CENTER" layoutY="5.0" prefHeight="24.0" prefWidth="139.0" text="Players" textFill="#756e6e" />
+                  <Label alignment="CENTER" layoutX="205.0" layoutY="5.0" prefHeight="24.0" prefWidth="249.0" text="Running Games" textFill="#7c7676" />
+                  <JFXButton fx:id="btnLogout" alignment="CENTER" layoutX="532.0" layoutY="2.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="15.0" prefWidth="60.0" text="Logout" />
                   <Line endX="-257.5962219238281" endY="-593.4232788085938" layoutX="406.0" layoutY="618.0" startX="-265.8891296386719" startY="-616.7161865234375" />
                </children>
             </AnchorPane>

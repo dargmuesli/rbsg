@@ -72,8 +72,8 @@ public class MainController {
     public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-        //setGameListView();
-        //setPlayerListView();
+        setGameListView();
+        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -108,11 +108,9 @@ public class MainController {
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //TODO : create Player and put into the gameListView; ( i put something to check the method )
         gameListView.getItems().add("Dies ist ein Test");
-        String userKey = LoginController.getUserKey();
-        QueryGamesRequest gamesRequest = new QueryGamesRequest(userKey);
-        for (Game game : gamesRequest.getGames()) {
-            gameListView.getItems().addAll(game.getName());
-        }
+        //String userKey = LoginController.getUserKey();
+        //QueryGamesRequest gamesRequest = new QueryGamesRequest(userKey);
+
     }
 
     public void setOnAction(ActionEvent event) throws IOException {
