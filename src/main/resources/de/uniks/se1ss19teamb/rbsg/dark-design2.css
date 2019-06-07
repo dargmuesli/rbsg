@@ -51,3 +51,7 @@
 .menu-button{
     -fx-background-color: transparent;
 }
+
+.menu-item {
+    -fx-background-color: grey;
+}

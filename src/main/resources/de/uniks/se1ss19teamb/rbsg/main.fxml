@@ -43,7 +43,7 @@
                      </children></AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-fx-background-insets: transparent;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-: ;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane fx:id="errorContainer" layoutX="250.0" prefHeight="45.0" prefWidth="200.0" />
                </children></AnchorPane>
@@ -59,6 +59,9 @@
                      <graphic>
                         <FontAwesomeIconView fx:id="cog" accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />
                      </graphic>
+                     <font>
+                        <Font size="8.0" />
+                     </font>
                   </MenuButton>
                   <Label alignment="CENTER" layoutX="21.0" layoutY="2.0" prefHeight="23.0" prefWidth="96.0" text="Players" textFill="#756e6e" />
                   <Label alignment="CENTER" layoutX="149.0" layoutY="3.0" prefHeight="24.0" prefWidth="130.0" text="Running Games" textFill="#7c7676" />
