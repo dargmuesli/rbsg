@@ -23,6 +23,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -38,7 +40,11 @@ public class LoginController {
     private JFXTextField userName;
     
     @FXML
+<<<<<<< HEAD
     private JFXPasswordField password;
+=======
+    private JFXTextField password;
+>>>>>>> aabb92b4544dcc23eeb37976210f547cba68b5b2
 
     @FXML
     private JFXButton btnLogin;
@@ -57,6 +63,8 @@ public class LoginController {
     private ErrorHandler errorHandler;
 
     public static String userKey;
+
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
     
     public void initialize() {
         loginScreen.setOpacity(0);
@@ -74,7 +82,8 @@ public class LoginController {
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!");
+            logger.error(e);
         }
     }
     

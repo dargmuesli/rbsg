@@ -4,7 +4,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.ErrorPopupController;
 
 public class ErrorHandler {
 
-    ErrorPopupController errorPopupController;
+    private ErrorPopupController errorPopupController;
 
     public void setErrorPopupController(ErrorPopupController epc) {
         errorPopupController = epc;
