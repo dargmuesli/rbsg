@@ -10,9 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UserInterfaceUtils {
-    
+    private static ErrorHandler errorHandler = new ErrorHandler();
+
+    private static final Logger logger = LogManager.getLogger(UserInterfaceUtils.class);
+
     public static void makeFadeOutTransition(String path, AnchorPane node) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
@@ -23,6 +28,7 @@ public class UserInterfaceUtils {
             try {
                 fadeNextScene(path, node);
             } catch (IOException e) {
+                errorHandler.sendError("Fehler beim Laden der FXML-Datei");
                 e.printStackTrace();
             }
         });

@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainController {
     @FXML
@@ -16,6 +18,10 @@ public class MainController {
     
     @FXML
     private AnchorPane errorContainer;
+
+    private ErrorHandler errorHandler = new ErrorHandler();
+
+    private static final Logger logger = LogManager.getLogger(MainController.class);
     
     public void initialize() {
         mainScreen.setOpacity(0);
@@ -32,7 +38,8 @@ public class MainController {
             errorContainer.getChildren().add(parent);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Fehler konnte beim Laden der FXML-Datei!");
+            logger.error(e);
         }
     }
 }

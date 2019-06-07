@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
     
@@ -40,6 +42,8 @@ public class RegisterController {
     private ErrorPopupController controller;
     
     private ErrorHandler errorHandler;
+
+    private static final Logger logger = LogManager.getLogger(RegisterController.class);
     
     public void initialize() {
         registerScreen.setOpacity(0);
@@ -56,8 +60,9 @@ public class RegisterController {
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
-            e.printStackTrace();
-        }      
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei!");
+            logger.error(e);
+        }
     }
     
     @FXML
