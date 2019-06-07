@@ -18,7 +18,7 @@ public class WebSocketClient {
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
     private static final Logger logger = LogManager.getLogger(WebSocketClient.class);
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     
     public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
         this.noopTimer = new Timer();

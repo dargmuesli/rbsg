@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class CipherController {
     private static final Logger logger = LogManager.getLogger(CipherController.class);
 
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     //This string needs to be related with data
 
     public void encryptMessage(String msg, String filename) {

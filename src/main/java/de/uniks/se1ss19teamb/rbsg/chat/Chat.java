@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 public class Chat {
     private static final Logger logger = LogManager.getLogger(Chat.class);
 
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     private ChatSocket chatSocket;
     private Path path;
@@ -96,7 +96,7 @@ public class Chat {
         try {
             Files.deleteIfExists(path);
         } catch (IOException e) {
-            new ErrorHandler().sendError("Chat log could not be deleted!");
+            ErrorHandler.getErrorHandler().sendError("Chat log could not be deleted!");
         }
     }
 }

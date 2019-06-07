@@ -15,7 +15,7 @@ public class CipherConstant {
 
     private static final Logger logger = LogManager.getLogger(CipherConstant.class);
 
-    private static ErrorHandler errorHandler = new ErrorHandler();
+    private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     static {
         try {

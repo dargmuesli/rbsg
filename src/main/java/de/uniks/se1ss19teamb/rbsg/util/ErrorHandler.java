@@ -5,6 +5,19 @@ import de.uniks.se1ss19teamb.rbsg.ui.ErrorPopupController;
 public class ErrorHandler {
 
     private ErrorPopupController errorPopupController;
+    private static ErrorHandler errorHandler;
+
+    private ErrorHandler() {
+
+    }
+
+    public static ErrorHandler getErrorHandler() {
+        if (errorHandler == null) {
+            errorHandler = new ErrorHandler();
+        }
+
+        return errorHandler;
+    }
 
     public void setErrorPopupController(ErrorPopupController epc) {
         errorPopupController = epc;
@@ -13,6 +26,5 @@ public class ErrorHandler {
     public void sendError(String errorMessage) {
         errorPopupController.displayErrorMessage(errorMessage);
     }
-
 
 }

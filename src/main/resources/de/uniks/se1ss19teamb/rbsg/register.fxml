@@ -20,7 +20,7 @@
             <FontAwesomeIconView glyphName="ADDRESS_CARD" layoutX="176.0" layoutY="65.0" size="60" textAlignment="CENTER" wrappingWidth="315.7142868041992" />
             <JFXPasswordField fx:id="password" layoutX="176.0" layoutY="191.0" prefHeight="40.0" prefWidth="350.0" promptText="Password" />
             <JFXPasswordField fx:id="confirmPassword" layoutX="176.0" layoutY="270.0" prefHeight="40.0" prefWidth="350.0" promptText=" Confirm Passwort" />  
-         </children>
+           </children>
       </AnchorPane>
    </children>
 </AnchorPane>
