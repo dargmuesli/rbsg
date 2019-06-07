@@ -6,10 +6,9 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.util.*;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
-import de.uniks.se1ss19teamb.rbsg.util.*;
-
 
 import java.io.*;
 import java.nio.file.Path;
@@ -102,11 +101,11 @@ public class LoginController {
 
 
     @FXML
-    public void onEnter () {
+    public void onEnter() {
         login();
     }
 
-    public void keyEventHandler (KeyEvent keyEvent){
+    public void keyEventHandler(KeyEvent keyEvent) {
         if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             login();
         }
@@ -118,7 +117,7 @@ public class LoginController {
         }
     }
 
-    private void login () {
+    private void login() {
         if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
             LoginUserRequest login = new LoginUserRequest(
                     userName.getText(), password.getText());
@@ -140,17 +139,17 @@ public class LoginController {
                 errorHandler.sendError("Login fehlgeschlagen!");
             }
 
-        }else {
+        } else {
             errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
         }
     }
 
-    private void goToRegister(){
+    private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
     }
 
-    private void saveUserData(){
+    private void saveUserData() {
         UserData userData = new UserData(userName.getText(),password.getText());
         SerializeUtils.serialize(USER_DATA,userData);
     }

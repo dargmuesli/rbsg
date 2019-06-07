@@ -4,8 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
