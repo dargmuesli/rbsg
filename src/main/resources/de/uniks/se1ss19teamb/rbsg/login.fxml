@@ -12,26 +12,21 @@
       <AnchorPane fx:id="loginScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@dark-design.css">
          <children>
             <JFXTextField fx:id="username" labelFloat="true" layoutX="150.0" layoutY="114.0" prefHeight="40.0" prefWidth="350.0" promptText="Username" />
-            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="147.0" layoutY="300.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
+            <JFXPasswordField fx:id="password" layoutX="147.0" layoutY="210.0" prefHeight="40.0" prefWidth="350.0" promptText="Passwort" />
+            <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="172.0" layoutY="308.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Login">
                 <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="btnCancel" alignment="CENTER" layoutX="286.0" layoutY="300.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Cancel">
+            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="362.0" layoutY="308.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Registration">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
             <FontAwesomeIconView glyphName="USER" layoutX="69.0" layoutY="155.0" size="25" />
             <FontAwesomeIconView glyphName="KEY" layoutX="66.0" layoutY="239.0" size="25" />
-            <JFXButton fx:id="btnRegistration" alignment="CENTER" layoutX="415.0" layoutY="300.0" onAction="#setOnAction" prefHeight="30.0" prefWidth="100.0" text="Registration">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
             <AnchorPane fx:id="errorContainer" layoutX="125.0" layoutY="64.0" prefHeight="50.0" prefWidth="400.0" />
             <FontAwesomeIconView glyphName="LOCK" layoutX="272.0" layoutY="55.0" size="40" textAlignment="CENTER" wrappingWidth="56.0" />
-            <JFXPasswordField fx:id="password" layoutX="147.0" layoutY="210.0" prefHeight="40.0" prefWidth="350.0" promptText="Passwort" />
          </children>
       </AnchorPane>
    </children>

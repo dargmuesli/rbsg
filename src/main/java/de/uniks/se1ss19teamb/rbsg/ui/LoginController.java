@@ -6,26 +6,18 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
-import java.util.Random;
-
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,6 +52,7 @@ public class LoginController {
     
     public void initialize() {
         loginScreen.setOpacity(0);
+        enterAction();
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -74,7 +67,7 @@ public class LoginController {
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
     
@@ -83,6 +76,7 @@ public class LoginController {
         if (event.getSource().equals(btnLogin)) {
             //UserInterfaceUtils.slideNextScene("/de/uniks/se1ss19teamb/rbsg/main.fxml",400,loginScreen);
             UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml",loginScreen);
+
             if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
                 LoginUserRequest login = new LoginUserRequest(
                         userName.getText(), password.getText());
@@ -108,4 +102,13 @@ public class LoginController {
         }
 
     }
+
+    private void enterAction(){
+        loginScreen.addEventHandler(KeyEvent.KEY_PRESSED,event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml",loginScreen);
+            }
+        });
+    }
+
 }
