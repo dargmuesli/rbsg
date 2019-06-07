@@ -79,6 +79,7 @@ public class MainController {
         }
     }
 
+
     private void setPlayerListView() {
         scrollPanePlayer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPanePlayer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
