@@ -2,11 +2,14 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +65,7 @@ public class MainController {
     private ErrorHandler errorHandler = new ErrorHandler();
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
-    
+
     public void initialize() {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
@@ -91,9 +94,7 @@ public class MainController {
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         // TODO : put the real player into the playerListView, (i create something to check the method)
         playerListView.getItems().add("test player");
-        for (int i = 0; i < 100; i++) {
-            playerListView.getItems().add("new Item");
-        }
+
 
     }
 
@@ -104,8 +105,10 @@ public class MainController {
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //TODO : create Player and put into the gameListView; ( i put something to check the method )
         gameListView.getItems().add("Dies ist ein Test");
-        for (int i = 0; i < 120; i++) {
-            gameListView.getItems().add("mytest");
+        String userKey = LoginController.getUserKey();
+        QueryGamesRequest gamesRequest = new QueryGamesRequest(userKey);
+        for (Game game : gamesRequest.getGames()) {
+            gameListView.getItems().addAll(game.getName());
         }
     }
 
