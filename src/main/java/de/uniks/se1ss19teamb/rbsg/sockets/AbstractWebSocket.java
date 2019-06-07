@@ -23,7 +23,7 @@ public abstract class AbstractWebSocket implements WebSocket {
 
     private static final Logger logger = LogManager.getLogger(AbstractWebSocket.class);
 
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     @Override
     public void connect() {

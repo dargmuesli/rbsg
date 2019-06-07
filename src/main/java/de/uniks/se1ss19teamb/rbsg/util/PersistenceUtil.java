@@ -16,7 +16,7 @@ public class PersistenceUtil {
 
     public static final String SAVEGAME_YAML = "./savegame.yaml";
     private YamlIdMap yamlIdMap = new YamlIdMap(Game.class.getPackage().getName());
-    private ErrorHandler errorHandler = new ErrorHandler();
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     private static final Logger logger = LogManager.getLogger(PersistenceUtil.class);
 

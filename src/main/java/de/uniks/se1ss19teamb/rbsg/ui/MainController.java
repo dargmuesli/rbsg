@@ -62,7 +62,7 @@ public class MainController {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = new ErrorHandler();
+            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
             

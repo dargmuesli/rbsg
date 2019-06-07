@@ -74,7 +74,7 @@ public class LoginController {
             errorContainer.getChildren().add(parent);
             
             controller = fxmlLoader.getController();
-            errorHandler  = new ErrorHandler();
+            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             
         } catch (IOException e) {
