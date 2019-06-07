@@ -7,12 +7,11 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-
+import de.uniks.se1ss19teamb.rbsg.util.PersistenceUtil;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.*;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +22,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class LoginController {
-    
-    public static final String USER_DATA = "./userData.txt";
     
     @FXML
     private AnchorPane loginScreen;
@@ -53,8 +50,16 @@ public class LoginController {
     
     public static String userKey;
     
+    private static final String USER_DATA = "./userData.txt";
+    
+    private static final String PASSWORD_DATA = "./passwordData.txt";
+    
     public void initialize() {
-        loadData();
+        File un = new File(USER_DATA);
+        File pw = new File(PASSWORD_DATA);
+        if(un.exists() && pw.exists()) {
+            PersistenceUtil.loadUserData(USER_DATA, PASSWORD_DATA, rememberLogin,btnLogin, userName, password);
+        }
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
         
@@ -114,19 +119,18 @@ public class LoginController {
                     file.delete();
                 }
                 if (rememberLogin.isSelected()) {
-                    saveData(file);
+                    PersistenceUtil.saveUserData(userName.getText(), password.getText(), USER_DATA, PASSWORD_DATA);
                 }
                 
                 setUserKey(login.getUserKey());
                 UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
-                errorHandler.sendError("Login erfolgreich!");
                 
             } else {
-                errorHandler.sendError("Login fehlgeschlagen.");
+                errorHandler.sendError("Login fehlgeschlagen!");
             }
         } else {
-            errorHandler.sendError("Bitte geben Sie etwas ein.");
+            errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
         }
     }
     
@@ -134,35 +138,6 @@ public class LoginController {
         //slideNextScene("register.fxml",400);
         UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
-    }
-    
-    private void saveData(File file) throws IOException {
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(userName.getText());
-        writer.write(System.getProperty("line.separator"));
-        writer.write(password.getText());
-        writer.flush();
-    }
-    
-    private void loadData() {
-        File file = new File(USER_DATA);
-        if (file.exists()) {
-            try {
-                FileReader reader = new FileReader(file);
-                BufferedReader br = new BufferedReader(reader);
-                String userName = br.readLine();
-                String password = br.readLine();
-                this.userName.setText(userName);
-                this.password.setText(password);
-            } catch (FileNotFoundException e) {
-                errorHandler.sendError("Userdaten konnten nicht geladen werden.");
-            } catch (IOException e) {
-                errorHandler.sendError("Userdaten konnten nicht geladen werden.");
-            }
-            rememberLogin.setSelected(true);
-            Platform.runLater(() -> btnLogin.requestFocus());
-        }
     }
     
     public static String getUserKey() {
