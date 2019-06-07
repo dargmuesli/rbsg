@@ -9,8 +9,8 @@ import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
-import java.io.IOException;
 import java.io.*;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
