@@ -62,6 +62,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
     implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
     implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.15'
+
     integrationImplementation configurations.testImplementation
     integrationImplementation sourceSets.main.output
     integrationImplementation sourceSets.test.output
