@@ -47,3 +47,7 @@
 .label{
     -fx-text-fill: -fx-secondary;
 }
+
+.menu-button{
+    -fx-background-color: transparent;
+}
