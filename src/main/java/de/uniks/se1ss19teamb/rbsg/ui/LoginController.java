@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-import de.uniks.se1ss19teamb.rbsg.util.PersistenceUtil;
+import de.uniks.se1ss19teamb.rbsg.util.UserData;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.*;
@@ -57,8 +57,10 @@ public class LoginController {
     public void initialize() {
         File un = new File(USER_DATA);
         File pw = new File(PASSWORD_DATA);
-        if(un.exists() && pw.exists()) {
-            PersistenceUtil.loadUserData(USER_DATA, PASSWORD_DATA, rememberLogin,btnLogin, userName, password);
+        if (un.exists() && pw.exists()) {
+            UserData.loadUserData(USER_DATA, PASSWORD_DATA, rememberLogin,btnLogin, userName, password);
+            un.delete();
+            pw.delete();
         }
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
@@ -119,7 +121,7 @@ public class LoginController {
                     file.delete();
                 }
                 if (rememberLogin.isSelected()) {
-                    PersistenceUtil.saveUserData(userName.getText(), password.getText(), USER_DATA, PASSWORD_DATA);
+                    UserData.saveUserData(userName.getText(), password.getText(), USER_DATA, PASSWORD_DATA);
                 }
                 
                 setUserKey(login.getUserKey());
