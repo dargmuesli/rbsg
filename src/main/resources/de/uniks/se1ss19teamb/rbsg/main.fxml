@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
@@ -20,7 +21,7 @@
                <children>
                   <ScrollPane fx:id="scrollPanePlayer" hbarPolicy="NEVER" prefHeight="432.0" prefWidth="148.0" vbarPolicy="NEVER">
                      <content>
-                        <ListView fx:id="playerListView" prefHeight="373.0" prefWidth="149.0" stylesheets="@dark-design2.css" />
+                        <ListView fx:id="playerListView" prefHeight="371.0" prefWidth="149.0" stylesheets="@dark-design2.css" />
                      </content>
                   </ScrollPane>
                </children></VBox>
@@ -63,6 +64,7 @@
                   <Label alignment="CENTER" prefHeight="24.0" prefWidth="139.0" text="Players" textFill="#756e6e" />
                   <Label alignment="CENTER" layoutX="201.0" prefHeight="24.0" prefWidth="249.0" text="Running Games" textFill="#7c7676" />
                   <JFXButton fx:id="btnLogout" alignment="CENTER" layoutX="538.0" layoutY="2.0" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
+                  <Line endX="-257.5962219238281" endY="-593.4232788085938" layoutX="406.0" layoutY="618.0" startX="-265.8891296386719" startY="-616.7161865234375" />
                </children>
             </AnchorPane>
          </children>
