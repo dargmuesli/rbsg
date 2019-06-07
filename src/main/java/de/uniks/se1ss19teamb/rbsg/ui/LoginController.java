@@ -77,7 +77,7 @@ public class LoginController {
     void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)) {
             //UserInterfaceUtils.slideNextScene("/de/uniks/se1ss19teamb/rbsg/main.fxml",400,loginScreen);
-            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml",loginScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
             if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
                 LoginUserRequest login = new LoginUserRequest(
                         userName.getText(), password.getText());
@@ -99,7 +99,7 @@ public class LoginController {
         
         if (event.getSource().equals(btnRegistration)) {
             //UserInterfaceUtils.slideNextScene("/de/uniks/se1ss19teamb/rbsg/register.fxml",600,loginScreen);
-            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml",loginScreen);
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
         }
 
     }

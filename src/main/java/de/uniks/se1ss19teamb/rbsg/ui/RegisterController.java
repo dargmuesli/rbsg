@@ -19,10 +19,10 @@ import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
     @FXML
-    JFXPasswordField password;
+    private JFXPasswordField password;
     
     @FXML
-    JFXPasswordField confirmPassword;
+    private JFXPasswordField confirmPassword;
     
     @FXML
     private AnchorPane registerScreen;
@@ -34,7 +34,7 @@ public class RegisterController {
     private JFXButton btnConfirm;
     
     @FXML
-    AnchorPane errorContainer;
+    private AnchorPane errorContainer;
     
     @FXML
     private JFXTextField userName;

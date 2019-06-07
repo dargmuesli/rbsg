@@ -32,7 +32,7 @@ public class MainController {
     private AnchorPane errorContainer;
 
     @FXML
-    private ListView playerListView;
+    private ListView<String> playerListView;
 
     @FXML
     private ScrollPane scrollPanePlayer;
