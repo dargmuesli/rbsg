@@ -6,6 +6,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fulib.yaml.YamlIdMap;
 
 
@@ -13,6 +15,9 @@ public class PersistenceUtil {
 
     public static final String SAVEGAME_YAML = "./savegame.yaml";
     private YamlIdMap yamlIdMap = new YamlIdMap(Game.class.getPackage().getName());
+    private ErrorHandler errorHandler = new ErrorHandler();
+
+    private static final Logger logger = LogManager.getLogger(PersistenceUtil.class);
 
     public void save(Game game) {
 
@@ -29,7 +34,8 @@ public class PersistenceUtil {
             Files.write(Paths.get(file.toURI()), yaml.getBytes("UTF-8"));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Spielstand konnte nicht in eine Datei geschrieben werden!");
+            logger.error(e);
         }
     }
 
@@ -49,7 +55,8 @@ public class PersistenceUtil {
             return game;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            errorHandler.sendError("Spielstand konnte nicht geladen werden!");
+            logger.error(e);
             return null;
         }
     }
