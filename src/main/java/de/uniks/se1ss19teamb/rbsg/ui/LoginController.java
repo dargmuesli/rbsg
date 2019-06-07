@@ -51,12 +51,12 @@ public class LoginController {
     private ErrorHandler errorHandler;
     
     private ErrorPopupController controller;
-    
-    public static String userKey;
 
-    public static String user;
+    private static String userKey;
 
-    public static ChatSocket chatSocket;
+    private static String user;
+
+    private static ChatSocket chatSocket;
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
     
@@ -175,19 +175,19 @@ public class LoginController {
         userKey = key;
     }
 
-    public static String getUser() {
+    static String getUser() {
         return user;
     }
 
-    public static void setUser(String name) {
+    private static void setUser(String name) {
         user = name;
     }
 
-    public static ChatSocket getChatSocket() {
+    static ChatSocket getChatSocket() {
         return chatSocket;
     }
 
-    public static void setChatSocket(ChatSocket chatSocket) {
+    static void setChatSocket(ChatSocket chatSocket) {
         LoginController.chatSocket = chatSocket;
     }
 }

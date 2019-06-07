@@ -46,10 +46,6 @@ public class ChatTabController {
 
     }
 
-    public AnchorPane getTabPane() {
-        return tabPane;
-    }
-
     @FXML
     public void initialize() {
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
@@ -93,7 +89,7 @@ public class ChatTabController {
     }
 
     @FXML
-    public void onEnter(ActionEvent event) {
+    public void onEnter() {
         btnSend.fire();
     }
 
