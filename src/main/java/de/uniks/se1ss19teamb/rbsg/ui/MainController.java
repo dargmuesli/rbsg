@@ -36,10 +36,10 @@ public class MainController {
     private ListView playerListView;
 
     @FXML
-    private ScrollPane scrollPanePlayer;
+    private ScrollPane playerScrollPane;
 
     @FXML
-    private ScrollPane scrollPaneGame;
+    private ScrollPane gameScrollPane;
 
     @FXML
     private ListView gameListView;
@@ -73,8 +73,8 @@ public class MainController {
         
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-        //setGameListView();
-        //setPlayerListView();
+        setGameListView();
+        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -92,7 +92,9 @@ public class MainController {
     }
 
     private void setPlayerListView() {
-        scrollPanePlayer.setStyle("-fx-background-color:transparent;");
+        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerScrollPane.setStyle("-fx-background-color:transparent;");
         playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
                 + "-fx-padding: 0px;");
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -103,7 +105,9 @@ public class MainController {
     }
 
     private void setGameListView() {
-        scrollPaneGame.setStyle("-fx-background-color:transparent;");
+        gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        gameScrollPane.setStyle("-fx-background-color:transparent;");
         gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
                 + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
