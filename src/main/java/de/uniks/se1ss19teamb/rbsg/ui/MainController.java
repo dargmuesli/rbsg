@@ -5,13 +5,11 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Observable;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,7 +34,7 @@ public class MainController {
     private AnchorPane errorContainer;
 
     @FXML
-    private ListView playerListView;
+    private ListView<String> playerListView;
 
     @FXML
     private ScrollPane playerScrollPane;
@@ -45,7 +43,7 @@ public class MainController {
     private ScrollPane gameScrollPane;
 
     @FXML
-    private ListView gameListView;
+    private ListView<Game> gameListView;
 
     @FXML
     private JFXButton btnCreate;
@@ -151,18 +149,19 @@ public class MainController {
     }
 
     public void joinGame() {
-        System.out.println("Clicked on a game");
-        Object listViewObject = gameListView.getSelectionModel().getSelectedItem();
-        if (listViewObject instanceof Game) {
-            Game game = (Game) listViewObject;
-            JoinGameRequest joinGameRequest = new JoinGameRequest(game.getId(), LoginController.getUserKey());
+//      TODO: Logger for printlns
+//      System.out.println("Clicked on a game");
+        Game listViewObject = gameListView.getSelectionModel().getSelectedItem();
+        if (listViewObject != null) {
+            JoinGameRequest joinGameRequest = new JoinGameRequest(listViewObject.getId(), LoginController.getUserKey());
             joinGameRequest.sendRequest();
-            System.out.println("Joined the game " + game.getName()
-                    + " Message from Server:\n" + joinGameRequest.getMessage());
-        } else {
-            System.out.println("ListView item is not of type Game");
-            System.out.println(listViewObject.toString());
+//      System.out.println("Joined the game " + game.getName()
+//                    + " Message from Server:\n" + joinGameRequest.getMessage());
         }
+//        else {
+//            System.out.println("ListView item is not of type Game");
+//            System.out.println(listViewObject.toString());
+//        }
 
     }
 
