@@ -5,10 +5,13 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -113,9 +116,10 @@ public class MainController {
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //TODO : create Player and put into the gameListView; ( i put something to check the method )
         gameListView.getItems().add("Dies ist ein Test");
-        //String userKey = LoginController.getUserKey();
-        //QueryGamesRequest gamesRequest = new QueryGamesRequest(userKey);
-
+        ArrayList<Game> existingGames = getExistingGames();
+        for (Game game : existingGames) {
+           gameListView.getItems().add(game.getName());
+        }
     }
 
     public void setOnAction(ActionEvent event) throws IOException {
@@ -146,6 +150,13 @@ public class MainController {
                         "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
+    }
+
+    private ArrayList<Game> getExistingGames() {
+        String userKey = LoginController.getUserKey();
+        QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
+        queryGamesRequest.sendRequest();
+        return queryGamesRequest.getGames();
     }
 
 }
