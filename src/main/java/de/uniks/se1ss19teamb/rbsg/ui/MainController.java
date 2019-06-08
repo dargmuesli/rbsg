@@ -2,10 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
+import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
@@ -116,6 +114,7 @@ public class MainController {
                 + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
+        updatePlayerView();
 
     }
 
@@ -182,6 +181,25 @@ public class MainController {
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
         return queryGamesRequest.getGames();
+    }
+
+    private void updatePlayerView() {
+        ObservableList playerList = playerListView.getItems();
+        while (playerList.size() != 0) {
+            playerList.remove(0);
+        }
+
+        ArrayList<String> existingPlayers = getExistingPlayers();
+        for (String player : existingPlayers) {
+            playerListView.getItems().add(player);
+        }
+    }
+
+    private ArrayList<String> getExistingPlayers() {
+        String userKey = LoginController.getUserKey();
+        QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
+        usersInLobbyRequest.sendRequest();
+        return usersInLobbyRequest.getUsersInLobby();
     }
 
 }
