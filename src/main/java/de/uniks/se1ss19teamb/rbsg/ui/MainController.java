@@ -75,7 +75,6 @@ public class MainController {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
         setGameListView();
-        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -91,7 +90,6 @@ public class MainController {
             logger.error(e);
         }
     }
-
 
     private void setGameListView() {
         gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -207,6 +205,5 @@ public class MainController {
         usersInLobbyRequest.sendRequest();
         return usersInLobbyRequest.getUsersInLobby();
     }
-
 }
 
