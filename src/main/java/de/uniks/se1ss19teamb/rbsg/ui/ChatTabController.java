@@ -81,10 +81,12 @@ public class ChatTabController {
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnSend)) {
-            chat.sendMessage(message.getText());
-            // if private
-            // chat.sendMessage(message.getText(), "sendTo");
-            message.setText("");
+            if (!message.getText().isEmpty()) {
+                chat.sendMessage(message.getText());
+                // if private
+                // chat.sendMessage(message.getText(), "sendTo");
+                message.setText("");
+            }
         }
     }
 
