@@ -107,7 +107,7 @@ public class MainController {
         }
     }
 
-    private void setPlayerListView(){
+    private void setPlayerListView() {
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
@@ -115,7 +115,7 @@ public class MainController {
                 + "-fx-padding: 0px;");
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
-        for (String name : existingPlayers){
+        for (String name : existingPlayers) {
             playerListView.getItems().add(name);
         }
     }
@@ -157,7 +157,7 @@ public class MainController {
         return queryGamesRequest.getGames();
     }
 
-    private ArrayList<String> getExistingPlayers(){
+    private ArrayList<String> getExistingPlayers() {
         String userKey = LoginController.getUserKey();
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
