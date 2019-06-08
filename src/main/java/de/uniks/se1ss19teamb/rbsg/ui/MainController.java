@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryUsersInLobbyRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -75,6 +76,7 @@ public class MainController {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
         setGameListView();
+        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -99,11 +101,22 @@ public class MainController {
         gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
                 + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        //TODO : create Player and put into the gameListView; ( i put something to check the method )
-        gameListView.getItems().add("Dies ist ein Test");
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
             gameListView.getItems().add(game.getName());
+        }
+    }
+
+    private void setPlayerListView(){
+        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerListView.setStyle("-fx-background-color:transparent;");
+        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
+        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        ArrayList<String> existingPlayers = getExistingPlayers();
+        for (String name : existingPlayers){
+            playerListView.getItems().add(name);
         }
     }
 
@@ -142,6 +155,13 @@ public class MainController {
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
         return queryGamesRequest.getGames();
+    }
+
+    private ArrayList<String> getExistingPlayers(){
+        String userKey = LoginController.getUserKey();
+        QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
+        usersInLobbyRequest.sendRequest();
+        return usersInLobbyRequest.getUsersInLobby();
     }
 
 }
