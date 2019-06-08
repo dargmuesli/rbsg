@@ -19,24 +19,24 @@
    <children>
       <AnchorPane fx:id="mainScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
-            <VBox fx:id="playerList" layoutY="25.0" prefHeight="374.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <VBox fx:id="playerList" layoutY="27.0" prefHeight="373.0" prefWidth="151.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0">
                <children>
-                  <ScrollPane fx:id="scrollPanePlayer" prefHeight="373.0" prefWidth="148.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="148.0">
+                  <ScrollPane fx:id="playerScrollPane" prefHeight="370.0" prefWidth="148.0">
+                     <content>
+                      <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="148.0">
                            <children>
-                              <ListView fx:id="listViewPlayer" prefHeight="371.0" prefWidth="148.0" />
+                              <ListView fx:id="playerListView" prefHeight="373.0" prefWidth="150.0" />
                            </children>
                         </AnchorPane>
-                    </content>
-                  </ScrollPane>
+                     </content>
+                   </ScrollPane>
                </children></VBox>
             <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <AnchorPane fx:id="chat" prefHeight="180.0" prefWidth="225.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="1.0" />
                   <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#eventHandler" prefHeight="37.0" prefWidth="130.0" text="Create Game" />
+                        <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Create Game" />
                         <HBox alignment="CENTER" layoutX="1.0" layoutY="89.0" prefHeight="45.0" prefWidth="224.0">
                            <children>
                               <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="20.0" prefWidth="40.0" selected="true" text="2">
@@ -56,9 +56,18 @@
                      </children></AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" style="-: ;" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="lounge" layoutX="163.0" layoutY="-1.0" prefHeight="220.0" prefWidth="450.0" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <AnchorPane fx:id="errorContainer" layoutX="14.0" layoutY="61.0" prefHeight="50.0" prefWidth="400.0" />
+                  <ScrollPane fx:id="gameScrollPane" layoutY="30.0" prefHeight="188.0" prefWidth="450.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="448.0">
+                           <children>
+                              <ListView fx:id="gameListView" onMouseClicked="#joinGame" prefHeight="188.0" prefWidth="450.0" />
+                              <AnchorPane fx:id="errorContainer" layoutX="14.0" layoutY="61.0" prefHeight="50.0" prefWidth="400.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                </children></AnchorPane>
             <AnchorPane fx:id="header" prefHeight="26.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -66,7 +75,7 @@
                      <items>
                         <MenuItem mnemonicParsing="false">
                            <graphic>
-                              <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#eventHandler" text="Logout" />
+                              <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
                            </graphic></MenuItem>
                      </items>
                      <graphic>
