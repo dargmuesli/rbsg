@@ -95,7 +95,7 @@ public class MainController {
         listViewPlayer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         ArrayList<String> existingPlayers = getExistingPlayers();
-        for (String name :existingPlayers ){
+        for (String name :existingPlayers) {
             listViewPlayer.getItems().add(name);
         }
     }
@@ -131,10 +131,10 @@ public class MainController {
         }
     }
 
-    private ArrayList<String> getExistingPlayers(){
+    private ArrayList<String> getExistingPlayers() {
         String userKey = LoginController.getUserKey();
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
-       return usersInLobbyRequest.getUsersInLobby();
+        return usersInLobbyRequest.getUsersInLobby();
     }
 }
