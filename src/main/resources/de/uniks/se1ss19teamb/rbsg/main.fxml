@@ -5,6 +5,8 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -33,7 +35,12 @@
                </children></VBox>
             <AnchorPane layoutX="157.0" layoutY="296.0" prefHeight="180.0" prefWidth="450.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <AnchorPane fx:id="chat" prefHeight="180.0" prefWidth="225.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="1.0" />
+                  <TabPane fx:id="chat" prefHeight="180.0" prefWidth="225.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="1.0">
+                     <tabs>
+                        <Tab fx:id="tab" text="All">
+                           <fx:include fx:id="chatTab" source="chatTab.fxml"/>
+                        </Tab>
+                     </tabs></TabPane>
                   <AnchorPane fx:id="gameCreator" prefHeight="180.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <JFXButton fx:id="btnCreate" layoutX="48.0" layoutY="129.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="37.0" prefWidth="130.0" text="Create Game" />

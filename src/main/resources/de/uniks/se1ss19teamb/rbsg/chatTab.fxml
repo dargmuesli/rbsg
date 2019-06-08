@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="tabPane" prefHeight="143.0" prefWidth="224.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
+   <children>
+      <Button fx:id="btnSend" layoutX="183.0" layoutY="102.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="39.0" prefWidth="40.0" text="Button" />
+      <TextField fx:id="message" layoutX="1.0" layoutY="102.0" onAction="#onEnter" prefHeight="40.0" prefWidth="181.0" style="-fx-background-color: darkgrey; -fx-border-color: white;" />
+      <ScrollPane layoutY="1.0" prefHeight="100.0" prefWidth="223.0">
+         <content>
+            <TextArea fx:id="textArea" layoutY="1.0" prefHeight="98.0" prefWidth="221.0" />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

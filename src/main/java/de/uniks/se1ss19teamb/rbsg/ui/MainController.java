@@ -16,17 +16,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainController {
-    
+
     @FXML
     private AnchorPane mainScreen;
     
@@ -66,6 +62,9 @@ public class MainController {
     @FXML
     private JFXButton btnLogout;
 
+    @FXML
+    private TabPane chat;
+
     private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
@@ -74,6 +73,19 @@ public class MainController {
         
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
+
+        LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
+            if (isPrivate) {
+                /* TODO privates tab
+                Tab tab = new Tab();
+                tab.setText(from);
+                tab.setContent(new Label(message));
+                chat.getTabs().add(tab);
+                System.out.println(message);
+                */
+            }
+        });
+        
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
