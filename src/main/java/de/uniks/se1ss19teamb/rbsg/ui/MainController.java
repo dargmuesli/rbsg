@@ -3,16 +3,15 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
-import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryUsersInLobbyRequest;
+
+import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +34,7 @@ public class MainController {
     private AnchorPane errorContainer;
 
     @FXML
-    private ListView playerListView;
+    private ListView<String> playerListView;
 
     @FXML
     private ScrollPane playerScrollPane;
@@ -44,7 +43,7 @@ public class MainController {
     private ScrollPane gameScrollPane;
 
     @FXML
-    private ListView gameListView;
+    private ListView<Game> gameListView;
 
     @FXML
     private JFXButton btnCreate;
@@ -101,10 +100,8 @@ public class MainController {
         gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
                 + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        ArrayList<Game> existingGames = getExistingGames();
-        for (Game game : existingGames) {
-            gameListView.getItems().add(game.getName());
-        }
+        updateGameView();
+        updatePlayerView();
     }
 
     private void setPlayerListView() {
@@ -134,6 +131,7 @@ public class MainController {
                     game = new CreateGameRequest(gameName.getText(), 4, userKey);
                 }
                 game.sendRequest();
+                updateGameView();
             } else {
                 errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
             }
@@ -150,11 +148,57 @@ public class MainController {
         }
     }
 
+    public void joinGame() {
+        //TODO: Logger for printlns
+        //System.out.println("Clicked on a game");
+        Game listViewObject = gameListView.getSelectionModel().getSelectedItem();
+        if (listViewObject != null) {
+            JoinGameRequest joinGameRequest = new JoinGameRequest(listViewObject.getId(), LoginController.getUserKey());
+            joinGameRequest.sendRequest();
+            //System.out.println("Joined the game " + game.getName()
+            //              + " Message from Server:\n" + joinGameRequest.getMessage());
+        }
+        // else {
+        //      System.out.println("ListView item is not of type Game");
+        //     System.out.println(listViewObject.toString());
+        // }
+
+    }
+
+    private void updateGameView() {
+        ObservableList items = gameListView.getItems();
+        while (items.size() != 0) {
+            items.remove(0);
+        }
+
+        ArrayList<Game> existingGames = getExistingGames();
+        for (Game game : existingGames) {
+            gameListView.getItems().add(game);
+        }
+    }
+
     private ArrayList<Game> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
         return queryGamesRequest.getGames();
+    }
+
+    private void updatePlayerView() {
+        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerListView.setStyle("-fx-background-color:transparent;");
+        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
+        ObservableList playerList = playerListView.getItems();
+        while (playerList.size() != 0) {
+            playerList.remove(0);
+        }
+
+        ArrayList<String> existingPlayers = getExistingPlayers();
+        for (String player : existingPlayers) {
+            playerListView.getItems().add(player);
+        }
     }
 
     private ArrayList<String> getExistingPlayers() {
