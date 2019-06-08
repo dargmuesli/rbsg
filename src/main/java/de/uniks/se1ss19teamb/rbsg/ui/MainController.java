@@ -149,19 +149,19 @@ public class MainController {
     }
 
     public void joinGame() {
-//      TODO: Logger for printlns
-//      System.out.println("Clicked on a game");
+        //TODO: Logger for printlns
+        //System.out.println("Clicked on a game");
         Game listViewObject = gameListView.getSelectionModel().getSelectedItem();
         if (listViewObject != null) {
             JoinGameRequest joinGameRequest = new JoinGameRequest(listViewObject.getId(), LoginController.getUserKey());
             joinGameRequest.sendRequest();
-//      System.out.println("Joined the game " + game.getName()
-//                    + " Message from Server:\n" + joinGameRequest.getMessage());
+            //System.out.println("Joined the game " + game.getName()
+            //              + " Message from Server:\n" + joinGameRequest.getMessage());
         }
-//        else {
-//            System.out.println("ListView item is not of type Game");
-//            System.out.println(listViewObject.toString());
-//        }
+        // else {
+        //      System.out.println("ListView item is not of type Game");
+        //     System.out.println(listViewObject.toString());
+        // }
 
     }
 
