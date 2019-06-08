@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
+
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
@@ -76,6 +77,7 @@ public class MainController {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
         setGameListView();
+        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -102,6 +104,19 @@ public class MainController {
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
+    }
+
+    private void setPlayerListView() {
+        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerListView.setStyle("-fx-background-color:transparent;");
+        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
+        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        ArrayList<String> existingPlayers = getExistingPlayers();
+        for (String name : existingPlayers) {
+            playerListView.getItems().add(name);
+        }
     }
 
     public void setOnAction(ActionEvent event) {

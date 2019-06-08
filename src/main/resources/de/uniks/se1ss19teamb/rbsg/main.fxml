@@ -19,13 +19,13 @@
    <children>
       <AnchorPane fx:id="mainScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
-            <VBox fx:id="playerList" layoutY="27.0" prefHeight="373.0" prefWidth="150.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0">
+            <VBox fx:id="playerList" layoutY="27.0" prefHeight="373.0" prefWidth="151.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0">
                <children>
                   <ScrollPane fx:id="playerScrollPane" prefHeight="370.0" prefWidth="148.0">
                      <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="148.0">
+                      <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="148.0">
                            <children>
-                              <ListView fx:id="playerListView" prefHeight="370.0" prefWidth="148.0" />
+                              <ListView fx:id="playerListView" prefHeight="373.0" prefWidth="150.0" />
                            </children>
                         </AnchorPane>
                      </content>
