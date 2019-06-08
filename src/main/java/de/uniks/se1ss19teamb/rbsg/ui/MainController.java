@@ -6,7 +6,6 @@ import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
-import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,7 +75,6 @@ public class MainController {
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
         setGameListView();
-        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -93,18 +91,6 @@ public class MainController {
         }
     }
 
-    private void setPlayerListView() {
-        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerScrollPane.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-                + "-fx-padding: 0px;");
-        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        // TODO : put the real player into the playerListView, (i create something to check the method)
-        playerListView.getItems().add("test player");
-
-
-    }
 
     private void setGameListView() {
         gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -115,7 +101,6 @@ public class MainController {
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
-
     }
 
     public void setOnAction(ActionEvent event) {
