@@ -8,8 +8,10 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
+import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.*;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,31 +27,32 @@ import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
 public class LoginController {
-    
+
     @FXML
     private AnchorPane loginScreen;
-    
+
     @FXML
     private JFXTextField userName;
-    
+
     @FXML
     private JFXPasswordField password;
 
     @FXML
     private JFXButton btnLogin;
-    
+
     @FXML
     private Button btnRegistration;
-    
+
     @FXML
     private AnchorPane errorContainer;
-    
+
     @FXML
     private JFXCheckBox rememberLogin;
-    
+
     private ErrorHandler errorHandler;
-    
+
     private ErrorPopupController controller;
 
     private static String userKey;
@@ -59,9 +62,9 @@ public class LoginController {
     private static ChatSocket chatSocket;
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
-    
+
     private static final String USER_DATA = "./userData.txt";
-    
+
     public void initialize() {
         File userData = new File(USER_DATA);
         if (userData.exists()) {
@@ -70,26 +73,24 @@ public class LoginController {
         }
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
-        
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                 "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
-        
+
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-            
+
             controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
-            
+
         } catch (IOException e) {
             errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!");
             logger.error(e);
         }
     }
-    
-    
-    
+
     @FXML
     void eventHandler(ActionEvent event) {
 
@@ -105,7 +106,7 @@ public class LoginController {
     public void onEnter() {
         login();
     }
-    
+
     public void keyEventHandler(KeyEvent keyEvent) {
 
         if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
@@ -124,7 +125,7 @@ public class LoginController {
             }
         }
     }
-    
+
     private void login() {
         if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
             LoginUserRequest login = new LoginUserRequest(
@@ -138,12 +139,12 @@ public class LoginController {
                 if (rememberLogin.isSelected()) {
                     saveUserData();
                 }
-                
+
                 setUserKey(login.getUserKey());
                 setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
-                
+
             } else {
                 errorHandler.sendError("Login fehlgeschlagen!");
             }
@@ -151,12 +152,12 @@ public class LoginController {
             errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
         }
     }
-    
+
     private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
     }
-    
+
     private void saveUserData() {
         UserData userData = new UserData(userName.getText(), password.getText());
         SerializeUtils.serialize(USER_DATA, userData);
@@ -170,11 +171,11 @@ public class LoginController {
         rememberLogin.setSelected(true);
         Platform.runLater(() -> btnLogin.requestFocus());
     }
-    
+
     public static String getUserKey() {
         return userKey;
     }
-    
+
     public static void setUserKey(String key) {
         userKey = key;
     }

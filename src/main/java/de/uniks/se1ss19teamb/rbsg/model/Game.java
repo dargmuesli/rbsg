@@ -43,4 +43,8 @@ public class Game {
     public void setNeededPlayers(long neededPlayers) {
         this.neededPlayers = neededPlayers;
     }
+
+    public String toString() {
+        return name;
+    }
 }
