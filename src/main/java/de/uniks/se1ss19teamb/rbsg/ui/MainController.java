@@ -2,15 +2,14 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryGamesRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryUsersInLobbyRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +17,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.MenuButton;
 
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -92,13 +90,14 @@ public class MainController {
         scrollPanePlayer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPanePlayer.setStyle("-fx-background-color:transparent;");
         listViewPlayer.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;");
-        //(Test player) TODO : put the real player into the playerListView
-        listViewPlayer.getItems().add("test player");
-        listViewPlayer.getItems().add("test player 2");
-        String userKey = LoginController.getUserKey();
-        QueryGamesRequest gamesRequest = new QueryGamesRequest(userKey);
-        //listViewPlayer.getItems().addAll(gamesRequest.getGames().get(0).getName());
         listViewPlayer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        String userKey = LoginController.getUserKey();
+        QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
+        usersInLobbyRequest.sendRequest();
+        for (int i = 0; i < usersInLobbyRequest.getUsersInLobby().size(); i++) {
+            listViewPlayer.getItems().add(usersInLobbyRequest.getUsersInLobby().get(i));
+        }
+
     }
     
     public void eventHandler(ActionEvent event) throws IOException {
