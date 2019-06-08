@@ -115,8 +115,6 @@ public class MainController {
         gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
                 + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        //TODO : create Player and put into the gameListView; ( i put something to check the method )
-        gameListView.getItems().add("Dies ist ein Test");
         updateGameView();
 
     }
@@ -150,14 +148,21 @@ public class MainController {
                         "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
+    }
 
-        if (event.getSource().equals(gameListView)) {
-            Game game = (Game)gameListView.getSelectionModel().getSelectedItem();
+    public void joinGame() {
+        System.out.println("Clicked on a game");
+        Object listViewObject = gameListView.getSelectionModel().getSelectedItem();
+        if (listViewObject instanceof Game) {
+            Game game = (Game) listViewObject;
             JoinGameRequest joinGameRequest = new JoinGameRequest(game.getId(), LoginController.getUserKey());
             joinGameRequest.sendRequest();
-            updateGameView();
-
+            System.out.println("Joined the game " + game.getName() + " Message from Server:\n" + joinGameRequest.getMessage());
+        } else {
+            System.out.println("ListView item is not of type Game");
+            System.out.println(listViewObject.toString());
         }
+
     }
 
     private void updateGameView() {
@@ -168,7 +173,7 @@ public class MainController {
 
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
-            gameListView.getItems().add(game.getName());
+            gameListView.getItems().add(game);
         }
     }
 
