@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
@@ -141,7 +142,8 @@ public class MainController {
             Game game = (Game) listViewObject;
             JoinGameRequest joinGameRequest = new JoinGameRequest(game.getId(), LoginController.getUserKey());
             joinGameRequest.sendRequest();
-            System.out.println("Joined the game " + game.getName() + " Message from Server:\n" + joinGameRequest.getMessage());
+            System.out.println("Joined the game " + game.getName()
+                    + " Message from Server:\n" + joinGameRequest.getMessage());
         } else {
             System.out.println("ListView item is not of type Game");
             System.out.println(listViewObject.toString());
@@ -151,7 +153,7 @@ public class MainController {
 
     private void updateGameView() {
         ObservableList items = gameListView.getItems();
-        while(items.size() != 0) {
+        while (items.size() != 0) {
             items.remove(0);
         }
 
@@ -169,6 +171,11 @@ public class MainController {
     }
 
     private void updatePlayerView() {
+        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        playerListView.setStyle("-fx-background-color:transparent;");
+        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
         ObservableList playerList = playerListView.getItems();
         while (playerList.size() != 0) {
             playerList.remove(0);
