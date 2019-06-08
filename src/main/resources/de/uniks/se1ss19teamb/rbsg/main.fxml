@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+<AnchorPane minHeight="400.0" minWidth="400.0" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
    <children>
       <AnchorPane fx:id="mainScreen" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark-design2.css">
          <children>
@@ -62,7 +62,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="448.0">
                            <children>
-                              <ListView fx:id="gameListView" prefHeight="188.0" prefWidth="450.0" />
+                              <ListView fx:id="gameListView" onMouseClicked="#setOnAction" prefHeight="188.0" prefWidth="450.0" />
                               <AnchorPane fx:id="errorContainer" layoutX="14.0" layoutY="61.0" prefHeight="50.0" prefWidth="400.0" />
                            </children>
                         </AnchorPane>
