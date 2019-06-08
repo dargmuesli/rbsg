@@ -10,6 +10,8 @@ import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -91,13 +93,11 @@ public class MainController {
         scrollPanePlayer.setStyle("-fx-background-color:transparent;");
         listViewPlayer.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;");
         listViewPlayer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        String userKey = LoginController.getUserKey();
-        QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
-        usersInLobbyRequest.sendRequest();
-        for (int i = 0; i < usersInLobbyRequest.getUsersInLobby().size(); i++) {
-            listViewPlayer.getItems().add(usersInLobbyRequest.getUsersInLobby().get(i));
-        }
 
+        ArrayList<String> existingPlayers = getExistingPlayers();
+        for (String name :existingPlayers ){
+            listViewPlayer.getItems().add(name);
+        }
     }
     
     public void eventHandler(ActionEvent event) throws IOException {
@@ -129,5 +129,12 @@ public class MainController {
                         "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
+    }
+
+    private ArrayList<String> getExistingPlayers(){
+        String userKey = LoginController.getUserKey();
+        QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
+        usersInLobbyRequest.sendRequest();
+       return usersInLobbyRequest.getUsersInLobby();
     }
 }
