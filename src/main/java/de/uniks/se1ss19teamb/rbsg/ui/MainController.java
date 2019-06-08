@@ -2,19 +2,24 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
 import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryUsersInLobbyRequest;
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
+
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +33,12 @@ public class MainController {
     
     @FXML
     private AnchorPane errorContainer;
+
+    @FXML
+    private ListView<String> listViewPlayer;
+
+    @FXML
+    private ScrollPane scrollPanePlayer;
 
     @FXML
     private JFXButton btnCreate;
@@ -58,7 +69,7 @@ public class MainController {
         
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-        
+        setPlayerListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
@@ -72,6 +83,20 @@ public class MainController {
         } catch (IOException e) {
             errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
             logger.error(e);
+        }
+    }
+
+
+    private void setPlayerListView() {
+        scrollPanePlayer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPanePlayer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPanePlayer.setStyle("-fx-background-color:transparent;");
+        listViewPlayer.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;");
+        listViewPlayer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        ArrayList<String> existingPlayers = getExistingPlayers();
+        for (String name :existingPlayers) {
+            listViewPlayer.getItems().add(name);
         }
     }
     
@@ -104,5 +129,12 @@ public class MainController {
                         "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
+    }
+
+    private ArrayList<String> getExistingPlayers() {
+        String userKey = LoginController.getUserKey();
+        QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
+        usersInLobbyRequest.sendRequest();
+        return usersInLobbyRequest.getUsersInLobby();
     }
 }
