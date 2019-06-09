@@ -48,7 +48,7 @@ public class SerializeTest {
             System.err.format("%s not empty%n", Paths.get("file.json"));
         } catch (IOException x) {
             // File permission problems are caught here.
-            System.err.println(x);
+            x.printStackTrace();
         }
     }
 
