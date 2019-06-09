@@ -31,7 +31,7 @@ public class Player
 
    private String color;
 
-   private String getColor()
+   public String getColor()
    {
       return color;
    }
@@ -141,7 +141,7 @@ public class Player
 
 
 
-   private static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
+   public static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
    { @Override
    public boolean add(Unit value){ throw new UnsupportedOperationException("No direct add! Use xy.withUnits(obj)"); }};
 
@@ -210,7 +210,7 @@ public class Player
          {
             if (this.units.contains(item))
             {
-               this.units.remove(item);
+               this.units.remove((Unit)item);
                ((Unit)item).setPlayer(null);
                firePropertyChange("units", item, null);
             }
@@ -220,7 +220,7 @@ public class Player
    }
 
 
-   private static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
+   public static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
    { @Override
    public boolean add(Platform value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlatforms(obj)"); }};
 
@@ -229,7 +229,7 @@ public class Player
 
    private java.util.ArrayList<Platform> platforms = null;
 
-   private java.util.ArrayList<Platform> getPlatforms()
+   public java.util.ArrayList<Platform> getPlatforms()
    {
       if (this.platforms == null)
       {
@@ -289,7 +289,7 @@ public class Player
          {
             if (this.platforms.contains(item))
             {
-               this.platforms.remove(item);
+               this.platforms.remove((Platform)item);
                ((Platform)item).setPlayer(null);
                firePropertyChange("platforms", item, null);
             }
@@ -299,9 +299,9 @@ public class Player
    }
 
 
-   private PropertyChangeSupport listeners = null;
+   protected PropertyChangeSupport listeners = null;
 
-   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {

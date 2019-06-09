@@ -131,7 +131,7 @@ public class Platform
 
 
 
-private static final java.util.ArrayList<Platform> EMPTY_neighbors = new java.util.ArrayList<Platform>()
+public static final java.util.ArrayList<Platform> EMPTY_neighbors = new java.util.ArrayList<Platform>()
    { @Override
    public boolean add(Platform value){ throw new UnsupportedOperationException("No direct add! Use xy.withNeighbors(obj)"); }};
 
@@ -140,7 +140,7 @@ public static final String PROPERTY_neighbors = "neighbors";
 
 private java.util.ArrayList<Platform> neighbors = null;
 
-private java.util.ArrayList<Platform> getNeighbors()
+public java.util.ArrayList<Platform> getNeighbors()
    {
       if (this.neighbors == null)
       {
@@ -182,7 +182,7 @@ public Platform withNeighbors(Object... value)
    }
 
 
-private Platform withoutNeighbors(Object... value)
+public Platform withoutNeighbors(Object... value)
    {
       if (this.neighbors == null || value==null) return this;
       for (Object item : value)
@@ -199,7 +199,7 @@ private Platform withoutNeighbors(Object... value)
          {
             if (this.neighbors.contains(item))
             {
-               this.neighbors.remove(item);
+               this.neighbors.remove((Platform)item);
                ((Platform)item).withoutNeighbors(this);
                firePropertyChange("neighbors", item, null);
             }
@@ -209,7 +209,7 @@ private Platform withoutNeighbors(Object... value)
    }
 
 
-   private static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
+   public static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
    { @Override
    public boolean add(Unit value){ throw new UnsupportedOperationException("No direct add! Use xy.withUnits(obj)"); }};
 
@@ -218,7 +218,7 @@ private Platform withoutNeighbors(Object... value)
 
    private java.util.ArrayList<Unit> units = null;
 
-   private java.util.ArrayList<Unit> getUnits()
+   public java.util.ArrayList<Unit> getUnits()
    {
       if (this.units == null)
       {
@@ -278,7 +278,7 @@ private Platform withoutNeighbors(Object... value)
          {
             if (this.units.contains(item))
             {
-               this.units.remove(item);
+               this.units.remove((Unit)item);
                ((Unit)item).setPlatform(null);
                firePropertyChange("units", item, null);
             }
@@ -319,9 +319,9 @@ private Platform withoutNeighbors(Object... value)
 
 
 
-   private PropertyChangeSupport listeners = null;
+   protected PropertyChangeSupport listeners = null;
 
-   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {

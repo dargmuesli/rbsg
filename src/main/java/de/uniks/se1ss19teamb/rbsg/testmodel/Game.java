@@ -10,7 +10,7 @@ public class Game
 
    private String name;
 
-   private String getName()
+   public String getName()
    {
       return name;
    }
@@ -27,7 +27,7 @@ public class Game
    }
 
 
-   private static final java.util.ArrayList<Player> EMPTY_players = new java.util.ArrayList<Player>()
+   public static final java.util.ArrayList<Player> EMPTY_players = new java.util.ArrayList<Player>()
    { @Override
    public boolean add(Player value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlayers(obj)"); }};
 
@@ -96,7 +96,7 @@ public class Game
          {
             if (this.players.contains(item))
             {
-               this.players.remove(item);
+               this.players.remove((Player)item);
                ((Player)item).setGame(null);
                firePropertyChange("players", item, null);
             }
@@ -168,7 +168,7 @@ public class Game
 
 
 
-   private static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
+   public static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
    { @Override
    public boolean add(Platform value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlatforms(obj)"); }};
 
@@ -237,7 +237,7 @@ public class Game
          {
             if (this.platforms.contains(item))
             {
-               this.platforms.remove(item);
+               this.platforms.remove((Platform)item);
                ((Platform)item).setGame(null);
                firePropertyChange("platforms", item, null);
             }
@@ -278,9 +278,9 @@ public class Game
 
 
 
-   private PropertyChangeSupport listeners = null;
+   protected PropertyChangeSupport listeners = null;
 
-   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {
