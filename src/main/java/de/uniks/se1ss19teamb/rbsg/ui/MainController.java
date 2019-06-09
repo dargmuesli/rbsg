@@ -35,7 +35,7 @@ public class MainController {
     @FXML
     private ScrollPane gameScrollPane;
     @FXML
-    private ListView<Game> gameListView;
+    private ListView<Parent> gameListView;
     @FXML
     private JFXButton btnCreate;
     @FXML
@@ -53,6 +53,8 @@ public class MainController {
     @FXML
     private TabPane chat;
     private ErrorHandler errorHandler;
+
+    private Game joinedGame;
 
     public void initialize() {
 
@@ -143,24 +145,7 @@ public class MainController {
         }
     }
 
-    public void joinGame() {
-        //TODO: Logger for printlns
-        //System.out.println("Clicked on a game");
-        Game listViewObject = gameListView.getSelectionModel().getSelectedItem();
-        if (listViewObject != null) {
-            JoinGameRequest joinGameRequest = new JoinGameRequest(listViewObject.getId(), LoginController.getUserKey());
-            joinGameRequest.sendRequest();
-            //System.out.println("Joined the game " + game.getName()
-            //              + " Message from Server:\n" + joinGameRequest.getMessage());
-        }
-        // else {
-        //      System.out.println("ListView item is not of type Game");
-        //     System.out.println(listViewObject.toString());
-        // }
-
-    }
-
-    private void updateGameView() {
+    void updateGameView() {
         ObservableList items = gameListView.getItems();
         while (items.size() != 0) {
             items.remove(0);
@@ -168,7 +153,17 @@ public class MainController {
 
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
-            gameListView.getItems().add(game);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/gameField.fxml"));
+            try {
+                Parent parent = fxmlLoader.load();
+                GameFieldController controller = fxmlLoader.getController();
+                controller.setUpGameLabel(game, this);
+                gameListView.getItems().add(parent);
+            } catch (IOException e) {
+                errorHandler.sendError("Ein GameField konnte nicht geladen werden!");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -201,6 +196,10 @@ public class MainController {
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
         return usersInLobbyRequest.getUsersInLobby();
+    }
+
+    void setJoinedGame(Game joinedGame) {
+        this.joinedGame = joinedGame;
     }
 }
 
