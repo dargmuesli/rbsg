@@ -63,7 +63,8 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
 
-    private static final Path USER_DATA = Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
+    private static final Path USER_DATA =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
 
     public void initialize() {
         File userData = USER_DATA.toFile();

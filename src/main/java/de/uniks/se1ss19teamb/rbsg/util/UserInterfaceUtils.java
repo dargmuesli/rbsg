@@ -36,31 +36,31 @@ public class UserInterfaceUtils {
         fadeTransition.play();
     }
     
-//    private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
-//        Random r = new Random();
-//        boolean randomValue = r.nextBoolean();
-//        Parent root = FXMLLoader.load(getClass().getResource(path));
-//        Timeline timeline;
-//        KeyValue keyValue;
-//
-//        if (randomValue) {
-//            root.translateYProperty().setValue(-400);
-//
-//            timeline = new Timeline();
-//            keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
-//        } else {
-//            root.translateXProperty().setValue(-value);
-//
-//            timeline = new Timeline();
-//            keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
-//        }
-//
-//        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-//        timeline.getKeyFrames().add(keyFrame);
-//        timeline.play();
-//
-//        Scene scene = new Scene(root);
-//        Stage stage = (Stage) pane.getScene().getWindow();
-//        stage.setScene(scene);
-//    }
+    //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
+    //    Random r = new Random();
+    //    boolean randomValue = r.nextBoolean();
+    //    Parent root = FXMLLoader.load(getClass().getResource(path));
+    //    Timeline timeline;
+    //    KeyValue keyValue;
+
+    //    if (randomValue) {
+    //        root.translateYProperty().setValue(-400);
+
+    //        timeline = new Timeline();
+    //        keyValue = new KeyValue(root.translateYProperty(),0, Interpolator.EASE_IN);
+    //    } else {
+    //        root.translateXProperty().setValue(-value);
+
+    //        timeline = new Timeline();
+    //        keyValue = new KeyValue(root.translateXProperty(),0,Interpolator.EASE_IN);
+    //    }
+
+    //    KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
+    //    timeline.getKeyFrames().add(keyFrame);
+    //    timeline.play();
+
+    //    Scene scene = new Scene(root);
+    //    Stage stage = (Stage) pane.getScene().getWindow();
+    //    stage.setScene(scene);
+    //}
 }
