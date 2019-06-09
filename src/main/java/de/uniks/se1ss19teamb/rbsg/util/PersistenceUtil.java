@@ -4,6 +4,7 @@ import de.uniks.se1ss19teamb.rbsg.testmodel.Game; //TODO needs to be changed whe
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -32,7 +33,7 @@ public class PersistenceUtil {
                 file.createNewFile();
             }
 
-            Files.write(Paths.get(file.toURI()), yaml.getBytes("UTF-8"));
+            Files.write(Paths.get(file.toURI()), yaml.getBytes(StandardCharsets.UTF_8));
 
         } catch (IOException e) {
             errorHandler.sendError("Spielstand konnte nicht in eine Datei geschrieben werden!");
@@ -51,7 +52,7 @@ public class PersistenceUtil {
 
         try {
             byte[] bytes = Files.readAllBytes(Paths.get(file.toURI()));
-            String yaml = new String(bytes, "UTF-8");
+            String yaml = new String(bytes, StandardCharsets.UTF_8);
             yamlIdMap.decode(yaml, game);
             return game;
 
