@@ -49,6 +49,9 @@ public class SystemSocket extends AbstractWebSocket {
                         handler.handle(data.get("id").getAsString());
                     }
                     break;
+                case "playerJoinedGame":
+                    // TODO
+                    break;
                 default:
                     throw new IllegalArgumentException("Illegal action " + action
                         + " recieved on System Socket!");
