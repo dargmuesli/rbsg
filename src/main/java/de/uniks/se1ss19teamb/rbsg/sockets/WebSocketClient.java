@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @ClientEndpoint(configurator = CustomWebSocketConfigurator.class)
-class WebSocketClient {
+public class WebSocketClient {
 
     private static final String NOOP = "noop";
     private static final Logger logger = LogManager.getLogger(WebSocketClient.class);
