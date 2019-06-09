@@ -53,8 +53,6 @@ public class LoginController {
 
     private ErrorHandler errorHandler;
 
-    private ErrorPopupController controller;
-
     private static String userKey;
 
     private static String user;
@@ -82,7 +80,7 @@ public class LoginController {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            controller = fxmlLoader.getController();
+            ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
 

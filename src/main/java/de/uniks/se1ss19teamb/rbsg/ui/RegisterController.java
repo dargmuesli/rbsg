@@ -39,9 +39,7 @@ public class RegisterController {
     
     @FXML
     private JFXPasswordField confirmPassword;
-    
-    private ErrorPopupController controller;
-    
+
     private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
@@ -55,8 +53,8 @@ public class RegisterController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
-    
-            controller = fxmlLoader.getController();
+
+            ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             
