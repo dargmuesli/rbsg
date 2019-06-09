@@ -96,7 +96,7 @@ public class Game
          {
             if (this.players.contains(item))
             {
-               this.players.remove((Player)item);
+               this.players.remove(item);
                ((Player)item).setGame(null);
                firePropertyChange("players", item, null);
             }
@@ -237,7 +237,7 @@ public class Game
          {
             if (this.platforms.contains(item))
             {
-               this.platforms.remove((Platform)item);
+               this.platforms.remove(item);
                ((Platform)item).setGame(null);
                firePropertyChange("platforms", item, null);
             }

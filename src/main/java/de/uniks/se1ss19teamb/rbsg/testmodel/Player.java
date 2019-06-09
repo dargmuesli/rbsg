@@ -210,7 +210,7 @@ public class Player
          {
             if (this.units.contains(item))
             {
-               this.units.remove((Unit)item);
+               this.units.remove(item);
                ((Unit)item).setPlayer(null);
                firePropertyChange("units", item, null);
             }
@@ -289,7 +289,7 @@ public class Player
          {
             if (this.platforms.contains(item))
             {
-               this.platforms.remove((Platform)item);
+               this.platforms.remove(item);
                ((Platform)item).setPlayer(null);
                firePropertyChange("platforms", item, null);
             }

@@ -199,7 +199,7 @@ public Platform withoutNeighbors(Object... value)
          {
             if (this.neighbors.contains(item))
             {
-               this.neighbors.remove((Platform)item);
+               this.neighbors.remove(item);
                ((Platform)item).withoutNeighbors(this);
                firePropertyChange("neighbors", item, null);
             }
@@ -278,7 +278,7 @@ public Platform withoutNeighbors(Object... value)
          {
             if (this.units.contains(item))
             {
-               this.units.remove((Unit)item);
+               this.units.remove(item);
                ((Unit)item).setPlatform(null);
                firePropertyChange("units", item, null);
             }
