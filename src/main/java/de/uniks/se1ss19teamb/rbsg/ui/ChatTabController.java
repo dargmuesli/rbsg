@@ -13,23 +13,16 @@ import javafx.scene.control.*;
 
 public class ChatTabController {
 
+    private static String userKey = LoginController.getUserKey();
+    private static String userName = LoginController.getUser();
+    private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
+    private final SystemSocket system = new SystemSocket(userKey);
     @FXML
     private Button btnSend;
-
     @FXML
     private TextField message;
-
     @FXML
     private TextArea textArea;
-
-    private static String userKey = LoginController.getUserKey();
-
-    private static String userName = LoginController.getUser();
-
-    private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
-
-    private final SystemSocket system = new SystemSocket(userKey);
-
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);

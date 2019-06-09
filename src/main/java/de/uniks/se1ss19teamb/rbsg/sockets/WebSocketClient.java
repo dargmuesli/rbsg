@@ -16,10 +16,10 @@ import org.apache.logging.log4j.Logger;
 class WebSocketClient {
 
     private static final String NOOP = "noop";
+    private static final Logger logger = LogManager.getLogger(WebSocketClient.class);
     private Session mySession;
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
-    private static final Logger logger = LogManager.getLogger(WebSocketClient.class);
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {

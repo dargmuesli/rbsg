@@ -9,15 +9,15 @@ class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
 
     private static String userKey = "";
 
+    static void setUserKey(String key) {
+        userKey = key;
+    }
+
     @Override
     public void beforeRequest(Map<String, List<String>> headers) {
         super.beforeRequest(headers);
         ArrayList<String> key = new ArrayList<>();
         key.add(userKey);
         headers.put("userKey", key);
-    }
-
-    static void setUserKey(String key) {
-        userKey = key;
     }
 }

@@ -14,11 +14,6 @@ import org.junit.Test;
 
 public class SerializeTest {
 
-    class TestClass {
-        String name = "My Very Long Name";
-        int mtr = 12345678;
-    }
-
     @Test
     public void serializeTest() {
 
@@ -76,5 +71,10 @@ public class SerializeTest {
         } catch (IOException x) {
             x.printStackTrace();
         }
+    }
+
+    class TestClass {
+        String name = "My Very Long Name";
+        int mtr = 12345678;
     }
 }

@@ -26,9 +26,9 @@ public class Chat {
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     private ChatSocket chatSocket;
-    private Path path;
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
         -> addToChatLog(message, from, isPrivate ? chatSocket.getUserName() : "All");
+    private Path path;
 
     private Chat(String sender, String userKey) {
         this(new ChatSocket(sender, userKey), Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt"));

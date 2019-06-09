@@ -28,39 +28,51 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginController {
 
-    @FXML
-    private AnchorPane loginScreen;
-
-    @FXML
-    private JFXTextField userName;
-
-    @FXML
-    private JFXPasswordField password;
-
-    @FXML
-    private JFXButton btnLogin;
-
-    @FXML
-    private Button btnRegistration;
-
-    @FXML
-    private AnchorPane errorContainer;
-
-    @FXML
-    private JFXCheckBox rememberLogin;
-
-    private ErrorHandler errorHandler;
-
-    private static String userKey;
-
-    private static String user;
-
-    private static ChatSocket chatSocket;
-
     private static final Logger logger = LogManager.getLogger(LoginController.class);
-
     private static final Path USER_DATA =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
+    private static String userKey;
+    private static String user;
+    private static ChatSocket chatSocket;
+    @FXML
+    private AnchorPane loginScreen;
+    @FXML
+    private JFXTextField userName;
+    @FXML
+    private JFXPasswordField password;
+    @FXML
+    private JFXButton btnLogin;
+    @FXML
+    private Button btnRegistration;
+    @FXML
+    private AnchorPane errorContainer;
+    @FXML
+    private JFXCheckBox rememberLogin;
+    private ErrorHandler errorHandler;
+
+    public static String getUserKey() {
+        return userKey;
+    }
+
+    public static void setUserKey(String key) {
+        userKey = key;
+    }
+
+    static String getUser() {
+        return user;
+    }
+
+    private static void setUser(String name) {
+        user = name;
+    }
+
+    static ChatSocket getChatSocket() {
+        return chatSocket;
+    }
+
+    static void setChatSocket(ChatSocket chatSocket) {
+        LoginController.chatSocket = chatSocket;
+    }
 
     public void initialize() {
         File userData = USER_DATA.toFile();
@@ -166,29 +178,5 @@ public class LoginController {
         password.setText(userData.getPassword());
         rememberLogin.setSelected(true);
         Platform.runLater(() -> btnLogin.requestFocus());
-    }
-
-    public static String getUserKey() {
-        return userKey;
-    }
-
-    public static void setUserKey(String key) {
-        userKey = key;
-    }
-
-    static String getUser() {
-        return user;
-    }
-
-    private static void setUser(String name) {
-        user = name;
-    }
-
-    static ChatSocket getChatSocket() {
-        return chatSocket;
-    }
-
-    static void setChatSocket(ChatSocket chatSocket) {
-        LoginController.chatSocket = chatSocket;
     }
 }

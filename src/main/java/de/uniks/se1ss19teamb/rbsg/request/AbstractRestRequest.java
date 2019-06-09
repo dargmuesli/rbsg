@@ -18,10 +18,10 @@ import org.apache.logging.log4j.Logger;
 public abstract class AbstractRestRequest implements RestRequest {
 
     private static final String url = "https://rbsg.uniks.de/api";
-
-    private JsonObject response = null;
-
+    private static final Logger logger = LogManager.getLogger(AbstractRestRequest.class);
     static HttpManager httpManager = new HttpManager();
+    private JsonObject response = null;
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     protected abstract JsonObject buildJson();
 
@@ -30,11 +30,6 @@ public abstract class AbstractRestRequest implements RestRequest {
     protected abstract String getEndpoint(); //"/user", "/user/login", etc.
 
     protected abstract String getUserToken();
-
-    private static final Logger logger = LogManager.getLogger(AbstractRestRequest.class);
-
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
-
 
     @Override
     public void sendRequest() throws ParseException {

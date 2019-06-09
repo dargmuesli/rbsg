@@ -19,30 +19,22 @@ import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
 
-    @FXML
-    private AnchorPane registerScreen;
-
-    @FXML
-    private JFXButton btnCancel;
-
-    @FXML
-    private JFXButton btnConfirm;
-
+    private static final Logger logger = LogManager.getLogger(RegisterController.class);
     @FXML
     AnchorPane errorContainer;
-
+    @FXML
+    private AnchorPane registerScreen;
+    @FXML
+    private JFXButton btnCancel;
+    @FXML
+    private JFXButton btnConfirm;
     @FXML
     private JFXTextField userName;
-
     @FXML
     private JFXPasswordField password;
-
     @FXML
     private JFXPasswordField confirmPassword;
-
     private ErrorHandler errorHandler;
-
-    private static final Logger logger = LogManager.getLogger(RegisterController.class);
 
     public void initialize() {
         registerScreen.setOpacity(0);

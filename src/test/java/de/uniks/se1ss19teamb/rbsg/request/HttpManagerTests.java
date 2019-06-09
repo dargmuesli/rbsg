@@ -24,12 +24,11 @@ import org.junit.Test;
 
 public class HttpManagerTests {
 
-    class Body {
-        String name = "Test Name";
-        String password = "Test Password";
-    }
-
     private URI uri;
+    private HttpManager httpManager;
+    private Header[] headers;
+    private Gson gson;
+    private HttpEntity httpEntity;
 
     {
         try {
@@ -38,11 +37,6 @@ public class HttpManagerTests {
             e.printStackTrace();
         }
     }
-
-    private HttpManager httpManager;
-    private Header[] headers;
-    private Gson gson;
-    private HttpEntity httpEntity;
 
     @Before
     public void setupTests() throws Exception {
@@ -93,5 +87,10 @@ public class HttpManagerTests {
         Body responseBody = gson.fromJson(managerResponse, Body.class);
         Assert.assertEquals("Test Name", responseBody.name);
         Assert.assertEquals("Test Password", responseBody.password);
+    }
+
+    class Body {
+        String name = "Test Name";
+        String password = "Test Password";
     }
 }

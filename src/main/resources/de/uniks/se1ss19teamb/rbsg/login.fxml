@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@dark-design.css" xmlns="http://javafx.com/javafx/8.0.162-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@dark-design.css"
+            xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
     <AnchorPane fx:id="loginScreen" styleClass="root" stylesheets="@dark-design.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0"

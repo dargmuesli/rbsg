@@ -4,8 +4,8 @@ import de.uniks.se1ss19teamb.rbsg.ui.ErrorPopupController;
 
 public class ErrorHandler {
 
-    private ErrorPopupController errorPopupController;
     private static ErrorHandler errorHandler;
+    private ErrorPopupController errorPopupController;
 
     private ErrorHandler() {
 

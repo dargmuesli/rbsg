@@ -10,12 +10,9 @@ import org.apache.logging.log4j.Logger;
 
 
 class CipherConstant {
-    static PublicKey publicKey;
-
-    static PrivateKey privateKey;
-
     private static final Logger logger = LogManager.getLogger(CipherConstant.class);
-
+    static PublicKey publicKey;
+    static PrivateKey privateKey;
     private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     static {

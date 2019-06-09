@@ -4,10 +4,10 @@ import java.util.Date;
 
 class ChatLogEntry {
 
-    private Date date = new Date();
     public String message;
     public String sender;
     public String receiver;
+    private Date date = new Date();
 
     public ChatLogEntry() {
 

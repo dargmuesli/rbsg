@@ -23,51 +23,36 @@ import org.apache.logging.log4j.Logger;
 
 public class MainController {
 
+    private static final Logger logger = LogManager.getLogger(MainController.class);
     @FXML
     private AnchorPane mainScreen;
-
     @FXML
     private AnchorPane errorContainer;
-
     @FXML
     private ListView<String> playerListView;
-
     @FXML
     private ScrollPane playerScrollPane;
-
     @FXML
     private ScrollPane gameScrollPane;
-
     @FXML
     private ListView<Game> gameListView;
-
     @FXML
     private JFXButton btnCreate;
-
     @FXML
     private ToggleGroup playerNumberToggleGroup;
-
     @FXML
     private JFXTextField gameName;
-
     @FXML
     private Toggle twoPlayers;
-
     @FXML
     private Toggle threePlayers;
-
     @FXML
     private Toggle fourPlayers;
-
     @FXML
     private JFXButton btnLogout;
-
     @FXML
     private TabPane chat;
-
     private ErrorHandler errorHandler;
-
-    private static final Logger logger = LogManager.getLogger(MainController.class);
 
     public void initialize() {
 
