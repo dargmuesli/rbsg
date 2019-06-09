@@ -20,7 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-
 public class Chat {
     private static final Logger logger = LogManager.getLogger(Chat.class);
 
@@ -81,8 +80,8 @@ public class Chat {
         }
 
         try (FileWriter fw = new FileWriter(path.toString(), true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
             for (ChatLogEntry cle : chatLog) {
                 out.println(SerializeUtils.serialize(cle));
             }

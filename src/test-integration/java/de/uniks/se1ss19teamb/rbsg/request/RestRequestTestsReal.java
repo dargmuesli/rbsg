@@ -156,15 +156,15 @@ public class RestRequestTestsReal {
 
             Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the"
-                    + " system socket. Please connect to "
-                    + "/ws/game?gameId=GAME_ID", req.getMessage());
+                + " system socket. Please connect to "
+                + "/ws/game?gameId=GAME_ID", req.getMessage());
 
             //Check if we actually joined the game
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
 
             Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId()
-                    .equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
+                .equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }

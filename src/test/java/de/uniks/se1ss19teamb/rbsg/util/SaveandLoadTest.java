@@ -6,7 +6,9 @@ import de.uniks.se1ss19teamb.rbsg.testmodel.Game;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Platform;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
 import de.uniks.se1ss19teamb.rbsg.testmodel.Unit;
+
 import java.io.File;
+
 import org.junit.Test;
 
 
@@ -14,7 +16,7 @@ public class SaveandLoadTest {
 
     @Test
     public void saveandloadTest() {
-        
+
         Game game = new Game();
         Player alice = new Player().setName("Alice");
         Platform p1 = new Platform();
@@ -35,26 +37,26 @@ public class SaveandLoadTest {
         Game loadedGame = p.loader();
 
         assertEquals(loadedGame
-                .getPlayers()
-                .get(0)
-                .getName(), game
-                        .getPlayers()
-                        .get(0)
-                        .getName());
+            .getPlayers()
+            .get(0)
+            .getName(), game
+            .getPlayers()
+            .get(0)
+            .getName());
         assertEquals(loadedGame
-                .getPlatforms()
-                .get(0)
-                .getCapacity(), game
-                        .getPlatforms()
-                        .get(0)
-                        .getCapacity());
+            .getPlatforms()
+            .get(0)
+            .getCapacity(), game
+            .getPlatforms()
+            .get(0)
+            .getCapacity());
         assertEquals(loadedGame
-                .getPlatforms()
-                .get(1)
-                .getCapacity(), game
-                        .getPlatforms()
-                        .get(1)
-                        .getCapacity());
+            .getPlatforms()
+            .get(1)
+            .getCapacity(), game
+            .getPlatforms()
+            .get(1)
+            .getCapacity());
 
         File file = new File("./savegame.yaml");
         file.delete();

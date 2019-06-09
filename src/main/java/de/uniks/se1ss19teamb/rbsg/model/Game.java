@@ -2,14 +2,14 @@ package de.uniks.se1ss19teamb.rbsg.model;
 
 
 public class Game {
-    
+
     //Fields defined by Server
     private long joinedPlayers;
-    
+
     private String name;
-    
+
     private String id;
-    
+
     private long neededPlayers;
 
     public long getJoinedPlayers() {

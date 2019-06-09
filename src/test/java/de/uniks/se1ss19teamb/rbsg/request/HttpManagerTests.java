@@ -5,8 +5,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -47,7 +49,7 @@ public class HttpManagerTests {
         HttpClient httpClient = mock(HttpClient.class);
         httpManager = new HttpManager(httpClient);
         HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,
-                HttpStatus.SC_OK, "OK");
+            HttpStatus.SC_OK, "OK");
 
         httpResponse.addHeader("TestHeader", "1");
 

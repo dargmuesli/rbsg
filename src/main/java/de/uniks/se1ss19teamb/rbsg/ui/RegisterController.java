@@ -18,38 +18,38 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
-    
+
     @FXML
     private AnchorPane registerScreen;
-    
+
     @FXML
     private JFXButton btnCancel;
-    
+
     @FXML
     private JFXButton btnConfirm;
-    
+
     @FXML
     AnchorPane errorContainer;
-    
+
     @FXML
     private JFXTextField userName;
-    
+
     @FXML
     private JFXPasswordField password;
-    
+
     @FXML
     private JFXPasswordField confirmPassword;
 
     private ErrorHandler errorHandler;
 
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
-    
+
     public void initialize() {
         registerScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
-        
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
@@ -57,33 +57,33 @@ public class RegisterController {
             ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
-            
+
         } catch (IOException e) {
             errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!");
             logger.error(e);
         }
     }
-    
+
     @FXML
     void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
+                "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
             if (!userName.getText().isEmpty()
-                    && !password.getText().isEmpty()
-                    && !confirmPassword.getText().isEmpty()) {
-                
+                && !password.getText().isEmpty()
+                && !confirmPassword.getText().isEmpty()) {
+
                 if (password.getText().equals(confirmPassword.getText())) {
                     RegisterUserRequest register = new RegisterUserRequest(
-                            userName.getText(), password.getText());
-                    
+                        userName.getText(), password.getText());
+
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition(
-                                "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
-                        
+                            "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
+
                         errorHandler.sendError("Registrierung erfolgreich!");
                     } /*else {
                         errorHandler.sendError("Entschuldigung.
@@ -93,7 +93,7 @@ public class RegisterController {
                 } else {
                     errorHandler.sendError("Die Passwörter sind verschieden!");
                 }
-            
+
             } else {
                 errorHandler.sendError("Bitte geben Sie etwas ein.");
             }

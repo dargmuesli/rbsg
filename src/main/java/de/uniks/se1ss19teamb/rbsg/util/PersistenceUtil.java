@@ -62,7 +62,7 @@ class PersistenceUtil {
             return null;
         }
     }
-    
+
     public Game loader() {
         PersistenceUtil p = new PersistenceUtil();
         return p.load();

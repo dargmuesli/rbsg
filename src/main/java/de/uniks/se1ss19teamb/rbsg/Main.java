@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         Parent root = FXMLLoader
-                .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/login.fxml"));
+            .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/login.fxml"));
         primaryStage.setTitle("RSBG-Team B");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setOnCloseRequest(event -> System.exit(0));

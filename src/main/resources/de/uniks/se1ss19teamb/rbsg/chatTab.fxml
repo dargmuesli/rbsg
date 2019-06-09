@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
+<VBox stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="All">
             <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
@@ -19,18 +20,19 @@
             </ScrollPane>
         </Tab>
     </TabPane>
-   <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-      <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
-         <HBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </HBox.margin></JFXTextField>
-      <Button fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
-         <graphic>
-            <FontAwesomeIconView glyphName="SEND" />
-         </graphic>
-      </Button>
-      <VBox.margin>
-         <Insets left="5.0" right="5.0" />
-      </VBox.margin>
-   </HBox>
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+        <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0"/>
+            </HBox.margin>
+        </JFXTextField>
+        <Button fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
+            <graphic>
+                <FontAwesomeIconView glyphName="SEND"/>
+            </graphic>
+        </Button>
+        <VBox.margin>
+            <Insets left="5.0" right="5.0"/>
+        </VBox.margin>
+    </HBox>
 </VBox>

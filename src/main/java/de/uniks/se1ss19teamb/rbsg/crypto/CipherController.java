@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -33,7 +34,7 @@ class CipherController {
             fw.close();
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
-                | BadPaddingException | IllegalBlockSizeException | IOException e) {
+            | BadPaddingException | IllegalBlockSizeException | IOException e) {
             errorHandler.sendError("Fehler beim Verschlüsseln einer Nachricht!");
             logger.error(e);
         }
@@ -65,7 +66,7 @@ class CipherController {
             br.close();
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
-                | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
+            | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
             errorHandler.sendError("Fehler beim Entschlüsseln einer Nachricht!");
             logger.error(e);
         }

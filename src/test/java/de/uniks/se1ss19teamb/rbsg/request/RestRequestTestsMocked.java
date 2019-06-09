@@ -16,27 +16,27 @@ public class RestRequestTestsMocked {
 
     private HttpRequestResponse getHttpCreateGameResponse() {
         String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":{\"gameId\":"
-                + "\"123456789012345678901234\"}}";
+            + "\"123456789012345678901234\"}}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
     }
-    
+
     private HttpRequestResponse getHttpRegisterUserResponse() {
         String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
         int status = 400;
         String errorMsg = "Bad Request";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
     }
-    
+
     private HttpRequestResponse getHttpLoginUserResponse() {
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"userKey\":"
-                + "\"111111111111111111111111111111111111\"}}";
+            + "\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "Bad Request";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
     }
-    
+
     private HttpRequestResponse getHttpQueryUsersResponse() {
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
         int status = 200;
@@ -50,28 +50,28 @@ public class RestRequestTestsMocked {
         String errorMsgLogout = "test";
         return new HttpRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
     }
-    
+
     private HttpRequestResponse getHttpQueryGamesResponse() {
         String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":"
-                + "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,"
-                + "\"joinedPlayer\":0}]}";
+            + "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,"
+            + "\"joinedPlayer\":0}]}";
         int statusLogout = 200;
         String errorMsgLogout = "test";
         return new HttpRequestResponse(httpReqRepBodyQueryGames, statusLogout, errorMsgLogout);
     }
-    
+
     private HttpRequestResponse getHttpDeleteGameResponse() {
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":{\"userKey\":"
-                + "\"111111111111111111111111111111111111\"}}";
+            + "\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
     }
-    
+
     private HttpRequestResponse getHttpJoinGameResponse() {
         String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected "
-                + "from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":"
-                + "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+            + "from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":"
+            + "{\"userKey\":\"111111111111111111111111111111111111\"}}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
@@ -97,7 +97,7 @@ public class RestRequestTestsMocked {
 
         try {
             req.sendRequest();
-            
+
             Assert.assertFalse(req.getSuccessful());
             Assert.assertEquals("Name already taken", req.getMessage());
         } catch (Exception e) {
@@ -117,7 +117,7 @@ public class RestRequestTestsMocked {
             e.printStackTrace();
         }
         LoginUserRequest req = new LoginUserRequest("testTeamB", "qwertz");
-        
+
         try {
             //Query Request
             req.sendRequest();
@@ -222,8 +222,8 @@ public class RestRequestTestsMocked {
 
     @Test
     public void deleteGameTest() throws ParseException {
-        DeleteGameRequest req = new DeleteGameRequest("123456789012345678901234", 
-                "111111111111111111111111111111111111");
+        DeleteGameRequest req = new DeleteGameRequest("123456789012345678901234",
+            "111111111111111111111111111111111111");
 
         HttpRequestResponse httpRequestResponseDelete = getHttpDeleteGameResponse();
 
@@ -260,7 +260,7 @@ public class RestRequestTestsMocked {
 
             Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. "
-                    + "Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
+                + "Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }

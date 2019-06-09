@@ -72,7 +72,7 @@ public class LoginController {
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
@@ -110,11 +110,11 @@ public class LoginController {
             login();
         }
         if (keyEvent.getSource().equals(btnRegistration)
-                && keyEvent.getCode().equals(KeyCode.ENTER)) {
+            && keyEvent.getCode().equals(KeyCode.ENTER)) {
             goToRegister();
         }
         if (keyEvent.getSource().equals(rememberLogin)
-                && keyEvent.getCode().equals(KeyCode.ENTER)) {
+            && keyEvent.getCode().equals(KeyCode.ENTER)) {
             if (rememberLogin.isSelected()) {
                 rememberLogin.setSelected(false);
             } else {
@@ -126,7 +126,7 @@ public class LoginController {
     private void login() {
         if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
             LoginUserRequest login = new LoginUserRequest(
-                    userName.getText(), password.getText());
+                userName.getText(), password.getText());
             login.sendRequest();
             if (login.getSuccessful()) {
                 File file = USER_DATA.toFile();
@@ -140,7 +140,7 @@ public class LoginController {
                 setUserKey(login.getUserKey());
                 setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
-                        "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
 
             } else {
                 errorHandler.sendError("Login fehlgeschlagen!");
@@ -152,7 +152,7 @@ public class LoginController {
 
     private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
     }
 
     private void saveUserData() {

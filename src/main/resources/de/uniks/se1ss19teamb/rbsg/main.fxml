@@ -17,125 +17,133 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-   <AnchorPane fx:id="mainScreen" stylesheets="@dark-design2.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
-      <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
-         <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-               <Label alignment="CENTER" text="Players" textFill="#756e6e">
-                  <font>
-                     <Font size="15.0"/>
-                  </font>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="5.0"/>
-                  </VBox.margin>
-               </Label>
-               <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                           minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;"
-                           VBox.vgrow="ALWAYS">
-                  <ListView fx:id="playerListView"/>
-               </ScrollPane>
-            </VBox>
-            <Pane prefWidth="1.0" style="-fx-background-color: grey;">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Pane>
-            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-               <Label alignment="CENTER" text="Games" textFill="#7c7676">
-                  <font>
-                     <Font size="15.0"/>
-                  </font>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="5.0"/>
-                  </VBox.margin>
-               </Label>
-               <ScrollPane fx:id="gameScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                           minWidth="150.0" prefHeight="250.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" stylesheets="@dark-design2.css"
+            xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+    <AnchorPane fx:id="mainScreen" stylesheets="@dark-design2.css" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
+                    AnchorPane.topAnchor="50.0"/>
+        <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <Label alignment="CENTER" text="Players" textFill="#756e6e">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                        <VBox.margin>
+                            <Insets bottom="10.0" top="5.0"/>
+                        </VBox.margin>
+                    </Label>
+                    <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;"
+                                VBox.vgrow="ALWAYS">
+                        <ListView fx:id="playerListView"/>
+                    </ScrollPane>
+                </VBox>
+                <Pane prefWidth="1.0" style="-fx-background-color: grey;">
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </Pane>
+                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <Label alignment="CENTER" text="Games" textFill="#7c7676">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                        <VBox.margin>
+                            <Insets bottom="10.0" top="5.0"/>
+                        </VBox.margin>
+                    </Label>
+                    <ScrollPane fx:id="gameScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
 
-                  <ListView fx:id="gameListView" onMouseClicked="#joinGame"/>
-               </ScrollPane>
-            </VBox>
-         </HBox>
-         <Pane prefHeight="1.0" style="-fx-background-color: grey;" />
-         <HBox VBox.vgrow="ALWAYS">
-            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-               <Label alignment="CENTER" text="Chat" textAlignment="CENTER">
-                  <font>
-                     <Font size="15.0"/>
-                  </font>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="5.0"/>
-                  </VBox.margin>
-               </Label>
-               <fx:include source="chatTab.fxml"/>
-            </VBox>
-            <Pane prefWidth="1.0" style="-fx-background-color: grey;">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Pane>
-            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-               <Label alignment="CENTER" text="New Game" textAlignment="CENTER">
-                  <font>
-                     <Font size="15.0"/>
-                  </font>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="5.0"/>
-                  </VBox.margin>
-               </Label>
-               <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                  <JFXTextField fx:id="gameName" alignment="CENTER" promptText="name">
-                     <VBox.margin>
-                        <Insets left="10.0" right="10.0"/>
-                     </VBox.margin>
-                  </JFXTextField>
-                  <HBox alignment="CENTER">
-                     <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM"
-                                     mnemonicParsing="false" selected="true" text="2">
-                        <toggleGroup>
-                           <ToggleGroup fx:id="playerNumberToggleGroup"/>
-                        </toggleGroup>
-                        <HBox.margin>
-                           <Insets left="10.0" right="10.0"/>
-                        </HBox.margin>
-                     </JFXRadioButton>
-                     <JFXRadioButton fx:id="threePlayers" accessibleText="3" mnemonicParsing="false" text="3"
-                                     toggleGroup="$playerNumberToggleGroup">
-                        <HBox.margin>
-                           <Insets left="10.0" right="10.0"/>
-                        </HBox.margin>
-                     </JFXRadioButton>
-                     <JFXRadioButton fx:id="fourPlayers" accessibleText="4" contentDisplay="BOTTOM"
-                                     mnemonicParsing="false" text="4" toggleGroup="$playerNumberToggleGroup">
-                        <HBox.margin>
-                           <Insets left="10.0" right="10.0"/>
-                        </HBox.margin>
-                     </JFXRadioButton>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                     </padding>
-                  </HBox>
-                  <JFXButton fx:id="btnCreate" mnemonicParsing="false" onAction="#setOnAction" text="Create Game"/>
-               </VBox>
-            </VBox>
-         </HBox>
-      </VBox>
-      <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">
-         <items>
-            <MenuItem mnemonicParsing="false">
-               <graphic>
-                  <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />
-               </graphic>
-            </MenuItem>
-         </items>
-         <font>
-            <Font size="8.0" />
-         </font>
-         <graphic>
-            <FontAwesomeIconView accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />
-         </graphic>
-      </MenuButton>
-   </AnchorPane>
+                        <ListView fx:id="gameListView" onMouseClicked="#joinGame"/>
+                    </ScrollPane>
+                </VBox>
+            </HBox>
+            <Pane prefHeight="1.0" style="-fx-background-color: grey;"/>
+            <HBox VBox.vgrow="ALWAYS">
+                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <Label alignment="CENTER" text="Chat" textAlignment="CENTER">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                        <VBox.margin>
+                            <Insets bottom="10.0" top="5.0"/>
+                        </VBox.margin>
+                    </Label>
+                    <fx:include source="chatTab.fxml"/>
+                </VBox>
+                <Pane prefWidth="1.0" style="-fx-background-color: grey;">
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </Pane>
+                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <Label alignment="CENTER" text="New Game" textAlignment="CENTER">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                        <VBox.margin>
+                            <Insets bottom="10.0" top="5.0"/>
+                        </VBox.margin>
+                    </Label>
+                    <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                        <JFXTextField fx:id="gameName" alignment="CENTER" promptText="name">
+                            <VBox.margin>
+                                <Insets left="10.0" right="10.0"/>
+                            </VBox.margin>
+                        </JFXTextField>
+                        <HBox alignment="CENTER">
+                            <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM"
+                                            mnemonicParsing="false" selected="true" text="2">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="playerNumberToggleGroup"/>
+                                </toggleGroup>
+                                <HBox.margin>
+                                    <Insets left="10.0" right="10.0"/>
+                                </HBox.margin>
+                            </JFXRadioButton>
+                            <JFXRadioButton fx:id="threePlayers" accessibleText="3" mnemonicParsing="false" text="3"
+                                            toggleGroup="$playerNumberToggleGroup">
+                                <HBox.margin>
+                                    <Insets left="10.0" right="10.0"/>
+                                </HBox.margin>
+                            </JFXRadioButton>
+                            <JFXRadioButton fx:id="fourPlayers" accessibleText="4" contentDisplay="BOTTOM"
+                                            mnemonicParsing="false" text="4" toggleGroup="$playerNumberToggleGroup">
+                                <HBox.margin>
+                                    <Insets left="10.0" right="10.0"/>
+                                </HBox.margin>
+                            </JFXRadioButton>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </padding>
+                        </HBox>
+                        <JFXButton fx:id="btnCreate" mnemonicParsing="false" onAction="#setOnAction"
+                                   text="Create Game"/>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </VBox>
+        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                    style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">
+            <items>
+                <MenuItem mnemonicParsing="false">
+                    <graphic>
+                        <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#setOnAction"
+                                   text="Logout"/>
+                    </graphic>
+                </MenuItem>
+            </items>
+            <font>
+                <Font size="8.0"/>
+            </font>
+            <graphic>
+                <FontAwesomeIconView accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0"/>
+            </graphic>
+        </MenuButton>
+    </AnchorPane>
 </AnchorPane>

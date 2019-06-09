@@ -26,7 +26,7 @@ class HttpManager {
     }
 
     public HttpRequestResponse get(URI uri, Header[] headers) throws
-            Exception {
+        Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -44,7 +44,7 @@ class HttpManager {
     }
 
     public HttpRequestResponse post(URI uri, Header[] headers, HttpEntity body) throws
-            Exception {
+        Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -64,7 +64,7 @@ class HttpManager {
 
 
     public HttpRequestResponse delete(URI uri, Header[] headers, HttpEntity body) throws
-            Exception {
+        Exception {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -86,9 +86,9 @@ class HttpManager {
         int status = httpResponse.getStatusLine().getStatusCode();
         String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
         String response = httpResponse.getEntity() != null
-                ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
+            ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
 
         return new HttpRequestResponse(response, status, errorMessage);
-        
+
     }
 }

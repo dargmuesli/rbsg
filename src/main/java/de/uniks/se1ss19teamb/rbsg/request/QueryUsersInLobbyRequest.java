@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class QueryUsersInLobbyRequest extends AbstractRestRequest {
 
     private String userToken;
-    
+
     public QueryUsersInLobbyRequest(String userToken) {
         this.userToken = userToken;
     }
-    
+
     @Override
     protected JsonObject buildJson() {
         return null;
@@ -32,12 +32,12 @@ public class QueryUsersInLobbyRequest extends AbstractRestRequest {
     protected String getUserToken() {
         return userToken;
     }
-    
+
     //Custom Request Helper
 
     public ArrayList<String> getUsersInLobby() {
         ArrayList<String> usersInLobby = new ArrayList<>();
-        for (JsonElement lobby: getResponse().get("data").getAsJsonArray()) {
+        for (JsonElement lobby : getResponse().get("data").getAsJsonArray()) {
             usersInLobby.add(lobby.getAsString());
         }
         return usersInLobby;

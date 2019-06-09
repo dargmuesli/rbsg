@@ -22,7 +22,7 @@ class CipherUtils {
 
     //read Strings and generates public key for the given Strings
     public static PublicKey readPublicKey(String filename) throws InvalidKeySpecException,
-            NoSuchAlgorithmException, IOException {
+        NoSuchAlgorithmException, IOException {
         X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(readFileBytes(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePublic(publicSpec);
@@ -30,7 +30,7 @@ class CipherUtils {
 
     //reads Strings and generates Private key for the given Strings
     public static PrivateKey readPrivateKey(String filename) throws IOException,
-            NoSuchAlgorithmException, InvalidKeySpecException {
+        NoSuchAlgorithmException, InvalidKeySpecException {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(readFileBytes(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(keySpec);
@@ -38,8 +38,8 @@ class CipherUtils {
 
     //encrypts using public key and returns as Byte
     public static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
-            BadPaddingException {
+        NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
+        BadPaddingException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(plaintext);
@@ -47,8 +47,8 @@ class CipherUtils {
 
     //decrypts the key using privatekey and returns as Byte
     public static byte[] decrypt(PrivateKey key, byte[] ciphertext) throws
-            NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException {
+        NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(ciphertext);

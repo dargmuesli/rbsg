@@ -26,7 +26,7 @@ public class UserInterfaceUtils {
         });
         fadeTransition.play();
     }
-    
+
     public static void makeFadeInTransition(AnchorPane node) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
@@ -35,7 +35,7 @@ public class UserInterfaceUtils {
         fadeTransition.setToValue(1);
         fadeTransition.play();
     }
-    
+
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
     //    Random r = new Random();
     //    boolean randomValue = r.nextBoolean();

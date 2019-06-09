@@ -7,9 +7,9 @@ public class GameSocket extends AbstractWebSocket {
 
     private String userKey;
     private String gameId;
-    
+
     private List<GameMessageHandler> handlersGame = new ArrayList<>();
-    
+
     public GameSocket(String gameId, String userKey) {
         this.userKey = userKey;
         this.gameId = gameId;
@@ -19,7 +19,7 @@ public class GameSocket extends AbstractWebSocket {
             }
         });
     }
-    
+
     @Override
     protected String getEndpoint() {
         return "/game?gameId=" + gameId;
@@ -29,13 +29,13 @@ public class GameSocket extends AbstractWebSocket {
     protected String getUserKey() {
         return userKey;
     }
-    
+
     //Custom Helpers
-    
+
     public void registerGameMessageHandler(GameMessageHandler handler) {
         handlersGame.add(handler);
     }
-    
+
     //TODO Send and receive Handlers. Implement once more of this WS is known from Release 2
-    
+
 }

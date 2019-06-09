@@ -25,7 +25,7 @@ public class MainController {
 
     @FXML
     private AnchorPane mainScreen;
-    
+
     @FXML
     private AnchorPane errorContainer;
 
@@ -43,19 +43,19 @@ public class MainController {
 
     @FXML
     private JFXButton btnCreate;
-    
+
     @FXML
     private ToggleGroup playerNumberToggleGroup;
-    
+
     @FXML
     private JFXTextField gameName;
-    
+
     @FXML
     private Toggle twoPlayers;
-    
+
     @FXML
     private Toggle threePlayers;
-    
+
     @FXML
     private Toggle fourPlayers;
 
@@ -70,7 +70,7 @@ public class MainController {
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
     public void initialize() {
-        
+
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
@@ -85,10 +85,10 @@ public class MainController {
                 */
             }
         });
-        
+
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
@@ -96,7 +96,7 @@ public class MainController {
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
-            
+
         } catch (IOException e) {
             errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
             logger.error(e);
@@ -108,7 +108,7 @@ public class MainController {
         gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setStyle("-fx-background-color:transparent;");
         gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-                + "-fx-padding: 0px;");
+            + "-fx-padding: 0px;");
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
@@ -119,7 +119,7 @@ public class MainController {
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
         playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-                + "-fx-padding: 0px;");
+            + "-fx-padding: 0px;");
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String name : existingPlayers) {
@@ -153,7 +153,7 @@ public class MainController {
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                        "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
             }
         }
     }
@@ -199,7 +199,7 @@ public class MainController {
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
         playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-                + "-fx-padding: 0px;");
+            + "-fx-padding: 0px;");
         ObservableList playerList = playerListView.getItems();
         while (playerList.size() != 0) {
             playerList.remove(0);

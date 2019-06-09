@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 public class LogoutUserRequest extends AbstractRestRequest {
 
     private String userToken;
-    
+
     public LogoutUserRequest(String userToken) {
         this.userToken = userToken;
     }
-    
+
     @Override
     protected JsonObject buildJson() {
         return null;
