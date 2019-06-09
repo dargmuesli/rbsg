@@ -12,17 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
-   <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-     <tabs>
-       <Tab closable="false" text="All">
-            <content>
-               <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
-                  <TextArea fx:id="textArea" />
-               </ScrollPane>
-            </content>
-         </Tab>
-     </tabs>
-   </TabPane>
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <Tab closable="false" text="All">
+            <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
+                <TextArea fx:id="textArea"/>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
       <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
          <HBox.margin>
