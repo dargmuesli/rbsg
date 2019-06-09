@@ -35,7 +35,7 @@ public class MainController {
     @FXML
     private ScrollPane gameScrollPane;
     @FXML
-    private ListView<Game> gameListView;
+    private ListView<Parent> gameListView;
     @FXML
     private JFXButton btnCreate;
     @FXML
@@ -143,6 +143,7 @@ public class MainController {
         }
     }
 
+    /*
     public void joinGame() {
         //TODO: Logger for printlns
         //System.out.println("Clicked on a game");
@@ -160,6 +161,8 @@ public class MainController {
 
     }
 
+     */
+
     private void updateGameView() {
         ObservableList items = gameListView.getItems();
         while (items.size() != 0) {
@@ -168,7 +171,17 @@ public class MainController {
 
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
-            gameListView.getItems().add(game);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/gameField.fxml"));
+            try {
+                Parent parent = fxmlLoader.load();
+                GameFieldController controller = fxmlLoader.getController();
+                controller.setUpGameLabel(game);
+                gameListView.getItems().add(parent);
+            } catch (IOException e) {
+                errorHandler.sendError("Ein GameField konnte nicht geladen werden.");
+                e.printStackTrace();
+            }
         }
     }
 
