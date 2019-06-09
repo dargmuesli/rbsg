@@ -13,7 +13,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CipherController {
+class CipherController {
     private static final Logger logger = LogManager.getLogger(CipherController.class);
 
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();

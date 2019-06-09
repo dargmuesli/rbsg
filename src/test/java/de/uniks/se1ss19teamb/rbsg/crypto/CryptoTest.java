@@ -94,7 +94,7 @@ public class CryptoTest {
         }
     }
 
-    public String encryptReturn(String m) {
+    private String encryptReturn(String m) {
         byte[] recSecret = Base64.decodeBase64(m);
         return new String(recSecret, utf8);
     }

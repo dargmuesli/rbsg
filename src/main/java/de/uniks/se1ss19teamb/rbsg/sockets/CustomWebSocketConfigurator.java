@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import javax.websocket.ClientEndpointConfig;
 
-public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
+class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
     
-    public static String userKey = "";
+    private static String userKey = "";
     
     @Override
     public void beforeRequest(Map<String, List<String>> headers) {
@@ -17,7 +17,7 @@ public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurat
         headers.put("userKey", key);
     }
     
-    protected static void setUserKey(String key) {
+    static void setUserKey(String key) {
         userKey = key;
     }
 }

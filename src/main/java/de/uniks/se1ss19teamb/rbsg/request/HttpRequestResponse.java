@@ -8,9 +8,9 @@ public class HttpRequestResponse {
         this.errorMsg = errorMsg;
     }
     
-    public int status;
+    private int status;
     
-    public String errorMsg;
+    private String errorMsg;
     
     public String body;
 }

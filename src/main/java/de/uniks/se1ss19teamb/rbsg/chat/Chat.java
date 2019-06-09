@@ -31,11 +31,11 @@ public class Chat {
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
         -> addToChatLog(message, from, isPrivate ? chatSocket.getUserName() : "All");
 
-    public Chat(String sender, String userKey) {
+    private Chat(String sender, String userKey) {
         this(new ChatSocket(sender, userKey), Paths.get("src/main/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt"));
     }
 
-    public Chat(String sender, String userKey, Path path) {
+    private Chat(String sender, String userKey, Path path) {
         this(new ChatSocket(sender, userKey), path);
     }
 
@@ -66,11 +66,11 @@ public class Chat {
         chatLog.add(new ChatLogEntry(message, sender));
     }
 
-    public void addToChatLog(String message, String sender, String receiver) {
+    private void addToChatLog(String message, String sender, String receiver) {
         chatLog.add(new ChatLogEntry(message, sender, receiver));
     }
 
-    public void writeLog() {
+    private void writeLog() {
         if (Files.notExists(path.getParent())) {
             try {
                 Files.createDirectories(path.getParent());

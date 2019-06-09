@@ -131,7 +131,7 @@ public class Platform
 
 
 
-public static final java.util.ArrayList<Platform> EMPTY_neighbors = new java.util.ArrayList<Platform>()
+private static final java.util.ArrayList<Platform> EMPTY_neighbors = new java.util.ArrayList<Platform>()
    { @Override
    public boolean add(Platform value){ throw new UnsupportedOperationException("No direct add! Use xy.withNeighbors(obj)"); }};
 
@@ -140,7 +140,7 @@ public static final String PROPERTY_neighbors = "neighbors";
 
 private java.util.ArrayList<Platform> neighbors = null;
 
-public java.util.ArrayList<Platform> getNeighbors()
+private java.util.ArrayList<Platform> getNeighbors()
    {
       if (this.neighbors == null)
       {
@@ -182,7 +182,7 @@ public Platform withNeighbors(Object... value)
    }
 
 
-public Platform withoutNeighbors(Object... value)
+private Platform withoutNeighbors(Object... value)
    {
       if (this.neighbors == null || value==null) return this;
       for (Object item : value)
@@ -209,7 +209,7 @@ public Platform withoutNeighbors(Object... value)
    }
 
 
-   public static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
+   private static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
    { @Override
    public boolean add(Unit value){ throw new UnsupportedOperationException("No direct add! Use xy.withUnits(obj)"); }};
 
@@ -218,7 +218,7 @@ public Platform withoutNeighbors(Object... value)
 
    private java.util.ArrayList<Unit> units = null;
 
-   public java.util.ArrayList<Unit> getUnits()
+   private java.util.ArrayList<Unit> getUnits()
    {
       if (this.units == null)
       {
@@ -319,9 +319,9 @@ public Platform withoutNeighbors(Object... value)
 
 
 
-   protected PropertyChangeSupport listeners = null;
+   private PropertyChangeSupport listeners = null;
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {

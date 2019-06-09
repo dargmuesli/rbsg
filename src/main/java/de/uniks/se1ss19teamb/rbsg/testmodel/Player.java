@@ -31,7 +31,7 @@ public class Player
 
    private String color;
 
-   public String getColor()
+   private String getColor()
    {
       return color;
    }
@@ -141,7 +141,7 @@ public class Player
 
 
 
-   public static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
+   private static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
    { @Override
    public boolean add(Unit value){ throw new UnsupportedOperationException("No direct add! Use xy.withUnits(obj)"); }};
 
@@ -220,7 +220,7 @@ public class Player
    }
 
 
-   public static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
+   private static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
    { @Override
    public boolean add(Platform value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlatforms(obj)"); }};
 
@@ -229,7 +229,7 @@ public class Player
 
    private java.util.ArrayList<Platform> platforms = null;
 
-   public java.util.ArrayList<Platform> getPlatforms()
+   private java.util.ArrayList<Platform> getPlatforms()
    {
       if (this.platforms == null)
       {
@@ -299,9 +299,9 @@ public class Player
    }
 
 
-   protected PropertyChangeSupport listeners = null;
+   private PropertyChangeSupport listeners = null;
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {

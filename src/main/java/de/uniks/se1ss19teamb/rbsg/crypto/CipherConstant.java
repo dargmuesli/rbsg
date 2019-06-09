@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 
 
-public class CipherConstant {
+class CipherConstant {
     static PublicKey publicKey;
 
     static PrivateKey privateKey;

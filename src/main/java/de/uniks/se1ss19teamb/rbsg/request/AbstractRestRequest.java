@@ -21,7 +21,7 @@ public abstract class AbstractRestRequest implements RestRequest {
    
     private JsonObject response = null;
    
-    protected static HttpManager httpManager = new HttpManager();
+    static HttpManager httpManager = new HttpManager();
    
     protected abstract JsonObject buildJson();
    

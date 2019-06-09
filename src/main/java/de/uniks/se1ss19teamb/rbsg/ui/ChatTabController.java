@@ -22,13 +22,13 @@ public class ChatTabController {
     @FXML
     private TextArea textArea;
 
-    public static String userKey = LoginController.getUserKey();
+    private static String userKey = LoginController.getUserKey();
 
-    public static String userName = LoginController.getUser();
+    private static String userName = LoginController.getUser();
 
-    public final ChatSocket chatSocket = new ChatSocket(userName, userKey);
+    private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
 
-    public final SystemSocket system = new SystemSocket(userKey);
+    private final SystemSocket system = new SystemSocket(userKey);
 
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 

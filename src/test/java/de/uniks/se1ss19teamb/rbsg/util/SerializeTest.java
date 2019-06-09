@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class SerializeTest {
 
-    public class TestClass {
+    class TestClass {
         String name = "My Very Long Name";
         int mtr = 12345678;
     }

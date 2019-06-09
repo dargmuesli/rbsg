@@ -1,7 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 
-public interface WebSocket {
+interface WebSocket {
     
     void connect();
     

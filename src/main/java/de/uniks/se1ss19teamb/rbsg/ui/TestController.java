@@ -10,9 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public class TestController {
+class TestController {
     @FXML
-    Label text;
+    private Label text;
 
     @FXML
     public void handleClick(ActionEvent actionEvent) {

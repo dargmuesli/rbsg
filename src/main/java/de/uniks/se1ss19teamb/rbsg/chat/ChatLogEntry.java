@@ -2,9 +2,9 @@ package de.uniks.se1ss19teamb.rbsg.chat;
 
 import java.util.Date;
 
-public class ChatLogEntry {
+class ChatLogEntry {
 
-    public Date date = new Date();
+    private Date date = new Date();
     public String message;
     public String sender;
     public String receiver;

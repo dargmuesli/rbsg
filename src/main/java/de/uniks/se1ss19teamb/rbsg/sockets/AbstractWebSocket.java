@@ -13,9 +13,9 @@ public abstract class AbstractWebSocket implements WebSocket {
 
     private static final String url = "wss://rbsg.uniks.de/ws";
     
-    protected List<WebSocketMessageHandler> handlers = new ArrayList<>();
+    List<WebSocketMessageHandler> handlers = new ArrayList<>();
     
-    protected WebSocketClient websocket;
+    WebSocketClient websocket;
     
     protected abstract String getEndpoint();
     
@@ -64,7 +64,7 @@ public abstract class AbstractWebSocket implements WebSocket {
         handlers.add(handler);
     }
     
-    protected void sendToWebsocket(JsonObject msg) {
+    void sendToWebsocket(JsonObject msg) {
         websocket.sendMessage(msg);
     }
     

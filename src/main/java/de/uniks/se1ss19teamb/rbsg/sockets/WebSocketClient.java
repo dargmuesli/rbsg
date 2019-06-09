@@ -11,9 +11,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @ClientEndpoint(configurator = CustomWebSocketConfigurator.class)
-public class WebSocketClient {
+class WebSocketClient {
     
-    public static final String NOOP = "noop";
+    private static final String NOOP = "noop";
     private Session mySession;
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;

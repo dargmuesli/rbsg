@@ -10,7 +10,7 @@ public class Game
 
    private String name;
 
-   public String getName()
+   private String getName()
    {
       return name;
    }
@@ -27,7 +27,7 @@ public class Game
    }
 
 
-   public static final java.util.ArrayList<Player> EMPTY_players = new java.util.ArrayList<Player>()
+   private static final java.util.ArrayList<Player> EMPTY_players = new java.util.ArrayList<Player>()
    { @Override
    public boolean add(Player value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlayers(obj)"); }};
 
@@ -168,7 +168,7 @@ public class Game
 
 
 
-   public static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
+   private static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
    { @Override
    public boolean add(Platform value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlatforms(obj)"); }};
 
@@ -278,9 +278,9 @@ public class Game
 
 
 
-   protected PropertyChangeSupport listeners = null;
+   private PropertyChangeSupport listeners = null;
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {

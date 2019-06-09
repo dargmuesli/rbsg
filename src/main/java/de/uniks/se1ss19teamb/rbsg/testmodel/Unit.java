@@ -68,9 +68,9 @@ public class Unit
 
 
 
-   protected PropertyChangeSupport listeners = null;
+   private PropertyChangeSupport listeners = null;
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   private boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (listeners != null)
       {

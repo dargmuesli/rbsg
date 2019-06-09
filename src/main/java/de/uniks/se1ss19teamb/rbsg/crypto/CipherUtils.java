@@ -13,9 +13,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-public class CipherUtils {
+class CipherUtils {
 
-    public static byte[] readFileBytes(String filename) throws IOException {
+    private static byte[] readFileBytes(String filename) throws IOException {
         Path path = Paths.get(filename);
         return Files.readAllBytes(path);
     }

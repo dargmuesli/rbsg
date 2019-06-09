@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class WebSocketTestsMocked {
     
-    WebSocketClient client;
+    private WebSocketClient client;
     
     @Before
     public void prepareClient() {
