@@ -20,7 +20,7 @@
             </ScrollPane>
         </Tab>
     </JFXTabPane>
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+    <HBox alignment="CENTER" VBox.vgrow="NEVER">
         <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
             <HBox.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0"/>
