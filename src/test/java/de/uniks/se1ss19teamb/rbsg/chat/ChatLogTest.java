@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.sockets.*;

@@ -3,8 +3,6 @@ package de.uniks.se1ss19teamb.rbsg.util;
 import com.google.gson.Gson;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class SerializeUtils {
 
