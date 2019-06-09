@@ -6,8 +6,7 @@ public class Model {
 	private final Game game;
 
 	private Model() {
-		Game game = new Game();
-		this.game = game;
+		this.game = new Game();
 	}
 
 	public static Model getInstance() {
