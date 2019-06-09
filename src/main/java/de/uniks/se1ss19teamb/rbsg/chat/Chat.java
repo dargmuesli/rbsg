@@ -46,7 +46,7 @@ public class Chat {
         this.path = path;
     }
 
-    public void disconnect() throws IOException {
+    public void disconnect() {
         this.chatSocket.disconnect();
         writeLog();
         new LogoutUserRequest(this.chatSocket.getUserKey()).sendRequest();

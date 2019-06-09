@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
-import java.io.IOException;
+
 import java.net.URI;
 
 import org.apache.http.Header;
@@ -71,7 +71,7 @@ public abstract class AbstractRestRequest implements RestRequest {
     }
    
     @Override
-    public void sendRequest(RestRequestResponseHandler callback) throws IOException, ParseException {
+    public void sendRequest(RestRequestResponseHandler callback) throws ParseException {
         sendRequest();
       
         callback.handle(response);

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class WebSocketTestsMocked {
     }
     
     @Test
-    public void systemSocketTest() throws ParseException, IOException, InterruptedException {
+    public void systemSocketTest() throws ParseException {
         SystemSocket system = new SystemSocket("111111111111111111111111111111111111");
         
         List<String> msg = new ArrayList<>();
@@ -83,7 +82,7 @@ public class WebSocketTestsMocked {
     }
     
     @Test
-    public void chatSocketTest() throws ParseException, IOException, InterruptedException {
+    public void chatSocketTest() throws ParseException {
 
         ChatSocket chat = new ChatSocket("testTeamB2", "111111111111111111111111111111111111");
         

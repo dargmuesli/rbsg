@@ -5,7 +5,6 @@ import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import org.junit.Test;
 public class WebSocketTestsReal {
     
     @Test
-    public void systemSocketTest() throws ParseException, IOException, InterruptedException {
+    public void systemSocketTest() throws ParseException, InterruptedException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -62,7 +61,7 @@ public class WebSocketTestsReal {
     }
     
     @Test
-    public void chatSocketTest() throws ParseException, IOException, InterruptedException {
+    public void chatSocketTest() throws ParseException, InterruptedException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 

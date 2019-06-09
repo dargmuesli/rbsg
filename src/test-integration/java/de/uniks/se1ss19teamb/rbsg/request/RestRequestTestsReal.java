@@ -2,8 +2,6 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
-import java.io.IOException;
-
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
@@ -53,7 +51,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void queryUsersInLobbyTest() throws IOException, ParseException {
+    public void queryUsersInLobbyTest() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -69,7 +67,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void logoutUserTest() throws IOException, ParseException {
+    public void logoutUserTest() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -85,7 +83,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void createGameTest() throws IOException, ParseException {
+    public void createGameTest() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -102,7 +100,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void queryGamesTest() throws IOException, ParseException {
+    public void queryGamesTest() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -126,7 +124,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void deleteGameTest() throws IOException, ParseException {
+    public void deleteGameTest() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -145,7 +143,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void joinGameTest() throws IOException, ParseException {
+    public void joinGameTest() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
@@ -173,7 +171,7 @@ public class RestRequestTestsReal {
     }
 
     @After
-    public void cleanupGames() throws IOException, ParseException {
+    public void cleanupGames() throws ParseException {
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 

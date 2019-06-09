@@ -20,7 +20,7 @@ public class SerializeTest {
     }
 
     @Test
-    public void serializeTest() throws IOException {
+    public void serializeTest() {
 
         TestClass testClass = new TestClass();
 

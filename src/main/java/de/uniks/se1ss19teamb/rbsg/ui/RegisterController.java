@@ -65,7 +65,7 @@ public class RegisterController {
     }
     
     @FXML
-    void eventHandler(ActionEvent event) throws IOException {
+    void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);

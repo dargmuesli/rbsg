@@ -4,8 +4,6 @@ import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
-import java.io.IOException;
-
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -133,7 +131,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void queryUsersInLobbyTest() throws IOException, ParseException {
+    public void queryUsersInLobbyTest() throws ParseException {
 
         HttpRequestResponse httpRequestResponseGet = getHttpQueryUsersResponse();
 
@@ -155,7 +153,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void logoutUserTest() throws IOException, ParseException {
+    public void logoutUserTest() throws ParseException {
         HttpRequestResponse httpRequestResponseLogout = getHttpLogoutUserResponse();
 
         try {
@@ -176,7 +174,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void createGameTest() throws IOException, ParseException {
+    public void createGameTest() throws ParseException {
         HttpRequestResponse httpRequestResponseCreateGame = getHttpCreateGameResponse();
 
         try {
@@ -197,7 +195,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void queryGamesTest() throws IOException, ParseException {
+    public void queryGamesTest() throws ParseException {
         HttpRequestResponse httpRequestResponseQueryGames = getHttpQueryGamesResponse();
 
         QueryGamesRequest req = new QueryGamesRequest("111111111111111111111111111111111111");
@@ -223,7 +221,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void deleteGameTest() throws IOException, ParseException {
+    public void deleteGameTest() throws ParseException {
         DeleteGameRequest req = new DeleteGameRequest("123456789012345678901234", 
                 "111111111111111111111111111111111111");
 
@@ -246,7 +244,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void joinGameTest() throws IOException, ParseException {
+    public void joinGameTest() throws ParseException {
         JoinGameRequest req = new JoinGameRequest("123456789012345678901234", "111111111111111111111111111111111111");
 
         HttpRequestResponse httpRequestResponseJoinGame = getHttpJoinGameResponse();
