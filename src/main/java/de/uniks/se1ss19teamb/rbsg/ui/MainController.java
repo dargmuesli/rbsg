@@ -161,7 +161,7 @@ public class MainController {
                 controller.setUpGameLabel(game, this);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
-                errorHandler.sendError("Ein GameField konnte nicht geladen werden.");
+                errorHandler.sendError("Ein GameField konnte nicht geladen werden!");
                 e.printStackTrace();
             }
         }
@@ -198,7 +198,7 @@ public class MainController {
         return usersInLobbyRequest.getUsersInLobby();
     }
 
-    protected void setJoinedGame(Game joinedGame) {
+    void setJoinedGame(Game joinedGame) {
         this.joinedGame = joinedGame;
     }
 }

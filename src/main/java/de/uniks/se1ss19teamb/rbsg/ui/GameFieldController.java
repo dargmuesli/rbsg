@@ -16,7 +16,7 @@ public class GameFieldController {
     private MainController mainController;
 
 
-    public void setUpGameLabel(Game game, MainController mainController) {
+    void setUpGameLabel(Game game, MainController mainController) {
         this.game = game;
         this.mainController = mainController;
         gameNameLabel.setText(game.getName());
