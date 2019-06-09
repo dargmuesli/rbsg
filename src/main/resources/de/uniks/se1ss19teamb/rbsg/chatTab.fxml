@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="tabPane" prefHeight="143.0" prefWidth="224.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
-   <children>
-      <Button fx:id="btnSend" layoutX="183.0" layoutY="102.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="39.0" prefWidth="40.0" text="Button" />
-      <TextField fx:id="message" layoutX="1.0" layoutY="102.0" onAction="#onEnter" prefHeight="40.0" prefWidth="181.0" style="-fx-background-color: darkgrey; -fx-border-color: white;" />
-      <ScrollPane layoutY="1.0" prefHeight="100.0" prefWidth="223.0">
-         <content>
-            <TextArea fx:id="textArea" layoutY="1.0" prefHeight="98.0" prefWidth="221.0" />
-         </content>
-      </ScrollPane>
-   </children>
-</AnchorPane>
+<VBox stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
+   <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+     <tabs>
+       <Tab closable="false" text="All">
+            <content>
+               <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
+                  <TextArea fx:id="textArea" />
+               </ScrollPane>
+            </content>
+         </Tab>
+     </tabs>
+   </TabPane>
+   <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+      <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </HBox.margin></JFXTextField>
+      <Button fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
+         <graphic>
+            <FontAwesomeIconView glyphName="SEND" />
+         </graphic>
+      </Button>
+      <VBox.margin>
+         <Insets left="5.0" right="5.0" />
+      </VBox.margin>
+   </HBox>
+</VBox>
