@@ -49,21 +49,14 @@ public class WebSocketTestsMocked {
         
         List<String> msg = new ArrayList<>();
         
-        system.registerUserJoinHandler((name) -> {
-            msg.add("userJoin|" + name);
-        });
+        system.registerUserJoinHandler((name) -> msg.add("userJoin|" + name));
         
-        system.registerUserLeftHandler((name) -> {
-            msg.add("userLeft|" + name);
-        });
+        system.registerUserLeftHandler((name) -> msg.add("userLeft|" + name));
         
-        system.registerGameCreateHandler((name, id, neededPlayers) -> {
-            msg.add("gameCreate|" + name + '|' + id + '|' + neededPlayers);
-        });
+        system.registerGameCreateHandler((name, id, neededPlayers)
+            -> msg.add("gameCreate|" + name + '|' + id + '|' + neededPlayers));
         
-        system.registerGameDeleteHandler((id) -> {
-            msg.add("gameDelete|" + id);
-        });
+        system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
         
         setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"testTeamB2\"}}", system);
         system.sendToWebsocket(null);
@@ -96,9 +89,7 @@ public class WebSocketTestsMocked {
         
         List<String> msg = new ArrayList<>();
         
-        chat.registerChatMessageHandler((message, from, isPrivate) -> {
-            msg.add(message + '|' + from + '|' + isPrivate);
-        });
+        chat.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
         
         setupSocket("{\"channel\":\"all\",\"from\":\"testTeamB\",\"message\":\"Hello World!\"}", chat);
         chat.sendMessage("Hello World!");

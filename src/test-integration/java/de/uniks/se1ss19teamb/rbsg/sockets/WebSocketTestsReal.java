@@ -25,21 +25,14 @@ public class WebSocketTestsReal {
         
         List<String> msg = new ArrayList<>();
         
-        system.registerUserJoinHandler((name) -> {
-            msg.add("userJoin|" + name);
-        });
+        system.registerUserJoinHandler((name) -> msg.add("userJoin|" + name));
         
-        system.registerUserLeftHandler((name) -> {
-            msg.add("userLeft|" + name);
-        });
+        system.registerUserLeftHandler((name) -> msg.add("userLeft|" + name));
         
-        system.registerGameCreateHandler((name, id, neededPlayers) -> {
-            msg.add("gameCreate|" + name + '|' + id + '|' + neededPlayers);
-        });
+        system.registerGameCreateHandler((name, id, neededPlayers)
+            -> msg.add("gameCreate|" + name + '|' + id + '|' + neededPlayers));
         
-        system.registerGameDeleteHandler((id) -> {
-            msg.add("gameDelete|" + id);
-        });
+        system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
         
         system.connect();
         
@@ -82,9 +75,7 @@ public class WebSocketTestsReal {
         
         List<String> msg = new ArrayList<>();
         
-        chat2.registerChatMessageHandler((message, from, isPrivate) -> {
-            msg.add(message + '|' + from + '|' + isPrivate);
-        });
+        chat2.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
         
         chat.connect();
         chat2.connect();

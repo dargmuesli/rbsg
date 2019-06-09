@@ -53,21 +53,14 @@ public class ChatTabController {
             }
         });
 
-        system.registerUserJoinHandler((name) -> {
-            textArea.appendText("userJoin|" + name + "\n");
-        });
+        system.registerUserJoinHandler((name) -> textArea.appendText("userJoin|" + name + "\n"));
 
-        system.registerUserLeftHandler((name) -> {
-            textArea.appendText("userLeft|" + name + "\n");
-        });
+        system.registerUserLeftHandler((name) -> textArea.appendText("userLeft|" + name + "\n"));
 
-        system.registerGameCreateHandler((name, id, neededPlayers) -> {
-            textArea.appendText("gameCreate|" + name + '|' + id + '|' + neededPlayers + "\n");
-        });
+        system.registerGameCreateHandler((name, id, neededPlayers)
+            -> textArea.appendText("gameCreate|" + name + '|' + id + '|' + neededPlayers + "\n"));
 
-        system.registerGameDeleteHandler((id) -> {
-            textArea.appendText("gameDelete|" + id + "\n");
-        });
+        system.registerGameDeleteHandler((id) -> textArea.appendText("gameDelete|" + id + "\n"));
 
         system.connect();
 
