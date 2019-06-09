@@ -45,8 +45,6 @@ public class MainController {
     @FXML
     private Toggle twoPlayers;
     @FXML
-    private Toggle threePlayers;
-    @FXML
     private Toggle fourPlayers;
     @FXML
     private JFXButton btnLogout;
@@ -119,15 +117,11 @@ public class MainController {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
                 String userKey = LoginController.getUserKey();
-                CreateGameRequest game;
                 if (selected.equals(twoPlayers)) {
-                    game = new CreateGameRequest(gameName.getText(), 2, userKey);
-                } else if (selected.equals(threePlayers)) {
-                    game = new CreateGameRequest(gameName.getText(), 3, userKey);
-                } else {
-                    game = new CreateGameRequest(gameName.getText(), 4, userKey);
+                    new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
+                } else if (selected.equals(fourPlayers)) {
+                    new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
-                game.sendRequest();
                 updateGameView();
             } else {
                 errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");

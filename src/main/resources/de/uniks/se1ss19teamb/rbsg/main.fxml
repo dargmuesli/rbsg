@@ -97,11 +97,6 @@
                                     <Insets left="10.0" right="10.0" />
                                 </HBox.margin>
                             </JFXRadioButton>
-                            <JFXRadioButton fx:id="threePlayers" accessibleText="3" mnemonicParsing="false" text="3" toggleGroup="$playerNumberToggleGroup">
-                                <HBox.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                </HBox.margin>
-                            </JFXRadioButton>
                             <JFXRadioButton fx:id="fourPlayers" accessibleText="4" contentDisplay="BOTTOM" mnemonicParsing="false" text="4" toggleGroup="$playerNumberToggleGroup">
                                 <HBox.margin>
                                     <Insets left="10.0" right="10.0" />
