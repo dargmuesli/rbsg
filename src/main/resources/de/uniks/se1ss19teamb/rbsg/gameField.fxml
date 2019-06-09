@@ -4,14 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="45.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameFieldController">
+<AnchorPane prefHeight="35.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameFieldController">
    <children>
-      <Label fx:id="gameNameLabel" layoutX="14.0" layoutY="14.0" text="gamename" />
-      <Button fx:id="joinGameButton" layoutX="157.0" layoutY="9.0" mnemonicParsing="false" text="Join"
-              AnchorPane.rightAnchor="82.0" />
-      <Button fx:id="deleteGameButton" layoutX="249.0" layoutY="9.0" mnemonicParsing="false" text="Delete"
-              AnchorPane.rightAnchor="8.0" />
+      <Label fx:id="gameNameLabel" layoutX="14.0" layoutY="14.0" text="gamename" AnchorPane.bottomAnchor="8.0" AnchorPane.topAnchor="8.0" />
+      <Button fx:id="joinGameButton" layoutX="157.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#joinGame" text="Join" AnchorPane.rightAnchor="82.0" AnchorPane.topAnchor="4.0" />
+      <Button fx:id="deleteGameButton" layoutX="249.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#deleteGame" text="Delete" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="4.0" />
    </children>
 </AnchorPane>
