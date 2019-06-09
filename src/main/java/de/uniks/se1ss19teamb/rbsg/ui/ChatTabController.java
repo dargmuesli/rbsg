@@ -10,12 +10,8 @@ import java.nio.file.Paths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 
 public class ChatTabController {
-
-    @FXML
-    private AnchorPane tabPane;
 
     @FXML
     private Button btnSend;
