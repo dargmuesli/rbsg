@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
     <AnchorPane fx:id="mainScreen" stylesheets="@dark-design2.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
         <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
@@ -82,7 +82,7 @@
                             <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
                     </Label>
-                    <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <VBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
                         <JFXTextField fx:id="gameName" alignment="CENTER" promptText="name">
                             <VBox.margin>
                                 <Insets left="10.0" right="10.0" />
