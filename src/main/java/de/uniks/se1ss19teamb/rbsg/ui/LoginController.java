@@ -63,10 +63,10 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
 
-    private static final String USER_DATA = "./userData.txt";
+    private static final Path USER_DATA = Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
 
     public void initialize() {
-        File userData = new File(USER_DATA);
+        File userData = USER_DATA.toFile();
         if (userData.exists()) {
             loadUserData();
             userData.delete();
@@ -132,7 +132,7 @@ public class LoginController {
                     userName.getText(), password.getText());
             login.sendRequest();
             if (login.getSuccessful()) {
-                File file = new File(USER_DATA);
+                File file = USER_DATA.toFile();
                 if (file.exists()) {
                     file.delete();
                 }
@@ -160,12 +160,11 @@ public class LoginController {
 
     private void saveUserData() {
         UserData userData = new UserData(userName.getText(), password.getText());
-        SerializeUtils.serialize(USER_DATA, userData);
+        SerializeUtils.serialize(USER_DATA.toString(), userData);
     }
 
     private void loadUserData() {
-        Path path = Paths.get(USER_DATA);
-        UserData userData = SerializeUtils.deserialize(path, UserData.class);
+        UserData userData = SerializeUtils.deserialize(USER_DATA.toFile(), UserData.class);
         userName.setText(userData.getUserName());
         password.setText(userData.getPassword());
         rememberLogin.setSelected(true);
