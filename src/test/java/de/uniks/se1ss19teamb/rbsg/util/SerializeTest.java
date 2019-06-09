@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryNotEmptyException;
@@ -54,15 +55,14 @@ public class SerializeTest {
     }
 
     @Test
-    public void deserializeTest() throws IOException {
+    public void deserializeTest() {
 
         TestClass testClass = new TestClass();
 
         SerializeUtils.serialize("file.json", testClass);
 
         // test deserialization
-        Path path = FileSystems.getDefault().getPath("jsons","file.json");
-        TestClass fromFile = SerializeUtils.deserialize(path, TestClass.class);
+        TestClass fromFile = SerializeUtils.deserialize(new File("file.json"), TestClass.class);
 
         // test deserialization from string
         String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
@@ -75,12 +75,7 @@ public class SerializeTest {
 
         try {
             Files.delete(Paths.get("file.json"));
-        } catch (NoSuchFileException x) {
-            x.printStackTrace();
-        } catch (DirectoryNotEmptyException x) {
-            x.printStackTrace();
         } catch (IOException x) {
-            // File permission problems are caught here.
             x.printStackTrace();
         }
     }
