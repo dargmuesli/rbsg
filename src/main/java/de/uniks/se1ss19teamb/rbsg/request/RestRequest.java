@@ -12,8 +12,7 @@ public interface RestRequest {
     JsonObject getResponse();
     
     default boolean getSuccessful() {
-        return getResponse() == null
-                ? false : getResponse().get("status").getAsString().equals("success");
+        return getResponse() != null && getResponse().get("status").getAsString().equals("success");
     }
     
     default String getMessage() {
