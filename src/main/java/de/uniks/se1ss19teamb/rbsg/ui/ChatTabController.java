@@ -54,7 +54,8 @@ public class ChatTabController {
                             sendTo = observable.getValue().substring(3,i);
                             Platform.runLater(() -> {
                                 message.clear();
-                                // TODO change color of text
+                                message.setStyle("-fx-text-fill: -fx-privatetext;"
+                                    + "-jfx-focus-color: -fx-privatetext;");
                             });
                             break;
                         }
@@ -66,7 +67,8 @@ public class ChatTabController {
                         sendTo = null;
                         Platform.runLater(() -> {
                             message.clear();
-                            // TODO change color of text
+                            message.setStyle("-fx-text-fill: -fx-secondary;"
+                                + "-jfx-focus-color: -fx-secondary;");
                         });
                     }
                 } else {
