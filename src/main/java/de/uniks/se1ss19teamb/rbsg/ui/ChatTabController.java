@@ -35,6 +35,8 @@ public class ChatTabController {
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
 
+    private String sendTo = null;
+
     /* TODO
         after some time it automaticly disconnects system and chatSocket
      */
@@ -46,11 +48,25 @@ public class ChatTabController {
     @FXML
     public void initialize() {
         message.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue.contains("/w ")) {
-                System.out.println("oldValue contains");
-            }
-            if (newValue.contains("/w ")) {
-                System.out.println("newVlaues contains");
+            try {
+                if (oldValue.contains("/w ")) {
+                    StringBuffer buffer = new StringBuffer(observable.getValue());
+                    if (buffer.charAt(0) == '/' && buffer.charAt(1) == 'w' && buffer.charAt(2) == ' ') {
+                        for (int i = 3; i<buffer.length(); i++) {
+                            if (buffer.charAt(i) == ' ') {
+                                message.setText("");
+                                break;
+                            }
+                            sendTo += buffer.charAt(i);
+                            System.out.println(sendTo);
+                        }
+                    }
+                }
+                if (newValue.contains("/w ")) {
+                    System.out.println(observable.getValue());
+                }
+            } catch (Exception e) {
+                // do nothing
             }
         });
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
@@ -114,9 +130,11 @@ public class ChatTabController {
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
-                chat.sendMessage(message.getText());
-                // if private
-                // chat.sendMessage(message.getText(), "sendTo");
+                if (sendTo != null) {
+                    chat.sendMessage(message.getText(), sendTo);
+                } else {
+                    chat.sendMessage(message.getText());
+                }
                 message.setText("");
             }
         }
