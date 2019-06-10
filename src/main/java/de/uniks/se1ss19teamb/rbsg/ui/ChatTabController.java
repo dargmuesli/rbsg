@@ -54,6 +54,7 @@ public class ChatTabController {
                             sendTo = observable.getValue().substring(3,i);
                             Platform.runLater(() -> {
                                 message.clear();
+                                // TODO change color of text
                             });
                             break;
                         }
@@ -65,6 +66,7 @@ public class ChatTabController {
                         sendTo = null;
                         Platform.runLater(() -> {
                             message.clear();
+                            // TODO change color of text
                         });
                     }
                 } else {
@@ -109,7 +111,8 @@ public class ChatTabController {
             Platform.runLater(
                 () -> {
                     try {
-                        Tab newTab = FXMLLoader.load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
+                        Tab newTab = FXMLLoader
+                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
                         newTab.setText(from);
                         chatPane.getTabs().add(newTab);
                         getPrivate(from, message, newTab);
