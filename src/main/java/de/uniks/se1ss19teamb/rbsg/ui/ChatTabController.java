@@ -49,26 +49,34 @@ public class ChatTabController {
     public void initialize() {
         message.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                if (oldValue.contains("/w ")) {
-                    StringBuffer buffer = new StringBuffer(observable.getValue());
-                    if (buffer.charAt(0) == '/' && buffer.charAt(1) == 'w' && buffer.charAt(2) == ' ') {
-                        for (int i = 3; i<buffer.length(); i++) {
-                            if (buffer.charAt(i) == ' ') {
-                                message.setText("");
-                                break;
-                            }
-                            sendTo += buffer.charAt(i);
-                            System.out.println(sendTo);
+                if (observable.getValue().substring(0,3).contains("/w ")
+                    || observable.getValue().substring(0,3).contains("/W ")) {
+                    for (int i = 4; i < observable.getValue().length(); i++) {
+                        if (observable.getValue().toCharArray()[i] == ' ') {
+                            sendTo = observable.getValue().substring(3,i);
+                            Platform.runLater(() -> {
+                                message.clear();
+                            });
+                            break;
                         }
                     }
-                }
-                if (newValue.contains("/w ")) {
-                    System.out.println(observable.getValue());
+                } else if (observable.getValue().substring(0,4).contains("/all")
+                    || observable.getValue().contains("/All")
+                    || observable.getValue().contains("/ALL")) {
+                    if (observable.getValue().substring(4,5).contains(" ")) {
+                        sendTo = null;
+                        Platform.runLater(() -> {
+                            message.clear();
+                        });
+                    }
+                } else {
+                    // do nothing
                 }
             } catch (Exception e) {
                 // do nothing
             }
         });
+
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 boolean newTab = true;
