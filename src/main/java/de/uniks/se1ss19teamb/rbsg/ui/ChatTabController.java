@@ -46,10 +46,10 @@ public class ChatTabController {
     @FXML
     public void initialize() {
         message.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(oldValue.contains("/w ")){
+            if (oldValue.contains("/w ")) {
                 System.out.println("oldValue contains");
             }
-            if(newValue.contains("/w ")){
+            if (newValue.contains("/w ")) {
                 System.out.println("newVlaues contains");
             }
         });
