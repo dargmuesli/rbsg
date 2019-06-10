@@ -10,8 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,24 +77,7 @@ public class ChatTabController {
 
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                boolean newTab = true;
-                for (Tab t : chatPane.getTabs()) {
-                    if (t.getText().equals(from)) {
-                        getPrivate(from, message, t);
-                        newTab = false;
-                    }
-                }
-                if (newTab) {
-                    Platform.runLater(
-                        () -> {
-                            try {
-                                addNewPane(from, message);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    );
-                }
+                addNewPane(from, message);
             } else {
                 textArea.appendText(from + ": " + message + "\n");
             }
@@ -116,30 +97,50 @@ public class ChatTabController {
         LoginController.setChatSocket(chatSocket);
     }
 
-    private void addNewPane(String from, String message) throws IOException {
-        Tab newTab = FXMLLoader.load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
-        newTab.setText(from);
-        chatPane.getTabs().add(newTab);
-        getPrivate(from, message, newTab);
+    private void addNewPane(String from, String message) {
+        boolean createTab = true;
+        for (Tab t : chatPane.getTabs()) {
+            if (t.getText().equals(from)) {
+                getPrivate(from, message, t);
+                createTab = false;
+            }
+        }
+        if (createTab) {
+            Platform.runLater(
+                () -> {
+                    try {
+                        Tab newTab = FXMLLoader.load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
+                        newTab.setText(from);
+                        chatPane.getTabs().add(newTab);
+                        getPrivate(from, message, newTab);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        // TODO Logger
+                    }
+                }
+            );
+        }
     }
 
     private void getPrivate(String from, String message, Tab tab) {
         System.out.println();
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         TextArea area = (TextArea) scrollPane.getContent();
-        area.appendText(from + " to me: " + message + "\n");
-    }
-
-    public static void sendPrivate(String message, String from) {
-        // chatClass.sendMessage(message, from);
+        area.appendText(from + ": " + message + "\n");
     }
 
     @FXML
-    public void setOnAction(ActionEvent event) {
+    public void setOnAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
                 if (sendTo != null) {
-                    chat.sendMessage(message.getText(), sendTo);
+                    if (sendTo.trim() == "") {
+                        sendTo = null;
+                        chat.sendMessage(message.getText());
+                    } else {
+                        chat.sendMessage(message.getText(), sendTo);
+                        addNewPane(sendTo, message.getText());
+                    }
                 } else {
                     chat.sendMessage(message.getText());
                 }
