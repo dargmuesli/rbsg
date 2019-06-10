@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +45,14 @@ public class ChatTabController {
 
     @FXML
     public void initialize() {
+        message.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(oldValue.contains("/w ")){
+                System.out.println("oldValue contains");
+            }
+            if(newValue.contains("/w ")){
+                System.out.println("newVlaues contains");
+            }
+        });
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 boolean newTab = true;
