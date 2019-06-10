@@ -1,14 +1,18 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXTabPane;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
 public class ChatTabController {
@@ -23,6 +27,8 @@ public class ChatTabController {
     private TextField message;
     @FXML
     private TextArea textArea;
+    @FXML
+    private JFXTabPane chatPane;
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -39,8 +45,24 @@ public class ChatTabController {
     public void initialize() {
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                // TODO privates tab
-                textArea.appendText(from + " to me: " + message + "\n");
+                boolean newTab = true;
+                for (Tab t : chatPane.getTabs()) {
+                    if (t.getText().equals(from)) {
+                        getPrivate(from, message, t);
+                        newTab = false;
+                    }
+                }
+                if (newTab) {
+                    Platform.runLater(
+                        () -> {
+                            try {
+                                addNewPane(from, message);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    );
+                }
             } else {
                 textArea.appendText(from + ": " + message + "\n");
             }
@@ -58,6 +80,24 @@ public class ChatTabController {
         system.connect();
 
         LoginController.setChatSocket(chatSocket);
+    }
+
+    private void addNewPane(String from, String message) throws IOException {
+        Tab newTab = FXMLLoader.load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
+        newTab.setText(from);
+        chatPane.getTabs().add(newTab);
+        getPrivate(from, message, newTab);
+    }
+
+    private void getPrivate(String from, String message, Tab tab) {
+        System.out.println();
+        ScrollPane scrollPane = (ScrollPane) tab.getContent();
+        TextArea area = (TextArea) scrollPane.getContent();
+        area.appendText(from + " to me: " + message + "\n");
+    }
+
+    public static void sendPrivate(String message, String from) {
+        // chatClass.sendMessage(message, from);
     }
 
     @FXML
