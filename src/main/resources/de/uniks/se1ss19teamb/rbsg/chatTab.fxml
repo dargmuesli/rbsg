@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns:fx="http://javafx.com/fxml/1" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea"
       fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
     <JFXTabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="All">
@@ -28,7 +28,7 @@
         </JFXTextField>
         <Button fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
             <graphic>
-                <FontAwesomeIconView glyphName="SEND"/>
+                <FontAwesomeIconView glyphName="SEND" size="15"/>
             </graphic>
         </Button>
         <VBox.margin>
