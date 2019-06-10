@@ -47,8 +47,7 @@ public class ChatTabController {
     public void initialize() {
         message.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                if (observable.getValue().substring(0,3).contains("/w ")
-                    || observable.getValue().substring(0,3).contains("/W ")) {
+                if (observable.getValue().substring(0,3).toLowerCase().contains("/w ")) {
                     for (int i = 4; i < observable.getValue().length(); i++) {
                         if (observable.getValue().toCharArray()[i] == ' ') {
                             sendTo = observable.getValue().substring(3,i);
@@ -60,9 +59,7 @@ public class ChatTabController {
                             break;
                         }
                     }
-                } else if (observable.getValue().substring(0,4).contains("/all")
-                    || observable.getValue().contains("/All")
-                    || observable.getValue().contains("/ALL")) {
+                } else if (observable.getValue().substring(0,4).toLowerCase().contains("/all")) {
                     if (observable.getValue().substring(4,5).contains(" ")) {
                         sendTo = null;
                         Platform.runLater(() -> {
@@ -71,8 +68,6 @@ public class ChatTabController {
                                 + "-jfx-focus-color: -fx-secondary;");
                         });
                     }
-                } else {
-                    // do nothing
                 }
             } catch (Exception e) {
                 // do nothing
@@ -81,7 +76,7 @@ public class ChatTabController {
 
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                addNewPane(from, message);
+                addNewPane(from, message, false);
             } else {
                 textArea.appendText(from + ": " + message + "\n");
             }
@@ -101,12 +96,17 @@ public class ChatTabController {
         LoginController.setChatSocket(chatSocket);
     }
 
-    private void addNewPane(String from, String message) {
+    private void addNewPane(String from, String message, boolean mymessage) {
         boolean createTab = true;
         for (Tab t : chatPane.getTabs()) {
             if (t.getText().equals(from)) {
-                getPrivate(from, message, t);
-                createTab = false;
+                if (mymessage) {
+                    getPrivate(userName, message, t);
+                    createTab = false;
+                } else {
+                    getPrivate(from, message, t);
+                    createTab = false;
+                }
             }
         }
         if (createTab) {
@@ -117,7 +117,11 @@ public class ChatTabController {
                             .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
                         newTab.setText(from);
                         chatPane.getTabs().add(newTab);
-                        getPrivate(from, message, newTab);
+                        if (mymessage) {
+                            getPrivate(userName, message, newTab);
+                        } else {
+                            getPrivate(from, message, newTab);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         // TODO Logger
@@ -128,14 +132,13 @@ public class ChatTabController {
     }
 
     private void getPrivate(String from, String message, Tab tab) {
-        System.out.println();
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         TextArea area = (TextArea) scrollPane.getContent();
         area.appendText(from + ": " + message + "\n");
     }
 
     @FXML
-    public void setOnAction(ActionEvent event) throws IOException {
+    public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
                 if (sendTo != null) {
@@ -144,7 +147,7 @@ public class ChatTabController {
                         chat.sendMessage(message.getText());
                     } else {
                         chat.sendMessage(message.getText(), sendTo);
-                        addNewPane(sendTo, message.getText());
+                        addNewPane(sendTo, message.getText(), true);
                     }
                 } else {
                     chat.sendMessage(message.getText());

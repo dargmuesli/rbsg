@@ -1,10 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 
 public class NewChatTabController {
 
+    @FXML
+    private Tab newTab;
     @FXML
     private TextArea textArea;
 
