@@ -12,9 +12,13 @@ public class TextureManager {
     
     public static void init() {
         instance = new TextureManager();
+        AnimatedTexture.registerAnimUpdates();
         
         Texture test = new Texture("Test.png");
-        instance.textures.put("test", test);
+        instance.textures.put("test", test);        
+        
+        Texture panzer = new AnimatedTexture("panzer.png", 250.0f);
+        instance.textures.put("panzer", panzer);
         
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
