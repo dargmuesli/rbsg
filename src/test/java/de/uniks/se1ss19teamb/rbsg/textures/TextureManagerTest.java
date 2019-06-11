@@ -1,13 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import javafx.geometry.Dimension2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 public class TextureManagerTest {
     

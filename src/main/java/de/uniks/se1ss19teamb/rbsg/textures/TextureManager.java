@@ -31,12 +31,13 @@ public class TextureManager {
     
     private Map<String, Texture> textures = new HashMap<>();
     
-    private TextureManager() { }
+    private TextureManager() { 
+    }
     
     private Texture fetchTexture(String toFetch) {
         Texture texture = textures.get(toFetch);
         
-        if(texture == null) {
+        if (texture == null) {
             texture = textures.get("missing");
         }
         
