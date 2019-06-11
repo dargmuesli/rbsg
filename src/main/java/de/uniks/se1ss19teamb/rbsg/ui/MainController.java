@@ -196,15 +196,17 @@ public class MainController {
             JFXTabPane pane = (JFXTabPane) chat.getChildren().get(0);
             ChatTabController.addNewPane(player, null, true, pane);
         });
+
         contextMenu.setStyle("-fx-background-color:transparent;");
         contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
             + "-fx-padding: 0px;");
-        Label pLabel = new Label(player);
-        pLabel.setContextMenu(contextMenu);
-        pLabel.setMaxWidth(Double.MAX_VALUE);
-        pLabel.setMaxHeight(Double.MAX_VALUE);
 
-        return pLabel;
+        Label plabel = new Label(player);
+        plabel.setContextMenu(contextMenu);
+        plabel.setMaxWidth(Double.MAX_VALUE);
+        plabel.setMaxHeight(Double.MAX_VALUE);
+
+        return plabel;
     }
 }
 
