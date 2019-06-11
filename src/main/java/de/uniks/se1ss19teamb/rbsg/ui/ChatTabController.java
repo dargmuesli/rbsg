@@ -50,24 +50,13 @@ public class ChatTabController {
                 if (observable.getValue().substring(0,3).toLowerCase().contains("/w ")) {
                     for (int i = 4; i < observable.getValue().length(); i++) {
                         if (observable.getValue().toCharArray()[i] == ' ') {
-                            sendTo = observable.getValue().substring(3,i);
-                            Platform.runLater(() -> {
-                                addNewPane(sendTo, null, true);
-                                message.clear();
-                                message.setStyle("-fx-text-fill: -fx-privatetext;"
-                                    + "-jfx-focus-color: -fx-privatetext;");
-                            });
+                            setPrivate(observable.getValue(), i);
                             break;
                         }
                     }
                 } else if (observable.getValue().substring(0,4).toLowerCase().contains("/all")) {
                     if (observable.getValue().substring(4,5).contains(" ")) {
-                        sendTo = null;
-                        Platform.runLater(() -> {
-                            message.clear();
-                            message.setStyle("-fx-text-fill: -fx-secondary;"
-                                + "-jfx-focus-color: -fx-secondary;");
-                        });
+                        setAll();
                     }
                 }
             } catch (Exception e) {
@@ -144,25 +133,37 @@ public class ChatTabController {
         if (input.length() < 4) {
             return false;
         } else if (input.substring(0,3).toLowerCase().contains("/w ")) {
-            sendTo = input.substring(3);
-            Platform.runLater(() -> {
-                addNewPane(sendTo, null, true);
-                message.clear();
-                message.setStyle("-fx-text-fill: -fx-privatetext;"
-                    + "-jfx-focus-color: -fx-privatetext;");
-            });
+            setPrivate(input, 0);
             return true;
         } else if (input.substring(0,4).toLowerCase().contains("/all") && input.length() == 4) {
-            sendTo = null;
-            Platform.runLater(() -> {
-                message.clear();
-                message.setStyle("-fx-text-fill: -fx-secondary;"
-                    + "-jfx-focus-color: -fx-secondary;");
-            });
+            setAll();
             return true;
         } else {
             return false;
         }
+    }
+
+    private void setPrivate(String input, int count) {
+        if (count == 0) {
+            sendTo = input.substring(3);
+        } else {
+            sendTo = input.substring(3,count);
+        }
+        Platform.runLater(() -> {
+            addNewPane(sendTo, null, true);
+            message.clear();
+            message.setStyle("-fx-text-fill: -fx-privatetext;"
+                + "-jfx-focus-color: -fx-privatetext;");
+        });
+    }
+
+    private void setAll() {
+        sendTo = null;
+        Platform.runLater(() -> {
+            message.clear();
+            message.setStyle("-fx-text-fill: -fx-secondary;"
+                + "-jfx-focus-color: -fx-secondary;");
+        });
     }
 
     @FXML
