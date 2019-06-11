@@ -26,6 +26,9 @@ public class NewChatTabController {
         MenuItem closeMenuItem = new MenuItem("close");
         closeMenuItem.setOnAction((e) -> newTab.getTabPane().getTabs().remove(newTab));
         contextMenu.getItems().add(closeMenuItem);
+        contextMenu.setStyle("-fx-background-color:transparent;");
+        contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+            + "-fx-padding: 0px;");
         newTab.setContextMenu(contextMenu);
 
     }
