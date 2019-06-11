@@ -52,6 +52,7 @@ public class ChatTabController {
                         if (observable.getValue().toCharArray()[i] == ' ') {
                             sendTo = observable.getValue().substring(3,i);
                             Platform.runLater(() -> {
+                                addNewPane(sendTo, null, true);
                                 message.clear();
                                 message.setStyle("-fx-text-fill: -fx-privatetext;"
                                     + "-jfx-focus-color: -fx-privatetext;");
@@ -134,13 +135,43 @@ public class ChatTabController {
     private void getPrivate(String from, String message, Tab tab) {
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         TextArea area = (TextArea) scrollPane.getContent();
-        area.appendText(from + ": " + message + "\n");
+        if (message != null) {
+            area.appendText(from + ": " + message + "\n");
+        }
+    }
+
+    private boolean checkInput(String input) {
+        if (input.length() < 4) {
+            return false;
+        } else if (input.substring(0,3).toLowerCase().contains("/w ")) {
+            sendTo = input.substring(3);
+            Platform.runLater(() -> {
+                addNewPane(sendTo, null, true);
+                message.clear();
+                message.setStyle("-fx-text-fill: -fx-privatetext;"
+                    + "-jfx-focus-color: -fx-privatetext;");
+            });
+            return true;
+        } else if (input.substring(0,4).toLowerCase().contains("/all") && input.length() == 4) {
+            sendTo = null;
+            Platform.runLater(() -> {
+                message.clear();
+                message.setStyle("-fx-text-fill: -fx-secondary;"
+                    + "-jfx-focus-color: -fx-secondary;");
+            });
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
+                if (checkInput(message.getText())) {
+                    return;
+                }
                 if (sendTo != null) {
                     if (sendTo.trim() == "") {
                         sendTo = null;
