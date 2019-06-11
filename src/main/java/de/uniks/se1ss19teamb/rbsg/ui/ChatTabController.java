@@ -66,7 +66,7 @@ public class ChatTabController {
 
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                addNewPane(from, message, false);
+                addNewPane(from, message, false, chatPane);
             } else {
                 textArea.appendText(from + ": " + message + "\n");
             }
@@ -86,9 +86,9 @@ public class ChatTabController {
         LoginController.setChatSocket(chatSocket);
     }
 
-    private void addNewPane(String from, String message, boolean mymessage) {
+    public static void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
         boolean createTab = true;
-        for (Tab t : chatPane.getTabs()) {
+        for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
                 if (mymessage) {
                     getPrivate(userName, message, t);
@@ -104,9 +104,9 @@ public class ChatTabController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
+                            .load(ChatTabController.class.getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
                         newTab.setText(from);
-                        chatPane.getTabs().add(newTab);
+                        pane.getTabs().add(newTab);
                         if (mymessage) {
                             getPrivate(userName, message, newTab);
                         } else {
@@ -121,7 +121,7 @@ public class ChatTabController {
         }
     }
 
-    private void getPrivate(String from, String message, Tab tab) {
+    private static void getPrivate(String from, String message, Tab tab) {
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         TextArea area = (TextArea) scrollPane.getContent();
         if (message != null) {
@@ -150,7 +150,7 @@ public class ChatTabController {
             sendTo = input.substring(3,count);
         }
         Platform.runLater(() -> {
-            addNewPane(sendTo, null, true);
+            addNewPane(sendTo, null, true, chatPane);
             message.clear();
             message.setStyle("-fx-text-fill: -fx-privatetext;"
                 + "-jfx-focus-color: -fx-privatetext;");
@@ -179,7 +179,7 @@ public class ChatTabController {
                         chat.sendMessage(message.getText());
                     } else {
                         chat.sendMessage(message.getText(), sendTo);
-                        addNewPane(sendTo, message.getText(), true);
+                        addNewPane(sendTo, message.getText(), true, chatPane);
                     }
                 } else {
                     chat.sendMessage(message.getText());

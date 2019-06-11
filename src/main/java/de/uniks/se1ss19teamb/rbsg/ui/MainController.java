@@ -194,7 +194,7 @@ public class MainController {
         contextMenu.setOnAction(e -> {
             System.out.println(player);
             JFXTabPane pane = (JFXTabPane) chat.getChildren().get(0);
-            System.out.println(pane.getTabs().add(new Tab(player)));
+            ChatTabController.addNewPane(player, null, true, pane);
         });
         contextMenu.setStyle("-fx-background-color:transparent;");
         contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
