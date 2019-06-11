@@ -4,7 +4,9 @@ import de.uniks.se1ss19teamb.rbsg.Main;
 
 import javafx.application.Application;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SoundManagerTest {
@@ -24,6 +26,13 @@ public class SoundManagerTest {
         SoundManager.init();
     }
     
+    @Test
+    public void loadSounds() {
+        Assert.assertTrue(SoundManager.getLoaded("panzer"));
+        Assert.assertFalse(SoundManager.getLoaded("bgm"));
+    }
+    
+    @Ignore
     @Test
     public void checkLoadedSounds() throws InterruptedException {        
         //Actually plays the sound and hopes for no exception
