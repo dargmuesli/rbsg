@@ -23,11 +23,6 @@ public class SoundManager {
 		instance.sounds.put("missing", missing);
 	}
 	
-	/**
-	 * Plays the specific Sound
-	 * @param toFetch The Sound to play
-	 * @param balance The Left / Right Balance of the Sound. Has no effect on Stereo Sounds
-	 */
 	public static void playSound(String toFetch, float balance) {
 		instance.fetchSound(toFetch).play(balance);
 	}
