@@ -3,10 +3,9 @@ package de.uniks.se1ss19teamb.rbsg.textures;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.geometry.Dimension2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
-import java.awt.Dimension;
 
 import org.junit.Assert;
 
@@ -19,8 +18,8 @@ public class TextureManagerTest {
 	
 	@Test
 	public void checkLoadedTexture() {
-		Assert.assertEquals(new Dimension(64, 64), TextureManager.getTextureDimensions("test"));
-		Assert.assertEquals(new Dimension(64, 64), TextureManager.getTextureDimensions("missing"));
+		Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("test"));
+		Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("missing"));
 	}
 	
 	@Test

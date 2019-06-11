@@ -1,9 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
-import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.geometry.Dimension2D;
 import javafx.scene.layout.Pane;
 
 public class TextureManager {
@@ -24,9 +24,9 @@ public class TextureManager {
 		return instance.fetchTexture(toFetch).instantiate();
 	}
 	
-	public static Dimension getTextureDimensions(String toFetch) {
+	public static Dimension2D getTextureDimensions(String toFetch) {
 		Texture texture = instance.fetchTexture(toFetch);
-		return new Dimension((int) texture.image.getWidth(), (int) texture.image.getHeight());
+		return new Dimension2D(texture.image.getWidth(), texture.image.getHeight());
 	}
 	
 	private Map<String, Texture> textures = new HashMap<>();
