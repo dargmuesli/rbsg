@@ -189,10 +189,12 @@ public class MainController {
         contextMenu.setOnAction(e -> {
             System.out.println(player);
         });
+        
         Label pLabel = new Label(player);
         pLabel.setContextMenu(contextMenu);
         pLabel.setMaxWidth(Double.MAX_VALUE);
         pLabel.setMaxHeight(Double.MAX_VALUE);
+
         return pLabel;
     }
 }
