@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 
-<Tab fx:id="newTab" text="newTab" closable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<Tab fx:id="newTab" text="newTab" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
      fx:controller="de.uniks.se1ss19teamb.rbsg.ui.NewChatTabController">
     <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
         <TextArea fx:id="textArea" editable="false"/>
