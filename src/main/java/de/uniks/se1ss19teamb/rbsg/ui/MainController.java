@@ -189,7 +189,9 @@ public class MainController {
         contextMenu.setOnAction(e -> {
             System.out.println(player);
         });
-        
+        contextMenu.setStyle("-fx-background-color:transparent;");
+        contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+            + "-fx-padding: 0px;");
         Label pLabel = new Label(player);
         pLabel.setContextMenu(contextMenu);
         pLabel.setMaxWidth(Double.MAX_VALUE);
