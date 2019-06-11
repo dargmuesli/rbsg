@@ -29,7 +29,7 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private ListView<String> playerListView;
+    private ListView<Label> playerListView;
     @FXML
     private ScrollPane playerScrollPane;
     @FXML
@@ -48,8 +48,6 @@ public class MainController {
     private Toggle fourPlayers;
     @FXML
     private JFXButton btnLogout;
-    @FXML
-    private TabPane chat;
     private ErrorHandler errorHandler;
 
     private Game joinedGame;
@@ -58,18 +56,6 @@ public class MainController {
 
         mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-
-        LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
-            if (isPrivate) {
-                /* TODO privates tab
-                Tab tab = new Tab();
-                tab.setText(from);
-                tab.setContent(new Label(message));
-                chat.getTabs().add(tab);
-                System.out.println(message);
-                */
-            }
-        });
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -108,7 +94,7 @@ public class MainController {
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String name : existingPlayers) {
-            playerListView.getItems().add(name);
+            playerListView.getItems().add(new Label(name));
         }
     }
 
@@ -148,7 +134,7 @@ public class MainController {
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/gameField.fxml"));
+                .getResource("/de/uniks/se1ss19teamb/rbsg/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();
@@ -181,7 +167,7 @@ public class MainController {
 
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String player : existingPlayers) {
-            playerListView.getItems().add(player);
+            playerListView.getItems().add(addPlayerlabel(player));
         }
     }
 
@@ -194,6 +180,20 @@ public class MainController {
 
     void setJoinedGame(Game joinedGame) {
         this.joinedGame = joinedGame;
+    }
+
+    private Label addPlayerlabel(String player) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem whisperMenuItem = new MenuItem("whisper");
+        contextMenu.getItems().add(whisperMenuItem);
+        contextMenu.setOnAction(e -> {
+            System.out.println(player);
+        });
+        Label pLabel = new Label(player);
+        pLabel.setContextMenu(contextMenu);
+        pLabel.setMaxWidth(Double.MAX_VALUE);
+        pLabel.setMaxHeight(Double.MAX_VALUE);
+        return pLabel;
     }
 }
 
