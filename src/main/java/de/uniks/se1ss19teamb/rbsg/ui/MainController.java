@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
@@ -11,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,6 +51,8 @@ public class MainController {
     private Toggle fourPlayers;
     @FXML
     private JFXButton btnLogout;
+    @FXML
+    private VBox chat;
     private ErrorHandler errorHandler;
 
     private Game joinedGame;
@@ -188,6 +193,8 @@ public class MainController {
         contextMenu.getItems().add(whisperMenuItem);
         contextMenu.setOnAction(e -> {
             System.out.println(player);
+            JFXTabPane pane = (JFXTabPane) chat.getChildren().get(0);
+            System.out.println(pane.getTabs().add(new Tab(player)));
         });
         contextMenu.setStyle("-fx-background-color:transparent;");
         contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"

@@ -71,7 +71,7 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <fx:include source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
+                    <fx:include fx:id="chat" source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
                     <HBox.margin>
