@@ -114,7 +114,7 @@ public class ChatTabController {
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        // TODO Logger
+                        // TODO Logger.
                     }
                 }
             );
