@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg;
 
+import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,5 +27,6 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
 
+        TextureManager.init();
     }
 }
