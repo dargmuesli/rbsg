@@ -41,7 +41,7 @@ public class RegisterController {
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
@@ -60,7 +60,7 @@ public class RegisterController {
     void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
             if (!userName.getText().isEmpty()
@@ -74,7 +74,7 @@ public class RegisterController {
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition(
-                            "/de/uniks/se1ss19teamb/rbsg/login.fxml", registerScreen);
+                            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
 
                         errorHandler.sendError("Registrierung erfolgreich!");
                     } /*else {
