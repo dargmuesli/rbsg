@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public abstract class AbstractRestRequest implements RestRequest {
 
     private static final String url = "https://rbsg.uniks.de/api";
-    private static final Logger logger = LogManager.getLogger(AbstractRestRequest.class);
+    private static final Logger logger = LogManager.getLogger();
     static HttpManager httpManager = new HttpManager();
     private JsonObject response = null;
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
@@ -55,8 +55,7 @@ public abstract class AbstractRestRequest implements RestRequest {
                     throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
-            errorHandler.sendError("Fehler bei einer Webanfrage!");
-            logger.error(e);
+            errorHandler.sendError("Fehler bei einer Webanfrage!", logger, e);
         } finally {
             JsonParser parser = new JsonParser();
             response = (JsonObject) parser.parse(result == null ? "" : result.body);

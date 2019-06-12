@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MainController {
 
-    private static final Logger logger = LogManager.getLogger(MainController.class);
+    private static final Logger logger = LogManager.getLogger();
     @FXML
     private AnchorPane mainScreen;
     @FXML
@@ -83,8 +83,7 @@ public class MainController {
             errorContainer.getChildren().add(parent);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
     }
 

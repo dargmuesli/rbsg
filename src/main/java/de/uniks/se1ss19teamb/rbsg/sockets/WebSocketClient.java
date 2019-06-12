@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class WebSocketClient {
 
     private static final String NOOP = "noop";
-    private static final Logger logger = LogManager.getLogger(WebSocketClient.class);
+    private static final Logger logger = LogManager.getLogger();
     private Session mySession;
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
@@ -30,8 +30,7 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            errorHandler.sendError("Fehler beim Erstellen des Websocket-Clients!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
         }
     }
 
@@ -40,8 +39,7 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                errorHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!");
-                logger.error(e);
+                errorHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
             }
         }
     }

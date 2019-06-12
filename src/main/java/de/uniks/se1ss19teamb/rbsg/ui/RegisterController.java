@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
 
-    private static final Logger logger = LogManager.getLogger(RegisterController.class);
+    private static final Logger logger = LogManager.getLogger();
     @FXML
     AnchorPane errorContainer;
     @FXML
@@ -51,8 +51,7 @@ public class RegisterController {
             errorHandler.setErrorPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }
     }
 
