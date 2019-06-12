@@ -1,7 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,7 +17,7 @@ public abstract class AbstractWebSocket implements WebSocket {
     private static final Logger logger = LogManager.getLogger();
     List<WebSocketMessageHandler> handlers = new ArrayList<>();
     WebSocketClient websocket;
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     protected abstract String getEndpoint();
 
@@ -37,10 +37,10 @@ public abstract class AbstractWebSocket implements WebSocket {
                     }
                 });
             } catch (URISyntaxException e) {
-                errorHandler.sendError("Fehler in der Websocket-URI-Syntax", logger, e);
+                notificationHandler.sendError("Fehler in der Websocket-URI-Syntax", logger, e);
             }
         } else {
-            errorHandler.sendError("Es besteht bereits eine Websocket-Verbindung!", logger,
+            notificationHandler.sendError("Es besteht bereits eine Websocket-Verbindung!", logger,
                 new IllegalStateException("Cannot connect to an already connected Websocket"));
         }
     }
@@ -50,7 +50,7 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            errorHandler.sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
+            notificationHandler.sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
         }
         websocket = null;
     }

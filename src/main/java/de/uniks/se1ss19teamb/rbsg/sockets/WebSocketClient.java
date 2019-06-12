@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.net.URI;
 import java.util.Timer;
@@ -20,7 +20,7 @@ public class WebSocketClient {
     private Session mySession;
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
         this.noopTimer = new Timer();
@@ -30,7 +30,7 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            errorHandler.sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
+            notificationHandler.sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
         }
     }
 
@@ -39,7 +39,7 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                errorHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
+                notificationHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
             }
         }
     }

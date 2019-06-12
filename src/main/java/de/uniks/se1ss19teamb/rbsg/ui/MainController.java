@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class MainController {
     private JFXButton btnLogout;
     @FXML
     private TabPane chat;
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private Game joinedGame;
 
@@ -77,12 +77,12 @@ public class MainController {
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
             errorContainer.getChildren().add(parent);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
     }
 
@@ -122,7 +122,7 @@ public class MainController {
                 }
                 updateGameView();
             } else {
-                errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
+                notificationHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
             }
         }
 
@@ -153,7 +153,7 @@ public class MainController {
                 controller.setUpGameLabel(game, this);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
-                errorHandler.sendError("Ein GameField konnte nicht geladen werden!");
+                notificationHandler.sendError("Ein GameField konnte nicht geladen werden!");
                 e.printStackTrace();
             }
         }

@@ -3,7 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.chat;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.BufferedWriter;
@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 public class Chat {
     private static final Logger logger = LogManager.getLogger();
 
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
     private ChatSocket chatSocket;
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
@@ -74,7 +74,7 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                errorHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
+                notificationHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
             }
         }
 
@@ -85,7 +85,7 @@ public class Chat {
                 out.println(SerializeUtils.serialize(cle));
             }
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!", logger, e);
+            notificationHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!", logger, e);
         }
     }
 
@@ -93,7 +93,7 @@ public class Chat {
         try {
             Files.deleteIfExists(path);
         } catch (IOException e) {
-            ErrorHandler.getErrorHandler().sendError("Chat log could not be deleted!", logger, e);
+            NotificationHandler.getNotificationHandler().sendError("Chat log could not be deleted!", logger, e);
         }
     }
 }

@@ -48,7 +48,7 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static String getUserKey() {
         return userKey;
@@ -90,11 +90,11 @@ public class LoginController {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
@@ -153,10 +153,10 @@ public class LoginController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
 
             } else {
-                errorHandler.sendError("Login fehlgeschlagen!");
+                notificationHandler.sendError("Login fehlgeschlagen!");
             }
         } else {
-            errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
+            notificationHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
         }
     }
 
