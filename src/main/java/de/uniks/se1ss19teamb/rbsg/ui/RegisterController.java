@@ -29,11 +29,11 @@ public class RegisterController {
     @FXML
     private JFXButton btnConfirm;
     @FXML
-    private JFXTextField userName;
+    private JFXTextField username;
     @FXML
     private JFXPasswordField password;
     @FXML
-    private JFXPasswordField confirmPassword;
+    private JFXPasswordField passwordRepeat;
     private ErrorHandler errorHandler;
 
     public void initialize() {
@@ -42,6 +42,7 @@ public class RegisterController {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
@@ -49,7 +50,6 @@ public class RegisterController {
             ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
-
         } catch (IOException e) {
             errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }

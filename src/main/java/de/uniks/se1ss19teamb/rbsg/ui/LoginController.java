@@ -197,9 +197,9 @@ public class LoginController {
             return;
         }
 
-        userName.setText(userData.getUserName());
-        password.setText(userData.getPassword());
-        rememberLogin.setSelected(userData.getRemember());
+        userName.setText(userData.getLoginUserName());
+        password.setText(userData.getLoginPassword());
+        rememberLogin.setSelected(userData.getLoginRemember());
         Platform.runLater(() -> {
             if (userName.getText().equals("")) {
                 userName.requestFocus();
