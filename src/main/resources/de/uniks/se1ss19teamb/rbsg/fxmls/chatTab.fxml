@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea"
+<VBox xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css-files/dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea"
       fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
     <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="All">
