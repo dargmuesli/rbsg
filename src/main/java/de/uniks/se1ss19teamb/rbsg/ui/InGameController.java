@@ -7,10 +7,4 @@ import javafx.stage.Stage;
 
 public class InGameController {
 
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("inGame.fxml"));
-        primaryStage.setTitle("InGameScreen");
-        primaryStage.setScene(new Scene(root, 400, 600));
-        primaryStage.show();
-    }
 }
