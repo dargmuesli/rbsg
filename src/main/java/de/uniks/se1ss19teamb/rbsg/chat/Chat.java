@@ -74,8 +74,7 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                errorHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!");
-                logger.error(e);
+                errorHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
             }
         }
 
@@ -86,8 +85,7 @@ public class Chat {
                 out.println(SerializeUtils.serialize(cle));
             }
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!", logger, e);
         }
     }
 
@@ -95,7 +93,7 @@ public class Chat {
         try {
             Files.deleteIfExists(path);
         } catch (IOException e) {
-            ErrorHandler.getErrorHandler().sendError("Chat log could not be deleted!");
+            ErrorHandler.getErrorHandler().sendError("Chat log could not be deleted!", logger, e);
         }
     }
 }

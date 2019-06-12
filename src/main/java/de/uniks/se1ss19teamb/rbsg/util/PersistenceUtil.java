@@ -56,8 +56,7 @@ class PersistenceUtil {
             return game;
 
         } catch (IOException e) {
-            errorHandler.sendError("Spielstand konnte nicht geladen werden!");
-            logger.error(e);
+            errorHandler.sendError("Spielstand konnte nicht geladen werden!", logger, e);
             return null;
         }
     }

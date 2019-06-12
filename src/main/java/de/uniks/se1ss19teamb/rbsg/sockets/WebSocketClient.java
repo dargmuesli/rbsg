@@ -30,8 +30,7 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            errorHandler.sendError("Fehler beim Erstellen des Websocket-Clients!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
         }
     }
 
@@ -40,8 +39,7 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                errorHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!");
-                logger.error(e);
+                errorHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
             }
         }
     }

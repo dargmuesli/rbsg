@@ -37,12 +37,11 @@ public abstract class AbstractWebSocket implements WebSocket {
                     }
                 });
             } catch (URISyntaxException e) {
-                errorHandler.sendError("Fehler in der Websocket-URI-Syntax");
-                logger.error(e);
+                errorHandler.sendError("Fehler in der Websocket-URI-Syntax", logger, e);
             }
         } else {
-            errorHandler.sendError("Es besteht bereits eine Websocket-Verbindung!");
-            throw new IllegalStateException("Cannot connect to an already connected Websocket");
+            errorHandler.sendError("Es besteht bereits eine Websocket-Verbindung!", logger,
+                new IllegalStateException("Cannot connect to an already connected Websocket"));
         }
     }
 
@@ -51,8 +50,7 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            errorHandler.sendError("Websocket-Verbindung konnte nicht gestoppt werden!");
-            logger.error(e);
+            errorHandler.sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
         }
         websocket = null;
     }
