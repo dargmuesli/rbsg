@@ -10,10 +10,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class ChatTabController {
 
@@ -26,9 +34,10 @@ public class ChatTabController {
     @FXML
     private TextField message;
     @FXML
-    private TextArea textArea;
+    private VBox textArea;
     @FXML
     private JFXTabPane chatPane;
+    private SingleSelectionModel<Tab> selectionModel;
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -68,22 +77,70 @@ public class ChatTabController {
             if (isPrivate) {
                 addNewPane(from, message, false);
             } else {
-                textArea.appendText(from + ": " + message + "\n");
+                addElemet(from, message, textArea, false);
+                // textArea.appendText(from + ": " + message + "\n");
             }
         });
 
-        system.registerUserJoinHandler((name) -> textArea.appendText("userJoin|" + name + "\n"));
+        system.registerUserJoinHandler((name) -> addElemet("system", "userJoin|" + name, textArea, false));
 
-        system.registerUserLeftHandler((name) -> textArea.appendText("userLeft|" + name + "\n"));
+        system.registerUserLeftHandler((name) -> addElemet("system", "userLeft|" + name, textArea, false));
 
         system.registerGameCreateHandler((name, id, neededPlayers)
-            -> textArea.appendText("gameCreate|" + name + '|' + id + '|' + neededPlayers + "\n"));
+            -> addElemet("system", "gameCreate|" + name + '|' + id + '|' + neededPlayers, textArea, false));
 
-        system.registerGameDeleteHandler((id) -> textArea.appendText("gameDelete|" + id + "\n"));
+        system.registerGameDeleteHandler((id) -> addElemet("system", "gameDelete|" + id, textArea, false));
 
         system.connect();
 
         LoginController.setChatSocket(chatSocket);
+
+        chatPane.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<Tab>() {
+                @Override
+                public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+                    if (t1.getText().equals("All")) {
+                        setAll();
+                    } else {
+                        setPrivate(t1.getText(), -1);
+                    }
+                }
+            }
+        );
+
+        selectionModel = chatPane.getSelectionModel();
+    }
+
+    private void addElemet(String player, String message, VBox box, boolean whisper) {
+        Label name = new Label(player + ":");
+        name.setPadding(new Insets(5));
+        name.setWrapText(true);
+        if (whisper) {
+            name.setStyle("-fx-text-fill: -fx-privatetext;");
+        } else {
+            name.setStyle("-fx-text-fill: black;");
+        }
+        // whisper on double click
+        name.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        setPrivate(player, -1);
+                    }
+                }
+            }
+        });
+
+        Label text = new Label(message);
+        text.setPadding(new Insets(5));
+        text.setWrapText(true);
+        text.setStyle("-fx-text-fill: black;");
+
+        HBox container = new HBox(name, text);
+        Platform.runLater(() -> {
+            box.getChildren().add(container);
+        });
     }
 
     private void addNewPane(String from, String message, boolean mymessage) {
@@ -104,7 +161,7 @@ public class ChatTabController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/newChatTab.fxml"));
+                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/PrivateTab.fxml"));
                         newTab.setText(from);
                         chatPane.getTabs().add(newTab);
                         if (mymessage) {
@@ -123,10 +180,11 @@ public class ChatTabController {
 
     private void getPrivate(String from, String message, Tab tab) {
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
-        TextArea area = (TextArea) scrollPane.getContent();
+        VBox area = (VBox) scrollPane.getContent();
         if (message != null) {
-            area.appendText(from + ": " + message + "\n");
+            addElemet(from, message, area, true);
         }
+        selectionModel.select(tab);
     }
 
     private boolean checkInput(String input) {
@@ -144,7 +202,9 @@ public class ChatTabController {
     }
 
     private void setPrivate(String input, int count) {
-        if (count == 0) {
+        if (count == -1) {
+            sendTo = input;
+        } else if (count == 0) {
             sendTo = input.substring(3);
         } else {
             sendTo = input.substring(3,count);
