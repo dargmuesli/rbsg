@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 class CipherController {
-    private static final Logger logger = LogManager.getLogger(CipherController.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     //This string needs to be related with data

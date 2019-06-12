@@ -16,7 +16,7 @@ import org.fulib.yaml.YamlIdMap;
 class PersistenceUtil {
 
     private static final String SAVEGAME_YAML = "./savegame.yaml";
-    private static final Logger logger = LogManager.getLogger(PersistenceUtil.class);
+    private static final Logger logger = LogManager.getLogger();
     private YamlIdMap yamlIdMap = new YamlIdMap(Game.class.getPackage().getName());
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 

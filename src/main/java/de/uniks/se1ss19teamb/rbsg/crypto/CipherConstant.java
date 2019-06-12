@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 
 class CipherConstant {
-    private static final Logger logger = LogManager.getLogger(CipherConstant.class);
+    private static final Logger logger = LogManager.getLogger();
     static PublicKey publicKey;
     static PrivateKey privateKey;
     private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();

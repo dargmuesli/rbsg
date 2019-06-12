@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 public class RegisterController {
 
-    private static final Logger logger = LogManager.getLogger(RegisterController.class);
+    private static final Logger logger = LogManager.getLogger();
     @FXML
     AnchorPane errorContainer;
     @FXML

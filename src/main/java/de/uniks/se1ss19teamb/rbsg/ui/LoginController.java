@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginController {
 
-    private static final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LogManager.getLogger();
     private static final Path USER_DATA =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
     private static String userKey;

@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MainController {
 
-    private static final Logger logger = LogManager.getLogger(MainController.class);
+    private static final Logger logger = LogManager.getLogger();
     @FXML
     private AnchorPane mainScreen;
     @FXML

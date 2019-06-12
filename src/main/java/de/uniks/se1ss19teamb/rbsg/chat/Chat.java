@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 
 public class Chat {
-    private static final Logger logger = LogManager.getLogger(Chat.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     private ArrayList<ChatLogEntry> chatLog = new ArrayList<>();
