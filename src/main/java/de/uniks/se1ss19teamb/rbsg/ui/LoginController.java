@@ -75,11 +75,9 @@ public class LoginController {
     }
 
     public void initialize() {
-        File userData = USER_DATA.toFile();
-        if (userData.exists()) {
-            loadUserData();
-            userData.delete();
-        }
+        loadUserData();
+        deleteUserData();
+
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
@@ -101,10 +99,10 @@ public class LoginController {
 
     @FXML
     void eventHandler(ActionEvent event) {
-
         if (event.getSource().equals(btnLogin)) {
             login();
         }
+
         if (event.getSource().equals(btnRegistration)) {
             goToRegister();
         }
@@ -120,10 +118,12 @@ public class LoginController {
         if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             login();
         }
+
         if (keyEvent.getSource().equals(btnRegistration)
             && keyEvent.getCode().equals(KeyCode.ENTER)) {
             goToRegister();
         }
+
         if (keyEvent.getSource().equals(rememberLogin)
             && keyEvent.getCode().equals(KeyCode.ENTER)) {
             if (rememberLogin.isSelected()) {
@@ -135,47 +135,78 @@ public class LoginController {
     }
 
     private void login() {
-        if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
-            LoginUserRequest login = new LoginUserRequest(
-                userName.getText(), password.getText());
-            login.sendRequest();
-            if (login.getSuccessful()) {
-                File file = USER_DATA.toFile();
-                if (file.exists()) {
-                    file.delete();
-                }
-                if (rememberLogin.isSelected()) {
-                    saveUserData();
-                }
-
-                setUserKey(login.getUserKey());
-                setUser(userName.getText());
-                UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
-
-            } else {
-                errorHandler.sendError("Login fehlgeschlagen!");
-            }
-        } else {
+        if (userName.getText().isEmpty() || password.getText().isEmpty()) {
             errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
+            return;
         }
+
+        LoginUserRequest login = new LoginUserRequest(userName.getText(), password.getText());
+        login.sendRequest();
+
+        if (!login.getSuccessful()) {
+            errorHandler.sendError("Login fehlgeschlagen!");
+            return;
+        }
+
+        if (rememberLogin.isSelected()) {
+            saveUserData();
+        } else {
+            deleteUserData();
+        }
+
+        setUserKey(login.getUserKey());
+        setUser(userName.getText());
+
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
     }
 
     private void goToRegister() {
+        saveUserData();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
     }
 
+    private void deleteUserData() {
+        File userDataFile = USER_DATA.toFile();
+
+        if (userDataFile.exists()) {
+            if (!userDataFile.delete()) {
+                errorHandler.sendError("User data file could not be deleted!");
+            }
+        }
+    }
+
     private void saveUserData() {
-        UserData userData = new UserData(userName.getText(), password.getText());
-        SerializeUtils.serialize(USER_DATA.toString(), userData);
+        deleteUserData();
+        SerializeUtils.serialize(USER_DATA.toString(),
+            new UserData(userName.getText(), password.getText(), rememberLogin.isSelected()));
     }
 
     private void loadUserData() {
+        if (!USER_DATA.toFile().exists()) {
+            errorHandler.sendError("User data doesn't exist!");
+            return;
+        }
+
         UserData userData = SerializeUtils.deserialize(USER_DATA.toFile(), UserData.class);
+
+        if (userData == null) {
+            errorHandler.sendError("User data couldn't be deserialized!");
+            return;
+        }
+
         userName.setText(userData.getUserName());
         password.setText(userData.getPassword());
-        rememberLogin.setSelected(true);
-        Platform.runLater(() -> btnLogin.requestFocus());
+        rememberLogin.setSelected(userData.getRemember());
+        Platform.runLater(() -> {
+            if (userName.getText().equals("")) {
+                userName.requestFocus();
+            } else if (password.getText().equals("")) {
+                password.requestFocus();
+            } else {
+                btnLogin.requestFocus();
+            }
+        });
     }
 }

@@ -2,20 +2,25 @@ package de.uniks.se1ss19teamb.rbsg.util;
 
 public class UserData {
 
+    private String password;
+    private boolean remember;
     private String userName;
 
-    private String password;
-
-    public UserData(String userName, String password) {
-        this.userName = userName;
+    public UserData(String userName, String password, boolean remember) {
         this.password = password;
-    }
-
-    public String getUserName() {
-        return userName;
+        this.remember = remember;
+        this.userName = userName;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean getRemember() {
+        return remember;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }
