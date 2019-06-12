@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MainController {
 
-    private static final Logger logger = LogManager.getLogger(MainController.class);
+    private static final Logger logger = LogManager.getLogger();
     @FXML
     private AnchorPane mainScreen;
     @FXML
@@ -73,7 +73,7 @@ public class MainController {
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
@@ -83,8 +83,7 @@ public class MainController {
             errorContainer.getChildren().add(parent);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
     }
 
@@ -134,7 +133,7 @@ public class MainController {
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
         }
     }
@@ -148,7 +147,7 @@ public class MainController {
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/gameField.fxml"));
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();

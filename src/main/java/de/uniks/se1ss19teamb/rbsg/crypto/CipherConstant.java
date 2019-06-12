@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 
 class CipherConstant {
-    private static final Logger logger = LogManager.getLogger(CipherConstant.class);
+    private static final Logger logger = LogManager.getLogger();
     static PublicKey publicKey;
     static PrivateKey privateKey;
     private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
@@ -22,8 +22,7 @@ class CipherConstant {
             privateKey = CipherUtils
                 .readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
         } catch (Exception e) {
-            errorHandler.sendError("Ein Schlüssel konnte nicht gelesen werden!");
-            logger.error(e);
+            errorHandler.sendError("Ein Schlüssel konnte nicht gelesen werden!", logger, e);
         }
     }
 }

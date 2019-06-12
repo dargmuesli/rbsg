@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginController {
 
-    private static final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LogManager.getLogger();
     private static final Path USER_DATA =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
     private static String userKey;
@@ -84,7 +84,7 @@ public class LoginController {
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
@@ -95,8 +95,7 @@ public class LoginController {
             errorHandler.setErrorPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!");
-            logger.error(e);
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
@@ -152,7 +151,7 @@ public class LoginController {
                 setUserKey(login.getUserKey());
                 setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
 
             } else {
                 errorHandler.sendError("Login fehlgeschlagen!");
@@ -164,7 +163,7 @@ public class LoginController {
 
     private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
     }
 
     private void saveUserData() {
