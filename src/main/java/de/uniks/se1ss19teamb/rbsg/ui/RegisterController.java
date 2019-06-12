@@ -60,34 +60,32 @@ public class RegisterController {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
-        }
-        if (event.getSource().equals(btnConfirm)) {
-            if (!userName.getText().isEmpty()
-                && !password.getText().isEmpty()
-                && !confirmPassword.getText().isEmpty()) {
-
-                if (password.getText().equals(confirmPassword.getText())) {
-                    RegisterUserRequest register = new RegisterUserRequest(
-                        userName.getText(), password.getText());
-
-                    register.sendRequest();
-                    if (register.getSuccessful()) {
-                        UserInterfaceUtils.makeFadeOutTransition(
-                            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
-
-                        errorHandler.sendError("Registrierung erfolgreich!");
-                    } /*else {
-                        errorHandler.sendError("Entschuldigung.
-                         Es ist etwas bei der Registrierung schief gelaufen.
-                        Bitte versuchen Sie er erneut.");
-                    }*/
-                } else {
-                    errorHandler.sendError("Die Passwörter sind verschieden!");
-                }
-
-            } else {
+        } else if (event.getSource().equals(btnConfirm)) {
+            if (username.getText().isEmpty()
+                || password.getText().isEmpty()
+                || passwordRepeat.getText().isEmpty()) {
                 errorHandler.sendError("Bitte geben Sie etwas ein.");
+                return;
             }
+
+            if (!password.getText().equals(passwordRepeat.getText())) {
+                errorHandler.sendError("Die Passwörter sind verschieden!");
+                return;
+            }
+
+            RegisterUserRequest register = new RegisterUserRequest(
+                username.getText(), password.getText());
+            register.sendRequest();
+
+            if (!register.getSuccessful()) {
+                errorHandler.sendError("Die Registrierung ist fehlgeschlagen!");
+            }
+
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+
+            // TODO success
+            errorHandler.sendError("Registrierung erfolgreich!");
         }
     }
 }

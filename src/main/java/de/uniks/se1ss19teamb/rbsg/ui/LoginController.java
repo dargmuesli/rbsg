@@ -92,9 +92,8 @@ public class LoginController {
             ErrorPopupController controller = fxmlLoader.getController();
             errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
-
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Anmeldung!", logger, e);
         }
     }
 
