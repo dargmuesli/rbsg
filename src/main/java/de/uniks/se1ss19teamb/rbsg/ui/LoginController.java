@@ -73,7 +73,7 @@ public class LoginController {
 
     public void initialize() {
         loadUserData();
-        deleteUserData();
+        UserData.deleteUserData(errorHandler);
 
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
@@ -147,7 +147,7 @@ public class LoginController {
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
-            deleteUserData();
+            UserData.deleteUserData(errorHandler);
         }
 
         setUserKey(login.getUserKey());
@@ -161,22 +161,6 @@ public class LoginController {
         saveUserData();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
-    }
-
-    private void deleteUserData() {
-        File userDataFile = UserData.USER_DATA_PATH.toFile();
-
-        if (userDataFile.exists()) {
-            if (!userDataFile.delete()) {
-                errorHandler.sendError("User data file could not be deleted!");
-            }
-        }
-    }
-
-    private void saveUserData() {
-        deleteUserData();
-        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
-            new UserData(userName.getText(), password.getText(), rememberLogin.isSelected()));
     }
 
     private void loadUserData() {
@@ -204,5 +188,11 @@ public class LoginController {
                 btnLogin.requestFocus();
             }
         });
+    }
+
+    private void saveUserData() {
+        UserData.deleteUserData(errorHandler);
+        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
+            new UserData(userName.getText(), password.getText(), rememberLogin.isSelected()));
     }
 }

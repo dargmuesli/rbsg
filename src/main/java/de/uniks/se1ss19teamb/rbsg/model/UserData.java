@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
+import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,5 +60,15 @@ public class UserData {
 
     public void setRegisterUsername(String registerUsername) {
         this.registerUsername = registerUsername;
+    }
+
+    public static void deleteUserData(ErrorHandler errorHandler) {
+        File userDataFile = UserData.USER_DATA_PATH.toFile();
+
+        if (userDataFile.exists()) {
+            if (!userDataFile.delete()) {
+                errorHandler.sendError("User data file could not be deleted!");
+            }
+        }
     }
 }
