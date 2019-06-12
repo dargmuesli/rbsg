@@ -31,6 +31,7 @@ public class LoginController {
     private static String userKey;
     private static String user;
     private static ChatSocket chatSocket;
+    UserData userData;
     @FXML
     private AnchorPane loginScreen;
     @FXML
@@ -72,7 +73,27 @@ public class LoginController {
     }
 
     public void initialize() {
-        loadUserData();
+        // load user data
+        userData = UserData.loadUserData(errorHandler);
+
+        if (userData == null) {
+            userData = new UserData();
+        }
+
+        userName.setText(userData.getLoginUserName());
+        password.setText(userData.getLoginPassword());
+        rememberLogin.setSelected(userData.isLoginRemember());
+
+        Platform.runLater(() -> {
+            if (userName.getText().equals("")) {
+                userName.requestFocus();
+            } else if (password.getText().equals("")) {
+                password.requestFocus();
+            } else {
+                btnLogin.requestFocus();
+            }
+        });
+
         UserData.deleteUserData(errorHandler);
 
         loginScreen.setOpacity(0);
@@ -109,7 +130,6 @@ public class LoginController {
     }
 
     public void keyEventHandler(KeyEvent keyEvent) {
-
         if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             login();
         }
@@ -162,31 +182,12 @@ public class LoginController {
             "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
     }
 
-    private void loadUserData() {
-        UserData userData = UserData.loadUserData(errorHandler);
-
-        if (userData == null) {
-            errorHandler.sendError("User data couldn't be deserialized!");
-            return;
-        }
-
-        userName.setText(userData.getLoginUserName());
-        password.setText(userData.getLoginPassword());
-        rememberLogin.setSelected(userData.getLoginRemember());
-        Platform.runLater(() -> {
-            if (userName.getText().equals("")) {
-                userName.requestFocus();
-            } else if (password.getText().equals("")) {
-                password.requestFocus();
-            } else {
-                btnLogin.requestFocus();
-            }
-        });
-    }
-
     private void saveUserData() {
-        UserData.deleteUserData(errorHandler);
+        userData.setLoginUserName(userName.getText());
+        userData.setLoginPassword(password.getText());
+        userData.setLoginRemember(rememberLogin.isSelected());
+
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
-            new UserData(userName.getText(), password.getText(), rememberLogin.isSelected()));
+            userData);
     }
 }

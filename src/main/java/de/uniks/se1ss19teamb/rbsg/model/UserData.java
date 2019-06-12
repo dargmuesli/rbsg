@@ -12,31 +12,36 @@ public class UserData {
     public static final Path USER_DATA_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
 
-    private String loginPassword;
-    private boolean loginRemember;
-    private String loginUserName;
+    private String loginPassword = "";
+    private boolean loginRemember = false;
+    private String loginUserName = "";
 
-    private String registerPassword;
-    private String registerPasswordRepeat;
-    private String registerUsername;
-
-    // contains only data from login screen, because this screen is always shown and exited first
-    public UserData(String loginUserName, String loginPassword, boolean loginRemember) {
-        this.loginPassword = loginPassword;
-        this.loginRemember = loginRemember;
-        this.loginUserName = loginUserName;
-    }
+    private String registerPassword = "";
+    private String registerPasswordRepeat = "";
+    private String registerUsername = "";
 
     public String getLoginPassword() {
         return loginPassword;
     }
 
-    public boolean getLoginRemember() {
+    public void setLoginPassword(String loginPassword) {
+        this.loginPassword = loginPassword;
+    }
+
+    public boolean isLoginRemember() {
         return loginRemember;
+    }
+
+    public void setLoginRemember(boolean loginRemember) {
+        this.loginRemember = loginRemember;
     }
 
     public String getLoginUserName() {
         return loginUserName;
+    }
+
+    public void setLoginUserName(String loginUserName) {
+        this.loginUserName = loginUserName;
     }
 
     public String getRegisterPassword() {
@@ -65,7 +70,10 @@ public class UserData {
 
     public static UserData loadUserData(ErrorHandler errorHandler) {
         if (!UserData.USER_DATA_PATH.toFile().exists()) {
-            errorHandler.sendError("User data doesn't exist!");
+            if (errorHandler != null) {
+                errorHandler.sendError("User data doesn't exist!");
+            }
+
             return null;
         }
 
