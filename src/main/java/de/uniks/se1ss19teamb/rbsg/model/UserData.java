@@ -1,6 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class UserData {
+
+    public static final Path USER_DATA_PATH =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
 
     private String loginPassword;
     private boolean loginRemember;

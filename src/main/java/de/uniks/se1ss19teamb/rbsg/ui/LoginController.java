@@ -11,8 +11,6 @@ import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,8 +28,6 @@ import org.apache.logging.log4j.Logger;
 public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final Path USER_DATA =
-        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
     private static String userKey;
     private static String user;
     private static ChatSocket chatSocket;
@@ -168,7 +164,7 @@ public class LoginController {
     }
 
     private void deleteUserData() {
-        File userDataFile = USER_DATA.toFile();
+        File userDataFile = UserData.USER_DATA_PATH.toFile();
 
         if (userDataFile.exists()) {
             if (!userDataFile.delete()) {
@@ -179,17 +175,17 @@ public class LoginController {
 
     private void saveUserData() {
         deleteUserData();
-        SerializeUtils.serialize(USER_DATA.toString(),
+        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
             new UserData(userName.getText(), password.getText(), rememberLogin.isSelected()));
     }
 
     private void loadUserData() {
-        if (!USER_DATA.toFile().exists()) {
+        if (!UserData.USER_DATA_PATH.toFile().exists()) {
             errorHandler.sendError("User data doesn't exist!");
             return;
         }
 
-        UserData userData = SerializeUtils.deserialize(USER_DATA.toFile(), UserData.class);
+        UserData userData = SerializeUtils.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
 
         if (userData == null) {
             errorHandler.sendError("User data couldn't be deserialized!");
