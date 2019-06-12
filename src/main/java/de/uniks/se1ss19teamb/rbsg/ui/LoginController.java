@@ -48,7 +48,7 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
-    private ErrorHandler errorHandler;
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     public static String getUserKey() {
         return userKey;
@@ -91,7 +91,6 @@ public class LoginController {
             errorContainer.getChildren().add(parent);
 
             ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
 
         } catch (IOException e) {

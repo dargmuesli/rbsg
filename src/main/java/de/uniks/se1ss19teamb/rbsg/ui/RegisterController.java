@@ -33,8 +33,8 @@ public class RegisterController {
     @FXML
     private JFXPasswordField password;
     @FXML
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
     private JFXPasswordField confirmPassword;
-    private ErrorHandler errorHandler;
 
     public void initialize() {
         registerScreen.setOpacity(0);
@@ -47,7 +47,6 @@ public class RegisterController {
             errorContainer.getChildren().add(parent);
 
             ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
 
         } catch (IOException e) {

@@ -50,7 +50,7 @@ public class MainController {
     private JFXButton btnLogout;
     @FXML
     private TabPane chat;
-    private ErrorHandler errorHandler;
+    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
 
     private Game joinedGame;
 
@@ -78,7 +78,6 @@ public class MainController {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
             errorHandler.setErrorPopupController(controller);
             errorContainer.getChildren().add(parent);
 

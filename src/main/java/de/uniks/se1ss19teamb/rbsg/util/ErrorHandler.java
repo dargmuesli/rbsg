@@ -25,7 +25,10 @@ public class ErrorHandler {
     }
 
     public void sendError(String errorMessage) {
-        errorPopupController.displayErrorMessage(errorMessage);
+        // display error message only if that's possible (i.e. a screen is loaded)
+        if (errorPopupController != null) {
+            errorPopupController.displayErrorMessage(errorMessage);
+        }
     }
 
     public void sendError(String errorMessage, Logger logger, Exception e) {
