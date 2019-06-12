@@ -65,6 +65,7 @@ public class ChatTabController {
                     }
                 } else if (observable.getValue().substring(0,4).toLowerCase().contains("/all")) {
                     if (observable.getValue().substring(4,5).contains(" ")) {
+                        selectionModel.select(chatPane.getTabs().get(0));
                         setAll();
                     }
                 }
@@ -194,6 +195,7 @@ public class ChatTabController {
             setPrivate(input, 0);
             return true;
         } else if (input.substring(0,4).toLowerCase().contains("/all") && input.length() == 4) {
+            selectionModel.select(chatPane.getTabs().get(0));
             setAll();
             return true;
         } else {
