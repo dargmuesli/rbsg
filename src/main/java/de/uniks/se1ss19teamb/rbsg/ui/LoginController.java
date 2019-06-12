@@ -164,12 +164,7 @@ public class LoginController {
     }
 
     private void loadUserData() {
-        if (!UserData.USER_DATA_PATH.toFile().exists()) {
-            errorHandler.sendError("User data doesn't exist!");
-            return;
-        }
-
-        UserData userData = SerializeUtils.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
+        UserData userData = UserData.loadUserData(errorHandler);
 
         if (userData == null) {
             errorHandler.sendError("User data couldn't be deserialized!");

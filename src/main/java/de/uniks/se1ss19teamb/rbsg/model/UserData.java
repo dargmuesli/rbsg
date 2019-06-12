@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
 import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -60,6 +61,15 @@ public class UserData {
 
     public void setRegisterUsername(String registerUsername) {
         this.registerUsername = registerUsername;
+    }
+
+    public static UserData loadUserData(ErrorHandler errorHandler) {
+        if (!UserData.USER_DATA_PATH.toFile().exists()) {
+            errorHandler.sendError("User data doesn't exist!");
+            return null;
+        }
+
+        return SerializeUtils.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
     }
 
     public static void deleteUserData(ErrorHandler errorHandler) {
