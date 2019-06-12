@@ -56,7 +56,6 @@ public class MainController {
 
     public void initialize() {
 
-        mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {

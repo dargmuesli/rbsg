@@ -80,7 +80,6 @@ public class LoginController {
             loadUserData();
             userData.delete();
         }
-        loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
