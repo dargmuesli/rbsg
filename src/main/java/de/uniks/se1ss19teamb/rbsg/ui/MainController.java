@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +52,7 @@ public class MainController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private TabPane chat;
+    private VBox chat;
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private Game joinedGame;
@@ -59,18 +60,6 @@ public class MainController {
     public void initialize() {
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-
-        LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
-            if (isPrivate) {
-                /* TODO privates tab
-                Tab tab = new Tab();
-                tab.setText(from);
-                tab.setContent(new Label(message));
-                chat.getTabs().add(tab);
-                System.out.println(message);
-                */
-            }
-        });
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()

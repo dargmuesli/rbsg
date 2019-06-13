@@ -20,7 +20,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class ChatTabController {
@@ -78,19 +78,20 @@ public class ChatTabController {
             if (isPrivate) {
                 addNewPane(from, message, false);
             } else {
-                addElemet(from, message, textArea, false);
-                // textArea.appendText(from + ": " + message + "\n");
+                addElement(from, message, textArea, false);
             }
         });
 
-        system.registerUserJoinHandler((name) -> addElemet("system", "userJoin|" + name, textArea, false));
+        system.registerUserJoinHandler((name) -> addElement(name, " has joined the Chat!", textArea, false));
 
-        system.registerUserLeftHandler((name) -> addElemet("system", "userLeft|" + name, textArea, false));
+        system.registerUserLeftHandler((name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
 
         system.registerGameCreateHandler((name, id, neededPlayers)
-            -> addElemet("system", "gameCreate|" + name + '|' + id + '|' + neededPlayers, textArea, false));
+            -> addElement(name, " has created a game with " + id + " id and needs " + neededPlayers
+            + " mates to play.", textArea, false));
 
-        system.registerGameDeleteHandler((id) -> addElemet("system", "gameDelete|" + id, textArea, false));
+        system.registerGameDeleteHandler((id) -> addElement(null, "Game with id: " + id + " was deleted!",
+            textArea, false));
 
         system.connect();
 
@@ -110,35 +111,55 @@ public class ChatTabController {
         );
 
         selectionModel = chatPane.getSelectionModel();
+
     }
 
-    private void addElemet(String player, String message, VBox box, boolean whisper) {
-        Label name = new Label(player + ":");
-        name.setPadding(new Insets(5));
-        name.setWrapText(true);
-        if (whisper) {
-            name.setStyle("-fx-text-fill: -fx-privatetext;");
-        } else {
-            name.setStyle("-fx-text-fill: black;");
-        }
-        // whisper on double click
-        name.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        setPrivate(player, -1);
+    private void addElement(String player, String message, VBox box, boolean whisper) {
+
+        VBox container = new VBox();
+        container.maxWidthProperty().bind(chatPane.widthProperty().multiply(0.98));
+
+        if (player != null) {
+            Label name = new Label(player + ":");
+            name.setPadding(new Insets(5));
+            name.setWrapText(true);
+
+            if (whisper) {
+                name.setStyle("-fx-text-fill: -fx-privatetext;");
+            } else {
+                name.setStyle("-fx-text-fill: black;");
+            }
+            // whisper on double click
+            name.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        if (mouseEvent.getClickCount() == 2) {
+                            setPrivate(player, -1);
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        Label text = new Label(message);
-        text.setPadding(new Insets(5));
-        text.setWrapText(true);
-        text.setStyle("-fx-text-fill: black;");
+            Label text = new Label(message);
+            text.setPadding(new Insets(5));
+            text.setWrapText(true);
+            text.setStyle("-fx-text-fill: black; -fx-background-color: -fx-secondary;");
 
-        HBox container = new HBox(name, text);
+            Platform.runLater(() -> {
+                name.setMaxWidth(Region.USE_COMPUTED_SIZE);
+            });
+
+            container.getChildren().addAll(name, text);
+        } else {
+            Label text = new Label(message);
+            text.setPadding(new Insets(5));
+            text.setWrapText(true);
+            text.setStyle("-fx-text-fill: black; -fx-background-color: -fx-secondary;");
+
+            container.getChildren().add(text);
+        }
+
         Platform.runLater(() -> {
             box.getChildren().add(container);
         });
@@ -183,7 +204,7 @@ public class ChatTabController {
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         VBox area = (VBox) scrollPane.getContent();
         if (message != null) {
-            addElemet(from, message, area, true);
+            addElement(from, message, area, true);
         }
         selectionModel.select(tab);
     }
