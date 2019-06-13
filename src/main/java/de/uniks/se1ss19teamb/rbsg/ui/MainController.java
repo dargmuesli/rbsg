@@ -54,6 +54,15 @@ public class MainController {
     private TabPane chat;
     private ErrorHandler errorHandler;
 
+    @FXML
+    private AnchorPane mainScreen1;
+
+    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;" +
+        "-fx-padding: 0px;";
+    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;" +
+        "-fx-padding: 0px;";
+    Boolean dark = true;
+
     public void initialize() {
 
         mainScreen.setOpacity(0);
@@ -92,8 +101,7 @@ public class MainController {
         gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setStyle("-fx-background-color:transparent;");
-        gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        gameListView.setStyle(darkMode);
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
@@ -103,8 +111,7 @@ public class MainController {
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        playerListView.setStyle(darkMode);
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String name : existingPlayers) {
@@ -120,6 +127,23 @@ public class MainController {
                 CreateGameRequest game;
                 if (selected.equals(twoPlayers)) {
                     game = new CreateGameRequest(gameName.getText(), 2, userKey);
+                    if(dark){
+                        playerListView.setStyle(whiteMode);
+                        gameListView.setStyle(whiteMode);
+                        mainScreen.getStylesheets().clear();
+                        mainScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/white-design2.css");
+                        mainScreen1.getStylesheets().clear();
+                        mainScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/white-design2.css");
+                        dark = false;
+                    }else{
+                        playerListView.setStyle(darkMode);
+                        gameListView.setStyle(darkMode);
+                        mainScreen.getStylesheets().clear();
+                        mainScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/dark-design2.css");
+                        mainScreen1.getStylesheets().clear();
+                        mainScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/dark-design2.css");
+                        dark = true;
+                    }
                 } else if (selected.equals(threePlayers)) {
                     game = new CreateGameRequest(gameName.getText(), 3, userKey);
                 } else {
@@ -183,8 +207,7 @@ public class MainController {
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        playerListView.setStyle(darkMode);
         ObservableList playerList = playerListView.getItems();
         while (playerList.size() != 0) {
             playerList.remove(0);
@@ -202,5 +225,7 @@ public class MainController {
         usersInLobbyRequest.sendRequest();
         return usersInLobbyRequest.getUsersInLobby();
     }
+
+
 }
 
