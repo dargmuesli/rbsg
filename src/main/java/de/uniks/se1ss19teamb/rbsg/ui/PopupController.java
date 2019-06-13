@@ -9,14 +9,25 @@ import javafx.scene.layout.AnchorPane;
 public class PopupController {
 
     @FXML
-    AnchorPane errorPopup;
+    AnchorPane popup;
 
     @FXML
-    Label errorLabel;
+    Label label;
 
     public void displayErrorMessage(String errorMessage) {
-        errorLabel.setText(errorMessage);
-        errorPopup.setVisible(true);
+        label.setText(errorMessage);
+        show();
+
+    }
+
+    public void displaySuccessMessage(String successMessage) {
+        label.setText(successMessage);
+        // TODO green
+        show();
+    }
+
+    private void show() {
+        popup.setVisible(true);
         new Thread(new Task<Void>() {
             @Override
             public Void call() {
@@ -25,7 +36,7 @@ public class PopupController {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                errorPopup.setVisible(false);
+                popup.setVisible(false);
                 return null;
             }
         }).start();

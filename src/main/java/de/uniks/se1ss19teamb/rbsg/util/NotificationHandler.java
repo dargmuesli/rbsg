@@ -24,16 +24,28 @@ public class NotificationHandler {
         popupController = epc;
     }
 
-    public void sendError(String errorMessage) {
+    public void sendSuccess(String successMessage) {
+        // display error message only if that's possible (i.e. a screen is loaded)
+        if (popupController != null) {
+            popupController.displaySuccessMessage(successMessage);
+        }
+    }
+
+    public void sendError(String errorMessage, Logger logger) {
+        sendError(errorMessage, logger, null);
+    }
+
+    public void sendError(String errorMessage, Logger logger, Exception e) {
+        if (e == null) {
+            logger.error(errorMessage);
+        } else {
+            logger.error(errorMessage, e);
+        }
+
         // display error message only if that's possible (i.e. a screen is loaded)
         if (popupController != null) {
             popupController.displayErrorMessage(errorMessage);
         }
-    }
-
-    public void sendError(String errorMessage, Logger logger, Exception e) {
-        logger.error(errorMessage, e);
-        sendError(errorMessage);
     }
 
 }

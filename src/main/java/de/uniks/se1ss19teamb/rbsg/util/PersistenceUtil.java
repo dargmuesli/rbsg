@@ -35,7 +35,7 @@ class PersistenceUtil {
             Files.write(Paths.get(file.toURI()), yaml.getBytes(StandardCharsets.UTF_8));
 
         } catch (IOException e) {
-            notificationHandler.sendError("Spielstand konnte nicht in eine Datei geschrieben werden!");
+            notificationHandler.sendError("Spielstand konnte nicht in eine Datei geschrieben werden!", logger);
             logger.error(e);
         }
     }

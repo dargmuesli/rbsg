@@ -153,10 +153,10 @@ public class LoginController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
 
             } else {
-                notificationHandler.sendError("Login fehlgeschlagen!");
+                notificationHandler.sendError("Login fehlgeschlagen!", logger);
             }
         } else {
-            notificationHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
+            notificationHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
         }
     }
 
