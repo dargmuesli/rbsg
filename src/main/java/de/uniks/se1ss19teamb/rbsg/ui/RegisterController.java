@@ -37,7 +37,6 @@ public class RegisterController {
     private JFXPasswordField confirmPassword;
 
     public void initialize() {
-        registerScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(

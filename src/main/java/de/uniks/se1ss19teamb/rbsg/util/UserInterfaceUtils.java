@@ -31,6 +31,7 @@ public class UserInterfaceUtils {
     }
 
     public static void makeFadeInTransition(AnchorPane node) {
+        node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(node);
