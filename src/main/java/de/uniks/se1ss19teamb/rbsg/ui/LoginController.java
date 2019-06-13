@@ -19,8 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +38,8 @@ public class LoginController {
     private JFXTextField userName;
     @FXML
     private JFXPasswordField password;
+    @FXML
+    private JFXButton btnFullscreen;
     @FXML
     private JFXButton btnLogin;
     @FXML
@@ -100,10 +100,11 @@ public class LoginController {
     @FXML
     void eventHandler(ActionEvent event) {
 
-        if (event.getSource().equals(btnLogin)) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        } else if (event.getSource().equals(btnLogin)) {
             login();
-        }
-        if (event.getSource().equals(btnRegistration)) {
+        } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
         }
     }
@@ -111,25 +112,6 @@ public class LoginController {
     @FXML
     public void onEnter() {
         login();
-    }
-
-    public void keyEventHandler(KeyEvent keyEvent) {
-
-        if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            login();
-        }
-        if (keyEvent.getSource().equals(btnRegistration)
-            && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            goToRegister();
-        }
-        if (keyEvent.getSource().equals(rememberLogin)
-            && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            if (rememberLogin.isSelected()) {
-                rememberLogin.setSelected(false);
-            } else {
-                rememberLogin.setSelected(true);
-            }
-        }
     }
 
     private void login() {

@@ -27,14 +27,16 @@ public class RegisterController {
     @FXML
     private JFXButton btnCancel;
     @FXML
+    private JFXButton btnFullscreen;
+    @FXML
     private JFXButton btnConfirm;
     @FXML
     private JFXTextField userName;
     @FXML
     private JFXPasswordField password;
     @FXML
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private JFXPasswordField confirmPassword;
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
@@ -55,11 +57,12 @@ public class RegisterController {
 
     @FXML
     void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnCancel)) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        } else if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
-        }
-        if (event.getSource().equals(btnConfirm)) {
+        } else if (event.getSource().equals(btnConfirm)) {
             if (!userName.getText().isEmpty()
                 && !password.getText().isEmpty()
                 && !confirmPassword.getText().isEmpty()) {

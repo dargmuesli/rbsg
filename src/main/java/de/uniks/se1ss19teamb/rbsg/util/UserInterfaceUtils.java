@@ -1,10 +1,15 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
 import java.io.IOException;
 
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,6 +43,18 @@ public class UserInterfaceUtils {
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.play();
+    }
+
+    public static void toggleFullscreen(JFXButton btnFullscreen) {
+        Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
+
+        if (stage.isFullScreen()) {
+            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
+        } else {
+            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.COMPRESS));
+        }
+
+        stage.setFullScreen(!stage.isFullScreen());
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
