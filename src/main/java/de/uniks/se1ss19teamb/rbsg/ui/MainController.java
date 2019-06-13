@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MainController {
 
-    private static final Logger logger = LogManager.getLogger(MainController.class);
+    private static final Logger logger = LogManager.getLogger();
     @FXML
     private AnchorPane mainScreen;
     @FXML
@@ -35,7 +35,7 @@ public class MainController {
     @FXML
     private ScrollPane gameScrollPane;
     @FXML
-    private ListView<Game> gameListView;
+    private ListView<Parent> gameListView;
     @FXML
     private JFXButton btnCreate;
     @FXML
@@ -45,14 +45,14 @@ public class MainController {
     @FXML
     private Toggle twoPlayers;
     @FXML
-    private Toggle threePlayers;
-    @FXML
     private Toggle fourPlayers;
     @FXML
     private JFXButton btnLogout;
     @FXML
     private TabPane chat;
-    private ErrorHandler errorHandler;
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+
+    private Game joinedGame;
 
     @FXML
     private AnchorPane mainScreen1;
@@ -65,7 +65,6 @@ public class MainController {
 
     public void initialize() {
 
-        mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
@@ -82,18 +81,16 @@ public class MainController {
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
             errorContainer.getChildren().add(parent);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!");
-            logger.error(e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
     }
 
@@ -124,8 +121,10 @@ public class MainController {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
                 String userKey = LoginController.getUserKey();
-                CreateGameRequest game;
                 if (selected.equals(twoPlayers)) {
+                    new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
+                } else if (selected.equals(fourPlayers)) {
+                    new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                     game = new CreateGameRequest(gameName.getText(), 2, userKey);
                     if(dark){
                         playerListView.setStyle(whiteMode);
@@ -149,10 +148,9 @@ public class MainController {
                 } else {
                     game = new CreateGameRequest(gameName.getText(), 4, userKey);
                 }
-                game.sendRequest();
                 updateGameView();
             } else {
-                errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
+                notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         }
 
@@ -162,29 +160,12 @@ public class MainController {
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/login.fxml", mainScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
         }
     }
 
-    public void joinGame() {
-        //TODO: Logger for printlns
-        //System.out.println("Clicked on a game");
-        Game listViewObject = gameListView.getSelectionModel().getSelectedItem();
-        if (listViewObject != null) {
-            JoinGameRequest joinGameRequest = new JoinGameRequest(listViewObject.getId(), LoginController.getUserKey());
-            joinGameRequest.sendRequest();
-            //System.out.println("Joined the game " + game.getName()
-            //              + " Message from Server:\n" + joinGameRequest.getMessage());
-        }
-        // else {
-        //      System.out.println("ListView item is not of type Game");
-        //     System.out.println(listViewObject.toString());
-        // }
-
-    }
-
-    private void updateGameView() {
+    void updateGameView() {
         ObservableList items = gameListView.getItems();
         while (items.size() != 0) {
             items.remove(0);
@@ -192,7 +173,17 @@ public class MainController {
 
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
-            gameListView.getItems().add(game);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+            try {
+                Parent parent = fxmlLoader.load();
+                GameFieldController controller = fxmlLoader.getController();
+                controller.setUpGameLabel(game, this);
+                gameListView.getItems().add(parent);
+            } catch (IOException e) {
+                notificationHandler.sendWarning("Ein GameField konnte nicht geladen werden!", logger);
+                e.printStackTrace();
+            }
         }
     }
 
@@ -226,6 +217,8 @@ public class MainController {
         return usersInLobbyRequest.getUsersInLobby();
     }
 
-
+    void setJoinedGame(Game joinedGame) {
+        this.joinedGame = joinedGame;
+    }
 }
 

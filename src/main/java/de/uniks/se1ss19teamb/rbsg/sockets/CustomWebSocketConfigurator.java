@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import javax.websocket.ClientEndpointConfig;
 
-class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
+public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
 
     private static String userKey = "";
 

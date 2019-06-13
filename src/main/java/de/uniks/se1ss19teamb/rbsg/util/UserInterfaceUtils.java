@@ -6,9 +6,12 @@ import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UserInterfaceUtils {
-    private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static final Logger logger = LogManager.getLogger();
 
     public static void makeFadeOutTransition(String path, AnchorPane node) {
         FadeTransition fadeTransition = new FadeTransition();
@@ -20,14 +23,15 @@ public class UserInterfaceUtils {
             try {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
-                errorHandler.sendError("Übergang in die nächste Szene konnte nicht ausgeführt werden!");
-                e.printStackTrace();
+                notificationHandler.sendError(
+                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
             }
         });
         fadeTransition.play();
     }
 
     public static void makeFadeInTransition(AnchorPane node) {
+        node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(node);

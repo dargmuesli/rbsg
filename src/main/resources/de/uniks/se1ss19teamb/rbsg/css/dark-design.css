@@ -44,3 +44,7 @@
     -fx-text-fill: -fx-primarytext;
     -jfx-checked-color: -fx-secondary;
 }
+
+.jfx-check-box .mark{
+     -fx-border-color: black;
+}

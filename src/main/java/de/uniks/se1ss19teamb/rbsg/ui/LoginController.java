@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginController {
 
-    private static final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LogManager.getLogger();
     private static final Path USER_DATA =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
     private static String userKey;
@@ -48,7 +48,7 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
-    private ErrorHandler errorHandler;
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static String getUserKey() {
         return userKey;
@@ -80,23 +80,20 @@ public class LoginController {
             loadUserData();
             userData.delete();
         }
-        loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!");
-            logger.error(e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
@@ -152,19 +149,19 @@ public class LoginController {
                 setUserKey(login.getUserKey());
                 setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/main.fxml", loginScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
 
             } else {
-                errorHandler.sendError("Login fehlgeschlagen!");
+                notificationHandler.sendWarning("Login fehlgeschlagen!", logger);
             }
         } else {
-            errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
+            notificationHandler.sendWarning("Benutzername oder Passwort nicht angegeben!", logger);
         }
     }
 
     private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/register.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
     }
 
     private void saveUserData() {

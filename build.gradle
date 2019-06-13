@@ -1,29 +1,38 @@
 import org.gradle.internal.jvm.*
 
 plugins {
+    id 'application'
     id 'checkstyle'
-    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
     id 'org.openjfx.javafxplugin' version '0.0.7' apply false
 }
-
-group 'de.uniks.se1ss19teamb'
-version '0.0.0'
 
 if (Jvm.current().javaVersion.java11Compatible) {
     apply plugin: 'org.openjfx.javafxplugin'
 
     javafx {
-        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml']
+        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media']
     }
 }
 
-sourceCompatibility = 1.8
+group 'de.uniks.se1ss19teamb'
+version '0.0.0'
 
 repositories {
-    mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    mavenCentral()
 }
+
+application {
+    mainClassName = 'de.uniks.se1ss19teamb.rbsg.Main'
+}
+
+configurations {
+    checkstyleOverride
+}
+
+sourceCompatibility = 1.8
 
 sourceSets {
     integration {
@@ -31,15 +40,6 @@ sourceSets {
             srcDir 'src/test-integration/java'
         }
     }
-}
-
-configurations {
-    checkstyleOverride
-}
-
-tasks.withType(Checkstyle) {
-    checkstyleClasspath = project.configurations.checkstyleOverride
-    maxWarnings = 0
 }
 
 dependencies {
@@ -78,4 +78,9 @@ task testIntegration(type: Test) {
     testClassesDirs = sourceSets.integration.output.classesDirs
     classpath = sourceSets.integration.runtimeClasspath
     debug = false
+}
+
+tasks.withType(Checkstyle) {
+    checkstyleClasspath = project.configurations.checkstyleOverride
+    maxWarnings = 0
 }
