@@ -1,10 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
-import java.io.IOException;
-
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
+import java.io.IOException;
+
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
