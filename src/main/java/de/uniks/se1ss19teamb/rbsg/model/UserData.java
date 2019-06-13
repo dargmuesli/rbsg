@@ -1,14 +1,18 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class UserData {
 
+    private static final Logger logger = LogManager.getLogger();
     public static final Path USER_DATA_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
 
@@ -68,10 +72,10 @@ public class UserData {
         this.registerUsername = registerUsername;
     }
 
-    public static UserData loadUserData(ErrorHandler errorHandler) {
+    public static UserData loadUserData(NotificationHandler notificationHandler) {
         if (!UserData.USER_DATA_PATH.toFile().exists()) {
-            if (errorHandler != null) {
-                errorHandler.sendError("User data doesn't exist!");
+            if (notificationHandler != null) {
+                notificationHandler.sendError("User data doesn't exist!", logger);
             }
 
             return null;
@@ -80,12 +84,12 @@ public class UserData {
         return SerializeUtils.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
     }
 
-    public static void deleteUserData(ErrorHandler errorHandler) {
+    public static void deleteUserData(NotificationHandler notificationHandler) {
         File userDataFile = UserData.USER_DATA_PATH.toFile();
 
         if (userDataFile.exists()) {
             if (!userDataFile.delete()) {
-                errorHandler.sendError("User data file could not be deleted!");
+                notificationHandler.sendError("User data file could not be deleted!", logger);
             }
         }
     }

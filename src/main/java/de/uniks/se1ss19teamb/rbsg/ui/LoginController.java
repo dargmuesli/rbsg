@@ -46,7 +46,7 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static String getUserKey() {
         return userKey;
@@ -74,7 +74,7 @@ public class LoginController {
 
     public void initialize() {
         // load user data
-        userData = UserData.loadUserData(errorHandler);
+        userData = UserData.loadUserData(notificationHandler);
 
         if (userData == null) {
             userData = new UserData();
@@ -94,22 +94,23 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData(errorHandler);
+        UserData.deleteUserData(notificationHandler);
 
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
+
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Anmeldung!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
@@ -151,7 +152,7 @@ public class LoginController {
 
     private void login() {
         if (userName.getText().isEmpty() || password.getText().isEmpty()) {
-            errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
+            notificationHandler.sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
             return;
         }
 
@@ -159,14 +160,14 @@ public class LoginController {
         login.sendRequest();
 
         if (!login.getSuccessful()) {
-            errorHandler.sendError("Login fehlgeschlagen!");
+            notificationHandler.sendWarning("Login fehlgeschlagen!", logger);
             return;
         }
 
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
-            UserData.deleteUserData(errorHandler);
+            UserData.deleteUserData(notificationHandler);
         }
 
         setUserKey(login.getUserKey());
