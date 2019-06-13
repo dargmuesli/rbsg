@@ -123,30 +123,25 @@ public class MainController {
                 String userKey = LoginController.getUserKey();
                 if (selected.equals(twoPlayers)) {
                     new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
-                } else if (selected.equals(fourPlayers)) {
-                    new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
-                    game = new CreateGameRequest(gameName.getText(), 2, userKey);
                     if(dark){
                         playerListView.setStyle(whiteMode);
                         gameListView.setStyle(whiteMode);
                         mainScreen.getStylesheets().clear();
-                        mainScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/white-design2.css");
+                        mainScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design2.css");
                         mainScreen1.getStylesheets().clear();
-                        mainScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/white-design2.css");
+                        mainScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design2.css");
                         dark = false;
                     }else{
                         playerListView.setStyle(darkMode);
                         gameListView.setStyle(darkMode);
                         mainScreen.getStylesheets().clear();
-                        mainScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/dark-design2.css");
+                        mainScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");
                         mainScreen1.getStylesheets().clear();
-                        mainScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/dark-design2.css");
+                        mainScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");
                         dark = true;
                     }
-                } else if (selected.equals(threePlayers)) {
-                    game = new CreateGameRequest(gameName.getText(), 3, userKey);
-                } else {
-                    game = new CreateGameRequest(gameName.getText(), 4, userKey);
+                } else if (selected.equals(fourPlayers)) {
+                    new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
                 updateGameView();
             } else {
