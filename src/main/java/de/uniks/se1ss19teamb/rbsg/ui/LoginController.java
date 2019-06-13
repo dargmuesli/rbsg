@@ -5,9 +5,6 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
@@ -22,10 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,8 +40,6 @@ public class LoginController {
     private JFXPasswordField password;
     @FXML
     private JFXButton btnFullscreen;
-    @FXML
-    private FontAwesomeIconView icoFullscreen;
     @FXML
     private JFXButton btnLogin;
     @FXML
@@ -121,25 +113,6 @@ public class LoginController {
     @FXML
     public void onEnter() {
         login();
-    }
-
-    public void keyEventHandler(KeyEvent keyEvent) {
-
-        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            if (keyEvent.getSource().equals(btnFullscreen)) {
-                UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-            } else if (keyEvent.getSource().equals(btnLogin)) {
-                login();
-            } else if (keyEvent.getSource().equals(btnRegistration)) {
-                goToRegister();
-            } else if (keyEvent.getSource().equals(rememberLogin)) {
-                if (rememberLogin.isSelected()) {
-                    rememberLogin.setSelected(false);
-                } else {
-                    rememberLogin.setSelected(true);
-                }
-            }
-        }
     }
 
     private void login() {
