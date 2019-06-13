@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -50,13 +50,12 @@ public class MainController {
     private JFXButton btnLogout;
     @FXML
     private TabPane chat;
-    private ErrorHandler errorHandler;
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private Game joinedGame;
 
     public void initialize() {
 
-        mainScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
@@ -73,17 +72,16 @@ public class MainController {
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
             errorContainer.getChildren().add(parent);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
     }
 
@@ -123,7 +121,7 @@ public class MainController {
                 }
                 updateGameView();
             } else {
-                errorHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.");
+                notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         }
 
@@ -154,7 +152,7 @@ public class MainController {
                 controller.setUpGameLabel(game, this);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
-                errorHandler.sendError("Ein GameField konnte nicht geladen werden!");
+                notificationHandler.sendWarning("Ein GameField konnte nicht geladen werden!", logger);
                 e.printStackTrace();
             }
         }
