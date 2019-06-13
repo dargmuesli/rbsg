@@ -46,11 +46,11 @@
                 </JFXButton>
             </HBox>
         </VBox>
+        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
+                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+            <graphic>
+                <FontAwesomeIconView glyphName="EXPAND" size="15"/>
+            </graphic>
+        </JFXButton>
     </AnchorPane>
-    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
-               AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-        <graphic>
-            <FontAwesomeIconView glyphName="EXPAND" size="15"/>
-        </graphic>
-    </JFXButton>
 </AnchorPane>

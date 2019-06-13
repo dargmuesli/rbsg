@@ -33,6 +33,8 @@ public class MainController {
     @FXML
     private ScrollPane playerScrollPane;
     @FXML
+    private JFXButton btnFullscreen;
+    @FXML
     private ScrollPane gameScrollPane;
     @FXML
     private ListView<Parent> gameListView;
@@ -83,6 +85,13 @@ public class MainController {
 
         } catch (IOException e) {
             errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
+    }
+
+    @FXML
+    void eventHandler(ActionEvent event) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         }
     }
 
