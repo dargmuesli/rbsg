@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -27,6 +27,8 @@ public class RegisterController {
     @FXML
     private JFXButton btnCancel;
     @FXML
+    private JFXButton btnFullscreen;
+    @FXML
     private JFXButton btnConfirm;
     @FXML
     private JFXTextField userName;
@@ -34,34 +36,33 @@ public class RegisterController {
     private JFXPasswordField password;
     @FXML
     private JFXPasswordField confirmPassword;
-    private ErrorHandler errorHandler;
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public void initialize() {
-        registerScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }
     }
 
     @FXML
     void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnCancel)) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        } else if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
-        }
-        if (event.getSource().equals(btnConfirm)) {
+        } else if (event.getSource().equals(btnConfirm)) {
             if (!userName.getText().isEmpty()
                 && !password.getText().isEmpty()
                 && !confirmPassword.getText().isEmpty()) {
@@ -75,18 +76,18 @@ public class RegisterController {
                         UserInterfaceUtils.makeFadeOutTransition(
                             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
 
-                        errorHandler.sendError("Registrierung erfolgreich!");
+                        notificationHandler.sendSuccess("Registrierung erfolgreich.", logger);
                     } /*else {
-                        errorHandler.sendError("Entschuldigung.
+                        notificationHandler.sendError("Entschuldigung.
                          Es ist etwas bei der Registrierung schief gelaufen.
                         Bitte versuchen Sie er erneut.");
                     }*/
                 } else {
-                    errorHandler.sendError("Die Passwörter sind verschieden!");
+                    notificationHandler.sendWarning("Die Passwörter sind verschieden!", logger);
                 }
 
             } else {
-                errorHandler.sendError("Bitte geben Sie etwas ein.");
+                notificationHandler.sendWarning("Nicht alle Eingabefelder sind ausgefüllt!", logger);
             }
         }
     }

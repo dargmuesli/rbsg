@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -13,7 +13,7 @@ class CipherConstant {
     private static final Logger logger = LogManager.getLogger();
     static PublicKey publicKey;
     static PrivateKey privateKey;
-    private static ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     static {
         try {
@@ -22,7 +22,7 @@ class CipherConstant {
             privateKey = CipherUtils
                 .readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
         } catch (Exception e) {
-            errorHandler.sendError("Ein Schlüssel konnte nicht gelesen werden!", logger, e);
+            notificationHandler.sendError("Ein Schlüssel konnte nicht gelesen werden!", logger, e);
         }
     }
 }

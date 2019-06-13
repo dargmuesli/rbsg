@@ -2,23 +2,25 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
-public class NewChatTabController {
+public class PrivateTabController {
 
     @FXML
     private Tab newTab;
     @FXML
-    private TextArea textArea;
+    private VBox textArea;
 
-    public NewChatTabController() {
+    public PrivateTabController() {
 
     }
 
     @FXML
     public void initialize() {
-        textArea.appendText("Private Chat started!\n");
+        Label start = new Label("Private Chat started!");
+        start.setStyle("-fx-text-fill: -fx-privatetext;");
+        textArea.getChildren().add(start);
         addContextMenu();
-
     }
 
     private void addContextMenu() {

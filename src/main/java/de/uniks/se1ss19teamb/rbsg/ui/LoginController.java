@@ -19,8 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,6 +39,8 @@ public class LoginController {
     @FXML
     private JFXPasswordField password;
     @FXML
+    private JFXButton btnFullscreen;
+    @FXML
     private JFXButton btnLogin;
     @FXML
     private Button btnRegistration;
@@ -48,7 +48,7 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
-    private ErrorHandler errorHandler;
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static String getUserKey() {
         return userKey;
@@ -80,32 +80,31 @@ public class LoginController {
             loadUserData();
             userData.delete();
         }
-        loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler = ErrorHandler.getErrorHandler();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
     @FXML
     void eventHandler(ActionEvent event) {
 
-        if (event.getSource().equals(btnLogin)) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        } else if (event.getSource().equals(btnLogin)) {
             login();
-        }
-        if (event.getSource().equals(btnRegistration)) {
+        } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
         }
     }
@@ -113,25 +112,6 @@ public class LoginController {
     @FXML
     public void onEnter() {
         login();
-    }
-
-    public void keyEventHandler(KeyEvent keyEvent) {
-
-        if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            login();
-        }
-        if (keyEvent.getSource().equals(btnRegistration)
-            && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            goToRegister();
-        }
-        if (keyEvent.getSource().equals(rememberLogin)
-            && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            if (rememberLogin.isSelected()) {
-                rememberLogin.setSelected(false);
-            } else {
-                rememberLogin.setSelected(true);
-            }
-        }
     }
 
     private void login() {
@@ -154,10 +134,10 @@ public class LoginController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
 
             } else {
-                errorHandler.sendError("Login fehlgeschlagen!");
+                notificationHandler.sendWarning("Login fehlgeschlagen!", logger);
             }
         } else {
-            errorHandler.sendError("Bitte geben Sie Benutzernamen und Passwort ein.");
+            notificationHandler.sendWarning("Benutzername oder Passwort nicht angegeben!", logger);
         }
     }
 
