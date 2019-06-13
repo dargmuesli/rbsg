@@ -73,7 +73,7 @@ public class MainController {
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
