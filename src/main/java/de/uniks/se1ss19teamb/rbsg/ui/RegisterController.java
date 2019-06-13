@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class RegisterController {
     @FXML
     private JFXPasswordField password;
     @FXML
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private JFXPasswordField confirmPassword;
 
     public void initialize() {
@@ -41,16 +41,16 @@ public class RegisterController {
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/ErrorPopup.fxml"));
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
 
-            ErrorPopupController controller = fxmlLoader.getController();
-            errorHandler.setErrorPopupController(controller);
+            PopupController controller = fxmlLoader.getController();
+            notificationHandler.setPopupController(controller);
 
         } catch (IOException e) {
-            errorHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }
     }
 
@@ -74,18 +74,18 @@ public class RegisterController {
                         UserInterfaceUtils.makeFadeOutTransition(
                             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
 
-                        errorHandler.sendError("Registrierung erfolgreich!");
+                        notificationHandler.sendSuccess("Registrierung erfolgreich.", logger);
                     } /*else {
-                        errorHandler.sendError("Entschuldigung.
+                        notificationHandler.sendError("Entschuldigung.
                          Es ist etwas bei der Registrierung schief gelaufen.
                         Bitte versuchen Sie er erneut.");
                     }*/
                 } else {
-                    errorHandler.sendError("Die Passwörter sind verschieden!");
+                    notificationHandler.sendWarning("Die Passwörter sind verschieden!", logger);
                 }
 
             } else {
-                errorHandler.sendError("Bitte geben Sie etwas ein.");
+                notificationHandler.sendWarning("Nicht alle Eingabefelder sind ausgefüllt!", logger);
             }
         }
     }
