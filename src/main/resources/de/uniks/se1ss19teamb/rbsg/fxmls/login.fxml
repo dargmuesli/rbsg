@@ -12,8 +12,9 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css-files/dark-design.css"
             xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
-    <AnchorPane fx:id="loginScreen" styleClass="root" stylesheets="@../css-files/dark-design.css" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane fx:id="loginScreen" styleClass="root" stylesheets="@../css-files/dark-design.css"
+                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0"
                     AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0"/>
         <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -47,4 +48,10 @@
             </HBox>
         </VBox>
     </AnchorPane>
+    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
+               onKeyPressed="#keyEventHandler" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <graphic>
+            <FontAwesomeIconView fx:id="icoFullscreen" glyphName="EXPAND" size="15"/>
+        </graphic>
+    </JFXButton>
 </AnchorPane>

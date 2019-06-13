@@ -5,6 +5,9 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
@@ -22,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +44,10 @@ public class LoginController {
     private JFXTextField userName;
     @FXML
     private JFXPasswordField password;
+    @FXML
+    private JFXButton btnFullscreen;
+    @FXML
+    private FontAwesomeIconView icoFullscreen;
     @FXML
     private JFXButton btnLogin;
     @FXML
@@ -101,10 +109,11 @@ public class LoginController {
     @FXML
     void eventHandler(ActionEvent event) {
 
-        if (event.getSource().equals(btnLogin)) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        } else if (event.getSource().equals(btnLogin)) {
             login();
-        }
-        if (event.getSource().equals(btnRegistration)) {
+        } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
         }
     }
@@ -116,19 +125,19 @@ public class LoginController {
 
     public void keyEventHandler(KeyEvent keyEvent) {
 
-        if (keyEvent.getSource().equals(btnLogin) && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            login();
-        }
-        if (keyEvent.getSource().equals(btnRegistration)
-            && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            goToRegister();
-        }
-        if (keyEvent.getSource().equals(rememberLogin)
-            && keyEvent.getCode().equals(KeyCode.ENTER)) {
-            if (rememberLogin.isSelected()) {
-                rememberLogin.setSelected(false);
-            } else {
-                rememberLogin.setSelected(true);
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            if (keyEvent.getSource().equals(btnFullscreen)) {
+                UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+            } else if (keyEvent.getSource().equals(btnLogin)) {
+                login();
+            } else if (keyEvent.getSource().equals(btnRegistration)) {
+                goToRegister();
+            } else if (keyEvent.getSource().equals(rememberLogin)) {
+                if (rememberLogin.isSelected()) {
+                    rememberLogin.setSelected(false);
+                } else {
+                    rememberLogin.setSelected(true);
+                }
             }
         }
     }
