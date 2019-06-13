@@ -79,7 +79,6 @@ public class ChatTabController {
                 addNewPane(from, message, false);
             } else {
                 addElement(from, message, textArea, false);
-                // textArea.appendText(from + ": " + message + "\n");
             }
         });
 
