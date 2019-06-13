@@ -13,8 +13,8 @@ import javafx.scene.control.*;
 
 public class ChatTabController {
 
-    private static String userKey = LoginController.getUserKey();
-    private static String userName = LoginController.getUser();
+    private String userKey = LoginController.getUserKey();
+    private String userName = LoginController.getUser();
     private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
     private final SystemSocket system = new SystemSocket(userKey);
     @FXML
