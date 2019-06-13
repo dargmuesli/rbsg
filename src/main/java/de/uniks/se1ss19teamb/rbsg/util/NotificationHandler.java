@@ -24,13 +24,6 @@ public class NotificationHandler {
         popupController = epc;
     }
 
-    public void sendSuccess(String successMessage) {
-        // display error message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displaySuccessMessage(successMessage);
-        }
-    }
-
     public void sendError(String errorMessage, Logger logger) {
         sendError(errorMessage, logger, null);
     }
@@ -42,9 +35,36 @@ public class NotificationHandler {
             logger.error(errorMessage, e);
         }
 
-        // display error message only if that's possible (i.e. a screen is loaded)
+        // display message only if that's possible (i.e. a screen is loaded)
         if (popupController != null) {
-            popupController.displayErrorMessage(errorMessage);
+            popupController.displayError(errorMessage);
+        }
+    }
+
+    public void sendInfo(String infoMessage, Logger logger) {
+        logger.info(infoMessage);
+
+        // display message only if that's possible (i.e. a screen is loaded)
+        if (popupController != null) {
+            popupController.displayInformation(infoMessage);
+        }
+    }
+
+    public void sendSuccess(String successMessage, Logger logger) {
+        logger.debug(successMessage);
+
+        // display message only if that's possible (i.e. a screen is loaded)
+        if (popupController != null) {
+            popupController.displaySuccess(successMessage);
+        }
+    }
+
+    public void sendWarning(String warningMessage, Logger logger) {
+        logger.warn(warningMessage);
+
+        // display message only if that's possible (i.e. a screen is loaded)
+        if (popupController != null) {
+            popupController.displayWarning(warningMessage);
         }
     }
 

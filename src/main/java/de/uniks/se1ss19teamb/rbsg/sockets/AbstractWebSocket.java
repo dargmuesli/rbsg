@@ -40,8 +40,7 @@ public abstract class AbstractWebSocket implements WebSocket {
                 notificationHandler.sendError("Fehler in der Websocket-URI-Syntax", logger, e);
             }
         } else {
-            notificationHandler.sendError("Es besteht bereits eine Websocket-Verbindung!", logger,
-                new IllegalStateException("Cannot connect to an already connected Websocket"));
+            notificationHandler.sendInfo("Es besteht bereits eine Websocket-Verbindung!", logger);
         }
     }
 

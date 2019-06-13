@@ -122,7 +122,7 @@ public class MainController {
                 }
                 updateGameView();
             } else {
-                notificationHandler.sendError("Bitte geben Sie einen Namen für das Spiel ein.", logger);
+                notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         }
 
@@ -153,7 +153,7 @@ public class MainController {
                 controller.setUpGameLabel(game, this);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
-                notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger);
+                notificationHandler.sendWarning("Ein GameField konnte nicht geladen werden!", logger);
                 e.printStackTrace();
             }
         }

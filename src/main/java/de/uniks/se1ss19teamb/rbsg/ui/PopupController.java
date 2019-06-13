@@ -14,15 +14,27 @@ public class PopupController {
     @FXML
     Label label;
 
-    public void displayErrorMessage(String errorMessage) {
+    public void displayError(String errorMessage) {
         label.setText(errorMessage);
         show();
 
     }
 
-    public void displaySuccessMessage(String successMessage) {
+    public void displayInformation(String informationMessage) {
+        label.setText(informationMessage);
+        // TODO blue @Patrick
+        show();
+    }
+
+    public void displaySuccess(String successMessage) {
         label.setText(successMessage);
-        // TODO green
+        // TODO green @Patrick
+        show();
+    }
+
+    public void displayWarning(String warningMessage) {
+        label.setText(warningMessage);
+        // TODO orange @Patrick
         show();
     }
 

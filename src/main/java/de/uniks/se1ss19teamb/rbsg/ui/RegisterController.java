@@ -74,18 +74,18 @@ public class RegisterController {
                         UserInterfaceUtils.makeFadeOutTransition(
                             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
 
-                        notificationHandler.sendError("Registrierung erfolgreich!", logger);
+                        notificationHandler.sendSuccess("Registrierung erfolgreich.", logger);
                     } /*else {
                         notificationHandler.sendError("Entschuldigung.
                          Es ist etwas bei der Registrierung schief gelaufen.
                         Bitte versuchen Sie er erneut.");
                     }*/
                 } else {
-                    notificationHandler.sendError("Die Passwörter sind verschieden!", logger);
+                    notificationHandler.sendWarning("Die Passwörter sind verschieden!", logger);
                 }
 
             } else {
-                notificationHandler.sendError("Bitte geben Sie etwas ein.", logger);
+                notificationHandler.sendWarning("Nicht alle Eingabefelder sind ausgefüllt!", logger);
             }
         }
     }
