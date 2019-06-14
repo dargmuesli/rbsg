@@ -18,7 +18,7 @@ public class UserData {
 
     private String loginPassword = "";
     private boolean loginRemember = false;
-    private String loginUserName = "";
+    private String loginUsername = "";
 
     private String registerPassword = "";
     private String registerPasswordRepeat = "";
@@ -40,12 +40,12 @@ public class UserData {
         this.loginRemember = loginRemember;
     }
 
-    public String getLoginUserName() {
-        return loginUserName;
+    public String getLoginUsername() {
+        return loginUsername;
     }
 
-    public void setLoginUserName(String loginUserName) {
-        this.loginUserName = loginUserName;
+    public void setLoginUsername(String loginUsername) {
+        this.loginUsername = loginUsername;
     }
 
     public String getRegisterPassword() {

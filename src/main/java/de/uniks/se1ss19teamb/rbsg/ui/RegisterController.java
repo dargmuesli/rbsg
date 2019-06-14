@@ -133,17 +133,23 @@ public class RegisterController {
 
         if (!register.getSuccessful()) {
             notificationHandler.sendWarning("Die Registrierung ist fehlgeschlagen!", logger);
+            return;
         }
+
+        // save user data for login screen
+        userData.setLoginUsername(username.getText());
+        userData.setLoginPassword(password.getText());
+
+        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
+
+        notificationHandler.sendSuccess("Registrierung erfolgreich!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
-
-        // TODO success
-        notificationHandler.sendWarning("Registrierung erfolgreich!", logger);
     }
 
     private void goToLogin() {
-        // save user data
+        // save user data for registration screen
         userData.setRegisterUsername(username.getText());
         userData.setRegisterPassword(password.getText());
         userData.setRegisterPasswordRepeat(passwordRepeat.getText());

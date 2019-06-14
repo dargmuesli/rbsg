@@ -80,7 +80,7 @@ public class LoginController {
             userData = new UserData();
         }
 
-        userName.setText(userData.getLoginUserName());
+        userName.setText(userData.getLoginUsername());
         password.setText(userData.getLoginPassword());
         rememberLogin.setSelected(userData.isLoginRemember());
 
@@ -164,7 +164,7 @@ public class LoginController {
     }
 
     private void saveUserData() {
-        userData.setLoginUserName(userName.getText());
+        userData.setLoginUsername(userName.getText());
         userData.setLoginPassword(password.getText());
         userData.setLoginRemember(rememberLogin.isSelected());
 
