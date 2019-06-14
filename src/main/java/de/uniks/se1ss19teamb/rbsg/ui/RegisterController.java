@@ -34,9 +34,29 @@ public class RegisterController {
     private JFXPasswordField password;
     @FXML
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    @FXML
+    private AnchorPane registerScreen1;
+
+    LoginController loginController = new LoginController();
+
     private JFXPasswordField confirmPassword;
 
+
+
     public void initialize() {
+
+        if(loginController.getBoolean()){
+            registerScreen.getStylesheets().clear();
+            registerScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
+            registerScreen1.getStylesheets().clear();
+            registerScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
+        }else{
+            registerScreen.getStylesheets().clear();
+            registerScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
+            registerScreen1.getStylesheets().clear();
+            registerScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
+        }
+
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -53,11 +73,12 @@ public class RegisterController {
         }
     }
 
+
     @FXML
     void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen, loginController.getBoolean());
         }
         if (event.getSource().equals(btnConfirm)) {
             if (!userName.getText().isEmpty()
@@ -71,7 +92,7 @@ public class RegisterController {
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition(
-                            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+                            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen, loginController.getBoolean());
 
                         notificationHandler.sendSuccess("Registrierung erfolgreich.", logger);
                     } /*else {

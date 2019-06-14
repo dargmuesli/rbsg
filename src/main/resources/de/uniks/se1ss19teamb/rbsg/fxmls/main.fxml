@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
@@ -15,119 +16,115 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/dark-design2.css"
-            xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-    <AnchorPane fx:id="mainScreen" stylesheets="@../css/dark-design2.css" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
-                    AnchorPane.topAnchor="50.0"/>
-        <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+<AnchorPane fx:id="mainScreen1"  xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+    <AnchorPane fx:id="mainScreen"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
+        <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <Label alignment="CENTER" text="Players" textFill="#756e6e">
                         <font>
-                            <Font size="15.0"/>
+                            <Font size="15.0" />
                         </font>
                         <VBox.margin>
-                            <Insets bottom="10.0" top="5.0"/>
+                            <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;"
-                                VBox.vgrow="ALWAYS">
-                        <ListView fx:id="playerListView"/>
+                    <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;" VBox.vgrow="ALWAYS">
+                        <ListView fx:id="playerListView" />
                     </ScrollPane>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                 </Pane>
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <Label alignment="CENTER" text="Games" textFill="#7c7676">
                         <font>
-                            <Font size="15.0"/>
+                            <Font size="15.0" />
                         </font>
                         <VBox.margin>
-                            <Insets bottom="10.0" top="5.0"/>
+                            <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fx:id="gameScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
+                    <ScrollPane fx:id="gameScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="150.0" prefHeight="250.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
 
-                        <ListView fx:id="gameListView"/>
+                        <ListView fx:id="gameListView" />
                     </ScrollPane>
                 </VBox>
             </HBox>
-            <Pane prefHeight="1.0" style="-fx-background-color: grey;"/>
+            <Pane prefHeight="1.0" style="-fx-background-color: grey;" />
             <HBox VBox.vgrow="ALWAYS">
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <Label alignment="CENTER" text="Chat" textAlignment="CENTER">
                         <font>
-                            <Font size="15.0"/>
+                            <Font size="15.0" />
                         </font>
                         <VBox.margin>
-                            <Insets bottom="10.0" top="5.0"/>
+                            <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
                     </Label>
-                    <fx:include source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
+                    <fx:include source="chatTab.fxml" VBox.vgrow="ALWAYS" />
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                 </Pane>
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <Label alignment="CENTER" text="New Game" textAlignment="CENTER">
                         <font>
-                            <Font size="15.0"/>
+                            <Font size="15.0" />
                         </font>
                         <VBox.margin>
-                            <Insets bottom="10.0" top="5.0"/>
+                            <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
                     </Label>
                     <VBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
                         <JFXTextField fx:id="gameName" alignment="CENTER" promptText="name">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0"/>
+                                <Insets left="10.0" right="10.0" />
                             </VBox.margin>
                         </JFXTextField>
                         <HBox alignment="CENTER">
-                            <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM"
-                                            mnemonicParsing="false" selected="true" text="2">
+                            <JFXRadioButton fx:id="twoPlayers" accessibleText="2" contentDisplay="BOTTOM" mnemonicParsing="false" selected="true" text="2">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="playerNumberToggleGroup"/>
+                                    <ToggleGroup fx:id="playerNumberToggleGroup" />
                                 </toggleGroup>
                                 <HBox.margin>
-                                    <Insets left="10.0" right="10.0"/>
+                                    <Insets left="10.0" right="10.0" />
                                 </HBox.margin>
                             </JFXRadioButton>
-                            <JFXRadioButton fx:id="fourPlayers" accessibleText="4" contentDisplay="BOTTOM"
-                                            mnemonicParsing="false" text="4" toggleGroup="$playerNumberToggleGroup">
+                            <JFXRadioButton fx:id="fourPlayers" accessibleText="4" contentDisplay="BOTTOM" mnemonicParsing="false" text="4" toggleGroup="$playerNumberToggleGroup">
                                 <HBox.margin>
-                                    <Insets left="10.0" right="10.0"/>
+                                    <Insets left="10.0" right="10.0" />
                                 </HBox.margin>
                             </JFXRadioButton>
                             <padding>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </HBox>
                         <JFXButton fx:id="btnCreate" mnemonicParsing="false" onAction="#setOnAction">
                             <graphic>
-                                <FontAwesomeIconView glyphName="PLUS" size="15"/>
+                                <FontAwesomeIconView glyphName="PLUS" size="15" />
                             </graphic>
                         </JFXButton>
                     </VBox>
                 </VBox>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+        <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+            <JFXButton fx:id="whiteModeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
             <graphic>
-                <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
-            </graphic>
-        </JFXButton>
+                  <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15" />
+            </graphic></JFXButton>
+            <JFXButton fx:id="logoutBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+            <graphic>
+                  <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
+            </graphic></JFXButton>
+            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0" />
+        </HBox>
         <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
         <!--            <items>-->
         <!--                <MenuItem mnemonicParsing="false">-->

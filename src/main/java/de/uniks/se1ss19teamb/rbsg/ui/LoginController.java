@@ -35,7 +35,7 @@ public class LoginController {
     private static String user;
     private static ChatSocket chatSocket;
     @FXML
-    private AnchorPane loginScreen;
+    public AnchorPane loginScreen;
     @FXML
     private JFXTextField userName;
     @FXML
@@ -48,6 +48,11 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
+    @FXML
+    private AnchorPane loginScreen1;
+
+    public Boolean dark = false;
+
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static String getUserKey() {
@@ -70,11 +75,27 @@ public class LoginController {
         return chatSocket;
     }
 
+
     static void setChatSocket(ChatSocket chatSocket) {
         LoginController.chatSocket = chatSocket;
     }
 
     public void initialize() {
+
+
+        if(dark){
+            loginScreen.getStylesheets().clear();
+            loginScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
+            loginScreen1.getStylesheets().clear();
+            loginScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
+        }else{
+            loginScreen.getStylesheets().clear();
+            loginScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
+            loginScreen1.getStylesheets().clear();
+            loginScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
+        }
+
+
         File userData = USER_DATA.toFile();
         if (userData.exists()) {
             loadUserData();
@@ -149,7 +170,7 @@ public class LoginController {
                 setUserKey(login.getUserKey());
                 setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen, dark);
 
             } else {
                 notificationHandler.sendWarning("Login fehlgeschlagen!", logger);
@@ -161,7 +182,7 @@ public class LoginController {
 
     private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen,dark);
     }
 
     private void saveUserData() {
@@ -175,5 +196,13 @@ public class LoginController {
         password.setText(userData.getPassword());
         rememberLogin.setSelected(true);
         Platform.runLater(() -> btnLogin.requestFocus());
+    }
+
+    public Boolean getBoolean(){
+        return dark;
+    }
+
+    public void setBoolean(Boolean dark){
+        this.dark = dark;
     }
 }

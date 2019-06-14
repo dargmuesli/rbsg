@@ -3,6 +3,7 @@
     -fx-primary: WHITE;
     -fx-secondary: Black;
     -fx-primarytext: Black;
+    -fx-secondarytext: grey;
 }
 
 . root{
@@ -23,8 +24,8 @@
 }
 
 .button:hover, .button:focused{
-    -fx-border-color: -fx-secondary;
-    -fx-background-color: -fx-secondary;
+    -fx-border-color: -fx-secondarytext;
+    -fx-background-color: -fx-secondarytext;
     -fx-text-fill: -fx-primary;
 }
 
