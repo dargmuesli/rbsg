@@ -60,22 +60,21 @@ public class MainController {
     private Game joinedGame;
 
     public void initialize() {
-
-        UserInterfaceUtils.makeFadeInTransition(mainScreen);
-
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             PopupController controller = fxmlLoader.getController();
             notificationHandler.setPopupController(controller);
             errorContainer.getChildren().add(parent);
-
         } catch (IOException e) {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
+
+        UserInterfaceUtils.makeFadeInTransition(mainScreen);
     }
 
     @FXML
@@ -146,7 +145,7 @@ public class MainController {
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();

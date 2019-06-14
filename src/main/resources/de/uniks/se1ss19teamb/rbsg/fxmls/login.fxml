@@ -12,7 +12,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/dark-design.css"
             xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
-    <AnchorPane fx:id="loginScreen" styleClass="root" stylesheets="@../css/dark-design.css" AnchorPane.bottomAnchor="0.0"
+    <AnchorPane fx:id="loginScreen" stylesheets="@../css/dark-design.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0"
                     AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0"/>
@@ -31,8 +31,7 @@
             </HBox>
             <JFXCheckBox fx:id="rememberLogin" mnemonicParsing="false" onAction="#eventHandler" text="Remember Login"/>
             <HBox alignment="CENTER" spacing="25.0">
-                <JFXButton fx:id="btnLogin" alignment="CENTER" onAction="#eventHandler"
-                           prefWidth="110.0" text="Login">
+                <JFXButton fx:id="btnLogin" alignment="CENTER" onAction="#eventHandler" prefWidth="110.0" text="Login">
                     <font>
                         <Font size="16.0"/>
                     </font>

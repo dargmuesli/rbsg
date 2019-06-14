@@ -34,7 +34,7 @@
                         </VBox.margin>
                     </Label>
                     <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0"
                                 VBox.vgrow="ALWAYS">
                         <ListView fx:id="playerListView"/>
                     </ScrollPane>
