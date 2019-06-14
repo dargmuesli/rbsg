@@ -32,6 +32,8 @@ public class RegisterController {
     @FXML
     private JFXButton btnCancel;
     @FXML
+    private JFXButton btnFullscreen;
+    @FXML
     private JFXButton btnConfirm;
     @FXML
     private JFXTextField username;

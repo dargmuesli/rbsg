@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.Pane?>
+<AnchorPane stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
+    <AnchorPane fx:id="inGameScreen" stylesheets="@dark-design2.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+         <children>
+                 <HBox alignment="TOP_RIGHT" prefHeight="100" prefWidth="636" />
+             <Pane prefWidth="636" prefHeight="395"></Pane>
+             <HBox prefHeight="100" prefWidth="100"></HBox>
+         </children></VBox>
+    </AnchorPane>
+</AnchorPane>

@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,6 +33,8 @@ public class MainController {
     private ListView<String> playerListView;
     @FXML
     private ScrollPane playerScrollPane;
+    @FXML
+    private JFXButton btnFullscreen;
     @FXML
     private ScrollPane gameScrollPane;
     @FXML
@@ -49,7 +52,7 @@ public class MainController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private TabPane chat;
+    private VBox chat;
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private Game joinedGame;
@@ -57,18 +60,6 @@ public class MainController {
     public void initialize() {
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
-
-        LoginController.getChatSocket().registerChatMessageHandler((message, from, isPrivate) -> {
-            if (isPrivate) {
-                /* TODO privates tab
-                Tab tab = new Tab();
-                tab.setText(from);
-                tab.setContent(new Label(message));
-                chat.getTabs().add(tab);
-                System.out.println(message);
-                */
-            }
-        });
 
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -82,6 +73,13 @@ public class MainController {
 
         } catch (IOException e) {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
+    }
+
+    @FXML
+    void eventHandler(ActionEvent event) {
+        if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         }
     }
 

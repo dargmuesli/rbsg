@@ -71,7 +71,7 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <fx:include source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
+                    <fx:include fx:id="chat" source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
                     <HBox.margin>
@@ -123,7 +123,7 @@
             </HBox>
         </VBox>
         <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                   AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
             <graphic>
                 <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
             </graphic>
@@ -143,5 +143,11 @@
         <!--                <FontAwesomeIconView accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />-->
         <!--            </graphic>-->
         <!--        </MenuButton>-->
+        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
+                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+            <graphic>
+                <FontAwesomeIconView glyphName="EXPAND" size="15"/>
+            </graphic>
+        </JFXButton>
     </AnchorPane>
 </AnchorPane>
