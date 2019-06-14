@@ -119,6 +119,29 @@
                             </graphic>
                         </JFXButton>
                     </VBox>
+                    <Pane prefHeight="1.0" style="-fx-background-color: grey;">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </Pane>
+                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                        <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
+                            <font>
+                                <Font size="15.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" top="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <JFXButton fx:id="btnArmyManager" mnemonicParsing="false" onAction="#setOnAction" text="open">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
+                            </graphic>
+                        </JFXButton>
+                        <VBox.margin>
+                            <Insets bottom="10.0"/>
+                        </VBox.margin>
+                    </VBox>
                 </VBox>
             </HBox>
         </VBox>

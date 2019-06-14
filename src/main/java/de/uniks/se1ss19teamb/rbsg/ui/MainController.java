@@ -52,6 +52,8 @@ public class MainController {
     @FXML
     private JFXButton btnLogout;
     @FXML
+    private JFXButton btnArmyManager;
+    @FXML
     private VBox chat;
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
@@ -121,9 +123,7 @@ public class MainController {
             } else {
                 notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
-        }
-
-        if (event.getSource().equals(btnLogout)) {
+        } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
             if (logout.getSuccessful()) {
@@ -131,6 +131,9 @@ public class MainController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
+        } else if (event.getSource().equals(btnArmyManager)) {
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
         }
     }
 
