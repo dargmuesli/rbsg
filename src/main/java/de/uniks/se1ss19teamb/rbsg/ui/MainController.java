@@ -436,7 +436,8 @@ public class MainController {
         if (input.length() < 4) {
             if (input.substring(0, 2).equals("//")) {
                 Window window = btnFullscreen.getScene().getWindow();
-                Image image = new Image(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/memes/Comment.jpg").toExternalForm());
+                Image image = new Image(getClass()
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/memes/Comment.jpg").toExternalForm());
                 ImageView imageView = new ImageView(image);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("IF ERROR");
