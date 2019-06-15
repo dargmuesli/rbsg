@@ -17,34 +17,17 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnWhiteMode;
-    @FXML
     private JFXHamburger ham;
     @FXML
     private JFXButton btnBack;
-    private Boolean visible = false;
+    @FXML
+    private JFXButton btnFullScreen;
 
     public void initialize() {
 
-        HamburgerSlideCloseTransition transition = new HamburgerSlideCloseTransition(ham);
-        transition.setRate(-1);
-        ham.addEventHandler(MouseEvent.MOUSE_PRESSED, (e)->{
-            transition.setRate(transition.getRate()*-1);
-            if(transition.getRate() == 1){
-                visible = true;
-                btnLogout.setVisible(visible);
-                btnWhiteMode.setVisible(visible);
-                btnBack.setVisible(visible);
-            }else if(transition.getRate() == -1){
-                visible = false;
-                btnLogout.setVisible(visible);
-                btnWhiteMode.setVisible(visible);
-                btnBack.setVisible(visible);
-            }
-            transition.play();
-
-        });
-
+        hamTran(ham, btnBack);
+        hamTran(ham, btnLogout);
+        hamTran(ham, btnFullScreen);
         UserInterfaceUtils.makeFadeInTransition(mainPane);
     }
 
@@ -59,7 +42,21 @@ public class ArmyManagerController {
         }
     }
 
-    public void setOnAction(ActionEvent event){
+    public void hamTran(JFXHamburger ham, JFXButton button) {
+        HamburgerSlideCloseTransition transition = new HamburgerSlideCloseTransition(ham);
+        transition.setRate(-1);
+        ham.addEventHandler(MouseEvent.MOUSE_PRESSED, (event -> {
+            transition.setRate(transition.getRate() * -1);
+            if (transition.getRate() == -1) {
+                button.setVisible(false);
+            } else if (transition.getRate() == 1) {
+                button.setVisible(true);
+            }
+            transition.play();
+        }));
+    }
+
+    public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
@@ -68,9 +65,8 @@ public class ArmyManagerController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
             }
-        } else if (event.getSource().equals(btnWhiteMode)) {
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainPane);
+        }else if (event.getSource().equals(btnFullScreen)){
+            UserInterfaceUtils.toggleFullscreen(btnFullScreen);
         }
     }
 }

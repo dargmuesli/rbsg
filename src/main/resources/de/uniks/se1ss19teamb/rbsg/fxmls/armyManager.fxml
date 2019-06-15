@@ -42,10 +42,10 @@
                    <FontAwesomeIconView glyphName="REPLY" />
                </graphic>
            </JFXButton>
-            <JFXButton fx:id="btnWhiteMode" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+            <JFXButton fx:id="btnFullScreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
                        visible="false" onAction="#setOnAction">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15" />
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15" />
                 </graphic></JFXButton>
             <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" visible="false" onAction="#setOnAction">
                 <graphic>
