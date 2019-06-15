@@ -29,17 +29,18 @@ public class ArmyManagerController {
         transition.setRate(-1);
         ham.addEventHandler(MouseEvent.MOUSE_PRESSED, (e)->{
             transition.setRate(transition.getRate()*-1);
+            if(transition.getRate() == 1){
+                btnLogout.isVisible();
+                btnWhiteMode.isVisible();
+                btnBack.isVisible();
+            }else if(transition.getRate() == -1){
+                btnLogout.setVisible(false);
+                btnWhiteMode.setVisible(false);
+                btnBack.setVisible(false);
+            }
             transition.play();
+
         });
-        if(transition.getRate() == 1){
-            btnLogout.isVisible();
-            btnWhiteMode.isVisible();
-            btnBack.isVisible();
-        }else if(transition.getRate() == -1){
-            btnLogout.setVisible(false);
-            btnWhiteMode.setVisible(false);
-            btnBack.setVisible(false);
-        }
 
         UserInterfaceUtils.makeFadeInTransition(mainPane);
     }

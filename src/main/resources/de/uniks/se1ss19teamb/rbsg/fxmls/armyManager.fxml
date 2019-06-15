@@ -37,16 +37,17 @@
             </padding>
         </VBox>
         <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
-           <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#eventHandler">
+           <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" visible="false" onAction="#eventHandler">
                <graphic>
                    <FontAwesomeIconView glyphName="REPLY" />
                </graphic>
            </JFXButton>
-            <JFXButton fx:id="btnWhiteMode" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction">
+            <JFXButton fx:id="btnWhiteMode" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                       visible="false" onAction="#setOnAction">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15" />
                 </graphic></JFXButton>
-            <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction">
+            <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" visible="false" onAction="#setOnAction">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
                 </graphic></JFXButton>
