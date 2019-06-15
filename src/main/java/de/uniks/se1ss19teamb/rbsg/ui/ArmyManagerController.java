@@ -3,12 +3,12 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import de.uniks.se1ss19teamb.rbsg.request.*;
 
 
 public class ArmyManagerController {
@@ -65,7 +65,7 @@ public class ArmyManagerController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
             }
-        }else if (event.getSource().equals(btnFullScreen)){
+        } else if (event.getSource().equals(btnFullScreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullScreen);
         }
     }

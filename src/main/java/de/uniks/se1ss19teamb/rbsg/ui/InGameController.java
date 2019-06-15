@@ -24,7 +24,8 @@ public class InGameController {
         private JFXButton btnFullScreen;
 
     ArmyManagerController armyManagerController = new ArmyManagerController();
-    public void initialize(){
+
+    public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         armyManagerController.hamTran(ham, btnBack);
         armyManagerController.hamTran(ham, btnLogout);
@@ -32,8 +33,8 @@ public class InGameController {
 
     }
 
-public void setOnAction(ActionEvent event){
-        if (event.getSource().equals(btnBack)){
+    public void setOnAction(ActionEvent event) {
+        if (event.getSource().equals(btnBack)) {
             switch (((JFXButton) event.getSource()).getId()) {
                 case "btnBack":
                     UserInterfaceUtils.makeFadeOutTransition(
@@ -41,9 +42,9 @@ public void setOnAction(ActionEvent event){
                     break;
                 default:
             }
-    }else if (event.getSource().equals(btnFullScreen)){
+        } else if (event.getSource().equals(btnFullScreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullScreen);
-        }else if (event.getSource().equals(btnLogout)){
+        } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
             if (logout.getSuccessful()) {
@@ -52,6 +53,6 @@ public void setOnAction(ActionEvent event){
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
             }
         }
-}
+    }
 
 }
