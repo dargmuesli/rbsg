@@ -369,17 +369,17 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: black;" +
-                "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";" +
-                "-fx-border-radius: 20px;" +
-                "-fx-background-radius: 10px;");
+            text.setStyle("-fx-text-fill: black;"
+                + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
+                + "-fx-border-radius: 20px;"
+                + "-fx-background-radius: 10px;");
 
             Platform.runLater(() -> {
                 name.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                name.setStyle("-fx-text-fill: black;" +
-                    "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";" +
-                    "-fx-border-radius: 20px;" +
-                    "-fx-background-radius: 10px;");
+                name.setStyle("-fx-text-fill: black;"
+                    + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
+                    + "-fx-border-radius: 20px;"
+                    + "-fx-background-radius: 10px;");
             });
 
             container.getChildren().addAll(name, text);
@@ -387,10 +387,10 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: black;" +
-                "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";" +
-                "-fx-border-radius: 20px;" +
-                "-fx-background-radius: 10px;");
+            text.setStyle("-fx-text-fill: black;"
+                + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
+                + "-fx-border-radius: 20px;"
+                + "-fx-background-radius: 10px;");
 
             container.getChildren().add(text);
         }
