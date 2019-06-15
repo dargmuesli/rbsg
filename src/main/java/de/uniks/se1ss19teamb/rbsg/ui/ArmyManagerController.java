@@ -22,6 +22,7 @@ public class ArmyManagerController {
     private JFXHamburger ham;
     @FXML
     private JFXButton btnBack;
+    private Boolean visible = false;
 
     public void initialize() {
 
@@ -30,13 +31,15 @@ public class ArmyManagerController {
         ham.addEventHandler(MouseEvent.MOUSE_PRESSED, (e)->{
             transition.setRate(transition.getRate()*-1);
             if(transition.getRate() == 1){
-                btnLogout.isVisible();
-                btnWhiteMode.isVisible();
-                btnBack.isVisible();
+                visible = true;
+                btnLogout.setVisible(visible);
+                btnWhiteMode.setVisible(visible);
+                btnBack.setVisible(visible);
             }else if(transition.getRate() == -1){
-                btnLogout.setVisible(false);
-                btnWhiteMode.setVisible(false);
-                btnBack.setVisible(false);
+                visible = false;
+                btnLogout.setVisible(visible);
+                btnWhiteMode.setVisible(visible);
+                btnBack.setVisible(visible);
             }
             transition.play();
 
