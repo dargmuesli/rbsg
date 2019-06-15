@@ -54,6 +54,8 @@ public class MainController {
     @FXML
     private JFXButton btnLogout;
     @FXML
+    private JFXButton btnArmyManager;
+    @FXML
     private VBox chat;
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
@@ -66,16 +68,18 @@ public class MainController {
         setGameListView();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
             PopupController controller = fxmlLoader.getController();
             notificationHandler.setPopupController(controller);
             errorContainer.getChildren().add(parent);
-
         } catch (IOException e) {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
         }
+
+        UserInterfaceUtils.makeFadeInTransition(mainScreen);
     }
 
     @FXML
@@ -123,9 +127,7 @@ public class MainController {
             } else {
                 notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
-        }
-
-        if (event.getSource().equals(btnLogout)) {
+        } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
             if (logout.getSuccessful()) {
@@ -133,6 +135,9 @@ public class MainController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
+        } else if (event.getSource().equals(btnArmyManager)) {
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
         }
     }
 
@@ -145,7 +150,7 @@ public class MainController {
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();

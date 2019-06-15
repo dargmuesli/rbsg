@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -18,7 +19,7 @@ public class UserInterfaceUtils {
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private static final Logger logger = LogManager.getLogger();
 
-    public static void makeFadeOutTransition(String path, AnchorPane node) {
+    public static void makeFadeOutTransition(String path, Node node) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(750));
         fadeTransition.setNode(node);
@@ -35,7 +36,7 @@ public class UserInterfaceUtils {
         fadeTransition.play();
     }
 
-    public static void makeFadeInTransition(AnchorPane node) {
+    public static void makeFadeInTransition(Node node) {
         node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));

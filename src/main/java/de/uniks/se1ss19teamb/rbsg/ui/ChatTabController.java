@@ -21,14 +21,15 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class ChatTabController {
 
     private String userKey = LoginController.getUserKey();
+    private final SystemSocket system = new SystemSocket(userKey);
     private String userName = LoginController.getUser();
     private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
-    private final SystemSocket system = new SystemSocket(userKey);
     @FXML
     private Button btnSend;
     @FXML
@@ -56,15 +57,15 @@ public class ChatTabController {
     public void initialize() {
         message.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                if (observable.getValue().substring(0,3).toLowerCase().contains("/w ")) {
+                if (observable.getValue().substring(0, 3).toLowerCase().contains("/w ")) {
                     for (int i = 4; i < observable.getValue().length(); i++) {
                         if (observable.getValue().toCharArray()[i] == ' ') {
                             setPrivate(observable.getValue(), i);
                             break;
                         }
                     }
-                } else if (observable.getValue().substring(0,4).toLowerCase().contains("/all")) {
-                    if (observable.getValue().substring(4,5).contains(" ")) {
+                } else if (observable.getValue().substring(0, 4).toLowerCase().contains("/all")) {
+                    if (observable.getValue().substring(4, 5).contains(" ")) {
                         selectionModel.select(chatPane.getTabs().get(0));
                         setAll();
                     }
@@ -78,67 +79,82 @@ public class ChatTabController {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {
-                addElemet(from, message, textArea, false);
-                // textArea.appendText(from + ": " + message + "\n");
+                addElement(from, message, textArea, false);
             }
         });
 
-        system.registerUserJoinHandler((name) -> addElemet("system", "userJoin|" + name, textArea, false));
+        system.registerUserJoinHandler((name) -> addElement(name, " has joined the Chat!", textArea, false));
 
-        system.registerUserLeftHandler((name) -> addElemet("system", "userLeft|" + name, textArea, false));
+        system.registerUserLeftHandler((name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
 
         system.registerGameCreateHandler((name, id, neededPlayers)
-            -> addElemet("system", "gameCreate|" + name + '|' + id + '|' + neededPlayers, textArea, false));
+            -> addElement(name, " has created a game with " + id + " id and needs " + neededPlayers
+            + " mates to play.", textArea, false));
 
-        system.registerGameDeleteHandler((id) -> addElemet("system", "gameDelete|" + id, textArea, false));
+        system.registerGameDeleteHandler((id) -> addElement(null, "Game with id: " + id + " was deleted!",
+            textArea, false));
 
         system.connect();
 
         LoginController.setChatSocket(chatSocket);
 
         chatPane.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<Tab>() {
-                @Override
-                public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-                    if (t1.getText().equals("All")) {
-                        setAll();
-                    } else {
-                        setPrivate(t1.getText(), -1);
-                    }
+            (ov, t, t1) -> {
+                if (t1.getText().equals("All")) {
+                    setAll();
+                } else {
+                    setPrivate(t1.getText(), -1);
                 }
             }
         );
 
         selectionModel = chatPane.getSelectionModel();
+
     }
 
-    private void addElemet(String player, String message, VBox box, boolean whisper) {
-        Label name = new Label(player + ":");
-        name.setPadding(new Insets(5));
-        name.setWrapText(true);
-        if (whisper) {
-            name.setStyle("-fx-text-fill: -fx-privatetext;");
-        } else {
-            name.setStyle("-fx-text-fill: black;");
-        }
-        // whisper on double click
-        name.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
+    private void addElement(String player, String message, VBox box, boolean whisper) {
+
+        HBox container = new HBox();
+        container.maxWidthProperty().bind(chatPane.widthProperty().multiply(0.98));
+
+        if (player != null) {
+            Label name = new Label(player + ":");
+            name.setPadding(new Insets(5));
+            name.setWrapText(true);
+
+            if (whisper) {
+                name.setStyle("-fx-text-fill: -fx-privatetext;");
+            } else {
+                name.setStyle("-fx-text-fill: white;");
+            }
+            // whisper on double click
+            name.setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
                         setPrivate(player, -1);
                     }
                 }
-            }
-        });
+            });
 
-        Label text = new Label(message);
-        text.setPadding(new Insets(5));
-        text.setWrapText(true);
-        text.setStyle("-fx-text-fill: black;");
+            Label text = new Label(message);
+            text.setPadding(new Insets(5));
+            text.setWrapText(true);
+            text.setStyle("-fx-text-fill: black; -fx-background-color: -fx-secondary;");
 
-        HBox container = new HBox(name, text);
+            Platform.runLater(() -> {
+                name.setMaxWidth(Region.USE_COMPUTED_SIZE);
+            });
+
+            container.getChildren().addAll(name, text);
+        } else {
+            Label text = new Label(message);
+            text.setPadding(new Insets(5));
+            text.setWrapText(true);
+            text.setStyle("-fx-text-fill: black; -fx-background-color: -fx-secondary;");
+
+            container.getChildren().add(text);
+        }
+
         Platform.runLater(() -> {
             box.getChildren().add(container);
         });
@@ -183,7 +199,7 @@ public class ChatTabController {
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         VBox area = (VBox) scrollPane.getContent();
         if (message != null) {
-            addElemet(from, message, area, true);
+            addElement(from, message, area, true);
         }
         selectionModel.select(tab);
     }
@@ -191,10 +207,10 @@ public class ChatTabController {
     private boolean checkInput(String input) {
         if (input.length() < 4) {
             return false;
-        } else if (input.substring(0,3).toLowerCase().contains("/w ")) {
+        } else if (input.substring(0, 3).toLowerCase().contains("/w ")) {
             setPrivate(input, 0);
             return true;
-        } else if (input.substring(0,4).toLowerCase().contains("/all") && input.length() == 4) {
+        } else if (input.substring(0, 4).toLowerCase().contains("/all") && input.length() == 4) {
             selectionModel.select(chatPane.getTabs().get(0));
             setAll();
             return true;
@@ -209,7 +225,7 @@ public class ChatTabController {
         } else if (count == 0) {
             sendTo = input.substring(3);
         } else {
-            sendTo = input.substring(3,count);
+            sendTo = input.substring(3, count);
         }
         Platform.runLater(() -> {
             addNewPane(sendTo, null, true, chatPane);
