@@ -74,7 +74,6 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <!--<fx:include fx:id="chatBox" source="chatTab.fxml" VBox.vgrow="ALWAYS"/>-->
                     <VBox fx:id="chatBox">
                         <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
                             <Tab closable="false" text="All">

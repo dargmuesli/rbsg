@@ -20,18 +20,18 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -108,9 +108,7 @@ public class MainController {
                 // controller not used yet, but it's good to have it for later purposes.
                 PopupController controller = fxmlLoader.getController();
                 notificationHandler.setPopupController(controller);
-                Platform.runLater(() -> {
-                    errorContainer.getChildren().add(parent);
-                });
+                Platform.runLater(() -> errorContainer.getChildren().add(parent));
             } catch (IOException e) {
                 notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
@@ -237,7 +235,7 @@ public class MainController {
                     return;
                 }
                 if (sendTo != null) {
-                    if (sendTo.trim() == "") {
+                    if (sendTo.trim().equals("")) {
                         sendTo = null;
                         chat.sendMessage(message.getText());
                     } else {
@@ -313,9 +311,7 @@ public class MainController {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem whisperMenuItem = new MenuItem("whisper");
         contextMenu.getItems().add(whisperMenuItem);
-        contextMenu.setOnAction(e -> {
-            setPrivate(player, -1);
-        });
+        contextMenu.setOnAction(e -> setPrivate(player, -1));
 
         contextMenu.setStyle("-fx-background-color:transparent;");
         contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
@@ -326,13 +322,10 @@ public class MainController {
         plabel.setMaxWidth(Double.MAX_VALUE);
         plabel.setMaxHeight(Double.MAX_VALUE);
 
-        plabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        setPrivate(player, -1);
-                    }
+        plabel.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    setPrivate(player, -1);
                 }
             }
         });
@@ -356,13 +349,10 @@ public class MainController {
                 name.setStyle("-fx-text-fill: black;");
             }
             // whisper on double click
-            name.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                        if (mouseEvent.getClickCount() == 2) {
-                            setPrivate(player, -1);
-                        }
+            name.setOnMouseClicked(mouseEvent -> {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        setPrivate(player, -1);
                     }
                 }
             });
@@ -388,19 +378,17 @@ public class MainController {
             text.setPadding(new Insets(5));
             text.setWrapText(true);
             text.setStyle("-fx-text-fill: black;"
-                + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
+                + "-fx-background-color: white;"
                 + "-fx-border-radius: 20px;"
                 + "-fx-background-radius: 10px;");
 
             container.getChildren().add(text);
         }
 
-        Platform.runLater(() -> {
-            box.getChildren().add(container);
-        });
+        Platform.runLater(() -> box.getChildren().add(container));
     }
 
-    public void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
+    private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
         boolean createTab = true;
         for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
@@ -446,6 +434,18 @@ public class MainController {
 
     private boolean checkInput(String input) {
         if (input.length() < 4) {
+            if (input.substring(0, 2).equals("//")) {
+                Window window = btnFullscreen.getScene().getWindow();
+                Image image = new Image(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/memes/Comment.jpg").toExternalForm());
+                ImageView imageView = new ImageView(image);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("IF ERROR");
+                alert.setHeaderText(null);
+                alert.setContentText("IF error THEN me");
+                alert.setGraphic(imageView);
+                alert.initOwner(window);
+                alert.show();
+            }
             return false;
         } else if (input.substring(0, 3).toLowerCase().contains("/w ")) {
             setPrivate(input, 0);
