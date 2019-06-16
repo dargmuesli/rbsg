@@ -95,6 +95,8 @@ public class RegisterController {
             register();
         } else if (event.getSource().equals(btnCancel)) {
             goToLogin();
+        } else if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         }
     }
 

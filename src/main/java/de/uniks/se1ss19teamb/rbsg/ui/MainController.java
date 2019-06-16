@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
@@ -81,6 +82,13 @@ public class MainController {
     private VBox textArea;
     @FXML
     private JFXTabPane chatPane;
+    @FXML
+    private JFXButton btnPlayerRefresh;
+    @FXML
+    private JFXButton btnGameRefresh;
+    @FXML
+    private JFXHamburger ham;
+    ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
@@ -95,6 +103,10 @@ public class MainController {
     public void initialize() {
 
         Platform.runLater(() -> {
+
+            armyManagerController.hamTran(ham, btnFullscreen);
+            armyManagerController.hamTran(ham, btnGameRefresh);
+            armyManagerController.hamTran(ham, btnLogout);
             //UserInterfaceUtils.makeFadeInTransition(mainScreen);
             setGameListView();
 
@@ -245,6 +257,10 @@ public class MainController {
                 }
                 message.setText("");
             }
+        } else if (event.getSource().equals(btnGameRefresh)) {
+            updateGameView();
+        } else if (event.getSource().equals(btnPlayerRefresh)) {
+            updatePlayerView();
         }
     }
 
