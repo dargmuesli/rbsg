@@ -12,7 +12,7 @@
     <AnchorPane fx:id="inGameScreen" stylesheets="@../css/dark-design2.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
          <children>
-             <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+             <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                  <JFXButton fx:id="btnBack" visible="false" onAction="#setOnAction" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false">
                      <graphic>
                          <FontAwesomeIconView glyphName="REPLY" />

@@ -36,7 +36,7 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
         </VBox>
-        <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+        <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
            <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" visible="false" onAction="#eventHandler">
                <graphic>
                    <FontAwesomeIconView glyphName="REPLY" />
