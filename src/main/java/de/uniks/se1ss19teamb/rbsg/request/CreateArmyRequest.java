@@ -27,8 +27,6 @@ public class CreateArmyRequest extends AbstractRestRequest {
             unitArray.add(id);
         }
         json.add("units", unitArray);
-
-
         return json;
     }
 
