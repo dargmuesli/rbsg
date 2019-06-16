@@ -8,8 +8,8 @@ public class Unit {
 
     private String id;
     private String type;
-    private String mp;
-    private String hp;
+    private int mp;
+    private int hp;
     private ArrayList<String> canAttack;
 
     public String getId() {
@@ -28,19 +28,19 @@ public class Unit {
         this.type = type;
     }
 
-    public String getMp() {
+    public int getMp() {
         return mp;
     }
 
-    public void setMp(String mp) {
+    public void setMp(int mp) {
         this.mp = mp;
     }
 
-    public String getHp() {
+    public int getHp() {
         return hp;
     }
 
-    public void setHp(String hp) {
+    public void setHp(int hp) {
         this.hp = hp;
     }
 
