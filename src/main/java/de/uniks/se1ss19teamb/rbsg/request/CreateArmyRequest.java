@@ -46,4 +46,9 @@ public class CreateArmyRequest extends AbstractRestRequest {
     protected String getUserToken() {
         return userToken;
     }
+
+    public String getArmyID() {
+        JsonObject responseData = getResponse().get("data").getAsJsonObject();
+        return responseData.get("id").getAsString();
+    }
 }

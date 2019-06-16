@@ -1,7 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
 import de.uniks.se1ss19teamb.rbsg.model.Game;
-
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 
 
 public class RestRequestTestsReal {
+
+    private String userKey;
 
     @Test
     public void registerUserTest() {
@@ -172,12 +173,28 @@ public class RestRequestTestsReal {
         }
     }
 
+    private LoginUserRequest loginUser() {
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        login.sendRequest();
+        userKey = login.getUserKey();
+        return login;
+    }
+
+    private CreateArmyRequest createArmy() {
+        String armyName = "testArmy001";
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, unitIDs, userKey);
+        createArmyRequest.sendRequest();
+        return createArmyRequest;
+    }
+
     @Test
     public void createArmyRequestTest() {
         String name = "TestBArmy";
-
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
-        login.sendRequest();
+        LoginUserRequest login = loginUser();
 
         ArrayList<String> unitIDs = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -187,6 +204,24 @@ public class RestRequestTestsReal {
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
+
+    }
+
+    @Test
+    public void deleteArmyRequestTest() {
+        String armyId;
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        armyId = createArmyRequest.getArmyID();
+        DeleteArmyRequest req = new DeleteArmyRequest(armyId, userKey);
+        req.sendRequest();
+        try {
+            Assert.assertTrue(req.getSuccessful());
+            Assert.assertEquals("Army deleted", req.getMessage());
+        } catch (AssertionError e) {
+            System.out.println("Check if there aren't too many armies for this player.");
+            throw e;
+        }
 
     }
 

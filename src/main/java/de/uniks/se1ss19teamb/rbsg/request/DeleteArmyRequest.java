@@ -24,7 +24,7 @@ public class DeleteArmyRequest extends AbstractRestRequest {
 
     @Override
     protected String getEndpoint() {
-        return "/game/" + armyId;
+        return "/army/" + armyId;
     }
 
     @Override
