@@ -2,12 +2,14 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import sun.rmi.runtime.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -262,6 +264,23 @@ public class RestRequestTestsReal {
         Assert.assertTrue(containsArmyID);
         deleteArmy(createArmyRequest.getArmyID());
 
+    }
+
+    @Test
+    public void queryUnitsRequestTest() {
+        loginUser();
+        QueryUnitsRequest req = new QueryUnitsRequest(userKey);
+        req.sendRequest();
+        ArrayList<Unit> unitList = req.getUnits();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals(6, unitList.size());
+        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
+        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
+        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
+        Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
 
     @After
