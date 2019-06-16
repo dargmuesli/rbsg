@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
@@ -50,8 +51,13 @@ public class QueryArmiesRequest extends AbstractRestRequest {
             JsonObject army = g.getAsJsonObject();
             current.setId(army.get("id").getAsString());
             current.setName(army.get("name").getAsString());
-            //TODO: Check the String and split the IDs to a new String list.
-            String units = army.get("units").getAsString();
+
+            JsonArray units = army.get("units").getAsJsonArray();
+            ArrayList<String> unitList = new ArrayList<>();
+            for (JsonElement unit : units) {
+                unitList.add(unit.getAsString());
+            }
+            current.setUnits(unitList);
             armies.add(current);
         }
 
