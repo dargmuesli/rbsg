@@ -1,6 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.model.Army;
+
+import java.util.ArrayList;
 
 public class GetSpecificArmyRequest extends AbstractRestRequest {
 
@@ -30,5 +35,21 @@ public class GetSpecificArmyRequest extends AbstractRestRequest {
     @Override
     protected String getUserToken() {
         return userToken;
+    }
+
+    public Army getRequestedArmy() {
+        JsonObject data = getResponse().get("data").getAsJsonObject();
+        String armyID = data.get("id").getAsString();
+        String name = data.get("name").getAsString();
+        JsonArray units = data.get("units").getAsJsonArray();
+        ArrayList<String> unitList = new ArrayList<>();
+        for (JsonElement e : units) {
+            unitList.add(e.getAsString());
+        }
+        Army reqArmy = new Army();
+        reqArmy.setId(armyID);
+        reqArmy.setName(name);
+        reqArmy.setUnits(unitList);
+        return reqArmy;
     }
 }

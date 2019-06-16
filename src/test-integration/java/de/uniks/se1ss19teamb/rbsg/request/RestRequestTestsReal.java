@@ -1,10 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 
@@ -191,6 +193,10 @@ public class RestRequestTestsReal {
         return createArmyRequest;
     }
 
+    private void deleteArmy(String armyID) {
+        DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(armyID, userKey);
+    }
+
     @Test
     public void createArmyRequestTest() {
         String name = "TestBArmy";
@@ -204,7 +210,7 @@ public class RestRequestTestsReal {
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
-
+        deleteArmy(req.getArmyID());
     }
 
     @Test
@@ -222,6 +228,19 @@ public class RestRequestTestsReal {
             System.out.println("Check if there aren't too many armies for this player.");
             throw e;
         }
+
+    }
+
+    @Test
+    public void GetSpecificArmyRequestTest() {
+        LoginUserRequest login = loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getArmyID(), userKey);
+        req.sendRequest();
+        Army reqArmy = req.getRequestedArmy();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals("testArmy001", reqArmy.getName());
+        deleteArmy(reqArmy.getId());
 
     }
 
