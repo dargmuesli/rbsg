@@ -81,6 +81,10 @@ public class MainController {
     private VBox textArea;
     @FXML
     private JFXTabPane chatPane;
+    @FXML
+    private JFXButton btnPlayerRefresh;
+    @FXML
+    private JFXButton btnGameRefresh;
     private SingleSelectionModel<Tab> selectionModel;
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
@@ -244,6 +248,10 @@ public class MainController {
                     chat.sendMessage(message.getText());
                 }
                 message.setText("");
+            } else if (event.getSource().equals(btnPlayerRefresh)) {
+                updatePlayerView();
+            }else if (event.getSource().equals(btnGameRefresh)) {
+                updateGameView();
             }
         }
     }

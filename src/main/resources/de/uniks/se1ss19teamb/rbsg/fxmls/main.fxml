@@ -177,6 +177,18 @@
                 <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
             </graphic>
         </JFXButton>
+        <JFXButton fx:id="btnPlayerRefresh" alignment="CENTER_LEFT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                   AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <graphic>
+                <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
+            </graphic>
+        </JFXButton>
+        <JFXButton fx:id="btnGameRefresh" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                   AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="5.0">
+            <graphic>
+                <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
+            </graphic>
+        </JFXButton>
         <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
         <!--            <items>-->
         <!--                <MenuItem mnemonicParsing="false">-->
