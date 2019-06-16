@@ -51,4 +51,15 @@ public class Unit {
     public void setCanAttack(ArrayList<String> canAttack) {
         this.canAttack = canAttack;
     }
+
+    @Override
+    public String toString() {
+        return "Unit{" +
+            "id='" + id + '\'' +
+            ", type='" + type + '\'' +
+            ", mp=" + mp +
+            ", hp=" + hp +
+            ", canAttack=" + canAttack +
+            '}';
+    }
 }
