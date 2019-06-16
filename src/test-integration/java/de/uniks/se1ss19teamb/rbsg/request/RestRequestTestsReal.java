@@ -7,9 +7,6 @@ import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -294,7 +291,7 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void UpdateArmyRequestTest() {
+    public void updateArmyRequestTest() {
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
         Army testArmy = new Army();
