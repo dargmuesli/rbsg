@@ -1,7 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CreateArmyRequest extends AbstractRestRequest {
@@ -20,14 +22,13 @@ public class CreateArmyRequest extends AbstractRestRequest {
     protected JsonObject buildJson() {
         JsonObject json = new JsonObject();
         json.addProperty("name", armyName);
-        StringBuilder unitIDBuilder = new StringBuilder();
+        JsonArray unitArray = new JsonArray();
         for (String id : unitIDs) {
-            unitIDBuilder.append("\"" + id + "\" ");
+            unitArray.add(id);
         }
-        unitIDBuilder.deleteCharAt(0);
-        unitIDBuilder.delete(unitIDBuilder.length() - 2, unitIDBuilder.length());
+        json.add("units", unitArray);
 
-        json.addProperty("name", unitIDBuilder.toString());
+
         return json;
     }
 

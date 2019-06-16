@@ -45,7 +45,7 @@ sourceSets {
 dependencies {
     checkstyleOverride group: 'com.puppycrawl.tools', name: 'checkstyle', version: '8.21'
 
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
     implementation group: 'com.jfoenix', name: 'jfoenix', version: '8.0.8'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.5'
     implementation group: 'commons-io', name: 'commons-io', version: '2.5'

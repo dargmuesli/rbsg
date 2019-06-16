@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 
 public class RestRequestTestsReal {
 
@@ -168,6 +170,24 @@ public class RestRequestTestsReal {
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
+    }
+
+    @Test
+    public void createArmyRequestTest() {
+        String name = "TestBArmy";
+
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        login.sendRequest();
+
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, login.getUserKey());
+
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+
     }
 
     @After
