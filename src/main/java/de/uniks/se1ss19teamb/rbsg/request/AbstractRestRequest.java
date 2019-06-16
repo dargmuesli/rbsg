@@ -50,7 +50,8 @@ public abstract class AbstractRestRequest implements RestRequest {
                     break;
                 case "put":
                     result = httpManager.put(new URI(url + getEndpoint()), token == null
-                        ? null : new Header[]{new BasicHeader("userKey", token)}, null);
+                            ? null : new Header[]{new BasicHeader("userKey", token)},
+                        new StringEntity(buildJson().toString()));
                     break;
                 default:
                     throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());

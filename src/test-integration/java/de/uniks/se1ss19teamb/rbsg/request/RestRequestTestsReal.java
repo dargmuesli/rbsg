@@ -200,6 +200,16 @@ public class RestRequestTestsReal {
         deleteArmyRequest.sendRequest();
     }
 
+    private void deleteAllArmies() {
+        loginUser();
+        QueryArmiesRequest queryArmiesRequest = new QueryArmiesRequest(userKey);
+        queryArmiesRequest.sendRequest();
+        for (Army a : queryArmiesRequest.getArmies()) {
+            DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(a.getId(), userKey);
+            deleteArmyRequest.sendRequest();
+        }
+    }
+
     @Test
     public void createArmyRequestTest() {
         String name = "TestBArmy";
@@ -283,8 +293,27 @@ public class RestRequestTestsReal {
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
 
+    @Test
+    public void UpdateArmyRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        Army testArmy = new Army();
+        testArmy.setId(createArmyRequest.getArmyID());
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b7");
+        }
+        testArmy.setUnits(unitIDs);
+        testArmy.setName("changedName");
+        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+
+    }
+
     @After
     public void cleanupGames() throws ParseException {
+        deleteAllArmies();
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 
