@@ -195,6 +195,7 @@ public class RestRequestTestsReal {
 
     private void deleteArmy(String armyID) {
         DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(armyID, userKey);
+        deleteArmyRequest.sendRequest();
     }
 
     @Test
@@ -232,8 +233,8 @@ public class RestRequestTestsReal {
     }
 
     @Test
-    public void GetSpecificArmyRequestTest() {
-        LoginUserRequest login = loginUser();
+    public void getSpecificArmyRequestTest() {
+        loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
         GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getArmyID(), userKey);
         req.sendRequest();
@@ -241,6 +242,25 @@ public class RestRequestTestsReal {
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals("testArmy001", reqArmy.getName());
         deleteArmy(reqArmy.getId());
+
+    }
+
+    @Test
+    public void queryArmiesRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        QueryArmiesRequest req = new QueryArmiesRequest(userKey);
+        req.sendRequest();
+        ArrayList<Army> armies = req.getArmies();
+        Assert.assertTrue(req.getSuccessful());
+        boolean containsArmyID = false;
+        for (Army army : armies) {
+            if (army.getId().equals(createArmyRequest.getArmyID())) {
+                containsArmyID = true;
+            }
+        }
+        Assert.assertTrue(containsArmyID);
+        deleteArmy(createArmyRequest.getArmyID());
 
     }
 

@@ -8,11 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import java.util.ArrayList;
 
-/*
-public class QueryArmiesRequest{
-
-}
-*/
 public class QueryArmiesRequest extends AbstractRestRequest {
 
     private String userToken;
