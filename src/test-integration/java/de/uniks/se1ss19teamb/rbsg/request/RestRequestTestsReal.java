@@ -3,11 +3,11 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import java.util.ArrayList;
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import java.util.ArrayList;
 
 
 public class RestRequestTestsReal {
