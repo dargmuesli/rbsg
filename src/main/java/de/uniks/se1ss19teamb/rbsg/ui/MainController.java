@@ -70,6 +70,7 @@ public class MainController {
     private final SystemSocket system = new SystemSocket(userKey);
     private String userName = LoginController.getUser();
     private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
+    // TODO - after some time it automaticly disconnects system and chatSocket
     @FXML
     private VBox chatBox;
     @FXML
@@ -87,9 +88,6 @@ public class MainController {
 
     private String sendTo = null;
 
-    /* TODO
-        after some time it automaticly disconnects system and chatSocket
-     */
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private Game joinedGame;
@@ -266,8 +264,7 @@ public class MainController {
                 controller.setUpGameLabel(game, this);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
-                notificationHandler.sendWarning("Ein GameField konnte nicht geladen werden!", logger);
-                e.printStackTrace();
+                notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
             }
         }
     }
@@ -415,8 +412,7 @@ public class MainController {
                             getPrivate(from, message, newTab);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        // TODO Logger.
+                        notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
                     }
                 }
             );
