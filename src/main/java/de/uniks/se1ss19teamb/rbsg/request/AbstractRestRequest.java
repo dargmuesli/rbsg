@@ -3,7 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import de.uniks.se1ss19teamb.rbsg.util.ErrorHandler;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.net.URI;
 
@@ -18,10 +18,10 @@ import org.apache.logging.log4j.Logger;
 public abstract class AbstractRestRequest implements RestRequest {
 
     private static final String url = "https://rbsg.uniks.de/api";
-    private static final Logger logger = LogManager.getLogger(AbstractRestRequest.class);
+    private static final Logger logger = LogManager.getLogger();
     static HttpManager httpManager = new HttpManager();
     private JsonObject response = null;
-    private ErrorHandler errorHandler = ErrorHandler.getErrorHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     protected abstract JsonObject buildJson();
 
@@ -55,8 +55,7 @@ public abstract class AbstractRestRequest implements RestRequest {
                     throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
-            errorHandler.sendError("Fehler bei einer Webanfrage!");
-            logger.error(e);
+            notificationHandler.sendError("Fehler bei einer Webanfrage!", logger, e);
         } finally {
             JsonParser parser = new JsonParser();
             response = (JsonObject) parser.parse(result == null ? "" : result.body);

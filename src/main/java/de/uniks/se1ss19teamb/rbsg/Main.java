@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg;
 
+import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         Parent root = FXMLLoader
-            .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/login.fxml"));
+            .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml"));
         primaryStage.setTitle("RSBG-Team B");
         primaryStage.setScene(new Scene(root, 800, 650));
         // values taken from the largest fxml's root container width & height
@@ -26,5 +27,6 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
 
+        TextureManager.init();
     }
 }

@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@dark-design2.css"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/dark-design2.css"
             xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-    <AnchorPane fx:id="mainScreen" stylesheets="@dark-design2.css" AnchorPane.bottomAnchor="0.0"
+    <AnchorPane fx:id="mainScreen" stylesheets="@../css/dark-design2.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
                     AnchorPane.topAnchor="50.0"/>
@@ -34,7 +34,7 @@
                         </VBox.margin>
                     </Label>
                     <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0"
                                 VBox.vgrow="ALWAYS">
                         <ListView fx:id="playerListView"/>
                     </ScrollPane>
@@ -71,7 +71,7 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <fx:include source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
+                    <fx:include fx:id="chat" source="chatTab.fxml" VBox.vgrow="ALWAYS"/>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
                     <HBox.margin>
@@ -119,11 +119,34 @@
                             </graphic>
                         </JFXButton>
                     </VBox>
+                    <Pane prefHeight="1.0" style="-fx-background-color: grey;">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </Pane>
+                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                        <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
+                            <font>
+                                <Font size="15.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" top="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <JFXButton fx:id="btnArmyManager" mnemonicParsing="false" onAction="#setOnAction" text="open">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
+                            </graphic>
+                        </JFXButton>
+                        <VBox.margin>
+                            <Insets bottom="10.0"/>
+                        </VBox.margin>
+                    </VBox>
                 </VBox>
             </HBox>
         </VBox>
         <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                   AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
             <graphic>
                 <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
             </graphic>
@@ -143,5 +166,11 @@
         <!--                <FontAwesomeIconView accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />-->
         <!--            </graphic>-->
         <!--        </MenuButton>-->
+        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
+                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+            <graphic>
+                <FontAwesomeIconView glyphName="EXPAND" size="15"/>
+            </graphic>
+        </JFXButton>
     </AnchorPane>
 </AnchorPane>

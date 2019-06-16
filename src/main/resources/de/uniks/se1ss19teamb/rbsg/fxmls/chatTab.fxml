@@ -7,16 +7,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" stylesheets="@dark-design2.css" xmlns="http://javafx.com/javafx/8.0.162-ea"
+<VBox xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/dark-design2.css"
+      xmlns="http://javafx.com/javafx/8.0.162-ea"
       fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ChatTabController">
-    <JFXTabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+    <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="All">
             <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
-                <TextArea fx:id="textArea" editable="false"/>
+                <VBox fx:id="textArea"/>
             </ScrollPane>
         </Tab>
     </JFXTabPane>
