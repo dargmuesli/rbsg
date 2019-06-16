@@ -1,10 +1,8 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.ArrayList;
 
@@ -33,11 +31,11 @@ public class UpdateArmyRequest extends AbstractRestRequest {
     protected JsonObject buildJson() {
         JsonObject json = new JsonObject();
         json.addProperty("name", armyName);
-        JsonArray unitIDArray = new JsonArray();
+        JsonArray unitIdArray = new JsonArray();
         for (String unit : unitIDs) {
-            unitIDArray.add(unit);
+            unitIdArray.add(unit);
         }
-        json.add("units", unitIDArray);
+        json.add("units", unitIdArray);
         return json;
     }
 
