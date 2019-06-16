@@ -18,6 +18,7 @@
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/dark-design2.css"
             xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
     <AnchorPane fx:id="mainScreen" stylesheets="@../css/dark-design2.css" AnchorPane.bottomAnchor="0.0"
@@ -171,24 +172,33 @@
                 </VBox>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                   AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
-            <graphic>
-                <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
-            </graphic>
-        </JFXButton>
         <JFXButton fx:id="btnPlayerRefresh" alignment="CENTER_LEFT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
                    AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
             <graphic>
                 <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="btnGameRefresh" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                   AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="5.0">
-            <graphic>
-                <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
-            </graphic>
-        </JFXButton>
+        <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                       AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0" visible="false">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnGameRefresh" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                       AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="5.0" visible="false">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
+                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" visible="false">
+                <graphic>
+                    <FontAwesomeIconView glyphName="EXPAND" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"></JFXHamburger>
+        </HBox>
         <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
         <!--            <items>-->
         <!--                <MenuItem mnemonicParsing="false">-->
@@ -204,11 +214,5 @@
         <!--                <FontAwesomeIconView accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />-->
         <!--            </graphic>-->
         <!--        </MenuButton>-->
-        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
-                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
-            <graphic>
-                <FontAwesomeIconView glyphName="EXPAND" size="15"/>
-            </graphic>
-        </JFXButton>
     </AnchorPane>
 </AnchorPane>
