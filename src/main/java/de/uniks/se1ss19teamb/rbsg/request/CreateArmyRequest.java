@@ -2,15 +2,15 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CreateArmyRequest extends AbstractRestRequest {
 
     private String userToken;
     private String armyName;
-    private List<String> unitIDs;
+    private ArrayList<String> unitIDs;
 
-    public CreateArmyRequest(String armyName, List<String> unitIDs, String userToken) {
+    public CreateArmyRequest(String armyName, ArrayList<String> unitIDs, String userToken) {
         this.userToken = userToken;
         this.unitIDs = unitIDs;
         this.armyName = armyName;
