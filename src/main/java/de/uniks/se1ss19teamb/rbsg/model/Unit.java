@@ -54,12 +54,12 @@ public class Unit {
 
     @Override
     public String toString() {
-        return "Unit{" +
-            "id='" + id + '\'' +
-            ", type='" + type + '\'' +
-            ", mp=" + mp +
-            ", hp=" + hp +
-            ", canAttack=" + canAttack +
-            '}';
+        return "Unit{"
+            + "id='" + id + '\''
+            + ", type='" + type + '\''
+            + ", mp=" + mp
+            + ", hp=" + hp
+            + ", canAttack=" + canAttack
+            + '}';
     }
 }

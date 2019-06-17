@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import java.net.URI;
 import org.apache.http.Header;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.ParseException;
@@ -10,8 +11,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.net.URI;
 
 public abstract class AbstractRestRequest implements RestRequest {
 
