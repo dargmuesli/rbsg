@@ -49,8 +49,8 @@ public class LoginController {
     @FXML
     private AnchorPane loginScreen1;
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
-    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
-    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
 
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
 
@@ -82,11 +82,11 @@ public class LoginController {
         // load user data
         userData = UserData.loadUserData(notificationHandler);
 
-        while(!new File(path).exists()) {
+        while (!new File(path).exists()) {
             SerializeUtils.serialize(path, true);
         }
-        if (new File(path).exists()){
-            changeTheme(loginScreen,loginScreen1, path, css_dark, css_white);
+        if (new File(path).exists()) {
+            changeTheme(loginScreen,loginScreen1, path, cssDark, cssWhite);
         }
 
         if (userData == null) {
@@ -127,7 +127,8 @@ public class LoginController {
         }
     }
 
-    public void changeTheme(AnchorPane anchorPane1,AnchorPane anchorPane2, String path, String css_dark, String css_white){
+    public void changeTheme(AnchorPane anchorPane1,AnchorPane anchorPane2, String path,
+                            String css_dark, String css_white) {
         if (SerializeUtils.deserialize(new File(path), boolean.class)) {
             anchorPane1.getStylesheets().clear();
             anchorPane1.getStylesheets().add(css_dark);
@@ -141,7 +142,7 @@ public class LoginController {
         }
     }
 
-    public void changeThemeOnButton(AnchorPane anchorPane1, AnchorPane anchorPane2, String path){
+    public void changeThemeOnButton(AnchorPane anchorPane1, AnchorPane anchorPane2, String path) {
         if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
             anchorPane1.getStylesheets().clear();
             anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");

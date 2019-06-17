@@ -4,10 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import java.io.File;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
 
 public class UnitOverviewController {
     @FXML
@@ -19,18 +19,18 @@ public class UnitOverviewController {
     @FXML
     VBox unitBox;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
 
     private int count = 0;
 
     public void initialize() {
-        if (SerializeUtils.deserialize(new File(path), boolean.class)){
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
             unitBox.getStylesheets().clear();
-            unitBox.getStylesheets().add(css_dark);
+            unitBox.getStylesheets().add(cssDark);
         } else {
             unitBox.getStylesheets().clear();
-            unitBox.getStylesheets().add(css_white);
+            unitBox.getStylesheets().add(cssWhite);
         }
 
         updateCount();

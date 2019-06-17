@@ -87,8 +87,6 @@ public class MainController {
     @FXML
     private JFXButton btnPlayerRefresh;
     @FXML
-    private JFXButton btnGameRefresh;
-    @FXML
     private JFXHamburger ham;
     @FXML
     private AnchorPane mainScreen1;
@@ -96,15 +94,15 @@ public class MainController {
     private JFXButton btnMode;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     LoginController loginController = new LoginController();
-    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;" +
-        "-fx-padding: 0px;";
-    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;" +
-        "-fx-padding: 0px;";
+    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
+        + "-fx-padding: 0px;";
+    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
+        + "-fx-padding: 0px;";
     private String mode;
     ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
-    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -119,11 +117,11 @@ public class MainController {
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
-        if (SerializeUtils.deserialize(new File(path), boolean.class)){
-            loginController.changeTheme(mainScreen, mainScreen1, path, css_dark, css_white);
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
             mode = darkMode;
         } else {
-            loginController.changeTheme(mainScreen, mainScreen1, path, css_dark, css_white);
+            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
             mode = whiteMode;
         }
 
@@ -285,12 +283,12 @@ public class MainController {
             updatePlayerView();
             updateGameView();
         } else if (event.getSource().equals(btnMode)){
-            if(SerializeUtils.deserialize(new File(path), boolean.class)){
+            if (SerializeUtils.deserialize(new File(path), boolean.class)) {
                 playerListView.setStyle(whiteMode);
                 gameListView.setStyle(whiteMode);
                 loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
                 SerializeUtils.serialize(path, false);
-            }else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
+            } else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
                 playerListView.setStyle(darkMode);
                 gameListView.setStyle(darkMode);
                 loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
