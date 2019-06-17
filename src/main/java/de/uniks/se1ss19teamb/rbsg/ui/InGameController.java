@@ -22,10 +22,18 @@ public class InGameController {
         private JFXButton btnLogout;
     @FXML
         private JFXButton btnFullScreen;
+    LoginController loginController = new LoginController();
+    @FXML
+        private AnchorPane inGameScreen1;
+    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
 
     ArmyManagerController armyManagerController = new ArmyManagerController();
 
     public void initialize() {
+        loginController.changeTheme(inGameScreen, inGameScreen1, path, css_dark, css_white);
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         armyManagerController.hamTran(ham, btnBack);
         armyManagerController.hamTran(ham, btnLogout);

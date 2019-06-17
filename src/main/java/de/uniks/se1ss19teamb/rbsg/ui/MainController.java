@@ -11,8 +11,10 @@ import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -88,8 +90,21 @@ public class MainController {
     private JFXButton btnGameRefresh;
     @FXML
     private JFXHamburger ham;
+    @FXML
+    private AnchorPane mainScreen1;
+    @FXML
+    private JFXButton btnMode;
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    LoginController loginController = new LoginController();
+    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;" +
+        "-fx-padding: 0px;";
+    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;" +
+        "-fx-padding: 0px;";
+    private String mode;
     ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
+    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -102,12 +117,23 @@ public class MainController {
 
     public void initialize() {
 
+        UserInterfaceUtils.makeFadeInTransition(mainScreen);
+
+        if (SerializeUtils.deserialize(new File(path), boolean.class)){
+            loginController.changeTheme(mainScreen, mainScreen1, path, css_dark, css_white);
+            mode = darkMode;
+        } else {
+            loginController.changeTheme(mainScreen, mainScreen1, path, css_dark, css_white);
+            mode = whiteMode;
+        }
+
+
         Platform.runLater(() -> {
 
+
             armyManagerController.hamTran(ham, btnFullscreen);
-            armyManagerController.hamTran(ham, btnGameRefresh);
             armyManagerController.hamTran(ham, btnLogout);
-            //UserInterfaceUtils.makeFadeInTransition(mainScreen);
+            armyManagerController.hamTran(ham, btnMode);
             setGameListView();
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -194,8 +220,7 @@ public class MainController {
         gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setStyle("-fx-background-color:transparent;");
-        gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        gameListView.setStyle(mode);
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
@@ -205,8 +230,7 @@ public class MainController {
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        playerListView.setStyle(mode);
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String name : existingPlayers) {
@@ -257,10 +281,21 @@ public class MainController {
                 }
                 message.setText("");
             }
-        } else if (event.getSource().equals(btnGameRefresh)) {
-            updateGameView();
         } else if (event.getSource().equals(btnPlayerRefresh)) {
             updatePlayerView();
+            updateGameView();
+        } else if (event.getSource().equals(btnMode)){
+            if(SerializeUtils.deserialize(new File(path), boolean.class)){
+                playerListView.setStyle(whiteMode);
+                gameListView.setStyle(whiteMode);
+                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
+                SerializeUtils.serialize(path, false);
+            }else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
+                playerListView.setStyle(darkMode);
+                gameListView.setStyle(darkMode);
+                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
+                SerializeUtils.serialize(path, true);
+            }
         }
     }
 
@@ -296,8 +331,7 @@ public class MainController {
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        playerListView.setStyle(mode);
         ObservableList playerList = playerListView.getItems();
         while (playerList.size() != 0) {
             playerList.remove(0);

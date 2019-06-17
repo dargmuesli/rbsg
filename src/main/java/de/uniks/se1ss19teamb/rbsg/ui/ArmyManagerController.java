@@ -22,8 +22,16 @@ public class ArmyManagerController {
     private JFXButton btnBack;
     @FXML
     private JFXButton btnFullScreen;
+    @FXML
+    private AnchorPane mainPane1;
+    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    LoginController loginController = new LoginController();
 
     public void initialize() {
+
+        loginController.changeTheme(mainPane, mainPane1, path, css_dark, css_white);
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
