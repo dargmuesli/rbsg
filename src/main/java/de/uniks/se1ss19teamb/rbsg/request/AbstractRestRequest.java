@@ -2,11 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-
 import java.net.URI;
-
 import org.apache.http.Header;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.ParseException;
@@ -50,7 +47,11 @@ public abstract class AbstractRestRequest implements RestRequest {
                     result = httpManager.delete(new URI(url + getEndpoint()), token == null
                         ? null : new Header[]{new BasicHeader("userKey", token)}, null);
                     break;
-
+                case "put":
+                    result = httpManager.put(new URI(url + getEndpoint()), token == null
+                            ? null : new Header[]{new BasicHeader("userKey", token)},
+                        new StringEntity(buildJson().toString()));
+                    break;
                 default:
                     throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }

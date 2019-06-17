@@ -15,11 +15,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane fx:id="mainScreen1"  xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-    <AnchorPane fx:id="mainScreen"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
-        <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<AnchorPane fx:id="mainScreen1" xmlns:fx="http://javafx.com/fxml/1" 
+            xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+    <AnchorPane fx:id="mainScreen" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
+                    AnchorPane.topAnchor="50.0"/>
+        <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <Label alignment="CENTER" text="Players" textFill="#756e6e">
@@ -30,8 +37,10 @@
                             <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="150.0" prefHeight="250.0" prefWidth="150.0" style="-fx-padding: 0;" VBox.vgrow="ALWAYS">
-                        <ListView fx:id="playerListView" />
+                    <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0"
+                                VBox.vgrow="ALWAYS">
+                        <ListView fx:id="playerListView"/>
                     </ScrollPane>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
@@ -64,8 +73,31 @@
                         <VBox.margin>
                             <Insets bottom="10.0" top="5.0" />
                         </VBox.margin>
-                    </Label>
-                    <fx:include source="chatTab.fxml" VBox.vgrow="ALWAYS" />
+                  </Label>
+                    <VBox fx:id="chatBox">
+                        <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
+                            <Tab closable="false" text="All">
+                                <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
+                                    <VBox fx:id="textArea"/>
+                                </ScrollPane>
+                            </Tab>
+                        </JFXTabPane>
+                        <HBox alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
+                            <JFXTextField fx:id="message" onAction="#onEnter"  HBox.hgrow="ALWAYS">
+                                <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0"/>
+                                </HBox.margin>
+                            </JFXTextField>
+                            <Button fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="SEND" size="15"/>
+                                </graphic>
+                            </Button>
+                            <VBox.margin>
+                                <Insets left="5.0" right="5.0"/>
+                            </VBox.margin>
+                        </HBox>
+                    </VBox>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
                     <HBox.margin>
@@ -111,19 +143,62 @@
                             </graphic>
                         </JFXButton>
                     </VBox>
+                    <Pane prefHeight="1.0" style="-fx-background-color: grey;">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </Pane>
+                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                        <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
+                            <font>
+                                <Font size="15.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" top="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <JFXButton fx:id="btnArmyManager" mnemonicParsing="false" onAction="#setOnAction" text="open">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
+                            </graphic>
+                        </JFXButton>
+                        <VBox.margin>
+                            <Insets bottom="10.0"/>
+                        </VBox.margin>
+                    </VBox>
                 </VBox>
             </HBox>
         </VBox>
-        <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
-            <JFXButton fx:id="whiteModeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+        <JFXButton fx:id="btnPlayerRefresh" alignment="CENTER_LEFT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                   AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <graphic>
+                <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
+            </graphic>
+        </JFXButton>
+        <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                       AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0" visible="false">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
+                </graphic>
+            </JFXButton>
+          <JFXButton fx:id="whiteModeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
             <graphic>
                   <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15" />
             </graphic></JFXButton>
-            <JFXButton fx:id="logoutBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
-            <graphic>
-                  <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
-            </graphic></JFXButton>
-            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0" />
+            <JFXButton fx:id="btnGameRefresh" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                       AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="5.0" visible="false">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
+                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" visible="false">
+                <graphic>
+                    <FontAwesomeIconView glyphName="EXPAND" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"></JFXHamburger>
         </HBox>
         <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
         <!--            <items>-->

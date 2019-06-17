@@ -1,7 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
-
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import java.util.ArrayList;
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
@@ -9,6 +11,8 @@ import org.junit.Test;
 
 
 public class RestRequestTestsReal {
+
+    private String userKey;
 
     @Test
     public void registerUserTest() {
@@ -157,7 +161,7 @@ public class RestRequestTestsReal {
             Assert.assertTrue(req.getSuccessful());
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the"
                 + " system socket. Please connect to "
-                + "/ws/game?gameId=GAME_ID", req.getMessage());
+                + "/ws/game?gameId=GAME_ID&armyId=ARMY_ID", req.getMessage());
 
             //Check if we actually joined the game
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
@@ -170,8 +174,143 @@ public class RestRequestTestsReal {
         }
     }
 
+    private LoginUserRequest loginUser() {
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        login.sendRequest();
+        userKey = login.getUserKey();
+        return login;
+    }
+
+    private CreateArmyRequest createArmy() {
+        String armyName = "testArmy001";
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, unitIDs, userKey);
+        createArmyRequest.sendRequest();
+        return createArmyRequest;
+    }
+
+    private void deleteArmy(String armyID) {
+        DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(armyID, userKey);
+        deleteArmyRequest.sendRequest();
+    }
+
+    private void deleteAllArmies() {
+        loginUser();
+        QueryArmiesRequest queryArmiesRequest = new QueryArmiesRequest(userKey);
+        queryArmiesRequest.sendRequest();
+        for (Army a : queryArmiesRequest.getArmies()) {
+            DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(a.getId(), userKey);
+            deleteArmyRequest.sendRequest();
+        }
+    }
+
+    @Test
+    public void createArmyRequestTest() {
+        String name = "TestBArmy";
+        LoginUserRequest login = loginUser();
+
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, login.getUserKey());
+
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+        deleteArmy(req.getArmyID());
+    }
+
+    @Test
+    public void deleteArmyRequestTest() {
+        String armyId;
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        armyId = createArmyRequest.getArmyID();
+        DeleteArmyRequest req = new DeleteArmyRequest(armyId, userKey);
+        req.sendRequest();
+        try {
+            Assert.assertTrue(req.getSuccessful());
+            Assert.assertEquals("Army deleted", req.getMessage());
+        } catch (AssertionError e) {
+            System.out.println("Check if there aren't too many armies for this player.");
+            throw e;
+        }
+
+    }
+
+    @Test
+    public void getSpecificArmyRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getArmyID(), userKey);
+        req.sendRequest();
+        Army reqArmy = req.getRequestedArmy();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals("testArmy001", reqArmy.getName());
+        deleteArmy(reqArmy.getId());
+
+    }
+
+    @Test
+    public void queryArmiesRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        QueryArmiesRequest req = new QueryArmiesRequest(userKey);
+        req.sendRequest();
+        ArrayList<Army> armies = req.getArmies();
+        Assert.assertTrue(req.getSuccessful());
+        boolean containsArmyID = false;
+        for (Army army : armies) {
+            if (army.getId().equals(createArmyRequest.getArmyID())) {
+                containsArmyID = true;
+            }
+        }
+        Assert.assertTrue(containsArmyID);
+        deleteArmy(createArmyRequest.getArmyID());
+
+    }
+
+    @Test
+    public void queryUnitsRequestTest() {
+        loginUser();
+        QueryUnitsRequest req = new QueryUnitsRequest(userKey);
+        req.sendRequest();
+        ArrayList<Unit> unitList = req.getUnits();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals(6, unitList.size());
+        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
+        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
+        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
+        Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
+    }
+
+    @Test
+    public void updateArmyRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        Army testArmy = new Army();
+        testArmy.setId(createArmyRequest.getArmyID());
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b7");
+        }
+        testArmy.setUnits(unitIDs);
+        testArmy.setName("changedName");
+        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+
+    }
+
     @After
     public void cleanupGames() throws ParseException {
+        deleteAllArmies();
         LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
         login.sendRequest();
 

@@ -1,10 +1,16 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
 import java.io.IOException;
 
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +19,7 @@ public class UserInterfaceUtils {
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private static final Logger logger = LogManager.getLogger();
 
-    public static void makeFadeOutTransition(String path, AnchorPane node) {
+    public static void makeFadeOutTransition(String path, Node node) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(750));
         fadeTransition.setNode(node);
@@ -30,7 +36,7 @@ public class UserInterfaceUtils {
         fadeTransition.play();
     }
 
-    public static void makeFadeInTransition(AnchorPane node) {
+    public static void makeFadeInTransition(Node node) {
         node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
@@ -38,6 +44,18 @@ public class UserInterfaceUtils {
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.play();
+    }
+
+    public static void toggleFullscreen(JFXButton btnFullscreen) {
+        Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
+
+        if (stage.isFullScreen()) {
+            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
+        } else {
+            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.COMPRESS));
+        }
+
+        stage.setFullScreen(!stage.isFullScreen());
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
