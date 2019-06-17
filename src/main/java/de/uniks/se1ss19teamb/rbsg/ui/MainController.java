@@ -2,9 +2,14 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
+
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
+
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
@@ -28,9 +33,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -66,6 +74,9 @@ public class MainController {
     @FXML
     private Toggle fourPlayers;
     @FXML
+
+    private TabPane chat;
+
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnArmyManager;
@@ -111,11 +122,32 @@ public class MainController {
 
     private String sendTo = null;
 
+
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private Game joinedGame;
 
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+
+    @FXML
+    private AnchorPane mainScreen1;
+
+    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;" +
+        "-fx-padding: 0px;";
+    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;" +
+        "-fx-padding: 0px;";
+    @FXML
+    public JFXHamburger ham;
+    @FXML
+    private JFXButton logoutBtn;
+    @FXML
+    private JFXButton whiteModeBtn;
+
+    LoginController loginController = new LoginController();
+
+
     public void initialize() {
+        UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
@@ -186,6 +218,7 @@ public class MainController {
         });
 
         chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
+          
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {
@@ -213,6 +246,15 @@ public class MainController {
     void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        }
+        if(!SerializeUtils.deserialize(new File(path), boolean.class)) {
+            gameListView.setStyle(whiteMode);
+            playerListView.setStyle(whiteMode);
+            loginController.changeTheme(mainScreen, mainScreen1, path);
+        } else {
+            gameListView.setStyle(darkMode);
+            playerListView.setStyle(darkMode);
+            loginController.changeTheme(mainScreen, mainScreen1, path);
         }
     }
 
@@ -252,14 +294,28 @@ public class MainController {
             } else {
                 notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
-        } else if (event.getSource().equals(btnLogout)) {
+
+        }
+
+        if(event.getSource().equals(whiteModeBtn) && whiteModeBtn.isVisible()){
+            if(SerializeUtils.deserialize(new File(path), boolean.class)){
+                playerListView.setStyle(whiteMode);
+                gameListView.setStyle(whiteMode);
+                loginController.changeTheme(mainScreen, mainScreen1, path);
+                SerializeUtils.serialize(path, false);
+            }else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
+                playerListView.setStyle(darkMode);
+                gameListView.setStyle(darkMode);
+                loginController.changeTheme(mainScreen, mainScreen1, path);
+                SerializeUtils.serialize(path, true);
+              } else if (event.getSource().equals(btnLogout)) {
+
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
-            }
         } else if (event.getSource().equals(btnArmyManager)) {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);

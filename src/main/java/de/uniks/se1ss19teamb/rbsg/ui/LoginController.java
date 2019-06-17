@@ -31,7 +31,7 @@ public class LoginController {
     private static ChatSocket chatSocket;
     UserData userData;
     @FXML
-    private AnchorPane loginScreen;
+    public AnchorPane loginScreen;
     @FXML
     private JFXTextField userName;
     @FXML
@@ -74,11 +74,18 @@ public class LoginController {
         return chatSocket;
     }
 
+
     static void setChatSocket(ChatSocket chatSocket) {
         LoginController.chatSocket = chatSocket;
     }
 
     public void initialize() {
+
+        if (new File(path).exists()) {
+          changeTheme(loginScreen,loginScreen1, path);
+        } else {
+            SerializeUtils.serialize(path, true);
+        }
         // load user data
         userData = UserData.loadUserData(notificationHandler);
 
@@ -212,4 +219,5 @@ public class LoginController {
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
             userData);
     }
+
 }

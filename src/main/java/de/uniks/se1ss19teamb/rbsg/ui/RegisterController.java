@@ -45,12 +45,27 @@ public class RegisterController {
     private AnchorPane registerScreen1;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    @FXML
+    private AnchorPane registerScreen1;
+
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+
+    LoginController loginController = new LoginController();
+
+    private JFXPasswordField confirmPassword;
+
     private UserData userData;
     private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
     private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
     LoginController loginController = new LoginController();
 
+
+
+
     public void initialize() {
+
+        loginController.changeTheme(registerScreen, registerScreen1, path);
+      
         // load user data
         userData = UserData.loadUserData(notificationHandler);
         loginController.changeTheme(registerScreen, registerScreen1, path, css_dark, css_white);
@@ -79,6 +94,7 @@ public class RegisterController {
         UserData.deleteUserData(notificationHandler);
 
         registerScreen.setOpacity(0);
+
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -95,6 +111,7 @@ public class RegisterController {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }
     }
+
 
     @FXML
     void eventHandler(ActionEvent event) {
