@@ -46,14 +46,14 @@ public class RegisterController {
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private UserData userData;
-    private String css_dark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
-    private String css_white = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
     LoginController loginController = new LoginController();
 
     public void initialize() {
         // load user data
         userData = UserData.loadUserData(notificationHandler);
-        loginController.changeTheme(registerScreen, registerScreen1, path, css_dark, css_white);
+        loginController.changeTheme(registerScreen, registerScreen1, path, cssDark, cssWhite);
 
         if (userData == null) {
             notificationHandler.sendWarning("User data couldn't be deserialized!", logger);

@@ -128,17 +128,17 @@ public class LoginController {
     }
 
     public void changeTheme(AnchorPane anchorPane1,AnchorPane anchorPane2, String path,
-                            String css_dark, String css_white) {
+                            String cssDark, String cssWhite) {
         if (SerializeUtils.deserialize(new File(path), boolean.class)) {
             anchorPane1.getStylesheets().clear();
-            anchorPane1.getStylesheets().add(css_dark);
+            anchorPane1.getStylesheets().add(cssDark);
             anchorPane2.getStylesheets().clear();
-            anchorPane2.getStylesheets().add(css_dark);
+            anchorPane2.getStylesheets().add(cssDark);
         } else {
             anchorPane1.getStylesheets().clear();
-            anchorPane1.getStylesheets().add(css_white);
+            anchorPane1.getStylesheets().add(cssWhite);
             anchorPane2.getStylesheets().clear();
-            anchorPane2.getStylesheets().add(css_white);
+            anchorPane2.getStylesheets().add(cssWhite);
         }
     }
 

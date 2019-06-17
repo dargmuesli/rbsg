@@ -282,7 +282,7 @@ public class MainController {
         } else if (event.getSource().equals(btnPlayerRefresh)) {
             updatePlayerView();
             updateGameView();
-        } else if (event.getSource().equals(btnMode)){
+        } else if (event.getSource().equals(btnMode)) {
             if (SerializeUtils.deserialize(new File(path), boolean.class)) {
                 playerListView.setStyle(whiteMode);
                 gameListView.setStyle(whiteMode);

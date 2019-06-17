@@ -3,8 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import java.io.File;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
