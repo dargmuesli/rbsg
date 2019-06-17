@@ -9,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
@@ -58,6 +59,25 @@ class HttpManager {
         HttpRequestResponse responseBody = getResponseBody(response);
 
         httpPost.releaseConnection();
+
+        return responseBody;
+    }
+
+    public HttpRequestResponse put(URI uri, Header[] headers, HttpEntity body) throws
+        Exception {
+        assert (uri != null);
+        assert (!uri.toString().equals(""));
+
+        final HttpPut httpPut = new HttpPut();
+
+        httpPut.setURI(uri);
+        httpPut.setHeaders(headers);
+        httpPut.setEntity(body);
+
+        HttpResponse response = httpClient.execute(httpPut);
+        HttpRequestResponse responseBody = getResponseBody(response);
+
+        httpPut.releaseConnection();
 
         return responseBody;
     }
