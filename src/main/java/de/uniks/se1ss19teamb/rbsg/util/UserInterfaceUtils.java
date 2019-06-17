@@ -13,7 +13,7 @@ public class UserInterfaceUtils {
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private static final Logger logger = LogManager.getLogger();
 
-    public static void makeFadeOutTransition(String path, AnchorPane node, Boolean dark) {
+    public static void makeFadeOutTransition(String path, AnchorPane node) {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(750));
         fadeTransition.setNode(node);
@@ -22,7 +22,6 @@ public class UserInterfaceUtils {
         fadeTransition.setOnFinished(event -> {
             try {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
-                dark.booleanValue();
             } catch (IOException e) {
                 notificationHandler.sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);

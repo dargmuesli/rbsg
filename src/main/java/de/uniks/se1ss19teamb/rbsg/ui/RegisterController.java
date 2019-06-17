@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class RegisterController {
     @FXML
     private AnchorPane registerScreen1;
 
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+
     LoginController loginController = new LoginController();
 
     private JFXPasswordField confirmPassword;
@@ -45,17 +48,7 @@ public class RegisterController {
 
     public void initialize() {
 
-        if(loginController.getBoolean()){
-            registerScreen.getStylesheets().clear();
-            registerScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
-            registerScreen1.getStylesheets().clear();
-            registerScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
-        }else{
-            registerScreen.getStylesheets().clear();
-            registerScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
-            registerScreen1.getStylesheets().clear();
-            registerScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
-        }
+        loginController.changeTheme(registerScreen, registerScreen1, path);
 
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
 
@@ -78,7 +71,7 @@ public class RegisterController {
     void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnCancel)) {
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen, loginController.getBoolean());
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
         }
         if (event.getSource().equals(btnConfirm)) {
             if (!userName.getText().isEmpty()
@@ -92,7 +85,7 @@ public class RegisterController {
                     register.sendRequest();
                     if (register.getSuccessful()) {
                         UserInterfaceUtils.makeFadeOutTransition(
-                            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen, loginController.getBoolean());
+                            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
 
                         notificationHandler.sendSuccess("Registrierung erfolgreich.", logger);
                     } /*else {

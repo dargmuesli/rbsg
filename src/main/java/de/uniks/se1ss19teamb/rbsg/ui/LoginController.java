@@ -51,7 +51,7 @@ public class LoginController {
     @FXML
     private AnchorPane loginScreen1;
 
-    public Boolean dark = false;
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
 
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
@@ -81,18 +81,10 @@ public class LoginController {
     }
 
     public void initialize() {
-
-
-        if(dark){
-            loginScreen.getStylesheets().clear();
-            loginScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
-            loginScreen1.getStylesheets().clear();
-            loginScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
-        }else{
-            loginScreen.getStylesheets().clear();
-            loginScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
-            loginScreen1.getStylesheets().clear();
-            loginScreen1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
+        if (new File(path).exists()) {
+          changeTheme(loginScreen,loginScreen1, path);
+        } else {
+            SerializeUtils.serialize(path, true);
         }
 
 
@@ -115,6 +107,20 @@ public class LoginController {
 
         } catch (IOException e) {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+        }
+    }
+
+    public void changeTheme(AnchorPane anchorPane1,AnchorPane anchorPane2, String path){
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+            anchorPane1.getStylesheets().clear();
+            anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
+            anchorPane2.getStylesheets().clear();
+            anchorPane2.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design.css");
+        } else {
+            anchorPane1.getStylesheets().clear();
+            anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
+            anchorPane2.getStylesheets().clear();
+            anchorPane2.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design.css");
         }
     }
 
@@ -170,7 +176,7 @@ public class LoginController {
                 setUserKey(login.getUserKey());
                 setUser(userName.getText());
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen, dark);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
 
             } else {
                 notificationHandler.sendWarning("Login fehlgeschlagen!", logger);
@@ -182,7 +188,7 @@ public class LoginController {
 
     private void goToRegister() {
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen,dark);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
     }
 
     private void saveUserData() {
@@ -198,11 +204,4 @@ public class LoginController {
         Platform.runLater(() -> btnLogin.requestFocus());
     }
 
-    public Boolean getBoolean(){
-        return dark;
-    }
-
-    public void setBoolean(Boolean dark){
-        this.dark = dark;
-    }
 }
