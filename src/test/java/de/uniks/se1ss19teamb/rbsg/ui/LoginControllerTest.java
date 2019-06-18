@@ -5,66 +5,119 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
-import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
+import de.uniks.se1ss19teamb.rbsg.Main;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
 import org.testfx.assertions.api.Assertions;
-import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.Start;
+import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.util.WaitForAsyncUtils;
 
-@ExtendWith(ApplicationExtension.class)
-class LoginControllerTest {
+// TODO headless mode
 
-    @Start
-    void start(Stage primaryStage) throws Exception {
+class LoginControllerTest extends ApplicationTest {
 
-        Parent root = FXMLLoader
-            .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml"));
-        primaryStage.setTitle("RSBG-Team B");
-        primaryStage.setScene(new Scene(root, 800, 650));
-        primaryStage.setMinWidth(533);
-        primaryStage.setMinHeight(621);
-        primaryStage.setOnCloseRequest(event -> System.exit(0));
-        // AnchorPane loginScreen = (AnchorPane) root.lookup("#loginScreen");
-        // AnchorPane errorContainer = (AnchorPane) root.lookup("#errorContainer");
-        // JFXButton btnFullscreen = (JFXButton) loginScreen.getChildren().get(2);
-        // VBox box = (VBox) loginScreen.getChildren().get(1);
-        primaryStage.show();
+    private Main main;
 
-        TextureManager.init();
+    @BeforeClass
+    public static void setupHeadlessMode() {
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("java.awt.headless", "true");
+        }
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        main = new Main();
+        main.start(stage);
     }
 
     @Test
-    void contentTest(FxRobot robot) {
-        Assertions.assertThat(robot.lookup("#btnLogin").queryAs(JFXButton.class)).hasText("Login");
-        Assertions.assertThat(robot.lookup("#btnRegistration").queryAs(JFXButton.class)).hasText("Registration");
-        Assertions.assertThat(robot.lookup("#rememberLogin").queryAs(JFXCheckBox.class)).hasText("Remember Login");
-        Assertions.assertThat(robot.lookup("#password").queryAs(JFXPasswordField.class)).isVisible();
-        Assertions.assertThat(robot.lookup("#userName").queryAs(JFXTextField.class)).isVisible();
-        Assertions.assertThat(robot.lookup("#btnFullscreen").queryAs(JFXButton.class)).hasText("Fullscreen");
+    void contentTest() {
+        Assertions.assertThat(lookup("#btnLogin").queryAs(JFXButton.class)).hasText("Login");
+        Assertions.assertThat(lookup("#btnRegistration").queryAs(JFXButton.class)).hasText("Registration");
+        Assertions.assertThat(lookup("#rememberLogin").queryAs(JFXCheckBox.class)).hasText("Remember Login");
+        Assertions.assertThat(lookup("#password").queryAs(JFXPasswordField.class)).isVisible();
+        Assertions.assertThat(lookup("#userName").queryAs(JFXTextField.class)).isVisible();
+        Assertions.assertThat(lookup("#btnFullscreen").queryAs(JFXButton.class)).hasText("Fullscreen");
     }
 
     @Test
-    void clickedTest(FxRobot robot) {
-        robot.clickOn("#btnFullscreen");
-        robot.clickOn("#btnFullscreen");
+    void clickFullscreenTest() {
+        clickOn("#btnFullscreen");
+        clickOn("#btnFullscreen");
     }
 
     @Test
-    void loginTest(FxRobot robot) {
-        robot.clickOn("#userName");
-        robot.write("MyNewName");
-        robot.clickOn("#password");
-        robot.write("blutangel90");
-        robot.clickOn("#rememberLogin");
-        robot.clickOn("#btnLogin");
+    void falseLoginTest() {
+        clickOn("#userName");
+        write("");
+        clickOn("#password");
+        write("");
+        clickOn("#rememberLogin");
+        clickOn("#btnLogin");
     }
 
+    @Test
+    void registerTest() {
+        clickOn("#btnRegistration");
+        sleep(2000);
+        Assertions.assertThat(lookup("#errorContainer").queryAs(AnchorPane.class)).isVisible();
+        Assertions.assertThat(lookup("#username").queryAs(JFXTextField.class)).isVisible();
+        Assertions.assertThat(lookup("#password").queryAs(JFXPasswordField.class)).isVisible();
+        Assertions.assertThat(lookup("#passwordRepeat").queryAs(JFXPasswordField.class)).isVisible();
+        clickOn("#btnConfirm");
+        clickOn("#btnCancel");
+    }
+
+    @Test
+    void loginMainTest() {
+        clickOn("#userName");
+        write("MyNewName");
+        clickOn("#password");
+        write("blutangel90");
+        clickOn("#rememberLogin");
+        clickOn("#btnLogin");
+        sleep(2000);
+        // chat
+        clickOn("#message");
+        write("/w me test");
+        clickOn("#btnSend");
+        // game
+        clickOn("#gameName");
+        write("ayGame");
+        clickOn("#btnCreate");
+        ListView list = lookup("#gameListView").queryAs(ListView.class);
+        HBox box = (HBox) list.getItems().get(list.getItems().size() - 1);
+        // ingame
+        clickOn(box.getChildren().get(1));
+        sleep(2000);
+        clickOn("#ham");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnBack");
+        sleep(2000);
+        list = lookup("#gameListView").queryAs(ListView.class);
+        box = (HBox) list.getItems().get(list.getItems().size() - 1);
+        clickOn(box.getChildren().get(2));
+        // army
+        clickOn("#btnArmyManager");
+        sleep(2000);
+        clickOn("#ham");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnBack");
+        sleep(2000);
+        // logout
+        clickOn("#ham");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnLogout");
+    }
 }
