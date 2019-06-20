@@ -25,7 +25,7 @@ public class UnitObjectController {
         this.unit = unit;
         this.unitOverviewController = unitOverviewController;
         labelUnitType.setText(unit.getType());
-       updateCount();
+        updateCount();
 
     }
 

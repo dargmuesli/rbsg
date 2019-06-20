@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-
-import java.io.IOException;
 
 
 public class ArmyManagerController {
@@ -41,7 +40,8 @@ public class ArmyManagerController {
         hamTran(ham, btnLogout);
         hamTran(ham, btnFullScreen);
         UserInterfaceUtils.makeFadeInTransition(mainPane);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitOverview.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitOverview.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             unitOverviewController = fxmlLoader.getController();

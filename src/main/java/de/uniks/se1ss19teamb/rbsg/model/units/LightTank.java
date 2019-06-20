@@ -8,11 +8,11 @@ import java.util.Arrays;
 public class LightTank extends Unit {
 
     private String id = "5cc051bd62083600017db3b9";
-    private String type ="Light Tank";
+    private String type = "Light Tank";
     private int mp = 6;
     private int hp = 10;
-    private ArrayList<String> canAttack = new ArrayList<>
-        (Arrays.asList("Infantry", "Bazooka Trooper", "Jeep", "Light Tank", "Heavy Tank"));
+    private ArrayList<String> canAttack = new ArrayList<>(Arrays.asList("Infantry",
+        "Bazooka Trooper", "Jeep", "Light Tank", "Heavy Tank"));
 
     @Override
     public String getId() {

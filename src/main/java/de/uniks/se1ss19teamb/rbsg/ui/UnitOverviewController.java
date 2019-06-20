@@ -4,7 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryUnitsRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class UnitOverviewController {
     @FXML
@@ -30,7 +28,7 @@ public class UnitOverviewController {
     @FXML
     Button btnSave;
     @FXML
-    private ListView unitList;
+    private ListView<Parent> unitList;
 
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
