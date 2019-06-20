@@ -13,8 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -25,7 +26,7 @@ public class UiTests extends ApplicationTest {
 
     private Main main;
 
-    @BeforeEach
+    @Before
     public void setHeadless() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
