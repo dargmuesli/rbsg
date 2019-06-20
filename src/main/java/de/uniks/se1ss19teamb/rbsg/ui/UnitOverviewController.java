@@ -1,8 +1,10 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class UnitOverviewController {
@@ -12,6 +14,11 @@ public class UnitOverviewController {
     JFXButton btnMore;
     @FXML
     JFXButton btnLess;
+    @FXML
+    Button btnLoad;
+    @FXML
+    Button btnSave;
+
 
     private int count = 0;
 
@@ -45,5 +52,12 @@ public class UnitOverviewController {
         }
 
         lblCount.setText("Anzahl: " + count);
+    }
+
+    public void loadConfiguration() {
+        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
+        req.sendRequest();
+
+
     }
 }
