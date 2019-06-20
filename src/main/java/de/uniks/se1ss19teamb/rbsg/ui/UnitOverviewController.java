@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
 import de.uniks.se1ss19teamb.rbsg.request.QueryUnitsRequest;
 import javafx.collections.ObservableList;
@@ -15,6 +16,7 @@ import javafx.scene.control.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UnitOverviewController {
     @FXML
@@ -29,6 +31,22 @@ public class UnitOverviewController {
     Button btnSave;
     @FXML
     private ListView unitList;
+
+    private BazookaTrooper bazookaTrooper = new BazookaTrooper();
+    private Chopper chopper = new Chopper();
+    private HeavyTank heavyTank = new HeavyTank();
+    private Infantry infantry = new Infantry();
+    private Jeep jeep = new Jeep();
+    private LightTank lightTank = new LightTank();
+    ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
+        heavyTank, infantry, jeep, lightTank));
+
+    private int bazookaTrooperCount = 0;
+    private int chopperCounter = 0;
+    private int heavyTankCounter = 0;
+    private int infantryCounter = 0;
+    private int jeepCounter = 0;
+    private int lightTankCounter = 0;
 
 
     private int count = 0;
@@ -76,9 +94,6 @@ public class UnitOverviewController {
         unitList.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
             + "-fx-padding: 0px;");
         ObservableList items = unitList.getItems();
-        QueryUnitsRequest unitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
-        unitsRequest.sendRequest();
-        ArrayList<Unit> units = unitsRequest.getUnits();
         for (Unit unit : units) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));

@@ -10,8 +10,8 @@
       <ImageView fitHeight="37.0" fitWidth="72.0" layoutX="14.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="4.0" />
       <Label layoutX="101.0" layoutY="10.0" text="Anzahl: " />
       <Label fx:id="labelUnitCount" layoutX="143.0" layoutY="10.0" text="#" />
-      <Button fx:id="btnIncrease" layoutX="158.0" layoutY="6.0" mnemonicParsing="false" text="+" />
-      <Button fx:id="btnDecrease" layoutX="187.0" layoutY="6.0" mnemonicParsing="false" text="-" />
+      <Button fx:id="btnIncrease" layoutX="158.0" layoutY="6.0" mnemonicParsing="false" onMouseClicked="#increaseCount" text="+" />
+      <Button fx:id="btnDecrease" layoutX="187.0" layoutY="6.0" mnemonicParsing="false" onMouseClicked="#decreaseCount" text="-" />
       <Label fx:id="labelUnitType" layoutY="10.0" text="Label" wrapText="true" />
    </children>
 </AnchorPane>
