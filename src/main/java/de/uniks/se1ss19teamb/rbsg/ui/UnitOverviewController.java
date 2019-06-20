@@ -1,11 +1,20 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryUnitsRequest;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class UnitOverviewController {
     @FXML
@@ -18,12 +27,15 @@ public class UnitOverviewController {
     Button btnLoad;
     @FXML
     Button btnSave;
+    @FXML
+    private ListView unitList;
 
 
     private int count = 0;
 
     public void initialize() {
         updateCount();
+        setUpUnitObjects();
     }
 
     @FXML
@@ -57,7 +69,27 @@ public class UnitOverviewController {
     public void loadConfiguration() {
         QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
         req.sendRequest();
+    }
 
+    private void setUpUnitObjects() {
+        ObservableList items = unitList.getItems();
+        QueryUnitsRequest unitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
+        unitsRequest.sendRequest();
+        ArrayList<Unit> units = unitsRequest.getUnits();
+        for (Unit unit : units) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
+            try {
+                Parent parent = fxmlLoader.load();
+                UnitObjectController controller = fxmlLoader.getController();
+                controller.setUpUnitObject(unit, this);
+                unitList.getItems().add(parent);
 
+            } catch (IOException e) {
+                // notificationHandler.sendError("Ein UnitObject konnte nicht erstellt werden.", logger, e);
+                e.printStackTrace();
+            }
+
+        }
     }
 }
