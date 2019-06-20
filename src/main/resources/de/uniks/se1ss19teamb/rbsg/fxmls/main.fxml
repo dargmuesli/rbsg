@@ -185,25 +185,25 @@
             </graphic>
         </JFXButton>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <JFXButton fx:id="btnMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+                       visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15" />
+                </graphic>
+            </JFXButton>
             <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                       AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0" visible="false">
+                       visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
                 </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnGameRefresh" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
-                       AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="5.0" visible="false">
+            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler" visible="false"
+                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
+                    <FontAwesomeIconView glyphName="EXPAND" size="15" />
                 </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
-                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" visible="false">
-                <graphic>
-                    <FontAwesomeIconView glyphName="EXPAND" size="15"/>
-                </graphic>
-            </JFXButton>
-            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"></JFXHamburger>
+            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0" />
         </HBox>
         <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
         <!--            <items>-->
