@@ -26,6 +26,7 @@ public class UnitObjectController {
         this.unitOverviewController = unitOverviewController;
         labelUnitType.setText(unit.getType());
         updateCount();
+        btnDecrease.setDisable(true);
 
     }
 
@@ -43,6 +44,7 @@ public class UnitObjectController {
             if (unitOverviewController.getLeftUnits() > 0) {
                 count++;
                 unitOverviewController.setLeftUnits(unitOverviewController.getLeftUnits() - 1);
+                btnDecrease.setDisable(false);
             }
         } else {
             count = 0;
@@ -56,6 +58,9 @@ public class UnitObjectController {
             count--;
             unitOverviewController.setLeftUnits(unitOverviewController.getLeftUnits() + 1);
             updateCount();
+            if (count == 0) {
+                btnDecrease.setDisable(true);
+            }
         }
 
     }

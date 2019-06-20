@@ -3,12 +3,10 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
-import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,41 +49,7 @@ public class UnitOverviewController {
     private int leftUnits = 10;
 
     public void initialize() {
-        updateCount();
         setUpUnitObjects();
-    }
-
-    @FXML
-    private void eventHandler(ActionEvent event) {
-        switch (((JFXButton) event.getSource()).getId()) {
-            case "btnMore":
-                count++;
-                updateCount();
-                break;
-            case "btnLess":
-                if (count > 0) {
-                    count--;
-                    updateCount();
-                }
-
-                break;
-            default:
-        }
-    }
-
-    private void updateCount() {
-        if (count == 0) {
-            btnLess.setDisable(true);
-        } else {
-            btnLess.setDisable(false);
-        }
-
-        lblCount.setText("Anzahl: " + count);
-    }
-
-    public void loadConfiguration() {
-        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
-        req.sendRequest();
     }
 
     private void setUpUnitObjects() {
@@ -103,7 +67,6 @@ public class UnitOverviewController {
                 unitList.getItems().add(parent);
 
             } catch (IOException e) {
-                // notificationHandler.sendError("Ein UnitObject konnte nicht erstellt werden.", logger, e);
                 e.printStackTrace();
             }
 
