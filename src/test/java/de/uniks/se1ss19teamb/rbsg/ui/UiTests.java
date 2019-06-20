@@ -13,26 +13,27 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.Test;
 import org.testfx.assertions.api.Assertions;
-import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 // TODO headless mode
 
-public class UiTests extends ApplicationTest {
+class UiTests extends ApplicationTest {
 
     private Main main;
 
-    @Before
-    public void setHeadless() {
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
-        System.setProperty("java.awt.headless", "true");
+    @BeforeClass
+    public static void setupHeadlessMode() {
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("java.awt.headless", "true");
+        }
     }
 
     @Override
@@ -46,7 +47,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    public void contentTest() {
+    void contentTest() {
         Assertions.assertThat(lookup("#btnLogin").queryAs(JFXButton.class)).hasText("Login");
         Assertions.assertThat(lookup("#btnRegistration").queryAs(JFXButton.class)).hasText("Registration");
         Assertions.assertThat(lookup("#rememberLogin").queryAs(JFXCheckBox.class)).hasText("Remember Login");
@@ -56,13 +57,13 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    public void clickFullscreenTest() {
+    void clickFullscreenTest() {
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
     }
 
     @Test
-    public void falseLoginTest() {
+    void falseLoginTest() {
         clickOn("#userName");
         write("");
         clickOn("#password");
@@ -72,7 +73,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    public void registerTest() {
+    void registerTest() {
         clickOn("#btnRegistration");
         sleep(2000);
         Assertions.assertThat(lookup("#errorContainer").queryAs(AnchorPane.class)).isVisible();
@@ -84,7 +85,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    public void loginMainTest() {
+    void loginMainTest() {
         clickOn("#userName");
         write("testTeamB");
         clickOn("#password");
