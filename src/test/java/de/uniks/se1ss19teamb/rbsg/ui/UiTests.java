@@ -13,28 +13,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.testfx.assertions.api.Assertions;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 // TODO headless mode
 
-class UiTests extends ApplicationTest {
+public class UiTests extends ApplicationTest {
 
     private Main main;
-
-    @BeforeClass
-    public static void setupHeadlessMode() {
-        if (Boolean.getBoolean("headless")) {
-            System.setProperty("testfx.robot", "glass");
-            System.setProperty("testfx.headless", "true");
-            System.setProperty("prism.order", "sw");
-            System.setProperty("prism.text", "t2k");
-            System.setProperty("java.awt.headless", "true");
-        }
-    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -47,7 +35,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void contentTest() {
+    public void contentTest() {
         Assertions.assertThat(lookup("#btnLogin").queryAs(JFXButton.class)).hasText("Login");
         Assertions.assertThat(lookup("#btnRegistration").queryAs(JFXButton.class)).hasText("Registration");
         Assertions.assertThat(lookup("#rememberLogin").queryAs(JFXCheckBox.class)).hasText("Remember Login");
@@ -57,13 +45,13 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void clickFullscreenTest() {
+    public void clickFullscreenTest() {
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
     }
 
     @Test
-    void falseLoginTest() {
+    public void falseLoginTest() {
         clickOn("#userName");
         write("");
         clickOn("#password");
@@ -73,7 +61,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void registerTest() {
+    public void registerTest() {
         clickOn("#btnRegistration");
         sleep(2000);
         Assertions.assertThat(lookup("#errorContainer").queryAs(AnchorPane.class)).isVisible();
@@ -85,7 +73,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void loginMainTest() {
+    public void loginMainTest() {
         clickOn("#userName");
         write("MyNewName");
         clickOn("#password");
