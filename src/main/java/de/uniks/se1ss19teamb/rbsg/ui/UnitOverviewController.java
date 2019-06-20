@@ -1,9 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 
 public class UnitOverviewController {
     @FXML
@@ -12,10 +16,23 @@ public class UnitOverviewController {
     JFXButton btnMore;
     @FXML
     JFXButton btnLess;
+    @FXML
+    VBox unitBox;
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
 
     private int count = 0;
 
     public void initialize() {
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+            unitBox.getStylesheets().clear();
+            unitBox.getStylesheets().add(cssDark);
+        } else {
+            unitBox.getStylesheets().clear();
+            unitBox.getStylesheets().add(cssWhite);
+        }
+
         updateCount();
     }
 
