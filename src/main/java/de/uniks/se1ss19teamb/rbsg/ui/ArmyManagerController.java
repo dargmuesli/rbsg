@@ -46,6 +46,12 @@ public class ArmyManagerController {
     private Button btnSave2;
     @FXML
     private Button btnSave3;
+    @FXML
+    private AnchorPane mainPane1;
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    LoginController loginController = new LoginController();
 
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
@@ -72,6 +78,8 @@ public class ArmyManagerController {
     private boolean saveMode = true;
 
     public void initialize() {
+
+        loginController.changeTheme(mainPane, mainPane1, path, cssDark, cssWhite);
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
