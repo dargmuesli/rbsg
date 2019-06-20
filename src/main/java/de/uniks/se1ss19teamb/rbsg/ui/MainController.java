@@ -405,21 +405,11 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-primary" : "black") + ";"
-                + "-fx-background-color: " + (player.equals(userName) || SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-secondary" : "white") + ";"
-                + "-fx-border-radius: 20px;"
-                + "-fx-background-radius: 10px;");
+            setChatStyle(text);
 
             Platform.runLater(() -> {
                 name.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                name.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                    ? "-fx-primary" : "black") + ";"
-                    + "-fx-background-color: " + (player.equals(userName) || SerializeUtils.deserialize(new File(path), boolean.class)
-                    ? "-fx-secondary" : "white") + ";"
-                    + "-fx-border-radius: 20px;"
-                    + "-fx-background-radius: 10px;");
+                setChatStyle(name);
             });
 
             container.getChildren().addAll(name, text);
@@ -427,17 +417,21 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-primary" : "black") + ";"
-                + "-fx-background-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-secondary" : "white") + ";"
-                + "-fx-border-radius: 20px;"
-                + "-fx-background-radius: 10px;");
+            setChatStyle(text);
 
             container.getChildren().add(text);
         }
 
         Platform.runLater(() -> box.getChildren().add(container));
+    }
+
+    private void setChatStyle(Label label) {
+        label.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            ? "-fx-primary" : "black") + ";"
+            + "-fx-background-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            ? "-fx-secondary" : "white") + ";"
+            + "-fx-border-radius: 20px;"
+            + "-fx-background-radius: 10px;");
     }
 
     private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
