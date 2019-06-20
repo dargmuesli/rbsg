@@ -72,6 +72,9 @@ public class UnitOverviewController {
     }
 
     private void setUpUnitObjects() {
+        unitList.setStyle("-fx-background-color:transparent;");
+        unitList.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+            + "-fx-padding: 0px;");
         ObservableList items = unitList.getItems();
         QueryUnitsRequest unitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
         unitsRequest.sendRequest();
