@@ -66,8 +66,8 @@
             </HBox>
             <Pane prefHeight="1.0" style="-fx-background-color: grey;"/>
             <HBox VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" spacing="5">
-                <VBox fx:id="chatWindow" alignment="BOTTOM_CENTER" HBox.hgrow="ALWAYS" AnchorPane.bottomAnchor="5.0"
-                      AnchorPane.leftAnchor="5.0" style="-fx-background-color: transparent;">
+                <VBox fx:id="chatWindow" alignment="CENTER" HBox.hgrow="ALWAYS" AnchorPane.bottomAnchor="5.0"
+                      AnchorPane.leftAnchor="5.0" style="-fx-background-color: transparent;" spacing="5">
                     <JFXButton fx:id="btnMinimize" alignment="CENTER" onAction="#setOnAction"
                                AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" text="Chat">
                         <font>

@@ -28,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -310,10 +311,16 @@ public class MainController {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
                 chatBox.setMaxHeight(0);
+                chatBox.setMaxWidth(0);
+                chatWindow.setAlignment(Pos.BOTTOM_LEFT);
+                chatWindow.setPadding(new Insets(0, 0, 0, 15));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
                 chatBox.setVisible(true);
-                chatBox.setMaxHeight(300);
+                chatBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
+                chatBox.setMaxWidth(Region.USE_COMPUTED_SIZE);
+                chatWindow.setAlignment(Pos.CENTER);
+                chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
         }
