@@ -527,8 +527,9 @@ public class MainController {
         Platform.runLater(() -> {
             message.clear();
             message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                    ? "-fx-secondary" : "black") + "-jfx-focus-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                    ? "-fx-secondary" : "black"));
+                ? "-fx-secondary" : "black") + "-jfx-focus-color: "
+                + (SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-secondary" : "black"));
         });
     }
 
