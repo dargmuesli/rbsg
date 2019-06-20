@@ -6,7 +6,10 @@ import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +51,11 @@ public class ArmyManagerController {
     private Button btnSave3;
     @FXML
     private AnchorPane mainPane1;
+    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
+        + "-fx-padding: 0px;";
+    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
+        + "-fx-padding: 0px;";
+    private String mode;
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
@@ -80,6 +88,11 @@ public class ArmyManagerController {
     public void initialize() {
 
         loginController.changeTheme(mainPane, mainPane1, path, cssDark, cssWhite);
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+            mode = darkMode;
+        } else {
+            mode = whiteMode;
+        }
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
@@ -91,8 +104,7 @@ public class ArmyManagerController {
 
     private void setUpUnitObjects() {
         unitList.setStyle("-fx-background-color:transparent;");
-        unitList.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        unitList.setStyle(mode);
         ObservableList items = unitList.getItems();
         for (Unit unit : units) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
