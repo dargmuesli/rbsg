@@ -16,9 +16,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -36,9 +36,16 @@ public class ArmyManagerController {
     private JFXButton btnFullScreen;
     @FXML
     private Label labelLeftUnits;
-
     @FXML
     private ListView<Parent> unitList;
+    @FXML
+    private Button btnChg;
+    @FXML
+    private Button btnSave1;
+    @FXML
+    private Button btnSave2;
+    @FXML
+    private Button btnSave3;
 
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
@@ -59,6 +66,10 @@ public class ArmyManagerController {
     private int count = 0;
     private ArmyManagerController armyManagerController;
     private int leftUnits = 10;
+
+    // saveMode = true -> Buttons save configuration.
+    // saveMode = false -> Buttons laod configuration
+    private boolean saveMode = true;
 
     public void initialize() {
 
@@ -141,6 +152,19 @@ public class ArmyManagerController {
 
     void setLabelLeftUnits(int count) {
         labelLeftUnits.setText(Integer.toString(count));
+    }
+
+    public void changeSaveMode() {
+        saveMode = !saveMode;
+        if (saveMode) {
+            btnSave1.setText("Save 1");
+            btnSave2.setText("Save 2");
+            btnSave3.setText("Save 3");
+        } else {
+            btnSave1.setText("Load 1");
+            btnSave2.setText("Load 2");
+            btnSave3.setText("Load 3");
+        }
     }
 }
 
