@@ -13,8 +13,10 @@ import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,14 +28,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
@@ -95,11 +95,22 @@ public class MainController {
     @FXML
     private JFXButton btnPlayerRefresh;
     @FXML
-    private JFXButton btnGameRefresh;
-    @FXML
     private JFXHamburger ham;
+    @FXML
+    private AnchorPane mainScreen1;
+    @FXML
+    private JFXButton btnMode;
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    LoginController loginController = new LoginController();
+    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
+        + "-fx-padding: 0px;";
+    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
+        + "-fx-padding: 0px;";
+    private String mode;
     ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -112,12 +123,23 @@ public class MainController {
 
     public void initialize() {
 
+        UserInterfaceUtils.makeFadeInTransition(mainScreen);
+
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
+            mode = darkMode;
+        } else {
+            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
+            mode = whiteMode;
+        }
+
+
         Platform.runLater(() -> {
 
+
             armyManagerController.hamTran(ham, btnFullscreen);
-            armyManagerController.hamTran(ham, btnGameRefresh);
             armyManagerController.hamTran(ham, btnLogout);
-            //UserInterfaceUtils.makeFadeInTransition(mainScreen);
+            armyManagerController.hamTran(ham, btnMode);
             setGameListView();
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -206,8 +228,7 @@ public class MainController {
         gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setStyle("-fx-background-color:transparent;");
-        gameListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        gameListView.setStyle(mode);
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
@@ -217,8 +238,7 @@ public class MainController {
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        playerListView.setStyle(mode);
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String name : existingPlayers) {
@@ -269,10 +289,21 @@ public class MainController {
                 }
                 message.setText("");
             }
-        } else if (event.getSource().equals(btnGameRefresh)) {
-            updateGameView();
         } else if (event.getSource().equals(btnPlayerRefresh)) {
             updatePlayerView();
+            updateGameView();
+        } else if (event.getSource().equals(btnMode)) {
+            if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+                playerListView.setStyle(whiteMode);
+                gameListView.setStyle(whiteMode);
+                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
+                SerializeUtils.serialize(path, false);
+            } else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
+                playerListView.setStyle(darkMode);
+                gameListView.setStyle(darkMode);
+                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
+                SerializeUtils.serialize(path, true);
+            }
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
@@ -283,7 +314,6 @@ public class MainController {
                 chatBox.setMaxHeight(300);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
-
         }
         ham.requestFocus();
     }
@@ -320,8 +350,7 @@ public class MainController {
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
+        playerListView.setStyle(mode);
         ObservableList playerList = playerListView.getItems();
         while (playerList.size() != 0) {
             playerList.remove(0);
@@ -384,7 +413,7 @@ public class MainController {
             if (whisper) {
                 name.setStyle("-fx-text-fill: -fx-privatetext;");
             } else {
-                name.setStyle("-fx-text-fill: black;");
+                name.setStyle("-fx-text-fill: black");
             }
             // whisper on double click
             name.setOnMouseClicked(mouseEvent -> {
@@ -397,17 +426,11 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: black;"
-                + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
-                + "-fx-border-radius: 20px;"
-                + "-fx-background-radius: 10px;");
+            setChatStyle(text);
 
             Platform.runLater(() -> {
                 name.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                name.setStyle("-fx-text-fill: black;"
-                    + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
-                    + "-fx-border-radius: 20px;"
-                    + "-fx-background-radius: 10px;");
+                setChatStyle(name);
             });
 
             container.getChildren().addAll(name, text);
@@ -415,10 +438,7 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: black;"
-                + "-fx-background-color: white;"
-                + "-fx-border-radius: 20px;"
-                + "-fx-background-radius: 10px;");
+            setChatStyle(text);
 
             container.getChildren().add(text);
         }
@@ -427,6 +447,15 @@ public class MainController {
             box.getChildren().add(container);
             this.message.requestFocus();
         });
+    }
+
+    private void setChatStyle(Label label) {
+        label.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            ? "-fx-primary" : "black") + ";"
+            + "-fx-background-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            ? "-fx-secondary" : "white") + ";"
+            + "-fx-border-radius: 20px;"
+            + "-fx-background-radius: 10px;");
     }
 
     private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
@@ -518,10 +547,13 @@ public class MainController {
 
     private void setAll() {
         sendTo = null;
+
         Platform.runLater(() -> {
             message.clear();
-            message.setStyle("-fx-text-fill: -fx-secondary;"
-                + "-jfx-focus-color: -fx-secondary;");
+            message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-secondary" : "black") + "-jfx-focus-color: "
+                + (SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-secondary" : "black"));
         });
     }
 

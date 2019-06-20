@@ -46,7 +46,13 @@ public class LoginController {
     private AnchorPane errorContainer;
     @FXML
     private JFXCheckBox rememberLogin;
+    @FXML
+    private AnchorPane loginScreen1;
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
+    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
+
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
 
     public static String getUserKey() {
         return userKey;
@@ -75,6 +81,13 @@ public class LoginController {
     public void initialize() {
         // load user data
         userData = UserData.loadUserData(notificationHandler);
+
+        while (!new File(path).exists()) {
+            SerializeUtils.serialize(path, true);
+        }
+        if (new File(path).exists()) {
+            changeTheme(loginScreen,loginScreen1, path, cssDark, cssWhite);
+        }
 
         if (userData == null) {
             userData = new UserData();
@@ -111,6 +124,35 @@ public class LoginController {
 
         } catch (IOException e) {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+        }
+    }
+
+    public void changeTheme(AnchorPane anchorPane1,AnchorPane anchorPane2, String path,
+                            String cssDark, String cssWhite) {
+        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+            anchorPane1.getStylesheets().clear();
+            anchorPane1.getStylesheets().add(cssDark);
+            anchorPane2.getStylesheets().clear();
+            anchorPane2.getStylesheets().add(cssDark);
+        } else {
+            anchorPane1.getStylesheets().clear();
+            anchorPane1.getStylesheets().add(cssWhite);
+            anchorPane2.getStylesheets().clear();
+            anchorPane2.getStylesheets().add(cssWhite);
+        }
+    }
+
+    public void changeThemeOnButton(AnchorPane anchorPane1, AnchorPane anchorPane2, String path) {
+        if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
+            anchorPane1.getStylesheets().clear();
+            anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");
+            anchorPane2.getStylesheets().clear();
+            anchorPane2.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");
+        } else {
+            anchorPane1.getStylesheets().clear();
+            anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design2.css");
+            anchorPane2.getStylesheets().clear();
+            anchorPane2.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design2.css");
         }
     }
 
