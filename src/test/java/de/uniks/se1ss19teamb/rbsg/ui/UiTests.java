@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -23,6 +24,15 @@ import org.testfx.util.WaitForAsyncUtils;
 public class UiTests extends ApplicationTest {
 
     private Main main;
+
+    @BeforeEach
+    public void setHeadless() {
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("java.awt.headless", "true");
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
