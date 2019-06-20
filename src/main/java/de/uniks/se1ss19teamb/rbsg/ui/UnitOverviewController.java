@@ -48,8 +48,9 @@ public class UnitOverviewController {
     private int jeepCounter = 0;
     private int lightTankCounter = 0;
 
-
     private int count = 0;
+    private ArmyManagerController armyManagerController;
+    private int leftUnits = 10;
 
     public void initialize() {
         updateCount();
@@ -109,5 +110,18 @@ public class UnitOverviewController {
             }
 
         }
+    }
+
+    void setArmyManagerController(ArmyManagerController armyManagerController) {
+        this.armyManagerController = armyManagerController;
+    }
+
+    int getLeftUnits() {
+        return leftUnits;
+    }
+
+    void setLeftUnits(int leftUnits) {
+        this.leftUnits = leftUnits;
+        armyManagerController.setLabelLeftUnits(leftUnits);
     }
 }

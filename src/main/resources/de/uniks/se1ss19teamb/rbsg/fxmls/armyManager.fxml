@@ -23,12 +23,24 @@
                         <JFXButton mnemonicParsing="false" text="save 4" />
                     </children>
                 </HBox>
-                <Label text="Verfügbare Einheiten: x">
-                    <font>
+            <HBox prefHeight="4.0" prefWidth="265.0">
+               <children>
+                      <Label text="Verfügbare Einheiten:">
+                          <font>
+                              <Font name="System Bold" size="16.0" />
+                          </font>
+                      </Label>
+                  <Label fx:id="labelLeftUnits" text="###">
+                     <font>
                         <Font name="System Bold" size="16.0" />
-                    </font>
-                </Label>
-                <ScrollPane fitToHeight="true" fitToWidth="true">
+                     </font>
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+                <ScrollPane fx:id="scrollPaneUnitOverview" fitToHeight="true" fitToWidth="true">
                     <fx:include source="unitOverview.fxml" />
                 </ScrollPane>
             </children>
@@ -37,17 +49,16 @@
             </padding>
         </VBox>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-           <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" visible="false" onAction="#eventHandler">
+           <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#eventHandler" visible="false">
                <graphic>
                    <FontAwesomeIconView glyphName="REPLY" />
                </graphic>
            </JFXButton>
-            <JFXButton fx:id="btnFullScreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
-                       visible="false" onAction="#setOnAction">
+            <JFXButton fx:id="btnFullScreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15" />
                 </graphic></JFXButton>
-            <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" visible="false" onAction="#setOnAction">
+            <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
                 </graphic></JFXButton>

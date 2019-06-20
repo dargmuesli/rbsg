@@ -21,7 +21,7 @@ public class UnitObjectController {
     Button btnDecrease;
 
 
-    void setUpUnitObject(Unit unit, UnitOverviewController UnitOverviewController) {
+    void setUpUnitObject(Unit unit, UnitOverviewController unitOverviewController) {
         this.unit = unit;
         this.unitOverviewController = unitOverviewController;
         labelUnitType.setText(unit.getType());
@@ -40,7 +40,10 @@ public class UnitObjectController {
 
     public void increaseCount() {
         if (count >= 0) {
-            count++;
+            if (unitOverviewController.getLeftUnits() > 0) {
+                count++;
+                unitOverviewController.setLeftUnits(unitOverviewController.getLeftUnits() - 1);
+            }
         } else {
             count = 0;
         }
@@ -51,6 +54,7 @@ public class UnitObjectController {
     public void decreaseCount() {
         if (count > 0) {
             count--;
+            unitOverviewController.setLeftUnits(unitOverviewController.getLeftUnits() + 1);
             updateCount();
         }
 
