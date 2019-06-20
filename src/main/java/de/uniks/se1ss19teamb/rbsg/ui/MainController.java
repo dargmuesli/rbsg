@@ -85,8 +85,6 @@ public class MainController {
     @FXML
     private JFXButton btnMinimize;
     @FXML
-    private HBox chatLabelBox;
-    @FXML
     private TextField message;
     @FXML
     private VBox textArea;
@@ -138,8 +136,6 @@ public class MainController {
             //UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
             // ChatTabController
-            chatLabelBox.setMaxWidth(Double.MAX_VALUE);
-
             chatPane.getSelectionModel().selectedItemProperty().addListener(
                 (ov, t, t1) -> {
                     if (t1.getText().equals("All")) {
@@ -279,14 +275,12 @@ public class MainController {
             updatePlayerView();
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
-                chatLabelBox.setAlignment(Pos.BOTTOM_LEFT);
                 chatBox.setVisible(false);
                 chatBox.setMaxHeight(0);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
-                chatLabelBox.setAlignment(Pos.CENTER);
                 chatBox.setVisible(true);
-                chatBox.setMaxHeight(350);
+                chatBox.setMaxHeight(300);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
 
