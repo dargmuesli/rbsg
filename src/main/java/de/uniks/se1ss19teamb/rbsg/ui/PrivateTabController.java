@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 public class PrivateTabController {
 
     @FXML
+    public ScrollPane scroll;
+    @FXML
     private Tab newTab;
     @FXML
     private VBox textArea;
@@ -21,6 +23,7 @@ public class PrivateTabController {
         start.setStyle("-fx-text-fill: -fx-privatetext;");
         textArea.getChildren().add(start);
         addContextMenu();
+        textArea.heightProperty().addListener(observable -> scroll.setVvalue(1D));
     }
 
     private void addContextMenu() {

@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
@@ -75,6 +77,8 @@ public class MainController {
     private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
     // TODO - after some time it automaticly disconnects system and chatSocket
     @FXML
+    private VBox chatWindow;
+    @FXML
     private VBox chatBox;
     @FXML
     private JFXButton btnSend;
@@ -89,7 +93,7 @@ public class MainController {
     @FXML
     private JFXTabPane chatPane;
     @FXML
-    private HBox messageBox;
+    private ScrollPane allPane;
     @FXML
     private JFXButton btnPlayerRefresh;
     @FXML
@@ -190,6 +194,8 @@ public class MainController {
 
         system.connect();
 
+        textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
+
         LoginController.setChatSocket(chatSocket);
     }
 
@@ -275,11 +281,17 @@ public class MainController {
             if (chatBox.isVisible()) {
                 chatLabelBox.setAlignment(Pos.BOTTOM_LEFT);
                 chatBox.setVisible(false);
+                chatBox.setMaxHeight(0);
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
                 chatLabelBox.setAlignment(Pos.CENTER);
                 chatBox.setVisible(true);
+                chatBox.setMaxHeight(350);
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
+
         }
+        ham.requestFocus();
     }
 
     void updateGameView() {
@@ -417,7 +429,10 @@ public class MainController {
             container.getChildren().add(text);
         }
 
-        Platform.runLater(() -> box.getChildren().add(container));
+        Platform.runLater(() -> {
+            box.getChildren().add(container);
+            this.message.requestFocus();
+        });
     }
 
     private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {

@@ -26,7 +26,7 @@ public class UserInterfaceUtils {
         fadeTransition.setNode(node);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);
-        Node chat = node.lookup("#chatBox");
+        Node chat = node.lookup("#chatWindow");
         fadeTransition.setOnFinished(event -> {
             try {
                 if (chat == null) {

@@ -64,10 +64,14 @@
                 </VBox>
             </HBox>
             <Pane prefHeight="1.0" style="-fx-background-color: grey;"/>
-            <HBox VBox.vgrow="ALWAYS">
-                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                    <HBox fx:id="chatLabelBox" alignment="CENTER">
-                        <Label alignment="CENTER" text="Chat" textAlignment="CENTER">
+            <HBox VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" spacing="5">
+                <VBox fx:id="chatWindow" alignment="BOTTOM_CENTER" HBox.hgrow="ALWAYS" AnchorPane.bottomAnchor="5.0"
+                      AnchorPane.leftAnchor="5.0" style="-fx-background-color: transparent;">
+                    <HBox fx:id="chatLabelBox" alignment="CENTER" style="-fx-background-color: transparent;"
+                          AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" spacing="5">
+                        <Label alignment="CENTER" text="Chat" textAlignment="CENTER"
+                               style="-fx-background-color: -fx-primary; -fx-border-radius: 20px;
+                               -fx-background-radius: 10px;">
                             <font>
                                 <Font size="15.0"/>
                             </font>
@@ -75,16 +79,19 @@
                                 <Insets bottom="10.0" top="5.0"/>
                             </VBox.margin>
                         </Label>
-                        <JFXButton fx:id="btnMinimize" alignment="CENTER_RIGHT" onAction="#setOnAction">
+                        <JFXButton fx:id="btnMinimize" alignment="CENTER_RIGHT" onAction="#setOnAction"
+                                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0"
+                                   contentDisplay="GRAPHIC_ONLY">
                             <graphic>
                                 <FontAwesomeIconView glyphName="WINDOW_MINIMIZE" size="15"/>
                             </graphic>
                         </JFXButton>
                     </HBox>
-                    <VBox fx:id="chatBox">
+                    <VBox fx:id="chatBox" maxHeight="350">
                         <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
                             <Tab closable="false" text="All">
-                                <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="400.0">
+                                <ScrollPane fx:id="allPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
+                                            minWidth="400.0">
                                     <VBox fx:id="textArea"/>
                                 </ScrollPane>
                             </Tab>
