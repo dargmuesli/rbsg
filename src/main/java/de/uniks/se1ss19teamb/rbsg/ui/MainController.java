@@ -264,7 +264,9 @@ public class MainController {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
             if (logout.getSuccessful()) {
+                chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
+                System.out.println(mainScreen.lookup("#chatWindow"));
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
