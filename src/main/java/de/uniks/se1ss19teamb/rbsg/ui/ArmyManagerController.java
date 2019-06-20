@@ -3,9 +3,11 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class ArmyManagerController {
@@ -53,6 +57,8 @@ public class ArmyManagerController {
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     LoginController loginController = new LoginController();
 
+    private static final Logger logger = LogManager.getLogger();
+
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
     private HeavyTank heavyTank = new HeavyTank();
@@ -69,13 +75,20 @@ public class ArmyManagerController {
     private int jeepCounter = 0;
     private int lightTankCounter = 0;
 
-    private int count = 0;
-    private ArmyManagerController armyManagerController;
     private int leftUnits = 10;
 
     // saveMode = true -> Buttons save configuration.
     // saveMode = false -> Buttons laod configuration
     private boolean saveMode = true;
+    private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
+    /*
+        0 -> Bazooka Trooper
+        1 -> Chopper
+        2 -> Heavy Tank
+        3 -> Infantry
+        4 -> Jeep
+        5 -> Light Tank
+     */
 
     public void initialize() {
 
@@ -101,6 +114,7 @@ public class ArmyManagerController {
                 Parent parent = fxmlLoader.load();
                 UnitObjectController controller = fxmlLoader.getController();
                 controller.setUpUnitObject(unit, this);
+                unitObjectControllers.add(controller);
                 unitList.getItems().add(parent);
 
             } catch (IOException e) {
@@ -173,6 +187,40 @@ public class ArmyManagerController {
             btnSave2.setText("Load 2");
             btnSave3.setText("Load 3");
         }
+    }
+
+    public void loadFromServer() {
+        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
+        req.sendRequest();
+        ArrayList<Army> serverArmies = req.getArmies();
+        if (serverArmies.size() == 0) {
+            NotificationHandler.getNotificationHandler()
+                .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
+        } else {
+            Army firstArmy = serverArmies.get(0);
+            updateConfigurationView(firstArmy);
+
+        }
+    }
+
+    public void updateConfigurationView(Army army) {
+
+        for (String unitId : army.getUnits()) {
+            if (unitId.equals("5cc051bd62083600017db3b7")) {
+                unitObjectControllers.get(0).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3bb")) {
+                unitObjectControllers.get(1).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3ba")) {
+                unitObjectControllers.get(2).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3b6")) {
+                unitObjectControllers.get(3).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3b8")) {
+                unitObjectControllers.get(4).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3b9")) {
+                unitObjectControllers.get(5).increaseCount();
+            }
+        }
+
     }
 }
 
