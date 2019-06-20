@@ -12,13 +12,28 @@ public class TextureManager {
     
     public static void init() {
         instance = new TextureManager();
-        AnimatedTexture.registerAnimUpdates();
-        
-        Texture test = new Texture("Test.png");
-        instance.textures.put("test", test);        
+        AnimatedTexture.registerAnimUpdates();    
         
         Texture panzer = new AnimatedTexture("panzer.png", 250.0f);
         instance.textures.put("panzer", panzer);
+        
+        Texture heli = new AnimatedTexture("HelicopterV1anim.png", 125.0f);
+        instance.textures.put("helicopter", heli);
+        
+        Texture bazooka = new Texture("BazookaV1.png");
+        instance.textures.put("bazooka", bazooka);
+
+        Texture heavyTank = new Texture("HeavyTankV1.png");
+        instance.textures.put("heavyTank", heavyTank);
+        
+        Texture infantry = new Texture("InfantryV1.png");
+        instance.textures.put("infantry", infantry);
+        
+        Texture jeep = new Texture("JeepV1.png");
+        instance.textures.put("jeep", jeep);
+        
+        Texture lightTank = new Texture("lightTankV1.png");
+        instance.textures.put("lightTank", lightTank);
         
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
