@@ -75,9 +75,9 @@ public class UiTests extends ApplicationTest {
     @Test
     public void loginMainTest() {
         clickOn("#userName");
-        write("MyNewName");
+        write("testTeamB");
         clickOn("#password");
-        write("blutangel90");
+        write("qwertz");
         clickOn("#rememberLogin");
         clickOn("#btnLogin");
         sleep(2000);
