@@ -171,9 +171,9 @@ public class MainController {
 
         system.registerUserLeftHandler((name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
 
-        system.registerGameCreateHandler((name, id, neededPlayers)
-            -> addElement(name, " has created a game with " + id + " id and needs " + neededPlayers
-            + " mates to play.", textArea, false));
+        system.registerGameCreateHandler((gameName, id, neededPlayers)
+            -> addElement(null, gameName + " game was created with " + id + " id and needs " + neededPlayers
+            + " players.", textArea, false));
 
         system.registerGameDeleteHandler((id) -> addElement(null, "Game with id: " + id + " was deleted!",
             textArea, false));
