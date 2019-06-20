@@ -17,8 +17,15 @@ public class TextureManagerTest {
     
     @Test
     public void checkLoadedTexture() {
-        Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("test"));
         Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("missing"));
+        Assert.assertEquals(new Dimension2D(64, 256), TextureManager.getTextureDimensions("panzer"));
+        
+        Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("bazooka"));
+        Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("heavyTank"));
+        Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("infantry"));
+        Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("jeep"));
+        Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("lightTank"));
+        Assert.assertEquals(new Dimension2D(64, 192), TextureManager.getTextureDimensions("helicopter"));
     }
     
     @Test
@@ -28,5 +35,8 @@ public class TextureManagerTest {
         Assert.assertFalse(((ImageView)pane.getChildren()
                 .stream().filter((node) -> node instanceof ImageView).findAny().get())
                 .getImage() == null);
+        
+        Pane animPane = TextureManager.getTextureInstance("panzer");
+        Assert.assertTrue(animPane instanceof AnimatedPane);
     }
 }
