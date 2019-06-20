@@ -392,7 +392,7 @@ public class MainController {
             if (whisper) {
                 name.setStyle("-fx-text-fill: -fx-privatetext;");
             } else {
-                name.setStyle("-fx-text-fill: black;");
+                name.setStyle("-fx-text-fill: black");
             }
             // whisper on double click
             name.setOnMouseClicked(mouseEvent -> {
@@ -405,15 +405,19 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: black;"
-                + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
+            text.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-primary" : "black") + ";"
+                + "-fx-background-color: " + (player.equals(userName) || SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-secondary" : "white") + ";"
                 + "-fx-border-radius: 20px;"
                 + "-fx-background-radius: 10px;");
 
             Platform.runLater(() -> {
                 name.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                name.setStyle("-fx-text-fill: black;"
-                    + "-fx-background-color: " + (player.equals(userName) ? "-fx-secondary" : "white") + ";"
+                name.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                    ? "-fx-primary" : "black") + ";"
+                    + "-fx-background-color: " + (player.equals(userName) || SerializeUtils.deserialize(new File(path), boolean.class)
+                    ? "-fx-secondary" : "white") + ";"
                     + "-fx-border-radius: 20px;"
                     + "-fx-background-radius: 10px;");
             });
@@ -423,8 +427,10 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            text.setStyle("-fx-text-fill: black;"
-                + "-fx-background-color: white;"
+            text.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-primary" : "black") + ";"
+                + "-fx-background-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                ? "-fx-secondary" : "white") + ";"
                 + "-fx-border-radius: 20px;"
                 + "-fx-background-radius: 10px;");
 
@@ -523,10 +529,12 @@ public class MainController {
 
     private void setAll() {
         sendTo = null;
+
         Platform.runLater(() -> {
             message.clear();
-            message.setStyle("-fx-text-fill: -fx-secondary;"
-                + "-jfx-focus-color: -fx-secondary;");
+            message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                    ? "-fx-secondary" : "black") + "-jfx-focus-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+                    ? "-fx-secondary" : "black"));
         });
     }
 

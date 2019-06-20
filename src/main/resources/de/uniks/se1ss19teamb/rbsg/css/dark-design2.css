@@ -58,3 +58,7 @@ ScrollPane {
 .menu-item {
     -fx-background-color: grey;
 }
+
+.tab .tab-label {
+    -fx-text-fill: white;
+}
