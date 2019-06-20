@@ -24,12 +24,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
@@ -75,13 +77,19 @@ public class MainController {
     @FXML
     private VBox chatBox;
     @FXML
-    private Button btnSend;
+    private JFXButton btnSend;
+    @FXML
+    private JFXButton btnMinimize;
+    @FXML
+    private HBox chatLabelBox;
     @FXML
     private TextField message;
     @FXML
     private VBox textArea;
     @FXML
     private JFXTabPane chatPane;
+    @FXML
+    private HBox messageBox;
     @FXML
     private JFXButton btnPlayerRefresh;
     @FXML
@@ -126,6 +134,8 @@ public class MainController {
             //UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
             // ChatTabController
+            chatLabelBox.setMaxWidth(Double.MAX_VALUE);
+
             chatPane.getSelectionModel().selectedItemProperty().addListener(
                 (ov, t, t1) -> {
                     if (t1.getText().equals("All")) {
@@ -261,6 +271,14 @@ public class MainController {
             updateGameView();
         } else if (event.getSource().equals(btnPlayerRefresh)) {
             updatePlayerView();
+        } else if (event.getSource().equals(btnMinimize)) {
+            if (chatBox.isVisible()) {
+                chatLabelBox.setAlignment(Pos.BOTTOM_LEFT);
+                chatBox.setVisible(false);
+            } else {
+                chatLabelBox.setAlignment(Pos.CENTER);
+                chatBox.setVisible(true);
+            }
         }
     }
 

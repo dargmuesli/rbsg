@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,10 +18,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.Button?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/dark-design2.css"
             xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
     <AnchorPane fx:id="mainScreen" stylesheets="@../css/dark-design2.css" AnchorPane.bottomAnchor="0.0"
@@ -67,14 +66,21 @@
             <Pane prefHeight="1.0" style="-fx-background-color: grey;"/>
             <HBox VBox.vgrow="ALWAYS">
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                    <Label alignment="CENTER" text="Chat" textAlignment="CENTER">
-                        <font>
-                            <Font size="15.0"/>
-                        </font>
-                        <VBox.margin>
-                            <Insets bottom="10.0" top="5.0"/>
-                        </VBox.margin>
-                    </Label>
+                    <HBox fx:id="chatLabelBox" alignment="CENTER">
+                        <Label alignment="CENTER" text="Chat" textAlignment="CENTER">
+                            <font>
+                                <Font size="15.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" top="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <JFXButton fx:id="btnMinimize" alignment="CENTER_RIGHT" onAction="#setOnAction">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="WINDOW_MINIMIZE" size="15"/>
+                            </graphic>
+                        </JFXButton>
+                    </HBox>
                     <VBox fx:id="chatBox">
                         <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
                             <Tab closable="false" text="All">
@@ -89,11 +95,11 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0"/>
                                 </HBox.margin>
                             </JFXTextField>
-                            <Button fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
+                            <JFXButton fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
                                 <graphic>
                                     <FontAwesomeIconView glyphName="SEND" size="15"/>
                                 </graphic>
-                            </Button>
+                            </JFXButton>
                             <VBox.margin>
                                 <Insets left="5.0" right="5.0"/>
                             </VBox.margin>
