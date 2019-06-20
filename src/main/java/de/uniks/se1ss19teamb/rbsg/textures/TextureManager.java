@@ -47,7 +47,7 @@ public class TextureManager {
         Texture texture = instance.fetchTexture(toFetch);
         return new Dimension2D(texture.image.getWidth(), texture.image.getHeight());
     }
-    
+
     private Map<String, Texture> textures = new HashMap<>();
     
     private TextureManager() { 
