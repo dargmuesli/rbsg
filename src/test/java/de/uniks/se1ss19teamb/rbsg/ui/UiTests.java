@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
 
+import javafx.application.Platform;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -20,7 +21,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 // TODO headless mode
 
-class LoginControllerTest extends ApplicationTest {
+class UiTests extends ApplicationTest {
 
     private Main main;
 
@@ -39,6 +40,10 @@ class LoginControllerTest extends ApplicationTest {
     public void start(Stage stage) throws Exception {
         main = new Main();
         main.start(stage);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     @Test
