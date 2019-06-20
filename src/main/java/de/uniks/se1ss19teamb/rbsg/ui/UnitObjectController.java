@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 public class UnitObjectController {
 
     private Unit unit;
-    private UnitOverviewController unitOverviewController;
+    private ArmyManagerController armyManagerController;
     private int count = 0;
 
     @FXML
@@ -21,9 +21,9 @@ public class UnitObjectController {
     Button btnDecrease;
 
 
-    void setUpUnitObject(Unit unit, UnitOverviewController unitOverviewController) {
+    void setUpUnitObject(Unit unit, ArmyManagerController armyManagerController) {
         this.unit = unit;
-        this.unitOverviewController = unitOverviewController;
+        this.armyManagerController = armyManagerController;
         labelUnitType.setText(unit.getType());
         updateCount();
         btnDecrease.setDisable(true);
@@ -41,9 +41,9 @@ public class UnitObjectController {
 
     public void increaseCount() {
         if (count >= 0) {
-            if (unitOverviewController.getLeftUnits() > 0) {
+            if (armyManagerController.getLeftUnits() > 0) {
                 count++;
-                unitOverviewController.setLeftUnits(unitOverviewController.getLeftUnits() - 1);
+                armyManagerController.setLeftUnits(armyManagerController.getLeftUnits() - 1);
                 btnDecrease.setDisable(false);
             }
         } else {
@@ -56,7 +56,7 @@ public class UnitObjectController {
     public void decreaseCount() {
         if (count > 0) {
             count--;
-            unitOverviewController.setLeftUnits(unitOverviewController.getLeftUnits() + 1);
+            armyManagerController.setLeftUnits(armyManagerController.getLeftUnits() + 1);
             updateCount();
             if (count == 0) {
                 btnDecrease.setDisable(true);

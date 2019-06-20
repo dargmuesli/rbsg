@@ -5,7 +5,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -17,13 +17,13 @@
             <children>
                 <HBox alignment="CENTER" spacing="10.0">
                     <children>
-                        <JFXButton mnemonicParsing="false" text="save 1" />
-                        <JFXButton mnemonicParsing="false" text="save 2" />
-                        <JFXButton mnemonicParsing="false" text="save 3" />
-                        <JFXButton mnemonicParsing="false" text="save 4" />
+                        <JFXButton fx:id="btnChg" mnemonicParsing="false" text="Save/Load" />
+                        <JFXButton fx:id="btnSave1" mnemonicParsing="false" text="save 1" />
+                        <JFXButton fx:id="btnSave2" mnemonicParsing="false" text="save 2" />
+                        <JFXButton fx:id="btnSave3" mnemonicParsing="false" text="save 3" />
                     </children>
                 </HBox>
-            <HBox prefHeight="4.0" prefWidth="265.0">
+            <HBox alignment="TOP_CENTER" prefHeight="4.0" prefWidth="265.0">
                <children>
                       <Label text="Verfügbare Einheiten:">
                           <font>
@@ -40,9 +40,7 @@
                   </Label>
                </children>
             </HBox>
-                <ScrollPane fx:id="scrollPaneUnitOverview" fitToHeight="true" fitToWidth="true">
-                    <fx:include source="unitOverview.fxml" />
-                </ScrollPane>
+            <ListView fx:id="unitList" maxWidth="250.0" prefHeight="400.0" prefWidth="240.0" />
             </children>
             <padding>
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
