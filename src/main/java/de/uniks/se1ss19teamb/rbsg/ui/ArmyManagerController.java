@@ -333,6 +333,8 @@ public class ArmyManagerController {
     public void saveLoadCurrent1() {
         if (saveMode) {
             saveCurrentConfig(1);
+        } else {
+            //TODO: load function
         }
     }
 
@@ -352,6 +354,7 @@ public class ArmyManagerController {
         String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
         String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
         String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
+
         switch (configNum) {
             case 1:
                 armySave1 = currentArmy;
