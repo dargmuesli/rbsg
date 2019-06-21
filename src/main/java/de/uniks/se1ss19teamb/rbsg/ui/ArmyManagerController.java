@@ -233,6 +233,10 @@ public class ArmyManagerController {
     }
 
     private void updateConfigurationView(Army army) {
+        for (UnitObjectController controller : unitObjectControllers) {
+            controller.setCount(0);
+            leftUnits = 10;
+        }
 
         for (String unitId : army.getUnits()) {
             if (unitId.equals("5cc051bd62083600017db3b7")) {
@@ -339,32 +343,53 @@ public class ArmyManagerController {
             saveCurrentConfig(1);
         } else {
             currentArmy = loadConfig(1);
+            if (currentArmy == null) {
+                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+            }
+            updateConfigurationView(currentArmy);
         }
     }
 
     public void saveLoadCurrent2() {
         if (saveMode) {
             saveCurrentConfig(2);
+        } else {
+            currentArmy = loadConfig(2);
+            if (currentArmy == null) {
+                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+            }
+            updateConfigurationView(currentArmy);
         }
     }
 
     public void saveLoadCurrent3() {
         if (saveMode) {
             saveCurrentConfig(3);
+        } else {
+            currentArmy = loadConfig(3);
+            if (currentArmy == null) {
+                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+            }
+            updateConfigurationView(currentArmy);
         }
     }
 
     private Army loadConfig(int number) {
         switch (number) {
-            case 1: return SerializeUtils.deserialize(armysavePath1, Army.class);
-            case 2: return SerializeUtils.deserialize(armysavePath2, Army.class);
-            case 3: return SerializeUtils.deserialize(armysavePath3, Army.class);
-            default: return null;
+            case 1:
+                return SerializeUtils.deserialize(new File(armysavePath1), Army.class);
+            case 2:
+                return SerializeUtils.deserialize(new File(armysavePath2), Army.class);
+            case 3:
+                return SerializeUtils.deserialize(new File(armysavePath3), Army.class);
+            default:
+                return null;
         }
     }
 
     private void saveCurrentConfig(int configNum) {
 
+        currentArmy = getCurrentConfiguration();
         switch (configNum) {
             case 1:
                 armySave1 = currentArmy;
