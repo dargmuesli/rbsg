@@ -54,7 +54,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtfldArmyName" promptText="army name" />
+                  <JFXTextField fx:id="txtfldArmyName" promptText="new army name" />
                   <Button fx:id="btnSetArmyName" mnemonicParsing="false" onAction="#setArmyName" text="set name" />
                </children></HBox>
             <ListView fx:id="unitList" maxWidth="500.0" prefHeight="400.0" prefWidth="500.0" />

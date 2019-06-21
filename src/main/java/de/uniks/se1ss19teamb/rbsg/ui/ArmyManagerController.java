@@ -22,7 +22,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
@@ -54,6 +53,8 @@ public class ArmyManagerController {
     private Button btnSave3;
     @FXML
     private JFXTextField txtfldArmyName;
+    @FXML
+    private Label labelArmyName;
     @FXML
     private AnchorPane mainPane1;
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
@@ -205,6 +206,7 @@ public class ArmyManagerController {
                 .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
         } else {
             Army firstArmy = serverArmies.get(0);
+            currentArmy = firstArmy;
             updateConfigurationView(firstArmy);
 
         }
@@ -231,7 +233,39 @@ public class ArmyManagerController {
     }
 
     public void saveToServer() {
+        setArmyConfiguration();
+        String currentArmyName = currentArmy.getName();
+        String currentArmyId = currentArmy.getId();
+        ArrayList<String> currentArmyUnits = currentArmy.getUnits();
 
+        if (currentArmyName == null) {
+            NotificationHandler.getNotificationHandler().sendError("You have to give the army a name!",
+                logger);
+            return;
+        }
+
+        if (currentArmyUnits.size() < 10) {
+            NotificationHandler.getNotificationHandler().sendError("You need at least ten units!", logger);
+            return;
+        }
+
+        if (currentArmyId == null) {
+            CreateArmyRequest req = new CreateArmyRequest(currentArmyName, currentArmyUnits,
+                LoginController.getUserKey());
+            req.sendRequest();
+            currentArmy.setId(req.getArmyID());
+
+        } else {
+            UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
+                LoginController.getUserKey());
+            req.sendRequest();
+        }
+
+        NotificationHandler.getNotificationHandler().sendSuccess("The Army was saved.", logger);
+    }
+
+    private void setArmyConfiguration() {
+        currentArmy.setUnits(getCurrentConfiguration().getUnits());
     }
 
     private Army getCurrentConfiguration() {
@@ -273,6 +307,8 @@ public class ArmyManagerController {
 
     public void setArmyName() {
         currentArmy.setName(txtfldArmyName.getText());
+        labelArmyName.setText(txtfldArmyName.getText());
+        txtfldArmyName.setText("");
     }
 }
 
