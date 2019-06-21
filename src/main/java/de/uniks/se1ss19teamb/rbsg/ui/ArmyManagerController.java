@@ -105,6 +105,9 @@ public class ArmyManagerController {
 
     private ArrayList<Army> savedArmies = new ArrayList<>();
     private Army currentArmy = new Army();
+    private Army armySave1 = null;
+    private Army armySave2 = null;
+    private Army armySave3 = null;
 
     public void initialize() {
 
@@ -325,6 +328,57 @@ public class ArmyManagerController {
         currentArmy.setName(txtfldArmyName.getText());
         labelArmyName.setText(txtfldArmyName.getText());
         txtfldArmyName.setText("");
+    }
+
+    public void saveLoadCurrent1() {
+        if (saveMode) {
+            saveCurrentConfig(1);
+        }
+    }
+
+    public void saveLoadCurrent2() {
+        if (saveMode) {
+            saveCurrentConfig(2);
+        }
+    }
+
+    public void saveLoadCurrent3() {
+        if (saveMode) {
+            saveCurrentConfig(3);
+        }
+    }
+
+    private void saveCurrentConfig(int configNum) {
+        String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
+        String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
+        String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
+        switch (configNum) {
+            case 1:
+                armySave1 = currentArmy;
+                SerializeUtils.serialize(armysavePath1, armySave1);
+                NotificationHandler.getNotificationHandler()
+                    .sendSuccess("Configuration saved to Save 1.", logger);
+                break;
+
+            case 2:
+                armySave2 = currentArmy;
+                SerializeUtils.serialize(armysavePath2, armySave2);
+                NotificationHandler.getNotificationHandler()
+                    .sendSuccess("Configuration saved to Save 2.", logger);
+                break;
+
+            case 3:
+                armySave3 = currentArmy;
+                SerializeUtils.serialize(armysavePath3, armySave3);
+                NotificationHandler.getNotificationHandler()
+                    .sendSuccess("Configuration saved to Save 3.", logger);
+                break;
+
+            default:
+                NotificationHandler.getNotificationHandler()
+                    .sendError("Wrong configNumber", logger);
+
+        }
     }
 }
 
