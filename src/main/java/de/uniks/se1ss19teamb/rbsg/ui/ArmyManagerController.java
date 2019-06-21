@@ -72,6 +72,10 @@ public class ArmyManagerController {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private final String ARMYSAVE1_PATH = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
+    private final String ARMYSAVE2_PATH = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
+    private final String ARMYSAVE3_PATH = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
+
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
     private HeavyTank heavyTank = new HeavyTank();
@@ -105,6 +109,9 @@ public class ArmyManagerController {
 
     private ArrayList<Army> savedArmies = new ArrayList<>();
     private Army currentArmy = new Army();
+    private Army armySave1 = null;
+    private Army armySave2 = null;
+    private Army armySave3 = null;
 
     public void initialize() {
 
@@ -325,6 +332,51 @@ public class ArmyManagerController {
         currentArmy.setName(txtfldArmyName.getText());
         labelArmyName.setText(txtfldArmyName.getText());
         txtfldArmyName.setText("");
+    }
+
+    public void saveLoadCurrent1() {
+        if (saveMode) {
+            saveCurrentConfig(1);
+        }
+    }
+
+    public void saveLoadCurrent2() {
+        if (saveMode) {
+            saveCurrentConfig(2);
+        }
+    }
+
+    public void saveLoadCurrent3() {
+        if (saveMode) {
+            saveCurrentConfig(3);
+        }
+    }
+
+    private void saveCurrentConfig(int configNum) {
+        switch (configNum) {
+            case 1:
+                armySave1 = currentArmy;
+                SerializeUtils.serialize(ARMYSAVE1_PATH, armySave1);
+                NotificationHandler.getNotificationHandler()
+                    .sendSuccess("Configuration saved to Save 1.", logger);
+                break;
+
+            case 2:
+                armySave2 = currentArmy;
+                SerializeUtils.serialize(ARMYSAVE2_PATH, armySave2);
+                NotificationHandler.getNotificationHandler()
+                    .sendSuccess("Configuration saved to Save 2.", logger);
+                break;
+
+            case 3:
+                armySave3 = currentArmy;
+                SerializeUtils.serialize(ARMYSAVE3_PATH, armySave3);
+                NotificationHandler.getNotificationHandler()
+                    .sendSuccess("Configuration saved to Save 3.", logger);
+                break;
+
+
+        }
     }
 }
 

@@ -20,9 +20,9 @@
                 <HBox alignment="CENTER" spacing="10.0">
                     <children>
                         <JFXButton fx:id="btnChg" mnemonicParsing="false" onAction="#changeSaveMode" text="Save/Load" />
-                        <JFXButton fx:id="btnSave1" mnemonicParsing="false" text="Save 1" />
-                        <JFXButton fx:id="btnSave2" mnemonicParsing="false" text="Save 2" />
-                        <JFXButton fx:id="btnSave3" mnemonicParsing="false" text="Save 3" />
+                        <JFXButton fx:id="btnSave1" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent1" text="Save 1" />
+                        <JFXButton fx:id="btnSave2" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent2" text="Save 2" />
+                        <JFXButton fx:id="btnSave3" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent3" text="Save 3" />
                     </children>
                 </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="4.0" prefWidth="265.0">
