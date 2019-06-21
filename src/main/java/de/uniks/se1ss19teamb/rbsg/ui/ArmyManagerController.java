@@ -2,10 +2,13 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -24,6 +27,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class ArmyManagerController {
@@ -50,6 +55,10 @@ public class ArmyManagerController {
     @FXML
     private Button btnSave3;
     @FXML
+    private JFXTextField txtfldArmyName;
+    @FXML
+    private Label labelArmyName;
+    @FXML
     private AnchorPane mainPane1;
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
@@ -60,6 +69,8 @@ public class ArmyManagerController {
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     LoginController loginController = new LoginController();
+
+    private static final Logger logger = LogManager.getLogger();
 
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
@@ -77,13 +88,23 @@ public class ArmyManagerController {
     private int jeepCounter = 0;
     private int lightTankCounter = 0;
 
-    private int count = 0;
-    private ArmyManagerController armyManagerController;
     private int leftUnits = 10;
 
     // saveMode = true -> Buttons save configuration.
     // saveMode = false -> Buttons laod configuration
     private boolean saveMode = true;
+    private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
+    /*
+        0 -> Bazooka Trooper
+        1 -> Chopper
+        2 -> Heavy Tank
+        3 -> Infantry
+        4 -> Jeep
+        5 -> Light Tank
+     */
+
+    private ArrayList<Army> savedArmies = new ArrayList<>();
+    private Army currentArmy = new Army();
 
     public void initialize() {
 
@@ -113,6 +134,7 @@ public class ArmyManagerController {
                 Parent parent = fxmlLoader.load();
                 UnitObjectController controller = fxmlLoader.getController();
                 controller.setUpUnitObject(unit, this);
+                unitObjectControllers.add(controller);
                 unitList.getItems().add(parent);
 
             } catch (IOException e) {
@@ -170,7 +192,7 @@ public class ArmyManagerController {
         }
     }
 
-    void setLabelLeftUnits(int count) {
+    private void setLabelLeftUnits(int count) {
         labelLeftUnits.setText(Integer.toString(count));
     }
 
@@ -185,6 +207,124 @@ public class ArmyManagerController {
             btnSave2.setText("Load 2");
             btnSave3.setText("Load 3");
         }
+    }
+
+    public void loadFromServer() {
+        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
+        req.sendRequest();
+        ArrayList<Army> serverArmies = req.getArmies();
+        if (serverArmies.size() == 0) {
+            NotificationHandler.getNotificationHandler()
+                .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
+        } else {
+            Army firstArmy = serverArmies.get(0);
+            currentArmy = firstArmy;
+            labelArmyName.setText(currentArmy.getName());
+            updateConfigurationView(firstArmy);
+
+        }
+    }
+
+    private void updateConfigurationView(Army army) {
+
+        for (String unitId : army.getUnits()) {
+            if (unitId.equals("5cc051bd62083600017db3b7")) {
+                unitObjectControllers.get(0).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3bb")) {
+                unitObjectControllers.get(1).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3ba")) {
+                unitObjectControllers.get(2).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3b6")) {
+                unitObjectControllers.get(3).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3b8")) {
+                unitObjectControllers.get(4).increaseCount();
+            } else if (unitId.equals("5cc051bd62083600017db3b9")) {
+                unitObjectControllers.get(5).increaseCount();
+            }
+        }
+
+    }
+
+    public void saveToServer() {
+        setArmyConfiguration();
+        String currentArmyName = currentArmy.getName();
+        String currentArmyId = currentArmy.getId();
+        ArrayList<String> currentArmyUnits = currentArmy.getUnits();
+
+        if (currentArmyName == null) {
+            NotificationHandler.getNotificationHandler().sendError("You have to give the army a name!",
+                logger);
+            return;
+        }
+
+        if (currentArmyUnits.size() < 10) {
+            NotificationHandler.getNotificationHandler().sendError("You need at least ten units!", logger);
+            return;
+        }
+
+        if (currentArmyId == null) {
+            CreateArmyRequest req = new CreateArmyRequest(currentArmyName, currentArmyUnits,
+                LoginController.getUserKey());
+            req.sendRequest();
+            currentArmy.setId(req.getArmyID());
+
+        } else {
+            UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
+                LoginController.getUserKey());
+            req.sendRequest();
+        }
+
+        NotificationHandler.getNotificationHandler().sendSuccess("The Army was saved.", logger);
+    }
+
+    private void setArmyConfiguration() {
+        currentArmy.setUnits(getCurrentConfiguration().getUnits());
+    }
+
+    private Army getCurrentConfiguration() {
+        int bazTroopCount = unitObjectControllers.get(0).getCount();
+        ArrayList<String> allIds = new ArrayList<>();
+        for (int i = 0; i < bazTroopCount; i++) {
+            allIds.add("5cc051bd62083600017db3b7");
+        }
+
+        int chopperCount = unitObjectControllers.get(1).getCount();
+        for (int i = 0; i < chopperCount; i++) {
+            allIds.add("5cc051bd62083600017db3bb");
+        }
+
+        int heavyTankCount = unitObjectControllers.get(2).getCount();
+        for (int i = 0; i < heavyTankCount; i++) {
+            allIds.add("5cc051bd62083600017db3ba");
+        }
+
+        int infantryCount = unitObjectControllers.get(3).getCount();
+        for (int i = 0; i < infantryCount; i++) {
+            allIds.add("5cc051bd62083600017db3b6");
+        }
+
+        int jeepCount = unitObjectControllers.get(4).getCount();
+        for (int i = 0; i < jeepCount; i++) {
+            allIds.add("5cc051bd62083600017db3b8");
+        }
+
+        int lightTankCount = unitObjectControllers.get(5).getCount();
+        for (int i = 0; i < lightTankCount; i++) {
+            allIds.add("5cc051bd62083600017db3b9");
+        }
+        Army army = new Army();
+        army.setUnits(allIds);
+        return army;
+    }
+
+    public void setArmyName() {
+        if (txtfldArmyName.getText().equals("")) {
+            NotificationHandler.getNotificationHandler().sendError("You have to type in a name!", logger);
+            return;
+        }
+        currentArmy.setName(txtfldArmyName.getText());
+        labelArmyName.setText(txtfldArmyName.getText());
+        txtfldArmyName.setText("");
     }
 }
 
