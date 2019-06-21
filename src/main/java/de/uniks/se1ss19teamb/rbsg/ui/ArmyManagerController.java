@@ -306,6 +306,10 @@ public class ArmyManagerController {
     }
 
     public void setArmyName() {
+        if (txtfldArmyName.getText().equals("")) {
+            NotificationHandler.getNotificationHandler().sendError("You have to type in a name!", logger);
+            return;
+        }
         currentArmy.setName(txtfldArmyName.getText());
         labelArmyName.setText(txtfldArmyName.getText());
         txtfldArmyName.setText("");
