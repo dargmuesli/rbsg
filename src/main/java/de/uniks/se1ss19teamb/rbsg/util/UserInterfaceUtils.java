@@ -10,6 +10,7 @@ import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
@@ -25,9 +26,16 @@ public class UserInterfaceUtils {
         fadeTransition.setNode(node);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);
+        Node chat = node.lookup("#chatWindow");
         fadeTransition.setOnFinished(event -> {
             try {
-                node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
+                if (chat == null) {
+                    node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
+                } else {
+                    AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
+                    pane.getChildren().add(chat);
+                    node.getScene().setRoot(pane);
+                }
             } catch (IOException e) {
                 notificationHandler.sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
