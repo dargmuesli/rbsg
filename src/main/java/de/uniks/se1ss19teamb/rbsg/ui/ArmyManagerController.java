@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
@@ -21,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +52,8 @@ public class ArmyManagerController {
     private Button btnSave2;
     @FXML
     private Button btnSave3;
+    @FXML
+    private JFXTextField txtfldArmyName;
     @FXML
     private AnchorPane mainPane1;
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
@@ -249,22 +253,26 @@ public class ArmyManagerController {
         }
 
         int infantryCount = unitObjectControllers.get(3).getCount();
-        for (int i = 0; i < chopperCount; i++) {
+        for (int i = 0; i < infantryCount; i++) {
             allIds.add("5cc051bd62083600017db3b6");
         }
 
         int jeepCount = unitObjectControllers.get(4).getCount();
-        for (int i = 0; i < chopperCount; i++) {
+        for (int i = 0; i < jeepCount; i++) {
             allIds.add("5cc051bd62083600017db3b8");
         }
 
         int lightTankCount = unitObjectControllers.get(5).getCount();
-        for (int i = 0; i < chopperCount; i++) {
+        for (int i = 0; i < lightTankCount; i++) {
             allIds.add("5cc051bd62083600017db3b9");
         }
 
         army.setUnits(allIds);
         return army;
+    }
+
+    public void setArmyName() {
+        currentArmy.setName(txtfldArmyName.getText());
     }
 }
 
