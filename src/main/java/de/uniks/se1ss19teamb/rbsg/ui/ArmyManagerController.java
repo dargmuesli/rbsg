@@ -90,6 +90,9 @@ public class ArmyManagerController {
         5 -> Light Tank
      */
 
+    private ArrayList<Army> savedArmies = new ArrayList<>();
+    private Army currentArmy = new Army();
+
     public void initialize() {
 
         loginController.changeTheme(mainPane, mainPane1, path, cssDark, cssWhite);
@@ -172,7 +175,7 @@ public class ArmyManagerController {
         }
     }
 
-    void setLabelLeftUnits(int count) {
+    private void setLabelLeftUnits(int count) {
         labelLeftUnits.setText(Integer.toString(count));
     }
 
@@ -203,7 +206,7 @@ public class ArmyManagerController {
         }
     }
 
-    public void updateConfigurationView(Army army) {
+    private void updateConfigurationView(Army army) {
 
         for (String unitId : army.getUnits()) {
             if (unitId.equals("5cc051bd62083600017db3b7")) {
@@ -221,6 +224,47 @@ public class ArmyManagerController {
             }
         }
 
+    }
+
+    public void saveToServer() {
+
+    }
+
+    private Army getCurrentConfiguration() {
+        Army army = new Army();
+        int bazTroopCount = unitObjectControllers.get(0).getCount();
+        ArrayList<String> allIds = new ArrayList<>();
+        for (int i = 0; i < bazTroopCount; i++) {
+            allIds.add("5cc051bd62083600017db3b7");
+        }
+
+        int chopperCount = unitObjectControllers.get(1).getCount();
+        for (int i = 0; i < chopperCount; i++) {
+            allIds.add("5cc051bd62083600017db3bb");
+        }
+
+        int heavyTankCount = unitObjectControllers.get(2).getCount();
+        for (int i = 0; i < heavyTankCount; i++) {
+            allIds.add("5cc051bd62083600017db3ba");
+        }
+
+        int infantryCount = unitObjectControllers.get(3).getCount();
+        for (int i = 0; i < chopperCount; i++) {
+            allIds.add("5cc051bd62083600017db3b6");
+        }
+
+        int jeepCount = unitObjectControllers.get(4).getCount();
+        for (int i = 0; i < chopperCount; i++) {
+            allIds.add("5cc051bd62083600017db3b8");
+        }
+
+        int lightTankCount = unitObjectControllers.get(5).getCount();
+        for (int i = 0; i < chopperCount; i++) {
+            allIds.add("5cc051bd62083600017db3b9");
+        }
+
+        army.setUnits(allIds);
+        return army;
     }
 }
 

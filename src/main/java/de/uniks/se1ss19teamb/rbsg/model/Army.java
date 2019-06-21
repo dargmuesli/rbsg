@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Army {
 
-    private String id;
-    private String name;
-    private ArrayList<String> units;
+    private String id = null;
+    private String name = null;
+    private ArrayList<String> units = null;
 
     public String getId() {
         return id;
