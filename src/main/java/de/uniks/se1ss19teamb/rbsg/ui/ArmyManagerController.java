@@ -90,6 +90,10 @@ public class ArmyManagerController {
 
     private int leftUnits = 10;
 
+    String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
+    String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
+    String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
+
     // saveMode = true -> Buttons save configuration.
     // saveMode = false -> Buttons laod configuration
     private boolean saveMode = true;
@@ -334,7 +338,7 @@ public class ArmyManagerController {
         if (saveMode) {
             saveCurrentConfig(1);
         } else {
-            //TODO: load function
+            currentArmy = loadConfig(1);
         }
     }
 
@@ -350,10 +354,16 @@ public class ArmyManagerController {
         }
     }
 
+    private Army loadConfig(int number) {
+        switch (number) {
+            case 1: return SerializeUtils.deserialize(armysavePath1, Army.class);
+            case 2: return SerializeUtils.deserialize(armysavePath2, Army.class);
+            case 3: return SerializeUtils.deserialize(armysavePath3, Army.class);
+            default: return null;
+        }
+    }
+
     private void saveCurrentConfig(int configNum) {
-        String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
-        String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
-        String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
 
         switch (configNum) {
             case 1:
