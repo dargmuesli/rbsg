@@ -45,7 +45,7 @@
             </HBox>
         </VBox>
         <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
-                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" text="Fullscreen">
             <graphic>
                 <FontAwesomeIconView glyphName="EXPAND" size="15"/>
             </graphic>

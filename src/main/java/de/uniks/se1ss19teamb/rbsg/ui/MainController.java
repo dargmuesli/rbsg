@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
@@ -26,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -75,15 +78,21 @@ public class MainController {
     private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
     // TODO - after some time it automaticly disconnects system and chatSocket
     @FXML
+    private VBox chatWindow;
+    @FXML
     private VBox chatBox;
     @FXML
-    private Button btnSend;
+    private JFXButton btnSend;
+    @FXML
+    private JFXButton btnMinimize;
     @FXML
     private TextField message;
     @FXML
     private VBox textArea;
     @FXML
     private JFXTabPane chatPane;
+    @FXML
+    private ScrollPane allPane;
     @FXML
     private JFXButton btnPlayerRefresh;
     @FXML
@@ -93,16 +102,14 @@ public class MainController {
     @FXML
     private JFXButton btnMode;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    LoginController loginController = new LoginController();
+    private LoginController loginController = new LoginController();
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
     private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
     private String mode;
-    ArmyManagerController armyManagerController = new ArmyManagerController();
+    private ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -117,6 +124,8 @@ public class MainController {
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
+        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+        String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
         if (SerializeUtils.deserialize(new File(path), boolean.class)) {
             loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
             mode = darkMode;
@@ -195,14 +204,16 @@ public class MainController {
 
         system.registerUserLeftHandler((name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
 
-        system.registerGameCreateHandler((name, id, neededPlayers)
-            -> addElement(name, " has created a game with " + id + " id and needs " + neededPlayers
-            + " mates to play.", textArea, false));
+        system.registerGameCreateHandler((gameName, id, neededPlayers)
+            -> addElement(null, gameName + " game was created with " + id + " id and needs " + neededPlayers
+            + " players.", textArea, false));
 
         system.registerGameDeleteHandler((id) -> addElement(null, "Game with id: " + id + " was deleted!",
             textArea, false));
 
         system.connect();
+
+        textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
         LoginController.setChatSocket(chatSocket);
     }
@@ -254,7 +265,9 @@ public class MainController {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
             if (logout.getSuccessful()) {
+                chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
+                System.out.println(mainScreen.lookup("#chatWindow"));
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
@@ -294,7 +307,24 @@ public class MainController {
                 loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
                 SerializeUtils.serialize(path, true);
             }
+        } else if (event.getSource().equals(btnMinimize)) {
+            if (chatBox.isVisible()) {
+                chatBox.setVisible(false);
+                chatBox.setMaxHeight(0);
+                chatBox.setMaxWidth(0);
+                chatWindow.setAlignment(Pos.BOTTOM_LEFT);
+                chatWindow.setPadding(new Insets(0, 0, 0, 15));
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
+            } else {
+                chatBox.setVisible(true);
+                chatBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
+                chatBox.setMaxWidth(Region.USE_COMPUTED_SIZE);
+                chatWindow.setAlignment(Pos.CENTER);
+                chatWindow.setPadding(new Insets(0));
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
+            }
         }
+        ham.requestFocus();
     }
 
     void updateGameView() {
@@ -422,7 +452,10 @@ public class MainController {
             container.getChildren().add(text);
         }
 
-        Platform.runLater(() -> box.getChildren().add(container));
+        Platform.runLater(() -> {
+            box.getChildren().add(container);
+            this.message.requestFocus();
+        });
     }
 
     private void setChatStyle(Label label) {

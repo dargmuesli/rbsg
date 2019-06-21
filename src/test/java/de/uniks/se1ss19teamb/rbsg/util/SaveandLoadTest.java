@@ -2,10 +2,10 @@ package de.uniks.se1ss19teamb.rbsg.util;
 
 import static org.junit.Assert.assertEquals;
 
-import de.uniks.se1ss19teamb.rbsg.testmodel.Game;
-import de.uniks.se1ss19teamb.rbsg.testmodel.Platform;
-import de.uniks.se1ss19teamb.rbsg.testmodel.Player;
-import de.uniks.se1ss19teamb.rbsg.testmodel.Unit;
+import fulib.generated.testmodel.Game;
+import fulib.generated.testmodel.Platform;
+import fulib.generated.testmodel.Player;
+import fulib.generated.testmodel.Unit;
 
 import java.io.File;
 

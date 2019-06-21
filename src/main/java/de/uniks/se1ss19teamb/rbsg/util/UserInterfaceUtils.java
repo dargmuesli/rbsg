@@ -27,7 +27,13 @@ public class UserInterfaceUtils {
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             try {
-                node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
+                if (node.lookup("#chatWindow") == null) {
+                    node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
+                } else {
+                    AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
+                    pane.getChildren().add(node.lookup("#chatWindow"));
+                    node.getScene().setRoot(pane);
+                }
             } catch (IOException e) {
                 notificationHandler.sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
