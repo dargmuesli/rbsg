@@ -10,7 +10,6 @@ import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
@@ -26,14 +25,13 @@ public class UserInterfaceUtils {
         fadeTransition.setNode(node);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);
-        Node chat = node.lookup("#chatWindow");
         fadeTransition.setOnFinished(event -> {
             try {
-                if (chat == null) {
+                if (node.lookup("#chatWindow") == null) {
                     node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
                 } else {
                     AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
-                    pane.getChildren().add(chat);
+                    pane.getChildren().add(node.lookup("#chatWindow"));
                     node.getScene().setRoot(pane);
                 }
             } catch (IOException e) {

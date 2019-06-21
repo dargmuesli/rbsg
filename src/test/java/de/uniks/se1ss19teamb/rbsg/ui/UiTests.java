@@ -90,13 +90,14 @@ class UiTests extends ApplicationTest {
         write("testTeamB");
         clickOn("#password");
         write("qwertz");
-        clickOn("#rememberLogin");
         clickOn("#btnLogin");
         sleep(2000);
         // chat
         clickOn("#message");
         write("/w me test");
         clickOn("#btnSend");
+        clickOn("#btnMinimize");
+        clickOn("#btnMinimize");
         // game
         clickOn("#gameName");
         write("ayGame");
@@ -116,6 +117,8 @@ class UiTests extends ApplicationTest {
         // army
         clickOn("#btnArmyManager");
         sleep(2000);
+        clickOn("#btnIncrease");
+        clickOn("#btnDecrease");
         clickOn("#ham");
         WaitForAsyncUtils.waitForFxEvents();
         clickOn("#btnBack");
@@ -123,6 +126,8 @@ class UiTests extends ApplicationTest {
         // logout
         clickOn("#ham");
         WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnMode");
+        clickOn("#btnMode");
         clickOn("#btnLogout");
     }
 }
