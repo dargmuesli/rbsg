@@ -102,16 +102,14 @@ public class MainController {
     @FXML
     private JFXButton btnMode;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    LoginController loginController = new LoginController();
+    private LoginController loginController = new LoginController();
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
     private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
     private String mode;
-    ArmyManagerController armyManagerController = new ArmyManagerController();
+    private ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
 
     private Chat chat = new Chat(this.chatSocket, chatLogPath);
@@ -126,6 +124,8 @@ public class MainController {
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
+        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
+        String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
         if (SerializeUtils.deserialize(new File(path), boolean.class)) {
             loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
             mode = darkMode;

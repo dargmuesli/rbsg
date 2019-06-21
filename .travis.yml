@@ -4,9 +4,13 @@ matrix:
     - dist: xenial
       jdk:
         - openjdk8
+      env:
+        - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
     - dist: trusty
       jdk:
         - oraclejdk8
+      env:
+        - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
 #    - dist: xenial
 #      jdk:
 #        - openjdk11

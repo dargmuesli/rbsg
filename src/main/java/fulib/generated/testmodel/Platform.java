@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.testmodel;
+package fulib.generated.testmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
