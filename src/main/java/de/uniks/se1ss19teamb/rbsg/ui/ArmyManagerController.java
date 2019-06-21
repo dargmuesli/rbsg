@@ -207,6 +207,7 @@ public class ArmyManagerController {
         } else {
             Army firstArmy = serverArmies.get(0);
             currentArmy = firstArmy;
+            labelArmyName.setText(currentArmy.getName());
             updateConfigurationView(firstArmy);
 
         }
