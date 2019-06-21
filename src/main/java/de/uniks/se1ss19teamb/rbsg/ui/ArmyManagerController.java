@@ -270,7 +270,6 @@ public class ArmyManagerController {
     }
 
     private Army getCurrentConfiguration() {
-        Army army = new Army();
         int bazTroopCount = unitObjectControllers.get(0).getCount();
         ArrayList<String> allIds = new ArrayList<>();
         for (int i = 0; i < bazTroopCount; i++) {
@@ -301,7 +300,7 @@ public class ArmyManagerController {
         for (int i = 0; i < lightTankCount; i++) {
             allIds.add("5cc051bd62083600017db3b9");
         }
-
+        Army army = new Army();
         army.setUnits(allIds);
         return army;
     }
