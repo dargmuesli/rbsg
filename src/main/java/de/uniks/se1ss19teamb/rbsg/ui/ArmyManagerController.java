@@ -253,6 +253,7 @@ public class ArmyManagerController {
                 unitObjectControllers.get(5).increaseCount();
             }
         }
+        labelArmyName.setText(army.getName());
 
     }
 
@@ -323,9 +324,9 @@ public class ArmyManagerController {
         for (int i = 0; i < lightTankCount; i++) {
             allIds.add("5cc051bd62083600017db3b9");
         }
-        Army army = new Army();
-        army.setUnits(allIds);
-        return army;
+
+        currentArmy.setUnits(allIds);
+        return currentArmy;
     }
 
     public void setArmyName() {
