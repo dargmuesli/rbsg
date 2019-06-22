@@ -30,13 +30,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,6 +103,8 @@ public class MainController {
     private AnchorPane mainScreen1;
     @FXML
     private JFXButton btnMode;
+    @FXML
+    private JFXButton btnTicTacToe;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     LoginController loginController = new LoginController();
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
@@ -322,6 +326,17 @@ public class MainController {
                 chatWindow.setAlignment(Pos.CENTER);
                 chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
+            }
+        } else if (event.getSource().equals(btnTicTacToe)) {
+            try {
+                Parent root = FXMLLoader
+                    .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root, 800, 600));
+                stage.show();
+                stage.setResizable(false);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         ham.requestFocus();
