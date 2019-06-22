@@ -60,6 +60,8 @@ public class ArmyManagerController {
     private Label labelArmyName;
     @FXML
     private AnchorPane mainPane1;
+    @FXML
+    private Button btnJoinGame;
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
     private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
@@ -192,6 +194,8 @@ public class ArmyManagerController {
             }
         } else if (event.getSource().equals(btnFullScreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullScreen);
+        } else if (event.getSource().equals(btnJoinGame)){
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
         }
     }
 

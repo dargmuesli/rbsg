@@ -380,7 +380,7 @@ public class MainController {
 
     void setJoinedGame(Game joinedGame) {
         this.joinedGame = joinedGame;
-        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainScreen);
+        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager2.fxml", mainScreen);
     }
 
     private Label addPlayerlabel(String player) {
