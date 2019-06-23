@@ -157,7 +157,7 @@
                             <Insets/>
                         </HBox.margin>
                     </Pane>
-                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" spacing="5.0">
                         <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
                             <font>
                                 <Font size="15.0"/>
@@ -169,6 +169,11 @@
                         <JFXButton fx:id="btnArmyManager" mnemonicParsing="false" onAction="#setOnAction" text="open">
                             <graphic>
                                 <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="btnTicTacToe" mnemonicParsing="false" onAction="#setOnAction">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="PLUS"/>
                             </graphic>
                         </JFXButton>
                         <VBox.margin>
