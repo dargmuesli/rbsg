@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.chat;
 
 import static org.mockito.Mockito.*;
 
+import de.uniks.se1ss19teamb.rbsg.model.ChatLogEntry;
 import de.uniks.se1ss19teamb.rbsg.sockets.*;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
