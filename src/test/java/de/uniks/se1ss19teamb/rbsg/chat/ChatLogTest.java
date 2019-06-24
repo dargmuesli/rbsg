@@ -37,19 +37,19 @@ public class ChatLogTest {
         Path testChatLogPath = Paths.get("src/test/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
         Chat chat = new Chat(chatSocket, testChatLogPath);
 
-        chat.deleteLog();
+        chat.deleteHistory();
 
-        ChatLogEntry chatLogEntry1 = new ChatLogEntry("message1", chatSocket.getUserName());
-        setupSocket(chat, chatLogEntry1.message, chatLogEntry1.sender);
-        chat.sendMessage(chatLogEntry1.message);
+        ChatHistoryEntry chatHistoryEntry1 = new ChatHistoryEntry("message1", chatSocket.getUserName());
+        setupSocket(chat, chatHistoryEntry1.message, chatHistoryEntry1.sender);
+        chat.sendMessage(chatHistoryEntry1.message);
 
-        ChatLogEntry chatLogEntry2 = new ChatLogEntry("message2", chatSocket.getUserName(), "receiver2");
-        setupSocket(chat, chatLogEntry2.message, chatLogEntry2.sender);
-        chat.sendMessage(chatLogEntry2.message, chatLogEntry2.receiver);
+        ChatHistoryEntry chatHistoryEntry2 = new ChatHistoryEntry("message2", chatSocket.getUserName(), "receiver2");
+        setupSocket(chat, chatHistoryEntry2.message, chatHistoryEntry2.sender);
+        chat.sendMessage(chatHistoryEntry2.message, chatHistoryEntry2.receiver);
 
-        ChatLogEntry chatLogEntry3 = new ChatLogEntry("message3", chatSocket.getUserName());
-        setupSocket(chat, chatLogEntry3.message, chatLogEntry3.sender);
-        chat.sendMessage(chatLogEntry3.message);
+        ChatHistoryEntry chatHistoryEntry3 = new ChatHistoryEntry("message3", chatSocket.getUserName());
+        setupSocket(chat, chatHistoryEntry3.message, chatHistoryEntry3.sender);
+        chat.sendMessage(chatHistoryEntry3.message);
 
         chat.disconnect();
 
@@ -60,27 +60,27 @@ public class ChatLogTest {
         String strLine;
 
         //Read File Line By Line
-        ArrayList<ChatLogEntry> loggedEntries = new ArrayList<>();
+        ArrayList<ChatHistoryEntry> loggedEntries = new ArrayList<>();
         while ((strLine = br.readLine()) != null) {
             // deserialize chatLog
-            ChatLogEntry entry = SerializeUtils.deserialize(strLine, ChatLogEntry.class);
+            ChatHistoryEntry entry = SerializeUtils.deserialize(strLine, ChatHistoryEntry.class);
             loggedEntries.add(entry);
         }
         //Close the input stream
         fstream.close();
 
-        Assert.assertEquals(chatLogEntry1.message, loggedEntries.get(0).message);
-        Assert.assertEquals(chatLogEntry1.sender, loggedEntries.get(0).sender);
-        Assert.assertEquals(chatLogEntry1.receiver, loggedEntries.get(0).receiver);
+        Assert.assertEquals(chatHistoryEntry1.message, loggedEntries.get(0).message);
+        Assert.assertEquals(chatHistoryEntry1.sender, loggedEntries.get(0).sender);
+        Assert.assertEquals(chatHistoryEntry1.receiver, loggedEntries.get(0).receiver);
 
-        Assert.assertEquals(chatLogEntry2.message, loggedEntries.get(1).message);
-        Assert.assertEquals(chatLogEntry2.sender, loggedEntries.get(1).sender);
-        Assert.assertEquals(chatLogEntry2.receiver, loggedEntries.get(1).receiver);
+        Assert.assertEquals(chatHistoryEntry2.message, loggedEntries.get(1).message);
+        Assert.assertEquals(chatHistoryEntry2.sender, loggedEntries.get(1).sender);
+        Assert.assertEquals(chatHistoryEntry2.receiver, loggedEntries.get(1).receiver);
 
-        Assert.assertEquals(chatLogEntry3.message, loggedEntries.get(2).message);
-        Assert.assertEquals(chatLogEntry3.sender, loggedEntries.get(2).sender);
-        Assert.assertEquals(chatLogEntry3.receiver, loggedEntries.get(2).receiver);
+        Assert.assertEquals(chatHistoryEntry3.message, loggedEntries.get(2).message);
+        Assert.assertEquals(chatHistoryEntry3.sender, loggedEntries.get(2).sender);
+        Assert.assertEquals(chatHistoryEntry3.receiver, loggedEntries.get(2).receiver);
 
-        chat.deleteLog();
+        chat.deleteHistory();
     }
 }
