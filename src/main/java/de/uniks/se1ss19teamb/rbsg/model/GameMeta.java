@@ -1,7 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
-
-public class Game {
+/**
+ * A model for games as used in the lobby.
+ */
+public class GameMeta {
 
     //Fields defined by Server
     private long joinedPlayers;

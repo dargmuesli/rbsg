@@ -13,7 +13,7 @@ public class Army {
     /**
      * Standard getter.
      *
-     * @return  The army's id.
+     * @return The army's id.
      */
     public String getId() {
         return id;
@@ -22,7 +22,7 @@ public class Army {
     /**
      * Standard setter.
      *
-     * @param id    The army's id.
+     * @param id The army's id.
      */
     public void setId(String id) {
         this.id = id;
@@ -31,7 +31,7 @@ public class Army {
     /**
      * Standard getter.
      *
-     * @return  The army's name.
+     * @return The army's name.
      */
     public String getName() {
         return name;
@@ -40,7 +40,7 @@ public class Army {
     /**
      * Standard setter.
      *
-     * @param name  The army's name.
+     * @param name The army's name.
      */
     public void setName(String name) {
         this.name = name;
@@ -49,7 +49,7 @@ public class Army {
     /**
      * Standard getter.
      *
-     * @return  The army's units.
+     * @return The army's units.
      */
     public ArrayList<String> getUnits() {
         return units;

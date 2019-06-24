@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
@@ -122,7 +122,7 @@ public class MainController {
 
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    private Game joinedGame;
+    private GameMeta joinedGameMeta;
 
     public void initialize() {
 
@@ -348,14 +348,14 @@ public class MainController {
             items.remove(0);
         }
 
-        ArrayList<Game> existingGames = getExistingGames();
-        for (Game game : existingGames) {
+        ArrayList<GameMeta> existingGameMetas = getExistingGames();
+        for (GameMeta gameMeta : existingGameMetas) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();
-                controller.setUpGameLabel(game, this);
+                controller.setUpGameLabel(gameMeta, this);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
                 notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -363,7 +363,7 @@ public class MainController {
         }
     }
 
-    private ArrayList<Game> getExistingGames() {
+    private ArrayList<GameMeta> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
@@ -393,8 +393,8 @@ public class MainController {
         return usersInLobbyRequest.getUsersInLobby();
     }
 
-    void setJoinedGame(Game joinedGame) {
-        this.joinedGame = joinedGame;
+    void setJoinedGameMeta(GameMeta joinedGameMeta) {
+        this.joinedGameMeta = joinedGameMeta;
         UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainScreen);
     }
 

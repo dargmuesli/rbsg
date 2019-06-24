@@ -26,17 +26,18 @@ public class Chat {
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private ArrayList<ChatHistoryEntry> history = new ArrayList<>();
     private ChatSocket chatSocket;
-    private Path path;
-
     /**
      * Defines that and how received messages are added to the chat history.
      */
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
         -> addToHistory(message, from, isPrivate ? chatSocket.getUserName() : "All");
+    private Path path;
 
     /**
-     * @param chatSocket    The chat socket for communication.
-     * @param path          The location at which the chat history is saved.
+     * Constructor that connects to the chat socket and registers the {@link Chat#chatMessageHandler}.
+     *
+     * @param chatSocket The chat socket for communication.
+     * @param path       The location at which the chat history is saved.
      */
     public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
@@ -57,7 +58,7 @@ public class Chat {
     /**
      * Sends a public message via the chat socket.
      *
-     * @param message   The textual content.
+     * @param message The textual content.
      */
     public void sendMessage(String message) {
         // TODO send action (All)
@@ -67,8 +68,8 @@ public class Chat {
     /**
      * Sends a private message via the chat socket.
      *
-     * @param message   The textual content.
-     * @param receiver  The receiver's name.
+     * @param message  The textual content.
+     * @param receiver The receiver's name.
      */
     public void sendMessage(String message, String receiver) {
         addToHistory(message, this.chatSocket.getUserName(), receiver);
@@ -78,9 +79,9 @@ public class Chat {
     /**
      * Adds an entry to the chat history.
      *
-     * @param message   The textual content.
-     * @param receiver  The receiver's name.
-     * @param sender    The sender's name.
+     * @param message  The textual content.
+     * @param receiver The receiver's name.
+     * @param sender   The sender's name.
      */
     private void addToHistory(String message, String sender, String receiver) {
         history.add(new ChatHistoryEntry(message, sender, receiver));
