@@ -13,27 +13,22 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
-// TODO headless mode
-
 class UiTests extends ApplicationTest {
 
     private Main main;
 
-    @BeforeClass
+    @BeforeAll
     public static void setupHeadlessMode() {
-        if (Boolean.getBoolean("headless")) {
-            System.setProperty("testfx.robot", "glass");
-            System.setProperty("testfx.headless", "true");
-            System.setProperty("prism.order", "sw");
-            System.setProperty("prism.text", "t2k");
-            System.setProperty("java.awt.headless", "true");
-        }
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
     }
 
     @Override
@@ -85,6 +80,44 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
+    void saveArmy() {
+        clickOn("#userName");
+        write("testTeamB");
+        clickOn("#password");
+        write("qwertz");
+        clickOn("#btnLogin");
+        sleep(2000);
+        clickOn("#btnArmyManager");
+        sleep(2000);
+        clickOn("#txtfldArmyName");
+        write("testArmy");
+        clickOn("#btnSetArmyName");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnIncrease");
+        clickOn("#btnMinimize");
+        clickOn("#btnSave1");
+        clickOn("#btnSave2");
+        clickOn("#btnSave3");
+        clickOn("#btnSaveServer");
+        clickOn("#btnLoadServer");
+        clickOn("#btnChg");
+        clickOn("#btnSave1");
+        clickOn("#btnSave2");
+        clickOn("#btnSave3");
+        clickOn("#ham");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnLogout");
+    }
+
+    @Test
     void loginMainTest() {
         clickOn("#userName");
         write("testTeamB");
@@ -95,6 +128,7 @@ class UiTests extends ApplicationTest {
         // chat
         clickOn("#message");
         write("/w me test");
+        write("/all");
         clickOn("#btnSend");
         clickOn("#btnMinimize");
         clickOn("#btnMinimize");
@@ -114,15 +148,6 @@ class UiTests extends ApplicationTest {
         list = lookup("#gameListView").queryAs(ListView.class);
         box = (HBox) list.getItems().get(list.getItems().size() - 1);
         clickOn(box.getChildren().get(2));
-        // army
-        clickOn("#btnArmyManager");
-        sleep(2000);
-        clickOn("#btnIncrease");
-        clickOn("#btnDecrease");
-        clickOn("#ham");
-        WaitForAsyncUtils.waitForFxEvents();
-        clickOn("#btnBack");
-        sleep(2000);
         // logout
         clickOn("#ham");
         WaitForAsyncUtils.waitForFxEvents();
