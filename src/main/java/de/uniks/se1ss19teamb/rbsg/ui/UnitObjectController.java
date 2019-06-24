@@ -7,10 +7,6 @@ import javafx.scene.control.Label;
 
 public class UnitObjectController {
 
-    private Unit unit;
-    private ArmyManagerController armyManagerController;
-    private int count = 0;
-
     @FXML
     Label labelUnitType;
     @FXML
@@ -19,7 +15,9 @@ public class UnitObjectController {
     Button btnIncrease;
     @FXML
     Button btnDecrease;
-
+    private Unit unit;
+    private ArmyManagerController armyManagerController;
+    private int count = 0;
 
     void setUpUnitObject(Unit unit, ArmyManagerController armyManagerController) {
         this.unit = unit;
@@ -30,13 +28,13 @@ public class UnitObjectController {
 
     }
 
+    public int getCount() {
+        return count;
+    }
+
     public void setCount(int count) {
         this.count = count;
         updateCount();
-    }
-
-    public int getCount() {
-        return count;
     }
 
     public void increaseCount() {
