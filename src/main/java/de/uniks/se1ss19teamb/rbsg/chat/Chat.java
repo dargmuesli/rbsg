@@ -35,8 +35,6 @@ public class Chat {
         -> addToHistory(message, from, isPrivate ? chatSocket.getUserName() : "All");
 
     /**
-     * Defines that and how received messages are added to the chat history.
-     *
      * @param chatSocket    The chat socket for communication.
      * @param path          The location at which the chat history is saved.
      */
