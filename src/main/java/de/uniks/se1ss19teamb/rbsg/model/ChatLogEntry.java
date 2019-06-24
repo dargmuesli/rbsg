@@ -1,8 +1,8 @@
-package de.uniks.se1ss19teamb.rbsg.chat;
+package de.uniks.se1ss19teamb.rbsg.model;
 
 import java.util.Date;
 
-class ChatLogEntry {
+public class ChatLogEntry {
 
     public String message;
     public String sender;
