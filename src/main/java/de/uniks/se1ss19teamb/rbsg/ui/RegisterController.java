@@ -27,6 +27,7 @@ public class RegisterController {
     private static final Logger logger = LogManager.getLogger();
     @FXML
     AnchorPane errorContainer;
+    LoginController loginController = new LoginController();
     @FXML
     private AnchorPane registerScreen;
     @FXML
@@ -48,7 +49,6 @@ public class RegisterController {
     private UserData userData;
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
-    LoginController loginController = new LoginController();
 
     public void initialize() {
         // load user data

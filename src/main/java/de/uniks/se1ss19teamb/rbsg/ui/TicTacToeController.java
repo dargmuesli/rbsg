@@ -6,14 +6,18 @@ import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 
-
 public class TicTacToeController {
+    private static boolean turn = true;
+    private static boolean playable = true;
+    public int number;
+    ArrayList<JFXButton> buttons = new ArrayList<>();
     @FXML
     private AnchorPane tictactoeScreen;
     @FXML
@@ -38,14 +42,9 @@ public class TicTacToeController {
     private JFXButton btnReplay;
     private String signX = "X";
     private String signO = "O";
-    private static boolean turn = true;
     @FXML
     private Label label;
-    private static boolean playable = true;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    ArrayList<JFXButton> buttons = new ArrayList<>();
-    public int number;
-
 
     public void initialize() {
         buttons.add(0, one);
