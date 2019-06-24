@@ -1,21 +1,15 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
-
 import de.uniks.se1ss19teamb.rbsg.Main;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
@@ -42,16 +36,6 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void contentTest() {
-        Assertions.assertThat(lookup("#btnLogin").queryAs(JFXButton.class)).hasText("Login");
-        Assertions.assertThat(lookup("#btnRegistration").queryAs(JFXButton.class)).hasText("Registration");
-        Assertions.assertThat(lookup("#rememberLogin").queryAs(JFXCheckBox.class)).hasText("Remember Login");
-        Assertions.assertThat(lookup("#password").queryAs(JFXPasswordField.class)).isVisible();
-        Assertions.assertThat(lookup("#userName").queryAs(JFXTextField.class)).isVisible();
-        Assertions.assertThat(lookup("#btnFullscreen").queryAs(JFXButton.class)).hasText("Fullscreen");
-    }
-
-    @Test
     void clickFullscreenTest() {
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
@@ -71,10 +55,17 @@ class UiTests extends ApplicationTest {
     void registerTest() {
         clickOn("#btnRegistration");
         sleep(2000);
-        Assertions.assertThat(lookup("#errorContainer").queryAs(AnchorPane.class)).isVisible();
-        Assertions.assertThat(lookup("#username").queryAs(JFXTextField.class)).isVisible();
-        Assertions.assertThat(lookup("#password").queryAs(JFXPasswordField.class)).isVisible();
-        Assertions.assertThat(lookup("#passwordRepeat").queryAs(JFXPasswordField.class)).isVisible();
+        clickOn("#username");
+        write("testTeamB").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#password");
+        write("qwertz").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#passwordRepeat");
+        write("qwert").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#passwordRepeat");
+        write("z").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#btnCancel");
     }
@@ -106,8 +97,8 @@ class UiTests extends ApplicationTest {
         clickOn("#btnSave1");
         clickOn("#btnSave2");
         clickOn("#btnSave3");
-        clickOn("#btnSaveServer");
         clickOn("#btnLoadServer");
+        clickOn("#btnSaveServer");
         clickOn("#btnChg");
         clickOn("#btnSave1");
         clickOn("#btnSave2");
