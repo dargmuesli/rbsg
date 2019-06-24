@@ -28,7 +28,7 @@
                             <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton fx:id="btnFullScreen" visible="false" onAction="#setOnAction"
+                    <JFXButton fx:id="btnFullscreen" visible="false" onAction="#setOnAction"
                                contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false">
                         <graphic>
                             <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>
