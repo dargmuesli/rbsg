@@ -61,3 +61,10 @@
 .tab .tab-label {
     -fx-text-fill: black;
 }
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #e9eaeb;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #e9eaeb;
+}
