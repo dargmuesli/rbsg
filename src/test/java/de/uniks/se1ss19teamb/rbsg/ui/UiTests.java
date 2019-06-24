@@ -23,13 +23,13 @@ class UiTests extends ApplicationTest {
 
     private Main main;
 
-    /*@BeforeAll
+    @BeforeAll
     public static void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
         System.setProperty("prism.text", "t2k");
-    }*/
+    }
 
     @Override
     public void start(Stage stage) throws Exception {

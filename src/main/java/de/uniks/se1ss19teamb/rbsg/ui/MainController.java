@@ -220,6 +220,8 @@ public class MainController {
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
         LoginController.setChatSocket(chatSocket);
+
+        chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
     }
 
     @FXML
@@ -467,9 +469,7 @@ public class MainController {
             container.getChildren().add(text);
         }
 
-        Platform.runLater(() -> {
-            box.getChildren().add(container);
-        });
+        Platform.runLater(() -> box.getChildren().add(container));
     }
 
     private void setChatStyle(Label label) {
