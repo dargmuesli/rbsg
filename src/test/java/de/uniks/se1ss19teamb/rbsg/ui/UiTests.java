@@ -23,13 +23,13 @@ class UiTests extends ApplicationTest {
 
     private Main main;
 
-    @BeforeAll
+    /*@BeforeAll
     public static void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
         System.setProperty("prism.text", "t2k");
-    }
+    }*/
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -80,7 +80,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void saveArmy() {
+    void saveArmyTest() {
         clickOn("#userName");
         write("testTeamB");
         clickOn("#password");
@@ -118,6 +118,30 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
+    void inGameTest() {
+        clickOn("#userName");
+        write("testTeamB");
+        clickOn("#password");
+        write("qwertz");
+        clickOn("#btnLogin");
+        sleep(2000);
+        // game
+        clickOn("#gameName");
+        write("ayGame");
+        clickOn("#btnCreate");
+        ListView list = lookup("#gameListView").queryAs(ListView.class);
+        HBox box = (HBox) list.getItems().get(list.getItems().size() - 1);
+        // ingame
+        clickOn(box.getChildren().get(1));
+        sleep(2000);
+        clickOn("#ham");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnFullscreen");
+        clickOn("#btnFullscreen");
+        clickOn("#btnLogout");
+    }
+
+    @Test
     void loginMainTest() {
         clickOn("#userName");
         write("testTeamB");
@@ -127,8 +151,8 @@ class UiTests extends ApplicationTest {
         sleep(2000);
         // chat
         clickOn("#message");
+        write("/all ");
         write("/w me test");
-        write("/all");
         clickOn("#btnSend");
         clickOn("#btnMinimize");
         clickOn("#btnMinimize");
@@ -145,6 +169,9 @@ class UiTests extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
         clickOn("#btnBack");
         sleep(2000);
+        list = lookup("#gameListView").queryAs(ListView.class);
+        box = (HBox) list.getItems().get(list.getItems().size() - 1);
+        clickOn(box.getChildren().get(2));
         list = lookup("#gameListView").queryAs(ListView.class);
         box = (HBox) list.getItems().get(list.getItems().size() - 1);
         clickOn(box.getChildren().get(2));

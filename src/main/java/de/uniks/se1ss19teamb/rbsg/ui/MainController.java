@@ -437,7 +437,7 @@ public class MainController {
             if (whisper) {
                 name.setStyle("-fx-text-fill: -fx-privatetext;");
             } else {
-                name.setStyle("-fx-text-fill: black");
+                name.setStyle("-fx-text-fill: black;");
             }
             // whisper on double click
             name.setOnMouseClicked(mouseEvent -> {
@@ -469,7 +469,6 @@ public class MainController {
 
         Platform.runLater(() -> {
             box.getChildren().add(container);
-            this.message.requestFocus();
         });
     }
 
@@ -575,9 +574,9 @@ public class MainController {
         Platform.runLater(() -> {
             message.clear();
             message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-secondary" : "black") + "-jfx-focus-color: "
+                ? "-fx-secondary;" : "black;") + "-jfx-focus-color: "
                 + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-secondary" : "black"));
+                ? "-fx-secondary;" : "black;"));
         });
     }
 
