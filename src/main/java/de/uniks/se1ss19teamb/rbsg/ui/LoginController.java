@@ -86,7 +86,7 @@ public class LoginController {
             SerializeUtils.serialize(path, true);
         }
         if (new File(path).exists()) {
-            changeTheme(loginScreen,loginScreen1, path, cssDark, cssWhite);
+            changeTheme(loginScreen, loginScreen1, path, cssDark, cssWhite);
         }
 
         if (userData == null) {
@@ -127,7 +127,7 @@ public class LoginController {
         }
     }
 
-    public void changeTheme(AnchorPane anchorPane1,AnchorPane anchorPane2, String path,
+    public void changeTheme(AnchorPane anchorPane1, AnchorPane anchorPane2, String path,
                             String cssDark, String cssWhite) {
         if (SerializeUtils.deserialize(new File(path), boolean.class)) {
             anchorPane1.getStylesheets().clear();

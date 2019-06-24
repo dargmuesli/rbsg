@@ -32,6 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 
 public class ArmyManagerController {
+    private static final Logger logger = LogManager.getLogger();
+    LoginController loginController = new LoginController();
+    String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
+    String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
+    String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
     @FXML
     private AnchorPane mainPane;
     @FXML
@@ -68,10 +73,6 @@ public class ArmyManagerController {
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    LoginController loginController = new LoginController();
-
-    private static final Logger logger = LogManager.getLogger();
-
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
     private HeavyTank heavyTank = new HeavyTank();
@@ -80,20 +81,13 @@ public class ArmyManagerController {
     private LightTank lightTank = new LightTank();
     ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
         heavyTank, infantry, jeep, lightTank));
-
     private int bazookaTrooperCount = 0;
     private int chopperCounter = 0;
     private int heavyTankCounter = 0;
     private int infantryCounter = 0;
     private int jeepCounter = 0;
     private int lightTankCounter = 0;
-
     private int leftUnits = 10;
-
-    String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
-    String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
-    String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
-
     // saveMode = true -> Buttons save configuration.
     // saveMode = false -> Buttons laod configuration
     private boolean saveMode = true;

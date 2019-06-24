@@ -3,7 +3,9 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+
 import java.net.URI;
+
 import org.apache.http.Header;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.ParseException;

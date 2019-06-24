@@ -1,5 +1,5 @@
 
-*{
+* {
     -fx-primary: WHITe;
     -fx-secondary: BLACK;
     -fx-primarytext: black;
@@ -7,15 +7,15 @@
     -fx-privatetext: #FF7EFF;
 }
 
-. root, VBox, HBox{
+. root, VBox, HBox {
     -fx-background-color: -fx-primary;
 }
 
-.glyph-icon{
+.glyph-icon {
     -fx-fill: -fx-primarytext;
 }
 
-.button{
+.button {
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
@@ -24,33 +24,33 @@
     -fx-font-size: 12px;
 }
 
-.button:hover, .button:focused{
+.button:hover, .button:focused {
     -fx-border-color: -fx-secondarytext;
     -fx-background-color: -fx-secondarytext;
     -fx-text-fill: -fx-primary;
 }
 
-.text-field{
+.text-field {
     -fx-text-fill: -fx-secondary;
     -jfx-focus-color: -fx-secondary;
-    -fx-text-fill: derive(-fx-secondary,20%);
+    -fx-text-fill: derive(-fx-secondary, 20%);
 }
 
-.wrong-credentials{
+.wrong-credentials {
     -jfx-unfocuse-color: #ef5350;
     -jfx-focuse-color: #ef5350;
 }
 
-.radio-button{
+.radio-button {
     -fx-text-fill: -fx-secondary;
     -jfx-selected-color: -fx-secondary;
 }
 
-.label{
+.label {
     -fx-text-fill: -fx-secondary;
 }
 
-.menu-button{
+.menu-button {
     -fx-background-color: transparent;
 }
 
