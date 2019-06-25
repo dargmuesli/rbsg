@@ -35,7 +35,7 @@ public class Chat {
     private Path path;
 
     /**
-     * Constructor that connects to the chat socket and registers the {@link Chat#chatMessageHandler}.
+     * Constructor that connects to the chat socket and registers the {@link #chatMessageHandler}.
      *
      * @param chatSocket The chat socket for communication.
      * @param path       The location at which the chat history is saved.
