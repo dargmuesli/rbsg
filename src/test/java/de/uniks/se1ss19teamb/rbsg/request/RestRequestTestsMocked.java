@@ -354,6 +354,23 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodyQueryArimes, status, errorMsg);
     }
 
+    private HttpRequestResponse getQueryUnitsRequestTestResponse() {
+        String httpReqRepBodyQueryUnits = "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":"
+            + "\"5cc051bd62083600017db3b6\",\"type\":\"Infantry\",\"mp\":3,\"hp\":10,\"canAttack\":[\"Infantry\","
+            + "\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\"]},{\"id\":\"5cc051bd62083600017db3b7\","
+            + "\"type\":\"Bazooka Trooper\",\"mp\":2,\"hp\":10,\"canAttack\":[\"Jeep\",\"Light Tank\",\"Heavy Tank\","
+            + "\"Chopper\"]},{\"id\":\"5cc051bd62083600017db3b8\",\"type\":\"Jeep\",\"mp\":8,\"hp\":10,\"canAttack\":"
+            + "[\"Infantry\",\"Bazooka Trooper\",\"Jeep\"]},{\"id\":\"5cc051bd62083600017db3b9\",\"type\":\"Light Tank\","
+            + "\"mp\":6,\"hp\":10,\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\","
+            + "\"Heavy Tank\"]},{\"id\":\"5cc051bd62083600017db3ba\",\"type\":\"Heavy Tank\",\"mp\":4,\"hp\":10,"
+            + "\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\",\"Chopper\"]},"
+            + "{\"id\":\"5cc051bd62083600017db3bb\",\"type\":\"Chopper\",\"mp\":6,\"hp\":10,\"canAttack\":"
+            + "[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\"]}]}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyQueryUnits, status, errorMsg);
+    }
+
 
     @Test
     public void createArmyRequestTest() {
@@ -437,12 +454,14 @@ public class RestRequestTestsMocked {
         Assert.assertTrue(containsArmyID);
     }
 
-    /*
-
     @Test
     public void queryUnitsRequestTest() {
-        loginUser();
-        QueryUnitsRequest req = new QueryUnitsRequest(userKey);
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryUnitsRequestTestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        QueryUnitsRequest req = new QueryUnitsRequest(fakeUserKey);
         req.sendRequest();
         ArrayList<Unit> unitList = req.getUnits();
         Assert.assertTrue(req.getSuccessful());
@@ -455,6 +474,8 @@ public class RestRequestTestsMocked {
         Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
+
+    /*
 
     @Test
     public void updateArmyRequestTest() {
