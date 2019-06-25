@@ -6,13 +6,11 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import java.util.ArrayList;
 import org.apache.http.ParseException;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 
 public class RestRequestTestsMocked {
@@ -273,35 +271,6 @@ public class RestRequestTestsMocked {
         }
     }
 
-    /*
-    private CreateArmyRequest createArmy() {
-        String armyName = "testArmy001";
-        ArrayList<String> unitIDs = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
-        }
-        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, unitIDs, userKey);
-        createArmyRequest.sendRequest();
-        return createArmyRequest;
-    }
-
-    private void deleteArmy(String armyID) {
-        DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(armyID, userKey);
-        deleteArmyRequest.sendRequest();
-    }
-
-    private void deleteAllArmies() {
-        loginUser();
-        QueryArmiesRequest queryArmiesRequest = new QueryArmiesRequest(userKey);
-        queryArmiesRequest.sendRequest();
-        for (Army a : queryArmiesRequest.getArmies()) {
-            DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(a.getId(), userKey);
-            deleteArmyRequest.sendRequest();
-        }
-    }
-
-     */
-
     private HttpRequestResponse getCreateArmyRequestResponse() {
         String httpReqRepBodyCreateArmy = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
             + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy\",\"units\":["
@@ -333,7 +302,7 @@ public class RestRequestTestsMocked {
             + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy001\",\"units\":[\"5cc051bd62083600017db3b6\","
             + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
             + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
-            +"\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\"]}}";
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\"]}}";
         int status = 200;
         String errorMsg = "";
         return new HttpRequestResponse(httpReqRepBodySpecificArmy, status, errorMsg);
@@ -360,8 +329,9 @@ public class RestRequestTestsMocked {
             + "\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\"]},{\"id\":\"5cc051bd62083600017db3b7\","
             + "\"type\":\"Bazooka Trooper\",\"mp\":2,\"hp\":10,\"canAttack\":[\"Jeep\",\"Light Tank\",\"Heavy Tank\","
             + "\"Chopper\"]},{\"id\":\"5cc051bd62083600017db3b8\",\"type\":\"Jeep\",\"mp\":8,\"hp\":10,\"canAttack\":"
-            + "[\"Infantry\",\"Bazooka Trooper\",\"Jeep\"]},{\"id\":\"5cc051bd62083600017db3b9\",\"type\":\"Light Tank\","
-            + "\"mp\":6,\"hp\":10,\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\","
+            + "[\"Infantry\",\"Bazooka Trooper\",\"Jeep\"]},{\"id\":\"5cc051bd62083600017db3b9\",\"type\":"
+            + "\"Light Tank\",\"mp\":6,\"hp\":10,\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\","
+            + "\"Light Tank\","
             + "\"Heavy Tank\"]},{\"id\":\"5cc051bd62083600017db3ba\",\"type\":\"Heavy Tank\",\"mp\":4,\"hp\":10,"
             + "\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\",\"Chopper\"]},"
             + "{\"id\":\"5cc051bd62083600017db3bb\",\"type\":\"Chopper\",\"mp\":6,\"hp\":10,\"canAttack\":"
@@ -421,16 +391,6 @@ public class RestRequestTestsMocked {
         }
 
     }
-
-    /*
-
-    private LoginUserRequest loginUser() {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
-        login.sendRequest();
-        userKey = login.getUserKey();
-        return login;
-    }
-    */
 
     @Test
     public void getSpecificArmyRequestTest() {
@@ -512,29 +472,4 @@ public class RestRequestTestsMocked {
         Assert.assertTrue(req2.getSuccessful());
 
     }
-
-    /*
-
-    @After
-    public void cleanupGames() throws ParseException {
-        deleteAllArmies();
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
-        login.sendRequest();
-
-        QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
-        query.sendRequest();
-
-        query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame"))
-            .forEach((game) -> {
-                System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
-                DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
-                try {
-                    req.sendRequest();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            });
-    }
-
-     */
 }
