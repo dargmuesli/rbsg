@@ -13,83 +13,98 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane1" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController">
-    <AnchorPane fx:id="mainPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <VBox alignment="TOP_CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainPane1" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController">
+    <AnchorPane fx:id="mainPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox alignment="CENTER" spacing="10.0">
                     <children>
-                        <JFXButton fx:id="btnChg" mnemonicParsing="false" onAction="#changeSaveMode" text="Save/Load" />
-                        <JFXButton fx:id="btnSave1" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent1" text="Save 1" />
-                        <JFXButton fx:id="btnSave2" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent2" text="Save 2" />
-                        <JFXButton fx:id="btnSave3" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent3" text="Save 3" />
+                        <JFXButton fx:id="btnChg" mnemonicParsing="false" onAction="#changeSaveMode" text="Save/Load"/>
+                        <JFXButton fx:id="btnSave1" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent1"
+                                   text="Save 1"/>
+                        <JFXButton fx:id="btnSave2" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent2"
+                                   text="Save 2"/>
+                        <JFXButton fx:id="btnSave3" mnemonicParsing="false" onMouseClicked="#saveLoadCurrent3"
+                                   text="Save 3"/>
                     </children>
                 </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="4.0" prefWidth="265.0">
-               <children>
-                      <Label text="Available Units">
-                          <font>
-                              <Font name="System Bold" size="16.0" />
-                          </font>
-                      </Label>
-                  <Label fx:id="labelLeftUnits" text="###">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="8.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="20.0" prefWidth="500.0" spacing="8.0">
-               <children>
-                  <Label text="Army Name:">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelArmyName" text="not set">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="txtfldArmyName" promptText="new army name" />
-                  <Button fx:id="btnSetArmyName" mnemonicParsing="false" onAction="#setArmyName" text="set name" />
-               </children></HBox>
-            <ListView fx:id="unitList" maxWidth="500.0" prefHeight="400.0" prefWidth="500.0" />
-            <HBox alignment="CENTER" prefHeight="42.0" prefWidth="500.0" spacing="8.0">
-               <children>
-                  <Button fx:id="btnSaveServer" mnemonicParsing="false" onAction="#saveToServer" text="Save to Server">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></Button>
-                  <Button fx:id="btnLoadServer" mnemonicParsing="false" onAction="#loadFromServer" text="Load from Server" />
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
+                <HBox alignment="TOP_CENTER" prefHeight="4.0" prefWidth="265.0">
+                    <children>
+                        <Label text="Available Units">
+                            <font>
+                                <Font name="System Bold" size="16.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="labelLeftUnits" text="###">
+                            <font>
+                                <Font name="System Bold" size="16.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets left="8.0"/>
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="20.0" prefWidth="500.0" spacing="8.0">
+                    <children>
+                        <Label text="Army Name:">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="labelArmyName" text="not set">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <JFXTextField fx:id="txtfldArmyName" promptText="new army name"/>
+                        <Button fx:id="btnSetArmyName" mnemonicParsing="false" onAction="#setArmyName" text="set name"/>
+                    </children>
+                </HBox>
+                <ListView fx:id="unitList" maxWidth="500.0" prefHeight="400.0" prefWidth="500.0"/>
+                <HBox alignment="CENTER" prefHeight="42.0" prefWidth="500.0" spacing="8.0">
+                    <children>
+                        <Button fx:id="btnSaveServer" mnemonicParsing="false" onAction="#saveToServer"
+                                text="Save to Server">
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnLoadServer" mnemonicParsing="false" onAction="#loadFromServer"
+                                text="Load from Server"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </HBox>
             </children>
             <padding>
-                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
             </padding>
         </VBox>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-           <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#eventHandler" visible="false">
-               <graphic>
-                   <FontAwesomeIconView glyphName="REPLY" />
-               </graphic>
-           </JFXButton>
-            <JFXButton fx:id="btnFullScreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+            <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#eventHandler"
+                       visible="false">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15" />
-                </graphic></JFXButton>
-            <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+                    <FontAwesomeIconView glyphName="REPLY"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                       onAction="#setOnAction" visible="false">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
-                </graphic></JFXButton>
-            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0" />
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction"
+                       visible="false">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
+                </graphic>
+            </JFXButton>
+            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"/>
         </HBox>
     </AnchorPane>
 </AnchorPane>

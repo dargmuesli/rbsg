@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
+import de.uniks.se1ss19teamb.rbsg.model.ChatLogEntry;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;

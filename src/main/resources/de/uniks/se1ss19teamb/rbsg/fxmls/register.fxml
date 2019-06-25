@@ -8,10 +8,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="registerScreen1" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="registerScreen1"
             xmlns="http://javafx.com/javafx/8.0.162-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegisterController">
-    <AnchorPane fx:id="registerScreen"  AnchorPane.bottomAnchor="0.0"
+    <AnchorPane fx:id="registerScreen" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" AnchorPane.leftAnchor="25.0"
                     AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0"/>
