@@ -42,11 +42,11 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnLogout;
     @FXML
+    private JFXButton btnFullScreen;
+    @FXML
     private JFXHamburger ham;
     @FXML
     private JFXButton btnBack;
-    @FXML
-    private JFXButton btnFullscreen;
     @FXML
     private Label labelLeftUnits;
     @FXML
@@ -120,7 +120,7 @@ public class ArmyManagerController {
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
-        hamTran(ham, btnFullscreen);
+        hamTran(ham, btnFullScreen);
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
