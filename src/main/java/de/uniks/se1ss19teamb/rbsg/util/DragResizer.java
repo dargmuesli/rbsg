@@ -11,8 +11,8 @@ public class DragResizer {
 
     private final Region region;
 
-    private double y;
-    private double x;
+    private double yvalue;
+    private double xvalue;
 
     private boolean initMinHeight;
     private boolean initMinWidth;
@@ -24,8 +24,8 @@ public class DragResizer {
 
     private Cursor usedCursor;
 
-    private DragResizer(Region aRegion) {
-        region = aRegion;
+    private DragResizer(Region region) {
+        this.region = region;
     }
 
     public static void makeResizable(Region region) {
@@ -101,8 +101,8 @@ public class DragResizer {
 
     protected void mouseDragged(MouseEvent event) {
 
-        double diffX = event.getX() - x;
-        double diffY = event.getY() - y;
+        double diffX = event.getX() - xvalue;
+        double diffY = event.getY() - yvalue;
 
         if (moving) {
             region.setLayoutX(region.getLayoutX() + diffX);
@@ -129,7 +129,8 @@ public class DragResizer {
             region.setMaxWidth(event.getSceneX() - region.getLayoutX());
             region.setPrefWidth(event.getSceneX() - region.getLayoutX());
         }
-        if (usedCursor.equals(Cursor.W_RESIZE) || usedCursor.equals(Cursor.SW_RESIZE) || usedCursor.equals(Cursor.NW_RESIZE)) {
+        if (usedCursor.equals(Cursor.W_RESIZE) || usedCursor.equals(Cursor.SW_RESIZE)
+            || usedCursor.equals(Cursor.NW_RESIZE)) {
             region.setLayoutX(event.getSceneX());
 
             region.setMinWidth(region.getMinWidth() + (lastX - event.getSceneX()));
@@ -137,7 +138,8 @@ public class DragResizer {
             region.setPrefWidth(region.getPrefWidth() + (lastX - event.getSceneX()));
 
         }
-        if (usedCursor.equals(Cursor.N_RESIZE) || usedCursor.equals(Cursor.NE_RESIZE) || usedCursor.equals(Cursor.NW_RESIZE)) {
+        if (usedCursor.equals(Cursor.N_RESIZE) || usedCursor.equals(Cursor.NE_RESIZE)
+            || usedCursor.equals(Cursor.NW_RESIZE)) {
             region.setLayoutY(region.getLayoutY() + (event.getSceneY() - lastY));
             region.setMinHeight(region.getMinHeight() + (lastY - event.getSceneY()));
             region.setMaxHeight(region.getMaxHeight() + (lastY - event.getSceneY()));
@@ -153,8 +155,8 @@ public class DragResizer {
         lastX = event.getSceneX();
         lastY = event.getSceneY();
 
-        y = event.getY();
-        x = event.getX();
+        yvalue = event.getY();
+        xvalue = event.getX();
 
         if (getCorrectCursor(event) == null) {
             moving = true;

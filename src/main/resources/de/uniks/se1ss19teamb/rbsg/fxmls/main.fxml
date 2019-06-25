@@ -84,7 +84,7 @@
                     <VBox fx:id="chatBox" alignment="BOTTOM_LEFT">
                         <JFXTabPane fx:id="chatPane">
                             <Tab closable="false" text="All">
-                                <ScrollPane fx:id="allPane" fitToHeight="true" fitToWidth="true" minHeight="200.0" 
+                                <ScrollPane fx:id="allPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
                                             minWidth="400.0">
                                     <VBox fx:id="textArea"/>
                                 </ScrollPane>
