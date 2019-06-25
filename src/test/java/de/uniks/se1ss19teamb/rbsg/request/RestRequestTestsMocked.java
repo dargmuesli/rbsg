@@ -2,17 +2,24 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import static org.mockito.Mockito.*;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import org.apache.http.ParseException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 
 public class RestRequestTestsMocked {
 
     private HttpManager httpManager;
+    private String fakeUserKey = "dca2a697-ecfb-4987-ae95-2fdfe9f4a731";
+    private String fakeArmyId = "5d11fad12c945100017660ee";
 
     private HttpRequestResponse getHttpCreateGameResponse() {
         String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":{\"gameId\":"
@@ -265,4 +272,213 @@ public class RestRequestTestsMocked {
             Assert.fail(e.toString());
         }
     }
+
+    /*
+    private CreateArmyRequest createArmy() {
+        String armyName = "testArmy001";
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, unitIDs, userKey);
+        createArmyRequest.sendRequest();
+        return createArmyRequest;
+    }
+
+    private void deleteArmy(String armyID) {
+        DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(armyID, userKey);
+        deleteArmyRequest.sendRequest();
+    }
+
+    private void deleteAllArmies() {
+        loginUser();
+        QueryArmiesRequest queryArmiesRequest = new QueryArmiesRequest(userKey);
+        queryArmiesRequest.sendRequest();
+        for (Army a : queryArmiesRequest.getArmies()) {
+            DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(a.getId(), userKey);
+            deleteArmyRequest.sendRequest();
+        }
+    }
+
+     */
+
+    private HttpRequestResponse getCreateArmyRequestResponse() {
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy\",\"units\":["
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\""
+            + "]}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+    }
+
+    /*
+    private HttpRequestResponse getDeleteArmyRequestResponse() {
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy\",\"units\":["
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\""
+            + "]}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+    }
+    */
+
+    @Test
+    public void createArmyRequestTest() {
+        String name = "TestBArmy";
+
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, fakeUserKey);
+
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+    }
+
+/*
+    @Test
+    public void deleteArmyRequestTest() {
+        String armyId;
+        // loginUser();
+        // CreateArmyRequest createArmyRequest = createArmy();
+        // armyId = createArmyRequest.getArmyID();
+        when(httpManager.delete(any(), any(), any())).thenReturn()
+        DeleteArmyRequest req = new DeleteArmyRequest(fakeArmyId, fakeUserKey);
+        req.sendRequest();
+        try {
+            Assert.assertTrue(req.getSuccessful());
+            Assert.assertEquals("Army deleted", req.getMessage());
+        } catch (AssertionError e) {
+            System.out.println("Check if there aren't too many armies for this player.");
+            throw e;
+        }
+
+    }
+    
+ */
+
+    /*
+
+    private LoginUserRequest loginUser() {
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        login.sendRequest();
+        userKey = login.getUserKey();
+        return login;
+    }
+
+    @Test
+    public void getSpecificArmyRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getArmyID(), userKey);
+        req.sendRequest();
+        Army reqArmy = req.getRequestedArmy();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals("testArmy001", reqArmy.getName());
+        deleteArmy(reqArmy.getId());
+
+    }
+
+    @Test
+    public void queryArmiesRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        QueryArmiesRequest req = new QueryArmiesRequest(userKey);
+        req.sendRequest();
+        ArrayList<Army> armies = req.getArmies();
+        Assert.assertTrue(req.getSuccessful());
+        boolean containsArmyID = false;
+        for (Army army : armies) {
+            if (army.getId().equals(createArmyRequest.getArmyID())) {
+                containsArmyID = true;
+            }
+        }
+        Assert.assertTrue(containsArmyID);
+        deleteArmy(createArmyRequest.getArmyID());
+
+    }
+
+    @Test
+    public void queryUnitsRequestTest() {
+        loginUser();
+        QueryUnitsRequest req = new QueryUnitsRequest(userKey);
+        req.sendRequest();
+        ArrayList<Unit> unitList = req.getUnits();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals(6, unitList.size());
+        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
+        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
+        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
+        Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
+    }
+
+    @Test
+    public void updateArmyRequestTest() {
+        loginUser();
+        CreateArmyRequest createArmyRequest = createArmy();
+        Army testArmy = new Army();
+        testArmy.setId(createArmyRequest.getArmyID());
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b7");
+        }
+        testArmy.setUnits(unitIDs);
+        testArmy.setName("changedName");
+        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+
+    }
+
+    @After
+    public void cleanupGames() throws ParseException {
+        deleteAllArmies();
+        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        login.sendRequest();
+
+        QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
+        query.sendRequest();
+
+        query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame"))
+            .forEach((game) -> {
+                System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
+                DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
+                try {
+                    req.sendRequest();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+     */
 }
