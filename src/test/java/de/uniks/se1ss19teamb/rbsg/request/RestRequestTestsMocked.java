@@ -339,6 +339,21 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodySpecificArmy, status, errorMsg);
     }
 
+    private HttpRequestResponse getQueryArmiesRequestResponse() {
+        String httpReqRepBodyQueryArimes = "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":"
+            + "\"5d0d2454a2ef7800015af0bd\",\"name\":\"hello\",\"units\":[\"5cc051bd62083600017db3b7\","
+            + "\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3b7\","
+            + "\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3bb\","
+            + "\"5cc051bd62083600017db3bb\",\"5cc051bd62083600017db3bb\",\"5cc051bd62083600017db3bb\"]},{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy0\",\"units\":[\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\"]}]}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyQueryArimes, status, errorMsg);
+    }
+
 
     @Test
     public void createArmyRequestTest() {
@@ -402,26 +417,27 @@ public class RestRequestTestsMocked {
         Assert.assertEquals("testArmy001", reqArmy.getName());
     }
 
-    /*
-
     @Test
     public void queryArmiesRequestTest() {
-        loginUser();
-        CreateArmyRequest createArmyRequest = createArmy();
-        QueryArmiesRequest req = new QueryArmiesRequest(userKey);
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryArmiesRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        QueryArmiesRequest req = new QueryArmiesRequest(fakeUserKey);
         req.sendRequest();
         ArrayList<Army> armies = req.getArmies();
         Assert.assertTrue(req.getSuccessful());
         boolean containsArmyID = false;
         for (Army army : armies) {
-            if (army.getId().equals(createArmyRequest.getArmyID())) {
+            if (army.getId().equals(fakeArmyId)) {
                 containsArmyID = true;
             }
         }
         Assert.assertTrue(containsArmyID);
-        deleteArmy(createArmyRequest.getArmyID());
-
     }
+
+    /*
 
     @Test
     public void queryUnitsRequestTest() {
