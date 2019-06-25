@@ -3,7 +3,6 @@ package de.uniks.se1ss19teamb.rbsg.chat;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
-import de.uniks.se1ss19teamb.rbsg.model.ChatLogEntry;
 import de.uniks.se1ss19teamb.rbsg.sockets.*;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
@@ -16,7 +15,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ChatLogTest {
+public class ChatHistoryTest {
 
     private ChatSocket chatSocket;
 
