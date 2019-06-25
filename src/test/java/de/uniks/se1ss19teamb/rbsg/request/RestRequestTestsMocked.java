@@ -2,8 +2,11 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import static org.mockito.Mockito.*;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Game;
 
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import java.util.ArrayList;
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +16,8 @@ import org.junit.Test;
 public class RestRequestTestsMocked {
 
     private HttpManager httpManager;
+    private String fakeUserKey = "dca2a697-ecfb-4987-ae95-2fdfe9f4a731";
+    private String fakeArmyId = "5d11fad12c945100017660ee";
 
     private HttpRequestResponse getHttpCreateGameResponse() {
         String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":{\"gameId\":"
@@ -264,5 +269,207 @@ public class RestRequestTestsMocked {
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
+    }
+
+    private HttpRequestResponse getCreateArmyRequestResponse() {
+        String httpReqRepBodyCreateArmy = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy\",\"units\":["
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\""
+            + "]}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyCreateArmy, status, errorMsg);
+    }
+
+    private HttpRequestResponse getDeleteArmyRequestResponse() {
+        String httpReqRepBodyDeleteArmy = "{\"status\":\"success\",\"message\":\"Army deleted\",\"data\":{}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyDeleteArmy, status, errorMsg);
+    }
+
+    private HttpRequestResponse getGetSpecificArmyResponse() {
+        String httpReqRepBodySpecificArmy = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy001\",\"units\":[\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\"]}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodySpecificArmy, status, errorMsg);
+    }
+
+    private HttpRequestResponse getQueryArmiesRequestResponse() {
+        String httpReqRepBodyQueryArimes = "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":"
+            + "\"5d0d2454a2ef7800015af0bd\",\"name\":\"hello\",\"units\":[\"5cc051bd62083600017db3b7\","
+            + "\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3b7\","
+            + "\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3b7\",\"5cc051bd62083600017db3bb\","
+            + "\"5cc051bd62083600017db3bb\",\"5cc051bd62083600017db3bb\",\"5cc051bd62083600017db3bb\"]},{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy0\",\"units\":[\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\"]}]}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyQueryArimes, status, errorMsg);
+    }
+
+    private HttpRequestResponse getQueryUnitsRequestTestResponse() {
+        String httpReqRepBodyQueryUnits = "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":"
+            + "\"5cc051bd62083600017db3b6\",\"type\":\"Infantry\",\"mp\":3,\"hp\":10,\"canAttack\":[\"Infantry\","
+            + "\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\"]},{\"id\":\"5cc051bd62083600017db3b7\","
+            + "\"type\":\"Bazooka Trooper\",\"mp\":2,\"hp\":10,\"canAttack\":[\"Jeep\",\"Light Tank\",\"Heavy Tank\","
+            + "\"Chopper\"]},{\"id\":\"5cc051bd62083600017db3b8\",\"type\":\"Jeep\",\"mp\":8,\"hp\":10,\"canAttack\":"
+            + "[\"Infantry\",\"Bazooka Trooper\",\"Jeep\"]},{\"id\":\"5cc051bd62083600017db3b9\",\"type\":"
+            + "\"Light Tank\",\"mp\":6,\"hp\":10,\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\","
+            + "\"Light Tank\","
+            + "\"Heavy Tank\"]},{\"id\":\"5cc051bd62083600017db3ba\",\"type\":\"Heavy Tank\",\"mp\":4,\"hp\":10,"
+            + "\"canAttack\":[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\",\"Chopper\"]},"
+            + "{\"id\":\"5cc051bd62083600017db3bb\",\"type\":\"Chopper\",\"mp\":6,\"hp\":10,\"canAttack\":"
+            + "[\"Infantry\",\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\"]}]}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyQueryUnits, status, errorMsg);
+    }
+
+    private HttpRequestResponse getUpdateArmyRequestResponse() {
+        String httpReqRepBodyUpdateArmy = "{\"status\":\"success\",\"message\":\"{\\\"id\\\":"
+            + "\\\"5d11fad12c945100017660ee\\\",\\\"name\\\":\\\"hello\\\",\\\"units\\\":["
+            + "\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\","
+            + "\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\","
+            + "\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\","
+            + "\\\"5cc051bd62083600017db3b7\\\"]}\",\"data\":{}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyUpdateArmy, status, errorMsg);
+    }
+
+
+    @Test
+    public void createArmyRequestTest() {
+        String name = "TestBArmy";
+
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b6");
+        }
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, fakeUserKey);
+
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+    }
+
+    @Test
+    public void deleteArmyRequestTest() {
+        try {
+            when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        DeleteArmyRequest req = new DeleteArmyRequest(fakeArmyId, fakeUserKey);
+        req.sendRequest();
+        try {
+            Assert.assertTrue(req.getSuccessful());
+            Assert.assertEquals("Army deleted", req.getMessage());
+        } catch (AssertionError e) {
+            System.out.println("Check if there aren't too many armies for this player.");
+            throw e;
+        }
+
+    }
+
+    @Test
+    public void getSpecificArmyRequestTest() {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getGetSpecificArmyResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        GetSpecificArmyRequest req = new GetSpecificArmyRequest(fakeArmyId, fakeUserKey);
+        req.sendRequest();
+        Army reqArmy = req.getRequestedArmy();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals("testArmy001", reqArmy.getName());
+    }
+
+    @Test
+    public void queryArmiesRequestTest() {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryArmiesRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        QueryArmiesRequest req = new QueryArmiesRequest(fakeUserKey);
+        req.sendRequest();
+        ArrayList<Army> armies = req.getArmies();
+        Assert.assertTrue(req.getSuccessful());
+        boolean containsArmyID = false;
+        for (Army army : armies) {
+            if (army.getId().equals(fakeArmyId)) {
+                containsArmyID = true;
+            }
+        }
+        Assert.assertTrue(containsArmyID);
+    }
+
+    @Test
+    public void queryUnitsRequestTest() {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryUnitsRequestTestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        QueryUnitsRequest req = new QueryUnitsRequest(fakeUserKey);
+        req.sendRequest();
+        ArrayList<Unit> unitList = req.getUnits();
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals(6, unitList.size());
+        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
+        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
+        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
+        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
+        Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
+    }
+
+
+    @Test
+    public void updateArmyRequestTest() {
+        try {
+            when(httpManager.put(any(), any(), any())).thenReturn(getUpdateArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Army testArmy = new Army();
+        testArmy.setId(fakeArmyId);
+        ArrayList<String> unitIDs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            unitIDs.add("5cc051bd62083600017db3b7");
+        }
+        testArmy.setUnits(unitIDs);
+        testArmy.setName("changedName");
+        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+        UpdateArmyRequest req2 = new UpdateArmyRequest(testArmy.getId(), testArmy.getName(),
+            testArmy.getUnits(), fakeUserKey);
+        req2.sendRequest();
+        Assert.assertTrue(req2.getSuccessful());
+
     }
 }
