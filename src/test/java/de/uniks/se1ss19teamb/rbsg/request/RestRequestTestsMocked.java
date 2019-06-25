@@ -321,26 +321,13 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
     }
 
-    /*
     private HttpRequestResponse getDeleteArmyRequestResponse() {
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
-            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy\",\"units\":["
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\","
-            + "\"5cc051bd62083600017db3b6\""
-            + "]}}";
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"Army deleted\",\"data\":{}}";
         int status = 200;
         String errorMsg = "";
         return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
     }
-    */
+
 
     @Test
     public void createArmyRequestTest() {
@@ -361,14 +348,13 @@ public class RestRequestTestsMocked {
         Assert.assertTrue(req.getSuccessful());
     }
 
-/*
     @Test
     public void deleteArmyRequestTest() {
-        String armyId;
-        // loginUser();
-        // CreateArmyRequest createArmyRequest = createArmy();
-        // armyId = createArmyRequest.getArmyID();
-        when(httpManager.delete(any(), any(), any())).thenReturn()
+        try {
+            when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         DeleteArmyRequest req = new DeleteArmyRequest(fakeArmyId, fakeUserKey);
         req.sendRequest();
         try {
@@ -380,8 +366,6 @@ public class RestRequestTestsMocked {
         }
 
     }
-    
- */
 
     /*
 
