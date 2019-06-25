@@ -22,7 +22,7 @@ public class InGameController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnFullScreen;
+    private JFXButton btnFullscreen;
     @FXML
     private AnchorPane inGameScreen1;
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
@@ -34,7 +34,7 @@ public class InGameController {
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         armyManagerController.hamTran(ham, btnBack);
         armyManagerController.hamTran(ham, btnLogout);
-        armyManagerController.hamTran(ham, btnFullScreen);
+        armyManagerController.hamTran(ham, btnFullscreen);
 
     }
 
@@ -47,8 +47,8 @@ public class InGameController {
                     break;
                 default:
             }
-        } else if (event.getSource().equals(btnFullScreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullScreen);
+        } else if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();

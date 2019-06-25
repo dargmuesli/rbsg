@@ -46,7 +46,7 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnBack;
     @FXML
-    private JFXButton btnFullScreen;
+    private JFXButton btnFullscreen;
     @FXML
     private Label labelLeftUnits;
     @FXML
@@ -118,7 +118,7 @@ public class ArmyManagerController {
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
-        hamTran(ham, btnFullScreen);
+        hamTran(ham, btnFullscreen);
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
@@ -188,8 +188,8 @@ public class ArmyManagerController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
             }
-        } else if (event.getSource().equals(btnFullScreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullScreen);
+        } else if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         }
     }
 

@@ -1,11 +1,11 @@
-package de.uniks.se1ss19teamb.rbsg.chat;
+package de.uniks.se1ss19teamb.rbsg.model;
 
 import java.util.Date;
 
 /**
  * A model for chat history entries.
  */
-class ChatHistoryEntry {
+public class ChatHistoryEntry {
     /**
      * The textual content.
      */
