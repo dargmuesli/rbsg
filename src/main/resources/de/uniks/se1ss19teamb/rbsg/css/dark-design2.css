@@ -1,4 +1,4 @@
-*{
+* {
     -fx-primary: #2A2E37;
     -fx-secondary: #FFFF8d;
     -fx-primarytext: #B2B2B2;
@@ -61,4 +61,12 @@ ScrollPane {
 
 .tab .tab-label {
     -fx-text-fill: white;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #3f424b;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #3f424b;
 }

@@ -30,13 +30,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,6 +103,8 @@ public class MainController {
     private AnchorPane mainScreen1;
     @FXML
     private JFXButton btnMode;
+    @FXML
+    private JFXButton btnTicTacToe;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     private LoginController loginController = new LoginController();
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
@@ -216,6 +220,8 @@ public class MainController {
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
         LoginController.setChatSocket(chatSocket);
+
+        chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
     }
 
     @FXML
@@ -323,6 +329,17 @@ public class MainController {
                 chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
+        } else if (event.getSource().equals(btnTicTacToe)) {
+            try {
+                Parent root = FXMLLoader
+                    .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root, 800, 600));
+                stage.show();
+                stage.setResizable(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         ham.requestFocus();
     }
@@ -422,7 +439,7 @@ public class MainController {
             if (whisper) {
                 name.setStyle("-fx-text-fill: -fx-privatetext;");
             } else {
-                name.setStyle("-fx-text-fill: black");
+                name.setStyle("-fx-text-fill: black;");
             }
             // whisper on double click
             name.setOnMouseClicked(mouseEvent -> {
@@ -452,10 +469,7 @@ public class MainController {
             container.getChildren().add(text);
         }
 
-        Platform.runLater(() -> {
-            box.getChildren().add(container);
-            this.message.requestFocus();
-        });
+        Platform.runLater(() -> box.getChildren().add(container));
     }
 
     private void setChatStyle(Label label) {
@@ -560,9 +574,9 @@ public class MainController {
         Platform.runLater(() -> {
             message.clear();
             message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-secondary" : "black") + "-jfx-focus-color: "
+                ? "-fx-secondary;" : "black;") + "-jfx-focus-color: "
                 + (SerializeUtils.deserialize(new File(path), boolean.class)
-                ? "-fx-secondary" : "black"));
+                ? "-fx-secondary;" : "black;"));
         });
     }
 

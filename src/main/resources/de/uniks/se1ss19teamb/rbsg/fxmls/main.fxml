@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
     <AnchorPane fx:id="mainScreen" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -90,7 +90,7 @@
                             </Tab>
                         </JFXTabPane>
                         <HBox alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
-                            <JFXTextField fx:id="message" onAction="#onEnter"  HBox.hgrow="ALWAYS">
+                            <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
                                 <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0"/>
                                 </HBox.margin>
@@ -157,7 +157,7 @@
                             <Insets/>
                         </HBox.margin>
                     </Pane>
-                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" spacing="5.0">
                         <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
                             <font>
                                 <Font size="15.0"/>
@@ -171,6 +171,11 @@
                                 <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
                             </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="btnTicTacToe" mnemonicParsing="false" onAction="#setOnAction">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="PLUS"/>
+                            </graphic>
+                        </JFXButton>
                         <VBox.margin>
                             <Insets bottom="10.0"/>
                         </VBox.margin>
@@ -178,7 +183,8 @@
                 </VBox>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnPlayerRefresh" alignment="CENTER_LEFT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+        <JFXButton fx:id="btnPlayerRefresh" alignment="CENTER_LEFT" contentDisplay="GRAPHIC_ONLY"
+                   onAction="#setOnAction"
                    AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
             <graphic>
                 <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
@@ -188,22 +194,22 @@
             <JFXButton fx:id="btnMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
                        visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15" />
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15"/>
                 </graphic>
             </JFXButton>
             <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
                        visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
                 </graphic>
             </JFXButton>
             <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler" visible="false"
                        AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                 <graphic>
-                    <FontAwesomeIconView glyphName="EXPAND" size="15" />
+                    <FontAwesomeIconView glyphName="EXPAND" size="15"/>
                 </graphic>
             </JFXButton>
-            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0" />
+            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"/>
         </HBox>
         <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
         <!--            <items>-->

@@ -1,14 +1,16 @@
-
 * {
-    -fx-primary: WHITe;
-    -fx-secondary: BLACK;
-    -fx-primarytext: black;
-    -fx-secondarytext: grey;
+    -fx-primary: #2A2E37;
+    -fx-secondary: #FFFF8d;
+    -fx-primarytext: #B2B2B2;
     -fx-privatetext: #FF7EFF;
 }
 
 . root, VBox, HBox {
     -fx-background-color: -fx-primary;
+}
+
+ScrollPane {
+    -fx-padding: 0;
 }
 
 .glyph-icon {
@@ -19,19 +21,18 @@
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
     -fx-font-size: 12px;
 }
 
 .button:hover, .button:focused {
-    -fx-border-color: -fx-secondarytext;
-    -fx-background-color: -fx-secondarytext;
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
     -fx-text-fill: -fx-primary;
 }
 
 .text-field {
-    -fx-text-fill: -fx-secondary;
     -jfx-focus-color: -fx-secondary;
     -fx-text-fill: derive(-fx-secondary, 20%);
 }
@@ -59,13 +60,5 @@
 }
 
 .tab .tab-label {
-    -fx-text-fill: black;
-}
-
-.jfx-tab-pane .headers-region {
-    -fx-background-color: #e9eaeb;
-}
-
-.jfx-tab-pane .tab-header-background {
-    -fx-background-color: #e9eaeb;
+    -fx-text-fill: white;
 }

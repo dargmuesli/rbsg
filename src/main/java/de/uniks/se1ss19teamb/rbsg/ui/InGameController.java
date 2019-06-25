@@ -9,35 +9,32 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
 
-
 public class InGameController {
 
+    LoginController loginController = new LoginController();
+    ArmyManagerController armyManagerController = new ArmyManagerController();
     @FXML
     private AnchorPane inGameScreen;
     @FXML
-        private JFXHamburger ham;
+    private JFXHamburger ham;
     @FXML
-        private JFXButton btnBack;
+    private JFXButton btnBack;
     @FXML
-        private JFXButton btnLogout;
+    private JFXButton btnLogout;
     @FXML
-        private JFXButton btnFullScreen;
-    LoginController loginController = new LoginController();
+    private JFXButton btnFullscreen;
     @FXML
-        private AnchorPane inGameScreen1;
+    private AnchorPane inGameScreen1;
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-
-    ArmyManagerController armyManagerController = new ArmyManagerController();
 
     public void initialize() {
         loginController.changeTheme(inGameScreen, inGameScreen1, path, cssDark, cssWhite);
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         armyManagerController.hamTran(ham, btnBack);
         armyManagerController.hamTran(ham, btnLogout);
-        armyManagerController.hamTran(ham, btnFullScreen);
+        armyManagerController.hamTran(ham, btnFullscreen);
 
     }
 
@@ -50,8 +47,8 @@ public class InGameController {
                     break;
                 default:
             }
-        } else if (event.getSource().equals(btnFullScreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullScreen);
+        } else if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();

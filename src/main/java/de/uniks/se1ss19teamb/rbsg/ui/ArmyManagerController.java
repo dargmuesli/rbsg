@@ -32,6 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 
 public class ArmyManagerController {
+    private static final Logger logger = LogManager.getLogger();
+    LoginController loginController = new LoginController();
+    String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
+    String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
+    String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
     @FXML
     private AnchorPane mainPane;
     @FXML
@@ -41,7 +46,7 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnBack;
     @FXML
-    private JFXButton btnFullScreen;
+    private JFXButton btnFullscreen;
     @FXML
     private Label labelLeftUnits;
     @FXML
@@ -70,10 +75,6 @@ public class ArmyManagerController {
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    LoginController loginController = new LoginController();
-
-    private static final Logger logger = LogManager.getLogger();
-
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
     private HeavyTank heavyTank = new HeavyTank();
@@ -82,16 +83,13 @@ public class ArmyManagerController {
     private LightTank lightTank = new LightTank();
     ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
         heavyTank, infantry, jeep, lightTank));
-
     private int bazookaTrooperCount = 0;
     private int chopperCounter = 0;
     private int heavyTankCounter = 0;
     private int infantryCounter = 0;
     private int jeepCounter = 0;
     private int lightTankCounter = 0;
-
     private int leftUnits = 10;
-
     // saveMode = true -> Buttons save configuration.
     // saveMode = false -> Buttons laod configuration
     private boolean saveMode = true;
@@ -122,7 +120,7 @@ public class ArmyManagerController {
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
-        hamTran(ham, btnFullScreen);
+        hamTran(ham, btnFullscreen);
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
@@ -241,6 +239,10 @@ public class ArmyManagerController {
     }
 
     private void updateConfigurationView(Army army) {
+        for (UnitObjectController controller : unitObjectControllers) {
+            controller.setCount(0);
+            leftUnits = 10;
+        }
 
         for (String unitId : army.getUnits()) {
             if (unitId.equals("5cc051bd62083600017db3b7")) {
@@ -257,6 +259,7 @@ public class ArmyManagerController {
                 unitObjectControllers.get(5).increaseCount();
             }
         }
+        labelArmyName.setText(army.getName());
 
     }
 
@@ -327,9 +330,9 @@ public class ArmyManagerController {
         for (int i = 0; i < lightTankCount; i++) {
             allIds.add("5cc051bd62083600017db3b9");
         }
-        Army army = new Army();
-        army.setUnits(allIds);
-        return army;
+
+        currentArmy.setUnits(allIds);
+        return currentArmy;
     }
 
     public void setArmyName() {
@@ -345,25 +348,55 @@ public class ArmyManagerController {
     public void saveLoadCurrent1() {
         if (saveMode) {
             saveCurrentConfig(1);
+        } else {
+            currentArmy = loadConfig(1);
+            if (currentArmy == null) {
+                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+            }
+            updateConfigurationView(currentArmy);
         }
     }
 
     public void saveLoadCurrent2() {
         if (saveMode) {
             saveCurrentConfig(2);
+        } else {
+            currentArmy = loadConfig(2);
+            if (currentArmy == null) {
+                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+            }
+            updateConfigurationView(currentArmy);
         }
     }
 
     public void saveLoadCurrent3() {
         if (saveMode) {
             saveCurrentConfig(3);
+        } else {
+            currentArmy = loadConfig(3);
+            if (currentArmy == null) {
+                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+            }
+            updateConfigurationView(currentArmy);
+        }
+    }
+
+    private Army loadConfig(int number) {
+        switch (number) {
+            case 1:
+                return SerializeUtils.deserialize(new File(armysavePath1), Army.class);
+            case 2:
+                return SerializeUtils.deserialize(new File(armysavePath2), Army.class);
+            case 3:
+                return SerializeUtils.deserialize(new File(armysavePath3), Army.class);
+            default:
+                return null;
         }
     }
 
     private void saveCurrentConfig(int configNum) {
-        String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
-        String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
-        String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
+
+        currentArmy = getCurrentConfiguration();
         switch (configNum) {
             case 1:
                 armySave1 = currentArmy;

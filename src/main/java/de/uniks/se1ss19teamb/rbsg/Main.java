@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         TextureManager.init();
         SoundManager.init();
-        
+
         Parent root = FXMLLoader
             .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml"));
         primaryStage.setTitle("RSBG-Team B");

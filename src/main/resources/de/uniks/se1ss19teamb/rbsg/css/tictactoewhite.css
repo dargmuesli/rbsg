@@ -19,8 +19,8 @@
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
     -fx-font-size: 12px;
 }
 
@@ -60,12 +60,4 @@
 
 .tab .tab-label {
     -fx-text-fill: black;
-}
-
-.jfx-tab-pane .headers-region {
-    -fx-background-color: #e9eaeb;
-}
-
-.jfx-tab-pane .tab-header-background {
-    -fx-background-color: #e9eaeb;
 }
