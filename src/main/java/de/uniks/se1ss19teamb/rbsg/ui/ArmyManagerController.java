@@ -195,7 +195,15 @@ public class ArmyManagerController {
         } else if (event.getSource().equals(btnFullScreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullScreen);
         } else if (event.getSource().equals(btnJoinGame)){
-            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
+            QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
+            req.sendRequest();
+            ArrayList<Army> serverArmies = req.getArmies();
+            if (serverArmies.size() == 0){
+                loadFromServer();
+            } else {
+                loadFromServer();
+                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
+            }
         }
     }
 
