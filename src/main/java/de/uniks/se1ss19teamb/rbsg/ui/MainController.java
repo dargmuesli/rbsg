@@ -12,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Game;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
+import de.uniks.se1ss19teamb.rbsg.util.DragResizer;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
@@ -141,6 +142,7 @@ public class MainController {
 
         Platform.runLater(() -> {
 
+            DragResizer.makeResizable(chatPane);
 
             armyManagerController.hamTran(ham, btnFullscreen);
             armyManagerController.hamTran(ham, btnLogout);
@@ -222,6 +224,18 @@ public class MainController {
         LoginController.setChatSocket(chatSocket);
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
+
+        chatPane.widthProperty().addListener(((observable, oldValue, newValue) -> {
+            // chatWindow.setMinWidth(chatWindow.getMinWidth() + (((Double) newValue) - ((Double) oldValue)));
+            System.out.println((Double) newValue - (Double) oldValue);
+            System.out.println(chatWindow.getWidth());
+        }));
+
+        chatPane.heightProperty().addListener(((observable, oldValue, newValue) -> {
+            // chatWindow.setMinHeight(chatWindow.getMinHeight() + ((Double) newValue) - ((Double) oldValue));
+            System.out.println((Double) newValue - (Double) oldValue);
+            System.out.println(chatWindow.getHeight());
+        }));
     }
 
     @FXML
