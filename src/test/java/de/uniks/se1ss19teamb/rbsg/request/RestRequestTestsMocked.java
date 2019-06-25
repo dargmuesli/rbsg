@@ -303,7 +303,7 @@ public class RestRequestTestsMocked {
      */
 
     private HttpRequestResponse getCreateArmyRequestResponse() {
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
+        String httpReqRepBodyCreateArmy = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
             + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy\",\"units\":["
             + "\"5cc051bd62083600017db3b6\","
             + "\"5cc051bd62083600017db3b6\","
@@ -318,14 +318,25 @@ public class RestRequestTestsMocked {
             + "]}}";
         int status = 200;
         String errorMsg = "";
-        return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+        return new HttpRequestResponse(httpReqRepBodyCreateArmy, status, errorMsg);
     }
 
     private HttpRequestResponse getDeleteArmyRequestResponse() {
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"Army deleted\",\"data\":{}}";
+        String httpReqRepBodyDeleteArmy = "{\"status\":\"success\",\"message\":\"Army deleted\",\"data\":{}}";
         int status = 200;
         String errorMsg = "";
-        return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+        return new HttpRequestResponse(httpReqRepBodyDeleteArmy, status, errorMsg);
+    }
+
+    private HttpRequestResponse getGetSpecificArmyResponse() {
+        String httpReqRepBodySpecificArmy = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":"
+            + "\"5d11fad12c945100017660ee\",\"name\":\"testArmy001\",\"units\":[\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            + "\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\","
+            +"\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\",\"5cc051bd62083600017db3b6\"]}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodySpecificArmy, status, errorMsg);
     }
 
 
@@ -375,19 +386,23 @@ public class RestRequestTestsMocked {
         userKey = login.getUserKey();
         return login;
     }
+    */
 
     @Test
     public void getSpecificArmyRequestTest() {
-        loginUser();
-        CreateArmyRequest createArmyRequest = createArmy();
-        GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getArmyID(), userKey);
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getGetSpecificArmyResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        GetSpecificArmyRequest req = new GetSpecificArmyRequest(fakeArmyId, fakeUserKey);
         req.sendRequest();
         Army reqArmy = req.getRequestedArmy();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals("testArmy001", reqArmy.getName());
-        deleteArmy(reqArmy.getId());
-
     }
+
+    /*
 
     @Test
     public void queryArmiesRequestTest() {
