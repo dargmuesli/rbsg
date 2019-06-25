@@ -371,6 +371,18 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodyQueryUnits, status, errorMsg);
     }
 
+    private HttpRequestResponse getUpdateArmyRequestResponse() {
+        String httpReqRepBodyUpdateArmy = "{\"status\":\"success\",\"message\":\"{\\\"id\\\":"
+            + "\\\"5d11fad12c945100017660ee\\\",\\\"name\\\":\\\"hello\\\",\\\"units\\\":["
+            + "\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\","
+            + "\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\","
+            + "\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\",\\\"5cc051bd62083600017db3b7\\\","
+            + "\\\"5cc051bd62083600017db3b7\\\"]}\",\"data\":{}}";
+        int status = 200;
+        String errorMsg = "";
+        return new HttpRequestResponse(httpReqRepBodyUpdateArmy, status, errorMsg);
+    }
+
 
     @Test
     public void createArmyRequestTest() {
@@ -475,25 +487,33 @@ public class RestRequestTestsMocked {
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
 
-    /*
 
     @Test
     public void updateArmyRequestTest() {
-        loginUser();
-        CreateArmyRequest createArmyRequest = createArmy();
+        try {
+            when(httpManager.put(any(), any(), any())).thenReturn(getUpdateArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Army testArmy = new Army();
-        testArmy.setId(createArmyRequest.getArmyID());
+        testArmy.setId(fakeArmyId);
         ArrayList<String> unitIDs = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             unitIDs.add("5cc051bd62083600017db3b7");
         }
         testArmy.setUnits(unitIDs);
         testArmy.setName("changedName");
-        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
+        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
+        UpdateArmyRequest req2 = new UpdateArmyRequest(testArmy.getId(), testArmy.getName(),
+            testArmy.getUnits(), fakeUserKey);
+        req2.sendRequest();
+        Assert.assertTrue(req2.getSuccessful());
 
     }
+
+    /*
 
     @After
     public void cleanupGames() throws ParseException {
