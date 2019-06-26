@@ -59,7 +59,7 @@ public class MainController {
     @FXML
     private ScrollPane gameScrollPane;
     @FXML
-    private ListView<Parent> gameListView;
+    private static ListView<Parent> gameListView;
     @FXML
     private JFXButton btnCreate;
     @FXML
@@ -120,9 +120,9 @@ public class MainController {
 
     private String sendTo = null;
 
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    private Game joinedGame;
+    public static Game joinedGame;
 
     public void initialize() {
 
@@ -344,7 +344,7 @@ public class MainController {
         ham.requestFocus();
     }
 
-    void updateGameView() {
+    static void updateGameView() {
         ObservableList items = gameListView.getItems();
         while (items.size() != 0) {
             items.remove(0);
@@ -352,12 +352,12 @@ public class MainController {
 
         ArrayList<Game> existingGames = getExistingGames();
         for (Game game : existingGames) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();
-                controller.setUpGameLabel(game, this);
+                controller.setUpGameLabel(game);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
                 notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -365,7 +365,7 @@ public class MainController {
         }
     }
 
-    private ArrayList<Game> getExistingGames() {
+    private static ArrayList<Game> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
