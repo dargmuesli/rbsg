@@ -2,7 +2,10 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
+import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +32,15 @@ public class InGameController {
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
 
+    private MainController mainController;
+    private final GameSocket gameSocket = new GameSocket(
+        LoginController.getUserKey(), MainController.joinedGame.getId(), ArmyManagerController.selectedArmyId);
+
     public void initialize() {
+        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> {
+            // TODO route incoming messages to ingame chat
+        });
+
         loginController.changeTheme(inGameScreen, inGameScreen1, path, cssDark, cssWhite);
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         armyManagerController.hamTran(ham, btnBack);
