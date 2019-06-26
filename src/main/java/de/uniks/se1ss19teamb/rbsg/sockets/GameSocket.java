@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,15 @@ public class GameSocket extends AbstractWebSocket {
 
     private String userKey;
     private String gameId;
+    private String armyId;
 
     private List<GameMessageHandler> handlersGame = new ArrayList<>();
 
-    public GameSocket(String gameId, String userKey) {
+    public GameSocket(String userKey, String gameId, String armyId) {
         this.userKey = userKey;
         this.gameId = gameId;
+        this.armyId = armyId;
+
         registerWebSocketHandler((response) -> {
             for (GameMessageHandler handler : handlersGame) {
                 handler.handle(response);
@@ -22,7 +27,7 @@ public class GameSocket extends AbstractWebSocket {
 
     @Override
     protected String getEndpoint() {
-        return "/game?gameId=" + gameId;
+        return "/game?gameId=" + gameId + "&armyId=" + armyId;
     }
 
     @Override
