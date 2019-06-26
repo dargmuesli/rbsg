@@ -13,25 +13,22 @@ public class GameFieldController {
 
     private Game game;
 
-    private MainController mainController;
 
-
-    void setUpGameLabel(Game game, MainController mainController) {
+    void setUpGameLabel(Game game) {
         this.game = game;
-        this.mainController = mainController;
         gameNameLabel.setText(game.getName());
     }
 
     public void joinGame() {
         JoinGameRequest joinGameRequest = new JoinGameRequest(game.getId(), LoginController.getUserKey());
         joinGameRequest.sendRequest();
-        mainController.setJoinedGame(game);
+        MainController.joinedGame = game;
     }
 
     public void deleteGame() {
         DeleteGameRequest deleteGameRequest = new DeleteGameRequest(game.getId(), LoginController.getUserKey());
         deleteGameRequest.sendRequest();
-        mainController.updateGameView();
+        MainController.updateGameView();
     }
 
 }
