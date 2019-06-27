@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.util;
+package de.uniks.se1ss19teamb.rbsg.ui;
 
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
