@@ -59,7 +59,7 @@ public class MainController {
     @FXML
     private ScrollPane gameScrollPane;
     @FXML
-    private static ListView<Parent> gameListView;
+    private ListView<Parent> gameListView;
     @FXML
     private JFXButton btnCreate;
     @FXML
@@ -122,9 +122,10 @@ public class MainController {
 
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    public static Game joinedGame;
+    public static MainController instance;
 
     public void initialize() {
+        instance = this;
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
@@ -160,7 +161,7 @@ public class MainController {
                 notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
 
-            //UserInterfaceUtils.makeFadeInTransition(mainScreen);
+            // UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
             // ChatTabController
             chatPane.getSelectionModel().selectedItemProperty().addListener(
@@ -344,7 +345,7 @@ public class MainController {
         ham.requestFocus();
     }
 
-    static void updateGameView() {
+    void updateGameView() {
         ObservableList items = gameListView.getItems();
         while (items.size() != 0) {
             items.remove(0);
@@ -393,11 +394,6 @@ public class MainController {
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
         return usersInLobbyRequest.getUsersInLobby();
-    }
-
-    void setJoinedGame(Game joinedGame) {
-        this.joinedGame = joinedGame;
-        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainScreen);
     }
 
     private Label addPlayerlabel(String player) {
