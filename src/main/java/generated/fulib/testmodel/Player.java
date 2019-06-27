@@ -1,9 +1,9 @@
-package fulib.generated.testmodel;
+package generated.fulib.testmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class Game  
+public class Player  
 {
 
    public static final String PROPERTY_name = "name";
@@ -15,7 +15,7 @@ public class Game
       return name;
    }
 
-   public Game setName(String value)
+   public Player setName(String value)
    {
       if (value == null ? this.name != null : ! value.equals(this.name))
       {
@@ -27,26 +27,140 @@ public class Game
    }
 
 
-   public static final java.util.ArrayList<Player> EMPTY_players = new java.util.ArrayList<Player>()
-   { @Override
-   public boolean add(Player value){ throw new UnsupportedOperationException("No direct add! Use xy.withPlayers(obj)"); }};
+   public static final String PROPERTY_color = "color";
 
+   private String color;
 
-   public static final String PROPERTY_players = "players";
-
-   private java.util.ArrayList<Player> players = null;
-
-   public java.util.ArrayList<Player> getPlayers()
+   public String getColor()
    {
-      if (this.players == null)
-      {
-         return EMPTY_players;
-      }
-
-      return this.players;
+      return color;
    }
 
-   public Game withPlayers(Object... value)
+   public Player setColor(String value)
+   {
+      if (value == null ? this.color != null : ! value.equals(this.color))
+      {
+         String oldValue = this.color;
+         this.color = value;
+         firePropertyChange("color", oldValue, value);
+      }
+      return this;
+   }
+
+
+   public static final String PROPERTY_game = "game";
+
+   private Game game = null;
+
+   public Game getGame()
+   {
+      return this.game;
+   }
+
+   public Player setGame(Game value)
+   {
+      if (this.game != value)
+      {
+         Game oldValue = this.game;
+         if (this.game != null)
+         {
+            this.game = null;
+            oldValue.withoutPlayers(this);
+         }
+         this.game = value;
+         if (value != null)
+         {
+            value.withPlayers(this);
+         }
+         firePropertyChange("game", oldValue, value);
+      }
+      return this;
+   }
+
+
+
+   public static final String PROPERTY_currentGame = "currentGame";
+
+   private Game currentGame = null;
+
+   public Game getCurrentGame()
+   {
+      return this.currentGame;
+   }
+
+   public Player setCurrentGame(Game value)
+   {
+      if (this.currentGame != value)
+      {
+         Game oldValue = this.currentGame;
+         if (this.currentGame != null)
+         {
+            this.currentGame = null;
+            oldValue.setCurrentPlayer(null);
+         }
+         this.currentGame = value;
+         if (value != null)
+         {
+            value.setCurrentPlayer(this);
+         }
+         firePropertyChange("currentGame", oldValue, value);
+      }
+      return this;
+   }
+
+
+
+   public static final String PROPERTY_gameWon = "gameWon";
+
+   private Game gameWon = null;
+
+   public Game getGameWon()
+   {
+      return this.gameWon;
+   }
+
+   public Player setGameWon(Game value)
+   {
+      if (this.gameWon != value)
+      {
+         Game oldValue = this.gameWon;
+         if (this.gameWon != null)
+         {
+            this.gameWon = null;
+            oldValue.setWinner(null);
+         }
+         this.gameWon = value;
+         if (value != null)
+         {
+            value.setWinner(this);
+         }
+         firePropertyChange("gameWon", oldValue, value);
+      }
+      return this;
+   }
+
+
+
+   public static final java.util.ArrayList<Unit> EMPTY_units = new java.util.ArrayList<Unit>()
+   { @Override
+   public boolean add(Unit value){ throw new UnsupportedOperationException("No direct add! Use xy.withUnits(obj)"); }};
+
+
+   public static final String PROPERTY_units = "units";
+
+   private java.util.ArrayList<Unit> units = null;
+
+   public java.util.ArrayList<Unit> getUnits()
+   {
+      if (this.units == null)
+      {
+         return EMPTY_units;
+      }
+
+      return this.units;
+   }
+
+   public Player withUnits(Object... value)
    {
       if(value==null) return this;
       for (Object item : value)
@@ -56,20 +170,20 @@ public class Game
          {
             for (Object i : (java.util.Collection) item)
             {
-               this.withPlayers(i);
+               this.withUnits(i);
             }
          }
-         else if (item instanceof Player)
+         else if (item instanceof Unit)
          {
-            if (this.players == null)
+            if (this.units == null)
             {
-               this.players = new java.util.ArrayList<Player>();
+               this.units = new java.util.ArrayList<Unit>();
             }
-            if ( ! this.players.contains(item))
+            if ( ! this.units.contains(item))
             {
-               this.players.add((Player)item);
-               ((Player)item).setGame(this);
-               firePropertyChange("players", null, item);
+               this.units.add((Unit)item);
+               ((Unit)item).setPlayer(this);
+               firePropertyChange("units", null, item);
             }
          }
          else throw new IllegalArgumentException();
@@ -79,9 +193,9 @@ public class Game
 
 
 
-   public Game withoutPlayers(Object... value)
+   public Player withoutUnits(Object... value)
    {
-      if (this.players == null || value==null) return this;
+      if (this.units == null || value==null) return this;
       for (Object item : value)
       {
          if (item == null) continue;
@@ -89,83 +203,21 @@ public class Game
          {
             for (Object i : (java.util.Collection) item)
             {
-               this.withoutPlayers(i);
+               this.withoutUnits(i);
             }
          }
-         else if (item instanceof Player)
+         else if (item instanceof Unit)
          {
-            if (this.players.contains(item))
+            if (this.units.contains(item))
             {
-               this.players.remove((Player)item);
-               ((Player)item).setGame(null);
-               firePropertyChange("players", item, null);
+               this.units.remove((Unit)item);
+               ((Unit)item).setPlayer(null);
+               firePropertyChange("units", item, null);
             }
          }
       }
       return this;
    }
-
-
-   public static final String PROPERTY_currentPlayer = "currentPlayer";
-
-   private Player currentPlayer = null;
-
-   public Player getCurrentPlayer()
-   {
-      return this.currentPlayer;
-   }
-
-   public Game setCurrentPlayer(Player value)
-   {
-      if (this.currentPlayer != value)
-      {
-         Player oldValue = this.currentPlayer;
-         if (this.currentPlayer != null)
-         {
-            this.currentPlayer = null;
-            oldValue.setCurrentGame(null);
-         }
-         this.currentPlayer = value;
-         if (value != null)
-         {
-            value.setCurrentGame(this);
-         }
-         firePropertyChange("currentPlayer", oldValue, value);
-      }
-      return this;
-   }
-
-
-
-   public static final String PROPERTY_winner = "winner";
-
-   private Player winner = null;
-
-   public Player getWinner()
-   {
-      return this.winner;
-   }
-
-   public Game setWinner(Player value)
-   {
-      if (this.winner != value)
-      {
-         Player oldValue = this.winner;
-         if (this.winner != null)
-         {
-            this.winner = null;
-            oldValue.setGameWon(null);
-         }
-         this.winner = value;
-         if (value != null)
-         {
-            value.setGameWon(this);
-         }
-         firePropertyChange("winner", oldValue, value);
-      }
-      return this;
-   }
-
 
 
    public static final java.util.ArrayList<Platform> EMPTY_platforms = new java.util.ArrayList<Platform>()
@@ -187,7 +239,7 @@ public class Game
       return this.platforms;
    }
 
-   public Game withPlatforms(Object... value)
+   public Player withPlatforms(Object... value)
    {
       if(value==null) return this;
       for (Object item : value)
@@ -209,7 +261,7 @@ public class Game
             if ( ! this.platforms.contains(item))
             {
                this.platforms.add((Platform)item);
-               ((Platform)item).setGame(this);
+               ((Platform)item).setPlayer(this);
                firePropertyChange("platforms", null, item);
             }
          }
@@ -220,7 +272,7 @@ public class Game
 
 
 
-   public Game withoutPlatforms(Object... value)
+   public Player withoutPlatforms(Object... value)
    {
       if (this.platforms == null || value==null) return this;
       for (Object item : value)
@@ -238,44 +290,13 @@ public class Game
             if (this.platforms.contains(item))
             {
                this.platforms.remove((Platform)item);
-               ((Platform)item).setGame(null);
+               ((Platform)item).setPlayer(null);
                firePropertyChange("platforms", item, null);
             }
          }
       }
       return this;
    }
-
-
-   public static final String PROPERTY_selectedPlatform = "selectedPlatform";
-
-   private Platform selectedPlatform = null;
-
-   public Platform getSelectedPlatform()
-   {
-      return this.selectedPlatform;
-   }
-
-   public Game setSelectedPlatform(Platform value)
-   {
-      if (this.selectedPlatform != value)
-      {
-         Platform oldValue = this.selectedPlatform;
-         if (this.selectedPlatform != null)
-         {
-            this.selectedPlatform = null;
-            oldValue.setSelectedBy(null);
-         }
-         this.selectedPlatform = value;
-         if (value != null)
-         {
-            value.setSelectedBy(this);
-         }
-         firePropertyChange("selectedPlatform", oldValue, value);
-      }
-      return this;
-   }
-
 
 
    protected PropertyChangeSupport listeners = null;
@@ -334,6 +355,7 @@ public class Game
       StringBuilder result = new StringBuilder();
 
       result.append(" ").append(this.getName());
+      result.append(" ").append(this.getColor());
 
 
       return result.substring(1);
@@ -341,11 +363,11 @@ public class Game
 
    public void removeYou()
    {
-      this.setCurrentPlayer(null);
-      this.setWinner(null);
-      this.setSelectedPlatform(null);
+      this.setGame(null);
+      this.setCurrentGame(null);
+      this.setGameWon(null);
 
-      this.withoutPlayers(this.getPlayers().clone());
+      this.withoutUnits(this.getUnits().clone());
 
 
       this.withoutPlatforms(this.getPlatforms().clone());
