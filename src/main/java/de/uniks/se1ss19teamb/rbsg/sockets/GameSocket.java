@@ -22,7 +22,7 @@ public class GameSocket extends AbstractWebSocket {
     private static final Logger logger = LogManager.getLogger();
     private static final NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    private boolean firstGameInitObjectReceived = false;
+    private boolean firstGameInitObjectReceived;
 
     private List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
@@ -42,7 +42,17 @@ public class GameSocket extends AbstractWebSocket {
 
                             if (data.has("message")) {
                                 String message = data.get("message").getAsString();
-                                notificationHandler.sendInfo(message, logger);
+
+                                switch (message) {
+                                    case "You have no army with the given id.":
+                                        notificationHandler.sendError(message, logger);
+                                        break;
+                                    case "Initialize game, sending start situation...":
+                                        firstGameInitObjectReceived = false;
+                                        break;
+                                    default:
+                                        notificationHandler.sendWarning("Unknown message \"" + message + "\"", logger);
+                                }
                             }
                         }
 
