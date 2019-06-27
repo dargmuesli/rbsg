@@ -1,4 +1,4 @@
-package fulib.generated.testmodel;
+package generated.fulib.testmodel;
 
 public class Model {
 

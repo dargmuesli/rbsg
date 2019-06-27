@@ -158,7 +158,7 @@
                         </HBox.margin>
                     </Pane>
                     <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" spacing="5.0">
-                        <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
+                        <Label alignment="CENTER" text="Army Manager" textAlignment="CENTER">
                             <font>
                                 <Font size="15.0"/>
                             </font>

@@ -42,11 +42,11 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnLogout;
     @FXML
+    private JFXButton btnFullScreen;
+    @FXML
     private JFXHamburger ham;
     @FXML
     private JFXButton btnBack;
-    @FXML
-    private JFXButton btnFullscreen;
     @FXML
     private Label labelLeftUnits;
     @FXML
@@ -65,6 +65,8 @@ public class ArmyManagerController {
     private Label labelArmyName;
     @FXML
     private AnchorPane mainPane1;
+    @FXML
+    private Button btnJoinGame;
     private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
         + "-fx-padding: 0px;";
     private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
@@ -106,6 +108,7 @@ public class ArmyManagerController {
     private Army armySave1 = null;
     private Army armySave2 = null;
     private Army armySave3 = null;
+    static String selectedArmyId;
 
     public void initialize() {
 
@@ -118,7 +121,7 @@ public class ArmyManagerController {
 
         hamTran(ham, btnBack);
         hamTran(ham, btnLogout);
-        hamTran(ham, btnFullscreen);
+        hamTran(ham, btnFullScreen);
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
@@ -188,8 +191,18 @@ public class ArmyManagerController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
             }
-        } else if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+        } else if (event.getSource().equals(btnFullScreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullScreen);
+        } else if (event.getSource().equals(btnJoinGame)) {
+            QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
+            req.sendRequest();
+            ArrayList<Army> serverArmies = req.getArmies();
+            if (serverArmies.size() == 0) {
+                loadFromServer();
+            } else {
+                loadFromServer();
+                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
+            }
         }
     }
 
@@ -220,9 +233,9 @@ public class ArmyManagerController {
         } else {
             Army firstArmy = serverArmies.get(0);
             currentArmy = firstArmy;
+            selectedArmyId = firstArmy.getId();
             labelArmyName.setText(currentArmy.getName());
             updateConfigurationView(firstArmy);
-
         }
     }
 

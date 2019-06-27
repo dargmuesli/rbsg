@@ -50,6 +50,7 @@ public class SystemSocket extends AbstractWebSocket {
                     }
                     break;
                 case "playerJoinedGame":
+                case "playerLeftGame":
                     // TODO
                     break;
                 default:

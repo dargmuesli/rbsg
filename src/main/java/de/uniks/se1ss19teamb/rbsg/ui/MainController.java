@@ -120,11 +120,14 @@ public class MainController {
 
     private String sendTo = null;
 
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private GameMeta joinedGameMeta;
 
+    public static MainController instance;
+
     public void initialize() {
+        instance = this;
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
@@ -160,7 +163,7 @@ public class MainController {
                 notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
 
-            //UserInterfaceUtils.makeFadeInTransition(mainScreen);
+            // UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
             // ChatTabController
             chatPane.getSelectionModel().selectedItemProperty().addListener(
@@ -352,12 +355,12 @@ public class MainController {
 
         ArrayList<GameMeta> existingGameMetas = getExistingGames();
         for (GameMeta gameMeta : existingGameMetas) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();
-                controller.setUpGameLabel(gameMeta, this);
+                controller.setUpGameLabel(gameMeta);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
                 notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -365,7 +368,7 @@ public class MainController {
         }
     }
 
-    private ArrayList<GameMeta> getExistingGames() {
+    private static ArrayList<GameMeta> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
@@ -393,11 +396,6 @@ public class MainController {
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
         return usersInLobbyRequest.getUsersInLobby();
-    }
-
-    void setJoinedGameMeta(GameMeta joinedGameMeta) {
-        this.joinedGameMeta = joinedGameMeta;
-        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainScreen);
     }
 
     private Label addPlayerlabel(String player) {

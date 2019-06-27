@@ -54,7 +54,7 @@ public class WebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         this.mySession = session;
-        System.out.println("WS connected to " + this.mySession.getRequestURI());
+        notificationHandler.sendInfo("WS connected to " + this.mySession.getRequestURI(), logger);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -62,7 +62,7 @@ public class WebSocketClient {
                     try {
                         mySession.getBasicRemote().sendText(NOOP);
                     } catch (Exception e) {
-                        System.err.println("Can not send NOOP");
+                        notificationHandler.sendError("Can not send NOOP", logger);
                     }
                 }
             }
@@ -85,7 +85,7 @@ public class WebSocketClient {
 
     @OnClose
     public void onClose(Session session) {
-        System.out.println("WS " + mySession.getRequestURI() + "closed.");
+        notificationHandler.sendInfo("WS " + mySession.getRequestURI() + " closed.", logger);
         this.mySession = null;
         this.noopTimer.cancel();
     }

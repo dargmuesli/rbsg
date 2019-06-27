@@ -92,12 +92,10 @@
                     <FontAwesomeIconView glyphName="REPLY"/>
                 </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
-                       onAction="#setOnAction" visible="false">
+            <JFXButton fx:id="btnFullScreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
                 <graphic>
-                    <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>
-                </graphic>
-            </JFXButton>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15" />
+                </graphic></JFXButton>
             <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction"
                        visible="false">
                 <graphic>
