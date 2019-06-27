@@ -30,7 +30,7 @@ public class GameFieldController {
         joinGameRequest.sendRequest();
         joinedGame = game;
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", root);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager2.fxml", root);
     }
 
     public void deleteGame() {
