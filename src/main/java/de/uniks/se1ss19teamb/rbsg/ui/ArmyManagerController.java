@@ -106,6 +106,7 @@ public class ArmyManagerController {
     private Army armySave1 = null;
     private Army armySave2 = null;
     private Army armySave3 = null;
+    static String selectedArmyId;
 
     public void initialize() {
 
@@ -220,9 +221,9 @@ public class ArmyManagerController {
         } else {
             Army firstArmy = serverArmies.get(0);
             currentArmy = firstArmy;
+            selectedArmyId = firstArmy.getId();
             labelArmyName.setText(currentArmy.getName());
             updateConfigurationView(firstArmy);
-
         }
     }
 
