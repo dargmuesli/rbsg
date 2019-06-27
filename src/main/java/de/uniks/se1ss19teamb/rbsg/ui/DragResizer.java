@@ -117,33 +117,38 @@ public class DragResizer {
         if (usedCursor.equals(Cursor.S_RESIZE)
             || usedCursor.equals(Cursor.SW_RESIZE)
             || usedCursor.equals(Cursor.SE_RESIZE)) {
-
-            region.setMinHeight(event.getY());
-            region.setMaxHeight(event.getY());
-            region.setPrefHeight(event.getY());
+            // region.setLayoutY(event.getSceneY());
+            // region.setMinHeight(event.getY());
+            // region.setMaxHeight(event.getY());
+            // region.setPrefHeight(event.getY());
         }
         if (usedCursor.equals(Cursor.E_RESIZE)
             || usedCursor.equals(Cursor.SE_RESIZE)
             || usedCursor.equals(Cursor.NE_RESIZE)) {
-            region.setMinWidth(event.getSceneX() - region.getLayoutX());
-            region.setMaxWidth(event.getSceneX() - region.getLayoutX());
-            region.setPrefWidth(event.getSceneX() - region.getLayoutX());
+            // region.setLayoutX(event.getSceneX());
+            // region.setMinWidth(event.getSceneX() - region.getLayoutX());
+            // region.setMaxWidth(event.getSceneX() - region.getLayoutX());
+            // region.setPrefWidth(event.getSceneX() - region.getLayoutX());
+             //region.setPrefWidth(event.getSceneX());
         }
         if (usedCursor.equals(Cursor.W_RESIZE) || usedCursor.equals(Cursor.SW_RESIZE)
             || usedCursor.equals(Cursor.NW_RESIZE)) {
-            region.setLayoutX(event.getSceneX());
-
-            region.setMinWidth(region.getMinWidth() + (lastX - event.getSceneX()));
-            region.setMaxWidth(region.getMaxWidth() + (lastX - event.getSceneX()));
-            region.setPrefWidth(region.getPrefWidth() + (lastX - event.getSceneX()));
+            // region.setLayoutX(event.getSceneX());
+            // region.setLayoutX(event.getSceneX() + (lastX - event.getSceneX()));
+            // region.setMinWidth(region.getMinWidth() + (lastX - event.getSceneX()));
+            // region.setMaxWidth(region.getMaxWidth() + (lastX - event.getSceneX()));
+            // region.setPrefWidth(region.getPrefWidth() + (lastX - event.getSceneX()));
+            // region.setPrefWidth(region.getPrefWidth());
 
         }
         if (usedCursor.equals(Cursor.N_RESIZE) || usedCursor.equals(Cursor.NE_RESIZE)
             || usedCursor.equals(Cursor.NW_RESIZE)) {
-            region.setLayoutY(region.getLayoutY() + (event.getSceneY() - lastY));
-            region.setMinHeight(region.getMinHeight() + (lastY - event.getSceneY()));
-            region.setMaxHeight(region.getMaxHeight() + (lastY - event.getSceneY()));
-            region.setPrefHeight(region.getPrefHeight() + (lastY - event.getSceneY()));
+            // region.setLayoutY(region.getLayoutY());
+            // region.setLayoutY(region.getLayoutY() + (event.getSceneY() - lastY));
+            // region.setMinHeight(region.getMinHeight() + (lastY - event.getSceneY()));
+            // region.setMaxHeight(region.getMaxHeight() + (lastY - event.getSceneY()));
+            // region.setPrefHeight(region.getPrefHeight() + (lastY - event.getSceneY()));
+            // region.setPrefHeight(region.getPrefHeight());
         }
 
         lastX = event.getSceneX();
@@ -166,8 +171,8 @@ public class DragResizer {
         dragging = true;
 
         if (!initMinHeight) {
-            region.setMinHeight(region.getHeight());
-            region.setMinWidth(region.getWidth());
+            // region.setMinHeight(region.getHeight());
+            // region.setMinWidth(region.getWidth());
             initMinHeight = true;
             initMinWidth = true;
         }

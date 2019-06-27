@@ -222,19 +222,16 @@ public class MainController {
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
 
-        DragResizer.makeResizable(chatWindow);
+        DragResizer.makeResizable(chatPane);
 
-        chatWindow.widthProperty().addListener(((observable, oldValue, newValue) -> {
-            // chatWindow.setMinWidth(chatWindow.getMinWidth() + (((Double) newValue) - ((Double) oldValue)));
-            System.out.println((Double) newValue - (Double) oldValue);
-            // chatWindow.setMinWidth(chatWindow.getWidth() + );
-            // System.out.println(chatWindow.getWidth());
+        chatPane.widthProperty().addListener(((observable, oldValue, newValue) -> {
+            //System.out.println((Double) newValue - (Double) oldValue);
+            // chatPane.setMinWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue);
         }));
 
-        chatWindow.heightProperty().addListener(((observable, oldValue, newValue) -> {
-            // chatWindow.setMinHeight(chatWindow.getMinHeight() + ((Double) newValue) - ((Double) oldValue));
-            System.out.println((Double) newValue - (Double) oldValue);
-            // System.out.println(chatWindow.getHeight());
+        chatPane.heightProperty().addListener(((observable, oldValue, newValue) -> {
+            //System.out.println((Double) newValue - (Double) oldValue);
+            // chatPane.setMinHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue);
         }));
     }
 
@@ -355,7 +352,7 @@ public class MainController {
                 e.printStackTrace();
             }
         }
-        ham.requestFocus();
+        message.requestFocus();
     }
 
     void updateGameView() {
