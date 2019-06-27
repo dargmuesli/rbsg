@@ -2,11 +2,12 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
-import de.uniks.se1ss19teamb.rbsg.Main;
+import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
+import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -28,18 +29,25 @@ public class InGameController {
     private JFXButton btnFullscreen;
     @FXML
     private AnchorPane inGameScreen1;
+
+    // TODO: store those paths in a single location?!
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
     private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
 
-    private MainController mainController;
     private final GameSocket gameSocket = new GameSocket(
-        LoginController.getUserKey(), MainController.joinedGame.getId(), ArmyManagerController.selectedArmyId);
+        LoginController.getUserKey(), GameFieldController.joinedGame.getId(), ArmyManagerController.selectedArmyId);
+
+    public static InGameMetadata inGameMetadata;
+    public static ArrayList<InGameTile> inGameTiles = new ArrayList<>();
+    public static boolean gameInitFinished = false;
 
     public void initialize() {
         gameSocket.registerGameMessageHandler((message, from, isPrivate) -> {
             // TODO route incoming messages to ingame chat
         });
+
+        gameSocket.connect();
 
         loginController.changeTheme(inGameScreen, inGameScreen1, path, cssDark, cssWhite);
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
