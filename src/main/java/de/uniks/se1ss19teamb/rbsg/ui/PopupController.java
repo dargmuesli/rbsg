@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import javafx.fxml.FXML;
@@ -15,27 +16,34 @@ public class PopupController {
     Label label;
 
     public void displayError(String errorMessage) {
-        label.setText(errorMessage);
-        show();
-
+        Platform.runLater(() -> {
+            label.setText(errorMessage);
+            show();
+        });
     }
 
     public void displayInformation(String informationMessage) {
-        label.setText(informationMessage);
-        // TODO blue @Patrick
-        show();
+        Platform.runLater(() -> {
+            label.setText(informationMessage);
+            // TODO blue @Patrick
+            show();
+        });
     }
 
     public void displaySuccess(String successMessage) {
-        label.setText(successMessage);
-        // TODO green @Patrick
-        show();
+        Platform.runLater(() -> {
+            label.setText(successMessage);
+            // TODO green @Patrick
+            show();
+        });
     }
 
     public void displayWarning(String warningMessage) {
-        label.setText(warningMessage);
-        // TODO orange @Patrick
-        show();
+        Platform.runLater(() -> {
+            label.setText(warningMessage);
+            // TODO orange @Patrick
+            show();
+        });
     }
 
     private void show() {
