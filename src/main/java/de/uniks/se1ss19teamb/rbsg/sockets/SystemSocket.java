@@ -7,6 +7,8 @@ import java.util.List;
 
 public class SystemSocket extends AbstractWebSocket {
 
+    public static SystemSocket instance;
+
     private String userKey;
 
     private List<SystemSocketMessageHandler.SystemSocketUserJoinHandler> handlersUserJoin

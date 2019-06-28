@@ -7,18 +7,18 @@ import java.util.List;
 
 public class ChatSocket extends AbstractWebSocket {
 
+    public static ChatSocket instance;
+
     private String userKey;
     private String userName;
-
-    private List<ChatMessageHandler> handlersChat = new ArrayList<>();
-
     private boolean ignoreOwn;
+    private List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
     public ChatSocket(String userName, String userKey) {
         this(userName, userKey, false);
     }
 
-    public ChatSocket(String userName, String userKey, boolean ignoreOwn) {
+    private ChatSocket(String userName, String userKey, boolean ignoreOwn) {
         this.userKey = userKey;
         this.userName = userName;
         this.ignoreOwn = ignoreOwn;
