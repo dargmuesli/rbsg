@@ -91,6 +91,7 @@ public class ArmyManagerController {
     public void initialize() {
         Theming.setTheme(mainPane, mainPane1);
 
+        btnJoinGame.setOnAction(this::setOnAction);
         hboxLowerButtons.getChildren().add(btnJoinGame);
 
         Theming.hamburgerMenuTransition(ham, btnBack);
