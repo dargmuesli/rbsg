@@ -7,7 +7,8 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0"
             prefWidth="257.0" stylesheets="@../css/dark-design.css"
-            xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.UnitObjectController">
+            xmlns="http://javafx.com/javafx/8.0.162-ea"
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.UnitObjectController">
     <children>
         <ImageView fitHeight="37.0" fitWidth="72.0" layoutX="14.0" layoutY="4.0" pickOnBounds="true"
                    preserveRatio="true" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="4.0"/>

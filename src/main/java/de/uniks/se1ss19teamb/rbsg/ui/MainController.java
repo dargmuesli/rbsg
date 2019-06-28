@@ -17,7 +17,6 @@ import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,7 +31,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,7 +38,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,7 +97,7 @@ public class MainController {
     @FXML
     private ScrollPane allPane;
     @FXML
-    private JFXHamburger ham;
+    private JFXHamburger hamburgerMenu;
     @FXML
     private AnchorPane mainScreen1;
     @FXML
@@ -121,9 +118,9 @@ public class MainController {
         updatePlayerView();
 
         Platform.runLater(() -> {
-            Theming.hamburgerMenuTransition(ham, btnFullscreen);
-            Theming.hamburgerMenuTransition(ham, btnLogout);
-            Theming.hamburgerMenuTransition(ham, btnMode);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnMode);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
@@ -137,8 +134,6 @@ public class MainController {
             } catch (IOException e) {
                 notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
-
-            // UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
             // ChatTabController
             chatPane.getSelectionModel().selectedItemProperty().addListener(
@@ -212,7 +207,6 @@ public class MainController {
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
-
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
     }
 
@@ -240,6 +234,7 @@ public class MainController {
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
+
             if (logout.getSuccessful()) {
                 chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
@@ -256,6 +251,7 @@ public class MainController {
                 if (checkInput(message.getText())) {
                     return;
                 }
+
                 if (sendTo != null) {
                     if (sendTo.trim().equals("")) {
                         sendTo = null;
@@ -302,7 +298,8 @@ public class MainController {
                     e.printStackTrace();
                 }*/
         }
-        ham.requestFocus();
+
+        hamburgerMenu.requestFocus();
     }
 
     private static HashMap<String, GameMeta> getExistingGames() {
