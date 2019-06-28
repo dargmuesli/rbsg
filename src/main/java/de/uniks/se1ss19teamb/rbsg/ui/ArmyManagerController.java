@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.Troops;
+import de.uniks.se1ss19teamb.rbsg.model.Troop;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
@@ -212,7 +212,7 @@ public class ArmyManagerController {
         }
 
         for (String unitId : army.getUnits()) {
-            switch (Troops.valueOf(unitId)) {
+            switch (Troop.keyOf(unitId)) {
                 case BAZOOKA_TROOPER:
                     unitObjectControllers.get(0).increaseCount();
                     break;
@@ -278,27 +278,27 @@ public class ArmyManagerController {
         ArrayList<String> allIds = new ArrayList<>();
 
         for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
-            allIds.add(Troops.BAZOOKA_TROOPER.toString());
+            allIds.add(Troop.BAZOOKA_TROOPER.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
-            allIds.add(Troops.CHOPPER.toString());
+            allIds.add(Troop.CHOPPER.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
-            allIds.add(Troops.HEAVY_TANK.toString());
+            allIds.add(Troop.HEAVY_TANK.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
-            allIds.add(Troops.INFANTRY.toString());
+            allIds.add(Troop.INFANTRY.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
-            allIds.add(Troops.JEEP.toString());
+            allIds.add(Troop.JEEP.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
-            allIds.add(Troops.LIGHT_TANK.toString());
+            allIds.add(Troop.LIGHT_TANK.toString());
         }
 
         currentArmy.setUnits(allIds);
