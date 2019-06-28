@@ -276,6 +276,9 @@ public class MainController {
         } else if (event.getSource().equals(btnMode)) {
             SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
             Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
+
+            // the game view contains sub-fxmls and thus needs to be updated separately
+            updateGameView();
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
