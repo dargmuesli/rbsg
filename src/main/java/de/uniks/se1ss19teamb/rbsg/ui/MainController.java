@@ -110,10 +110,53 @@ public class MainController {
         Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
 
         // TODO - after some time it automaticly disconnects system and chatSocket
-        SystemSocket.instance = new SystemSocket(userKey);
-        ChatSocket.instance = new ChatSocket(userName, userKey);
+        if (SystemSocket.instance == null) {
+            SystemSocket.instance = new SystemSocket(userKey);
 
-        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+            SystemSocket.instance.registerUserJoinHandler(
+                (name) -> {
+                    updatePlayerView();
+                    addElement(name, " joined.", textArea, false);
+                });
+
+            SystemSocket.instance.registerUserLeftHandler(
+                (name) -> {
+                    addElement(name, " left.", textArea, false);
+                    updatePlayerView();
+                });
+
+            SystemSocket.instance.registerGameCreateHandler(
+                (gameName, id, neededPlayers) -> {
+                    updateGameView();
+                    addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
+                        textArea, false);
+                });
+
+            SystemSocket.instance.registerGameDeleteHandler(
+                (id) -> {
+                    addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
+                        textArea, false);
+                    updateGameView();
+                });
+
+            SystemSocket.instance.connect();
+        }
+
+        if (ChatSocket.instance == null) {
+            ChatSocket.instance = new ChatSocket(userName, userKey);
+
+            ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
+                if (isPrivate) {
+                    addNewPane(from, message, false, chatPane);
+                } else {
+                    addElement(from, message, textArea, false);
+                }
+            });
+        }
+
+        if (MainController.chat == null) {
+            MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+        }
 
         updateGameView();
         updatePlayerView();
@@ -170,42 +213,6 @@ public class MainController {
             selectionModel = chatPane.getSelectionModel();
         });
 
-        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
-            if (isPrivate) {
-                addNewPane(from, message, false, chatPane);
-            } else {
-                addElement(from, message, textArea, false);
-            }
-        });
-
-        SystemSocket.instance.registerUserJoinHandler(
-            (name) -> {
-                updatePlayerView();
-                addElement(name, " joined.", textArea, false);
-            });
-
-        SystemSocket.instance.registerUserLeftHandler(
-            (name) -> {
-                addElement(name, " left.", textArea, false);
-                updatePlayerView();
-            });
-
-        SystemSocket.instance.registerGameCreateHandler(
-            (gameName, id, neededPlayers) -> {
-                updateGameView();
-                addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
-                    textArea, false);
-            });
-
-        SystemSocket.instance.registerGameDeleteHandler(
-            (id) -> {
-                addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
-                    textArea, false);
-                updateGameView();
-            });
-
-        SystemSocket.instance.connect();
-
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
@@ -239,7 +246,6 @@ public class MainController {
             if (logout.getSuccessful()) {
                 chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
-                System.out.println(mainScreen.lookup("#chatWindow"));
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
