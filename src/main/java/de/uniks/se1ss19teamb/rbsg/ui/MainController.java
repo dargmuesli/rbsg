@@ -55,7 +55,7 @@ public class MainController {
     private static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
-    private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json";
     private static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
 

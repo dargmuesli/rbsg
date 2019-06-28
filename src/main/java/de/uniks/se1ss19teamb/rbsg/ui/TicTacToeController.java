@@ -44,7 +44,7 @@ public class TicTacToeController {
     private String signO = "O";
     @FXML
     private Label label;
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json";
 
     public void initialize() {
         buttons.add(0, one);
