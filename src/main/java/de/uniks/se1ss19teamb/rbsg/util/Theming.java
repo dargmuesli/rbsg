@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javafx.scene.input.MouseEvent;
@@ -15,7 +16,8 @@ public class Theming {
     private static final Logger logger = LogManager.getLogger();
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    public static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json");
+    public static final File cssModeFile =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rgsb_dark-mode-active.json").toFile();
 
     public static void setTheme(List<Pane> panes) {
         String darkDesignCssPath = Theming.class.getResource("/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css")
