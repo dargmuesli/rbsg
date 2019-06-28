@@ -1,8 +1,14 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
+import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.geometry.Dimension2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,5 +44,30 @@ public class TextureManagerTest {
 
         Pane animPane = TextureManager.getTextureInstance("panzer");
         Assert.assertTrue(animPane instanceof AnimatedPane);
+        
+        InGameTile sand = new InGameTile();
+        sand.setId("sand");
+        InGameTile water = new InGameTile();
+        water.setId("water");
+        InGameTile mountain = new InGameTile();
+        mountain.setId("mountain");
+        InGameTile grass = new InGameTile();
+        grass.setId("grass");
+        
+        Map<Pair<Integer, Integer>, InGameTile> map = new HashMap<>();
+        map.put(new Pair<>(0,0), mountain);
+        map.put(new Pair<>(0,1), mountain);
+        map.put(new Pair<>(0,2), sand);
+        
+        map.put(new Pair<>(1,0), mountain);
+        map.put(new Pair<>(1,1), water);
+        map.put(new Pair<>(1,2), grass);
+        
+        map.put(new Pair<>(2,0), mountain);
+        map.put(new Pair<>(2,1), grass);
+        map.put(new Pair<>(2,2), sand);
+        
+        Pane fancyPane = TextureManager.computeTerrainTextureInstance(map, 1, 1);
+        Assert.assertNotNull(fancyPane);
     }
 }
