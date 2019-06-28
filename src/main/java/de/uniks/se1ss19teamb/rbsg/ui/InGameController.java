@@ -25,7 +25,7 @@ public class InGameController {
     @FXML
     private AnchorPane inGameScreen;
     @FXML
-    private JFXHamburger ham;
+    private JFXHamburger hamburgerMenu;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -41,9 +41,9 @@ public class InGameController {
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
-        Theming.hamburgerMenuTransition(ham, btnBack);
-        Theming.hamburgerMenuTransition(ham, btnLogout);
-        Theming.hamburgerMenuTransition(ham, btnFullscreen);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
 
         GameSocket.instance = new GameSocket(
             LoginController.getUserKey(),

@@ -105,7 +105,7 @@
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
                 </graphic>
             </JFXButton>
-            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"/>
+            <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0"/>
         </HBox>
     </AnchorPane>
     <stylesheets>

@@ -3,7 +3,6 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +24,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -50,7 +47,7 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnFullScreen;
     @FXML
-    private JFXHamburger ham;
+    private JFXHamburger hamburgerMenu;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -83,7 +80,7 @@ public class ArmyManagerController {
     private int leftUnits = 10;
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
-    public static Army currentArmy = new Army();
+    static Army currentArmy = new Army();
     private Army[] armySaves = new Army[3];
     static boolean joiningGame;
     private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
@@ -95,9 +92,9 @@ public class ArmyManagerController {
         btnJoinGame.setOnAction(this::setOnAction);
         hboxLowerButtons.getChildren().add(btnJoinGame);
 
-        Theming.hamburgerMenuTransition(ham, btnBack);
-        Theming.hamburgerMenuTransition(ham, btnLogout);
-        Theming.hamburgerMenuTransition(ham, btnFullScreen);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullScreen);
 
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
