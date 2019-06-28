@@ -164,11 +164,9 @@ public class ArmyManagerController {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
+            loadFromServer();
 
-            if (serverArmies.size() == 0) {
-                loadFromServer();
-            } else {
-                loadFromServer();
+            if (serverArmies.size() != 0) {
                 UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
             }
         }
