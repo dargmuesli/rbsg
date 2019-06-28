@@ -70,9 +70,8 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate();
     }
     
-    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y){
+    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
         TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getId());
-        Pane base = current.instantiateBase();
         
         GridPane overlay = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints(32);
@@ -83,11 +82,12 @@ public class TextureManager {
         overlay.getRowConstraints().addAll(row1, row2);
         
         for (TextureFancyOverlayPosition pos : TextureFancyOverlayPosition.values()) { 
-            NavigableMap<Integer, Pane> currentOverlayPanes = new TreeMap<>();
+            NavigableMap<Integer, Pane> currentOverlayPane = new TreeMap<>();
             
             for (Entry<String,TextureFancy> texture : instance.texturesTerrain.entrySet()) {
-                if (texture.getValue().getDepth() <= current.getDepth())
+                if (texture.getValue().getDepth() <= current.getDepth()) {
                     continue;
+                }
                 
                 TextureFancyOverlayType type = null;
                 
@@ -95,39 +95,40 @@ public class TextureManager {
                 InGameTile vertical = map.get(new Pair<>(x, y + pos.y));
                 InGameTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
                 
-                if (horizontal != null && vertical != null &&
-                        horizontal.getId().equals(texture.getKey()) && vertical.getId().equals(texture.getKey())) {
+                if (horizontal != null && vertical != null 
+                    && horizontal.getId().equals(texture.getKey()) && vertical.getId().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.BOTH;
-                }
-                else if (horizontal != null && horizontal.getId().equals(texture.getKey())) {
+                } else if (horizontal != null && horizontal.getId().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.HORIZONTAL;
-                }
-                else if (vertical != null && vertical.getId().equals(texture.getKey())) {
+                } else if (vertical != null && vertical.getId().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.VERTICAL;
-                }
-                else if (diagonal != null && diagonal.getId().equals(texture.getKey())) {
+                } else if (diagonal != null && diagonal.getId().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.DIAGONAL;
                 }
                 
                 //Current Terrain OVerlay not found in Neighbours
-                if (type == null)
+                if (type == null) {
                     continue;
-                
-                currentOverlayPanes.put(texture.getValue().getDepth(), texture.getValue().instantiateOverlay(pos, type));
+                }
+                    
+                currentOverlayPane.put(texture.getValue().getDepth(), texture.getValue().instantiateOverlay(pos, type));
             }
             
-            if (currentOverlayPanes.isEmpty())
+            if (currentOverlayPane.isEmpty()) {
                 continue;
-            
-            Pane parent = currentOverlayPanes.firstEntry().getValue();
+            }
+                
+            Pane parent = currentOverlayPane.firstEntry().getValue();
             overlay.add(parent, (pos.x + 1) / 2, (pos.y + 1) / 2);
             
-            while(currentOverlayPanes.size() > 1) {
-                currentOverlayPanes = currentOverlayPanes.tailMap(currentOverlayPanes.firstKey(), false);
-                parent.getChildren().add(currentOverlayPanes.firstEntry().getValue());
-                parent = currentOverlayPanes.firstEntry().getValue();
+            while (currentOverlayPane.size() > 1) {
+                currentOverlayPane = currentOverlayPane.tailMap(currentOverlayPane.firstKey(), false);
+                parent.getChildren().add(currentOverlayPane.firstEntry().getValue());
+                parent = currentOverlayPane.firstEntry().getValue();
             }
         }
+
+        Pane base = current.instantiateBase();
         
         base.getChildren().add(overlay);
         

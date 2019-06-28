@@ -4,7 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class TextureFancy{
+public class TextureFancy {
 
     private Texture base;
     
