@@ -16,21 +16,15 @@ public class Theming {
     private static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json");
 
     public static void setTheme(AnchorPane anchorPane1, AnchorPane anchorPane2) {
+        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
 
-        Boolean darkModeActive = darkModeActive();
-
-        if (darkModeActive == null) {
-            notificationHandler.sendError("Could not determine dark mode status!", logger);
-            return;
+        if (darkModeActive()) {
+            anchorPane1.getStylesheets().remove(cssWhite);
+            anchorPane2.getStylesheets().remove(cssWhite);
+        } else {
+            anchorPane1.getStylesheets().add(cssWhite);
+            anchorPane2.getStylesheets().add(cssWhite);
         }
-
-        String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-
-        anchorPane1.getStylesheets().clear();
-        anchorPane2.getStylesheets().clear();
-        anchorPane1.getStylesheets().add(darkModeActive ? cssDark : cssWhite);
-        anchorPane2.getStylesheets().add(darkModeActive ? cssDark : cssWhite);
     }
 
     public static boolean darkModeActive() {
