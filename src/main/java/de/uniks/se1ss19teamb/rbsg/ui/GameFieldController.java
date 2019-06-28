@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
@@ -16,19 +16,19 @@ public class GameFieldController {
     @FXML
     private Label gameNameLabel;
 
-    private Game game;
-    static Game joinedGame;
+    private GameMeta gameMeta;
+    static GameMeta joinedGame;
 
 
-    void setUpGameLabel(Game game) {
-        this.game = game;
-        gameNameLabel.setText(game.getName());
+    void setUpGameLabel(GameMeta gameMeta) {
+        this.gameMeta = gameMeta;
+        gameNameLabel.setText(gameMeta.getName());
     }
 
     public void joinGame() {
-        JoinGameRequest joinGameRequest = new JoinGameRequest(game.getId(), LoginController.getUserKey());
+        JoinGameRequest joinGameRequest = new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey());
         joinGameRequest.sendRequest();
-        joinedGame = game;
+        joinedGame = gameMeta;
 
         ArmyManagerController.joiningGame = true;
         UserInterfaceUtils.makeFadeOutTransition(
@@ -36,7 +36,7 @@ public class GameFieldController {
     }
 
     public void deleteGame() {
-        DeleteGameRequest deleteGameRequest = new DeleteGameRequest(game.getId(), LoginController.getUserKey());
+        DeleteGameRequest deleteGameRequest = new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey());
         deleteGameRequest.sendRequest();
         MainController.instance.updateGameView();
     }

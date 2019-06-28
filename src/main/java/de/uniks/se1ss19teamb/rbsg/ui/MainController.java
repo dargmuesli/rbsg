@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
@@ -333,14 +333,14 @@ public class MainController {
             items.remove(0);
         }
 
-        ArrayList<Game> existingGames = getExistingGames();
-        for (Game game : existingGames) {
+        ArrayList<GameMeta> existingGameMetas = getExistingGames();
+        for (GameMeta gameMeta : existingGameMetas) {
             FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 GameFieldController controller = fxmlLoader.getController();
-                controller.setUpGameLabel(game);
+                controller.setUpGameLabel(gameMeta);
                 gameListView.getItems().add(parent);
             } catch (IOException e) {
                 notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -348,7 +348,7 @@ public class MainController {
         }
     }
 
-    private static ArrayList<Game> getExistingGames() {
+    private static ArrayList<GameMeta> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
@@ -476,7 +476,7 @@ public class MainController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/PrivateTab.fxml"));
+                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/privateTab.fxml"));
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {

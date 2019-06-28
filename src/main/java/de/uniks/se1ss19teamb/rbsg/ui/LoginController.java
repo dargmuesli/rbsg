@@ -114,7 +114,7 @@ public class LoginController {
             notificationHandler.setPopupController(controller);
 
         } catch (IOException e) {
-            notificationHandler.sendError("Fehler beim Laden der FXML-Datei fÃ¼r den Login!", logger, e);
+            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
