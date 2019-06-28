@@ -3,8 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.Game;
-
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import java.util.ArrayList;
 import org.apache.http.ParseException;
@@ -216,8 +215,8 @@ public class RestRequestTestsMocked {
             Assert.assertTrue(req.getSuccessful());
 
             boolean hasTeamBTestGame = false;
-            for (Game game : req.getGames()) {
-                hasTeamBTestGame |= game.getName().equals("testTeamBGame");
+            for (GameMeta gameMeta : req.getGames()) {
+                hasTeamBTestGame |= gameMeta.getName().equals("testTeamBGame");
             }
             Assert.assertTrue(hasTeamBTestGame);
         } catch (Exception e) {
