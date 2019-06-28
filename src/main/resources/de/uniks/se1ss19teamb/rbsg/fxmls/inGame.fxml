@@ -34,7 +34,7 @@
                     <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0" />
                 </HBox>
                 <HBox alignment="TOP_RIGHT" prefHeight="100" prefWidth="636" />
-            <ScrollPane prefHeight="400.0" prefWidth="200.0">
+            <ScrollPane prefHeight="600.0" prefWidth="200.0">
                <content>
                   <GridPane fx:id="gameGrid">
                     <columnConstraints>
