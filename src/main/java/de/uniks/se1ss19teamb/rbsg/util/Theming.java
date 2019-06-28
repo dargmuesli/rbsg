@@ -15,7 +15,7 @@ public class Theming {
     private static final Logger logger = LogManager.getLogger();
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    private static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json");
+    public static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json");
 
     public static void setTheme(List<Pane> panes) {
         String darkDesignCssPath = Theming.class.getResource("/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css")

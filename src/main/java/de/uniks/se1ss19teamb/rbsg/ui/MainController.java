@@ -54,7 +54,6 @@ public class MainController {
     private static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
-    private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json";
     private static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
 
@@ -269,7 +268,7 @@ public class MainController {
                 message.setText("");
             }
         } else if (event.getSource().equals(btnMode)) {
-            SerializeUtils.serialize(path, !Theming.darkModeActive());
+            SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
             Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
