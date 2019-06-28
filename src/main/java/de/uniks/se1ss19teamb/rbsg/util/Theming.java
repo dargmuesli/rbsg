@@ -15,8 +15,6 @@ public class Theming {
 
     private static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json");
 
-    public static Boolean darkMode;
-
     public static void setTheme(AnchorPane anchorPane1, AnchorPane anchorPane2) {
 
         Boolean darkModeActive = darkModeActive();

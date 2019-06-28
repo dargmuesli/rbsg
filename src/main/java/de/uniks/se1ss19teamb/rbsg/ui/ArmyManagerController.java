@@ -110,7 +110,7 @@ public class ArmyManagerController {
             + "-fx-padding: 0px;";
 
         unitList.setStyle("-fx-background-color:transparent;");
-        unitList.setStyle(Theming.darkMode ? darkMode : whiteMode);
+        unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
 
         for (Unit unit : units) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
