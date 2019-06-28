@@ -3,38 +3,39 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="inGameScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="inGameScreen1" xmlns="http://javafx.com/javafx/8.0.162-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
-    <AnchorPane fx:id="inGameScreen" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <children>
                 <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                    <JFXButton fx:id="btnBack" visible="false" onAction="#setOnAction" contentDisplay="GRAPHIC_ONLY"
-                               mnemonicParsing="false">
+                    <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#setOnAction" visible="false">
                         <graphic>
                             <FontAwesomeIconView glyphName="REPLY"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton fx:id="btnLogout" visible="false" onAction="#setOnAction" contentDisplay="GRAPHIC_ONLY"
-                               mnemonicParsing="false">
+                    <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#setOnAction" visible="false">
                         <graphic>
                             <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton fx:id="btnFullscreen" visible="false" onAction="#setOnAction"
-                               contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false">
+                    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#setOnAction" visible="false">
                         <graphic>
                             <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"/>
+                    <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0"/>
                 </HBox>
                 <HBox alignment="TOP_RIGHT" prefHeight="100" prefWidth="636"/>
                 <Pane prefHeight="395" prefWidth="636"/>
@@ -42,4 +43,8 @@
             </children>
         </VBox>
     </AnchorPane>
+    <stylesheets>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/darkDesign.css"/>
+    </stylesheets>
 </AnchorPane>

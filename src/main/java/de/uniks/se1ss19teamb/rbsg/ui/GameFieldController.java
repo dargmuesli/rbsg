@@ -29,14 +29,15 @@ public class GameFieldController {
         JoinGameRequest joinGameRequest = new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey());
         joinGameRequest.sendRequest();
         joinedGame = gameMeta;
+
+        ArmyManagerController.joiningGame = true;
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager2.fxml", root);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root);
     }
 
     public void deleteGame() {
         DeleteGameRequest deleteGameRequest = new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey());
         deleteGameRequest.sendRequest();
-        MainController.instance.updateGameView();
     }
 
 }

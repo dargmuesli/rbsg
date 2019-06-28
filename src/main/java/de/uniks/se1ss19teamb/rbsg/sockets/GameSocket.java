@@ -17,21 +17,20 @@ import org.apache.logging.log4j.Logger;
 
 public class GameSocket extends AbstractWebSocket {
 
-    private String userKey;
-    private String gameId;
-    private String armyId;
-
     private static final Logger logger = LogManager.getLogger();
     private static final NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    private boolean firstGameInitObjectReceived;
-
-    private List<ChatMessageHandler> handlersChat = new ArrayList<>();
+    public static GameSocket instance;
+    private static String userKey;
+    private static String gameId;
+    private static String armyId;
+    private static boolean firstGameInitObjectReceived;
+    private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
     public GameSocket(String userKey, String gameId, String armyId) {
-        this.userKey = userKey;
-        this.gameId = gameId;
-        this.armyId = armyId;
+        GameSocket.userKey = userKey;
+        GameSocket.gameId = gameId;
+        GameSocket.armyId = armyId;
 
         registerWebSocketHandler((response) -> {
             if (response.has("action")) {

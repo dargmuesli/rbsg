@@ -1,0 +1,82 @@
+* {
+    -fx-primary: #2A2E37;
+    -fx-secondary: #FFFF8d;
+    -fx-primarytext: #B2B2B2;
+    -fx-privatetext: #FF7EFF;
+}
+
+. root, VBox, HBox {
+    -fx-background-color: -fx-primary;
+}
+
+ListView {
+    -fx-control-inner-background: -fx-primary;
+}
+
+.background-color_transparent {
+    -fx-background-color: transparent;
+}
+
+.button {
+    -fx-text-fill: -fx-primarytext;
+    -fx-background-color: -fx-primary;
+    -fx-border-color: -fx-secondary;
+}
+
+.button:hover, .button:focused {
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.check-box {
+    -fx-text-fill: -fx-primarytext;
+    -jfx-checked-color: -fx-secondary;
+}
+
+.glyph-icon {
+    -fx-fill: -fx-primarytext;
+}
+
+.jfx-check-box .mark {
+    -fx-border-color: black;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #3f424b;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #3f424b;
+}
+
+.label {
+    -fx-text-fill: -fx-secondary;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+}
+
+.menu-item {
+    -fx-background-color: grey;
+}
+
+.radio-button {
+    -fx-text-fill: -fx-secondary;
+    -jfx-selected-color: -fx-secondary;
+}
+
+.tab .tab-label {
+    -fx-text-fill: white;
+}
+
+.text-field {
+    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: derive(-fx-secondary, 20%);
+}
+
+.wrong-credentials {
+    -jfx-unfocuse-color: #ef5350;
+    -jfx-focuse-color: #ef5350;
+}

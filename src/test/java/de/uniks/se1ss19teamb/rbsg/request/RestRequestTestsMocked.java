@@ -214,11 +214,11 @@ public class RestRequestTestsMocked {
 
             Assert.assertTrue(req.getSuccessful());
 
-            boolean hasTeamBTestGame = false;
-            for (GameMeta gameMeta : req.getGames()) {
-                hasTeamBTestGame |= gameMeta.getName().equals("testTeamBGame");
-            }
-            Assert.assertTrue(hasTeamBTestGame);
+            final boolean[] hasTeamBTestGame = {false};
+            req.getGames().forEach((s, gameMeta) -> {
+                hasTeamBTestGame[0] |= gameMeta.getName().equals("testTeamBGame");
+            });
+            Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
             Assert.fail(e.toString());
         }

@@ -6,24 +6,26 @@ import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
 import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
 
 public class InGameController {
 
-    LoginController loginController = new LoginController();
-    ArmyManagerController armyManagerController = new ArmyManagerController();
     @FXML
     private AnchorPane inGameScreen;
     @FXML
-    private JFXHamburger ham;
+    private JFXHamburger hamburgerMenu;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -33,31 +35,28 @@ public class InGameController {
     @FXML
     private AnchorPane inGameScreen1;
 
-    // TODO: store those paths in a single location?!
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-
-    private final GameSocket gameSocket = new GameSocket(
-        LoginController.getUserKey(), GameFieldController.joinedGame.getId(), ArmyManagerController.selectedArmyId);
-
     public static InGameMetadata inGameMetadata;
     public static Map<Pair<Integer, Integer>, InGameTile> inGameTiles = new HashMap<>();
     public static boolean gameInitFinished = false;
 
     public void initialize() {
-        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> {
+        Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+
+        GameSocket.instance = new GameSocket(
+            LoginController.getUserKey(),
+            GameFieldController.joinedGame.getId(),
+            ArmyManagerController.currentArmy.getId());
+
+        GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
             // TODO route incoming messages to ingame chat
         });
 
-        gameSocket.connect();
+        GameSocket.instance.connect();
 
-        loginController.changeTheme(inGameScreen, inGameScreen1, path, cssDark, cssWhite);
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
-        armyManagerController.hamTran(ham, btnBack);
-        armyManagerController.hamTran(ham, btnLogout);
-        armyManagerController.hamTran(ham, btnFullscreen);
-
     }
 
     public void setOnAction(ActionEvent event) {
