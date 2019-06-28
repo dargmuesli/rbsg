@@ -9,8 +9,14 @@
     -fx-background-color: -fx-primary;
 }
 
+ListView {
+    -fx-control-inner-background: -fx-primary;
+    -fx-background-insets: 0;
+    -fx-padding: 0px;
+}
+
 ScrollPane {
-    -fx-padding: 0;
+    -fx-padding: 0px;
 }
 
 .background-color_transparent {

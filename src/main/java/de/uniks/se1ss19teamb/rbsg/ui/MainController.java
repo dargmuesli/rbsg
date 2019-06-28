@@ -267,19 +267,12 @@ public class MainController {
                 } else {
                     chat.sendMessage(message.getText());
                 }
+
                 message.setText("");
             }
         } else if (event.getSource().equals(btnMode)) {
-            // TODO: css file, not flags
-            String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
-                + "-fx-padding: 0px;";
-            String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
-                + "-fx-padding: 0px;";
-
-            playerListView.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
-            gameListView.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
-            Theming.setTheme(mainScreen, mainScreen1);
             SerializeUtils.serialize(path, !Theming.darkModeActive());
+            Theming.setTheme(mainScreen, mainScreen1);
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
