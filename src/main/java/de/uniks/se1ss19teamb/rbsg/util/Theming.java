@@ -24,7 +24,11 @@ public class Theming {
             .toExternalForm();
 
         if (darkModeActive()) {
-            panes.forEach(pane -> pane.getStylesheets().add(darkDesignCssPath));
+            panes.forEach(pane -> {
+                if (!pane.getStylesheets().contains(darkDesignCssPath)) {
+                    pane.getStylesheets().add(darkDesignCssPath);
+                }
+            });
         } else {
             panes.forEach(pane -> pane.getStylesheets().remove(darkDesignCssPath));
         }
