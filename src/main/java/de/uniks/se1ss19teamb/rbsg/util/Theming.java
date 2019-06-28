@@ -18,7 +18,8 @@ public class Theming {
     private static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json");
 
     public static void setTheme(List<Pane> panes) {
-        String darkDesignCssPath = "/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css";
+        String darkDesignCssPath = Theming.class.getResource("/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css")
+            .toExternalForm();
 
         if (darkModeActive()) {
             panes.forEach(pane -> pane.getStylesheets().add(darkDesignCssPath));
