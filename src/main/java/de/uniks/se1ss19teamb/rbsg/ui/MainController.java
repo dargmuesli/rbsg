@@ -439,9 +439,9 @@ public class MainController {
     }
 
     private void setChatStyle(Label label) {
-        label.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+        label.setStyle("-fx-text-fill: " + (Theming.darkModeActive()
             ? "-fx-primary" : "black") + ";"
-            + "-fx-background-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            + "-fx-background-color: " + (Theming.darkModeActive()
             ? "-fx-secondary" : "white") + ";"
             + "-fx-border-radius: 20px;"
             + "-fx-background-radius: 10px;");
@@ -539,9 +539,9 @@ public class MainController {
 
         Platform.runLater(() -> {
             message.clear();
-            message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            message.setStyle("-fx-text-fill: " + (Theming.darkModeActive()
                 ? "-fx-secondary;" : "black;") + "-jfx-focus-color: "
-                + (SerializeUtils.deserialize(new File(path), boolean.class)
+                + (Theming.darkModeActive()
                 ? "-fx-secondary;" : "black;"));
         });
     }
