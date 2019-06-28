@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +68,8 @@ public class GameSocket extends AbstractWebSocket {
                                 InGameController.inGameMetadata =
                                     SerializeUtils.deserialize(data.toString(), InGameMetadata.class);
                             } else {
-                                InGameController.inGameTiles.add(
-                                    SerializeUtils.deserialize(data.toString(), InGameTile.class));
+                                InGameTile tile = SerializeUtils.deserialize(data.toString(), InGameTile.class);
+                            	InGameController.inGameTiles.put(new Pair<>(tile.getX(), tile.getY()), tile);
                             }
                         }
                         break;

@@ -1,15 +1,25 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
+import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import javafx.geometry.Dimension2D;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
+import javafx.util.Pair;
 
 public class TextureManager {
 
     private static TextureManager instance = null;
     private Map<String, Texture> textures = new HashMap<>();
+    private Map<String, TextureFancy> texturesTerrain = new HashMap<>();
 
     private TextureManager() {
     }
@@ -41,10 +51,87 @@ public class TextureManager {
 
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
+        
+        
+        TextureFancy water = new TextureFancy("water.png", "water.png", 0);
+        instance.texturesTerrain.put("water", water);
+        
+        TextureFancy sand = new TextureFancy("sand.png", "sandOverlay.png", 1);
+        instance.texturesTerrain.put("sand", sand);
+        
+        TextureFancy grass = new TextureFancy("grass.png", "grassOverlay.png", 2);
+        instance.texturesTerrain.put("grass", grass);
+        
+        TextureFancy mountain = new TextureFancy("mountain.png", "mountainOverlay.png", 3);
+        instance.texturesTerrain.put("mountain", mountain);
     }
 
     public static Pane getTextureInstance(String toFetch) {
         return instance.fetchTexture(toFetch).instantiate();
+    }
+    
+    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y){
+        TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getId());
+        Pane base = current.instantiateBase();
+        
+        GridPane overlay = new GridPane();
+        ColumnConstraints column1 = new ColumnConstraints(32);
+        ColumnConstraints column2 = new ColumnConstraints(32);
+        RowConstraints row1 = new RowConstraints(32);
+        RowConstraints row2 = new RowConstraints(32);
+        overlay.getColumnConstraints().addAll(column1, column2);
+        overlay.getRowConstraints().addAll(row1, row2);
+        
+        for (TextureFancyOverlayPosition pos : TextureFancyOverlayPosition.values()) { 
+            NavigableMap<Integer, Pane> currentOverlayPanes = new TreeMap<>();
+            
+            for (Entry<String,TextureFancy> texture : instance.texturesTerrain.entrySet()) {
+                if (texture.getValue().getDepth() <= current.getDepth())
+                    continue;
+                
+                TextureFancyOverlayType type = null;
+                
+                InGameTile horizontal = map.get(new Pair<>(x + pos.x, y));
+                InGameTile vertical = map.get(new Pair<>(x, y + pos.y));
+                InGameTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
+                
+                if (horizontal != null && vertical != null &&
+                        horizontal.getId().equals(texture.getKey()) && vertical.getId().equals(texture.getKey())) {
+                    type = TextureFancyOverlayType.BOTH;
+                }
+                else if (horizontal != null && horizontal.getId().equals(texture.getKey())) {
+                    type = TextureFancyOverlayType.HORIZONTAL;
+                }
+                else if (vertical != null && vertical.getId().equals(texture.getKey())) {
+                    type = TextureFancyOverlayType.VERTICAL;
+                }
+                else if (diagonal != null && diagonal.getId().equals(texture.getKey())) {
+                    type = TextureFancyOverlayType.DIAGONAL;
+                }
+                
+                //Current Terrain OVerlay not found in Neighbours
+                if (type == null)
+                    continue;
+                
+                currentOverlayPanes.put(texture.getValue().getDepth(), texture.getValue().instantiateOverlay(pos, type));
+            }
+            
+            if (currentOverlayPanes.isEmpty())
+                continue;
+            
+            Pane parent = currentOverlayPanes.firstEntry().getValue();
+            overlay.add(parent, (pos.x + 1) / 2, (pos.y + 1) / 2);
+            
+            while(currentOverlayPanes.size() > 1) {
+                currentOverlayPanes = currentOverlayPanes.tailMap(currentOverlayPanes.firstKey(), false);
+                parent.getChildren().add(currentOverlayPanes.firstEntry().getValue());
+                parent = currentOverlayPanes.firstEntry().getValue();
+            }
+        }
+        
+        base.getChildren().add(overlay);
+        
+        return base;
     }
 
     public static Dimension2D getTextureDimensions(String toFetch) {
