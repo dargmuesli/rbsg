@@ -495,7 +495,7 @@ public class MainController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/PrivateTab.fxml"));
+                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/privateTab.fxml"));
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
