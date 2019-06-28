@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
 import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
@@ -15,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 
 public class InGameController {
 
-    LoginController loginController = new LoginController();
     ArmyManagerController armyManagerController = new ArmyManagerController();
     @FXML
     private AnchorPane inGameScreen;
@@ -30,13 +30,8 @@ public class InGameController {
     @FXML
     private AnchorPane inGameScreen1;
 
-    // TODO: store those paths in a single location?!
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-
     private final GameSocket gameSocket = new GameSocket(
-        LoginController.getUserKey(), GameFieldController.joinedGame.getId(), ArmyManagerController.selectedArmyId);
+        LoginController.getUserKey(),
 
     public static InGameMetadata inGameMetadata;
     public static ArrayList<InGameTile> inGameTiles = new ArrayList<>();
@@ -48,12 +43,11 @@ public class InGameController {
         });
 
         gameSocket.connect();
-
-        loginController.changeTheme(inGameScreen, inGameScreen1, path, cssDark, cssWhite);
+        Theming.setTheme(inGameScreen, inGameScreen1);
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
-        armyManagerController.hamTran(ham, btnBack);
-        armyManagerController.hamTran(ham, btnLogout);
-        armyManagerController.hamTran(ham, btnFullscreen);
+        Theming.hamburgerMenuTransition(ham, btnBack);
+        Theming.hamburgerMenuTransition(ham, btnLogout);
+        Theming.hamburgerMenuTransition(ham, btnFullscreen);
 
     }
 

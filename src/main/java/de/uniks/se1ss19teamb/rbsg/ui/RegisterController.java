@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -27,7 +28,6 @@ public class RegisterController {
     private static final Logger logger = LogManager.getLogger();
     @FXML
     AnchorPane errorContainer;
-    LoginController loginController = new LoginController();
     @FXML
     private AnchorPane registerScreen;
     @FXML
@@ -53,7 +53,7 @@ public class RegisterController {
     public void initialize() {
         // load user data
         userData = UserData.loadUserData(notificationHandler);
-        loginController.changeTheme(registerScreen, registerScreen1, path, cssDark, cssWhite);
+        Theming.setTheme(registerScreen, registerScreen1);
 
         if (userData == null) {
             notificationHandler.sendWarning("User data couldn't be deserialized!", logger);

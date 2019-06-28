@@ -14,6 +14,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.File;
@@ -106,12 +107,6 @@ public class MainController {
     @FXML
     private JFXButton btnTicTacToe;
     private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    private LoginController loginController = new LoginController();
-    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
-        + "-fx-padding: 0px;";
-    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
-        + "-fx-padding: 0px;";
-    private String mode;
     private ArmyManagerController armyManagerController = new ArmyManagerController();
     private SingleSelectionModel<Tab> selectionModel;
     private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
@@ -122,30 +117,19 @@ public class MainController {
 
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    public static MainController instance;
+    static MainController instance;
 
     public void initialize() {
         instance = this;
 
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
-        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-        String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
-            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
-            mode = darkMode;
-        } else {
-            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
-            mode = whiteMode;
-        }
-
+        Theming.setTheme(mainScreen, mainScreen1);
 
         Platform.runLater(() -> {
-
-
-            armyManagerController.hamTran(ham, btnFullscreen);
-            armyManagerController.hamTran(ham, btnLogout);
-            armyManagerController.hamTran(ham, btnMode);
+            Theming.hamburgerMenuTransition(ham, btnFullscreen);
+            Theming.hamburgerMenuTransition(ham, btnLogout);
+            Theming.hamburgerMenuTransition(ham, btnMode);
             setGameListView();
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -236,7 +220,6 @@ public class MainController {
         gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         gameScrollPane.setStyle("-fx-background-color:transparent;");
-        gameListView.setStyle(mode);
         gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         updateGameView();
         updatePlayerView();
@@ -246,7 +229,6 @@ public class MainController {
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle(mode);
         playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ArrayList<String> existingPlayers = getExistingPlayers();
         for (String name : existingPlayers) {
@@ -303,17 +285,16 @@ public class MainController {
             updatePlayerView();
             updateGameView();
         } else if (event.getSource().equals(btnMode)) {
-            if (SerializeUtils.deserialize(new File(path), boolean.class)) {
-                playerListView.setStyle(whiteMode);
-                gameListView.setStyle(whiteMode);
-                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
-                SerializeUtils.serialize(path, false);
-            } else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
-                playerListView.setStyle(darkMode);
-                gameListView.setStyle(darkMode);
-                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
-                SerializeUtils.serialize(path, true);
-            }
+            // TODO: css file, not flags
+            String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
+                + "-fx-padding: 0px;";
+            String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
+                + "-fx-padding: 0px;";
+
+            playerListView.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
+            gameListView.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
+            Theming.setTheme(mainScreen, mainScreen1);
+            SerializeUtils.serialize(path, !Theming.darkModeActive());
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
@@ -377,7 +358,6 @@ public class MainController {
         playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle(mode);
         ObservableList playerList = playerListView.getItems();
         while (playerList.size() != 0) {
             playerList.remove(0);

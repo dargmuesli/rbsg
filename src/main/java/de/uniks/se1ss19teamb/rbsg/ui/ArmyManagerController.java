@@ -10,6 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.File;
@@ -33,7 +34,6 @@ import org.apache.logging.log4j.Logger;
 
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
-    LoginController loginController = new LoginController();
     String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
     String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
     String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
@@ -67,14 +67,7 @@ public class ArmyManagerController {
     private AnchorPane mainPane1;
     @FXML
     private Button btnJoinGame;
-    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
-        + "-fx-padding: 0px;";
-    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
-        + "-fx-padding: 0px;";
-    private String mode;
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
     private HeavyTank heavyTank = new HeavyTank();
@@ -111,26 +104,29 @@ public class ArmyManagerController {
     static String selectedArmyId;
 
     public void initialize() {
+        Theming.setTheme(mainPane, mainPane1);
 
-        loginController.changeTheme(mainPane, mainPane1, path, cssDark, cssWhite);
-        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
-            mode = darkMode;
-        } else {
-            mode = whiteMode;
-        }
+        hboxLowerButtons.getChildren().add(btnJoinGame);
 
-        hamTran(ham, btnBack);
-        hamTran(ham, btnLogout);
-        hamTran(ham, btnFullScreen);
+        Theming.hamburgerMenuTransition(ham, btnBack);
+        Theming.hamburgerMenuTransition(ham, btnLogout);
+        Theming.hamburgerMenuTransition(ham, btnFullScreen);
+
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
     }
 
     private void setUpUnitObjects() {
+        // TODO: Tipp für @Chris: CSS Properties setzt man über Dateien, nicht über einzelne flags :)
+        String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
+            + "-fx-padding: 0px;";
+        String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
+            + "-fx-padding: 0px;";
+
         unitList.setStyle("-fx-background-color:transparent;");
-        unitList.setStyle(mode);
-        ObservableList items = unitList.getItems();
+        unitList.setStyle(Theming.darkMode ? darkMode : whiteMode);
+
         for (Unit unit : units) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
@@ -168,24 +164,11 @@ public class ArmyManagerController {
         }
     }
 
-    public void hamTran(JFXHamburger ham, JFXButton button) {
-        HamburgerSlideCloseTransition transition = new HamburgerSlideCloseTransition(ham);
-        transition.setRate(-1);
-        ham.addEventHandler(MouseEvent.MOUSE_PRESSED, (event -> {
-            transition.setRate(transition.getRate() * -1);
-            if (transition.getRate() == -1) {
-                button.setVisible(false);
-            } else if (transition.getRate() == 1) {
-                button.setVisible(true);
-            }
-            transition.play();
-        }));
-    }
-
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
+
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
