@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import java.io.File;
+import java.util.List;
+
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,15 +17,13 @@ public class Theming {
 
     private static File cssModeFile = new File("./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json");
 
-    public static void setTheme(AnchorPane anchorPane1, AnchorPane anchorPane2) {
-        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
+    public static void setTheme(List<Pane> panes) {
+        String darkDesignCssPath = "/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css";
 
         if (darkModeActive()) {
-            anchorPane1.getStylesheets().remove(cssWhite);
-            anchorPane2.getStylesheets().remove(cssWhite);
+            panes.forEach(pane -> pane.getStylesheets().add(darkDesignCssPath));
         } else {
-            anchorPane1.getStylesheets().add(cssWhite);
-            anchorPane2.getStylesheets().add(cssWhite);
+            panes.forEach(pane -> pane.getStylesheets().remove(darkDesignCssPath));
         }
     }
 

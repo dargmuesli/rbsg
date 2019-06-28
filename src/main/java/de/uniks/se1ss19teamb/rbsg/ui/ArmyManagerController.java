@@ -29,6 +29,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -89,7 +90,7 @@ public class ArmyManagerController {
     private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
-        Theming.setTheme(mainPane, mainPane1);
+        Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
 
         btnJoinGame.setOnAction(this::setOnAction);
         hboxLowerButtons.getChildren().add(btnJoinGame);

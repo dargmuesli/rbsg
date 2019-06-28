@@ -8,12 +8,15 @@ import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
 
@@ -37,7 +40,7 @@ public class InGameController {
     public static boolean gameInitFinished = false;
 
     public void initialize() {
-        Theming.setTheme(inGameScreen, inGameScreen1);
+        Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
         Theming.hamburgerMenuTransition(ham, btnBack);
         Theming.hamburgerMenuTransition(ham, btnLogout);
         Theming.hamburgerMenuTransition(ham, btnFullscreen);

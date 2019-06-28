@@ -11,12 +11,6 @@
 
 ListView {
     -fx-control-inner-background: -fx-primary;
-    -fx-background-insets: 0;
-    -fx-padding: 0px;
-}
-
-ScrollPane {
-    -fx-padding: 0px;
 }
 
 .background-color_transparent {
@@ -27,9 +21,6 @@ ScrollPane {
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
-    -fx-font-size: 12px;
 }
 
 .button:hover, .button:focused {
@@ -81,7 +72,6 @@ ScrollPane {
 }
 
 .text-field {
-    -fx-font-size: 12pt;
     -jfx-focus-color: -fx-secondary;
     -fx-text-fill: derive(-fx-secondary, 20%);
 }

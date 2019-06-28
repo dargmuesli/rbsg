@@ -11,6 +11,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
+import java.util.Arrays;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,7 +70,7 @@ public class LoginController {
     }
 
     public void initialize() {
-        Theming.setTheme(loginScreen, loginScreen1);
+        Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
 
         // load user data
         userData = UserData.loadUserData(notificationHandler);

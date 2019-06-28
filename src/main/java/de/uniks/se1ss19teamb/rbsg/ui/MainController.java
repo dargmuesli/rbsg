@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.application.Platform;
@@ -36,6 +37,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
@@ -106,7 +108,7 @@ public class MainController {
     public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
-        Theming.setTheme(mainScreen, mainScreen1);
+        Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
 
         // TODO - after some time it automaticly disconnects system and chatSocket
         SystemSocket.instance = new SystemSocket(userKey);
@@ -268,7 +270,7 @@ public class MainController {
             }
         } else if (event.getSource().equals(btnMode)) {
             SerializeUtils.serialize(path, !Theming.darkModeActive());
-            Theming.setTheme(mainScreen, mainScreen1);
+            Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);

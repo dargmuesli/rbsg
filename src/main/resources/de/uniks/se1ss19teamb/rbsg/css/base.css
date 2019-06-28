@@ -1,0 +1,18 @@
+ListView {
+    -fx-background-insets: 0px;
+    -fx-padding: 0px;
+}
+
+ScrollPane {
+    -fx-padding: 0px;
+}
+
+.button {
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 12px;
+}
+
+.text-field {
+    -fx-font-size: 12pt;
+}
