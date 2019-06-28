@@ -36,9 +36,9 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
-                                minHeight="200.0" minWidth="150.0" prefHeight="250.0" prefWidth="150.0"
-                                vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" vbarPolicy="NEVER"
+                                VBox.vgrow="ALWAYS">
                         <ListView fx:id="playerListView" styleClass="background-color_transparent"/>
                     </ScrollPane>
                 </VBox>
@@ -56,9 +56,9 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
-                                minHeight="200.0" minWidth="150.0" prefHeight="250.0" prefWidth="150.0"
-                                vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" vbarPolicy="NEVER"
+                                VBox.vgrow="ALWAYS">
 
                         <ListView fx:id="gameListView" styleClass="background-color_transparent"/>
                     </ScrollPane>
@@ -171,11 +171,6 @@
                                 <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnTicTacToe" mnemonicParsing="false" onAction="#setOnAction">
-                            <graphic>
-                                <FontAwesomeIconView glyphName="PLUS"/>
-                            </graphic>
-                        </JFXButton>
                         <VBox.margin>
                             <Insets bottom="10.0"/>
                         </VBox.margin>
@@ -183,12 +178,6 @@
                 </VBox>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnPlayerRefresh" contentDisplay="GRAPHIC_ONLY"
-                   onAction="#setOnAction" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-            <graphic>
-                <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
-            </graphic>
-        </JFXButton>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
             <JFXButton fx:id="btnMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
                        visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">

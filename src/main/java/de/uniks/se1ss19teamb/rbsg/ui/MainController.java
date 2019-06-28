@@ -50,8 +50,6 @@ public class MainController {
     private static final Logger logger = LogManager.getLogger();
     private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
-    static MainController instance;
-
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static Chat chat;
     private static SingleSelectionModel<Tab> selectionModel;
@@ -102,19 +100,13 @@ public class MainController {
     @FXML
     private ScrollPane allPane;
     @FXML
-    private JFXButton btnPlayerRefresh;
-    @FXML
     private JFXHamburger ham;
     @FXML
     private AnchorPane mainScreen1;
     @FXML
     private JFXButton btnMode;
-    @FXML
-    private JFXButton btnTicTacToe;
 
     public void initialize() {
-        instance = this;
-
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         Theming.setTheme(mainScreen, mainScreen1);
@@ -277,9 +269,6 @@ public class MainController {
                 }
                 message.setText("");
             }
-        } else if (event.getSource().equals(btnPlayerRefresh)) {
-            updatePlayerView();
-            updateGameView();
         } else if (event.getSource().equals(btnMode)) {
             // TODO: css file, not flags
             String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
@@ -307,17 +296,18 @@ public class MainController {
                 chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
-        } else if (event.getSource().equals(btnTicTacToe)) {
-            try {
-                Parent root = FXMLLoader
-                    .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root, 800, 600));
-                stage.show();
-                stage.setResizable(false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // TODO: find a better place for tictactoe, or add hotkeys like for easter eggs
+            /*} else if (event.getSource().equals(btnTicTacToe)) {
+                try {
+                    Parent root = FXMLLoader
+                        .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root, 800, 600));
+                    stage.show();
+                    stage.setResizable(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
         }
         ham.requestFocus();
     }
