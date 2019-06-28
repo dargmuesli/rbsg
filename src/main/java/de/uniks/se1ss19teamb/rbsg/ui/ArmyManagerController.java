@@ -28,15 +28,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+/*
+    0 -> Bazooka Trooper
+    1 -> Chopper
+    2 -> Heavy Tank
+    3 -> Infantry
+    4 -> Jeep
+    5 -> Light Tank
+ */
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
-    String armysavePath1 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave1.json";
-    String armysavePath2 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave2.json";
-    String armysavePath3 = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave3.json";
     @FXML
     private AnchorPane mainPane;
     @FXML
@@ -52,8 +57,6 @@ public class ArmyManagerController {
     @FXML
     private ListView<Parent> unitList;
     @FXML
-    private Button btnChg;
-    @FXML
     private Button btnSave1;
     @FXML
     private Button btnSave2;
@@ -66,7 +69,7 @@ public class ArmyManagerController {
     @FXML
     private AnchorPane mainPane1;
     @FXML
-    private Button btnJoinGame;
+    private HBox hboxLowerButtons;
 
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
@@ -74,34 +77,16 @@ public class ArmyManagerController {
     private Infantry infantry = new Infantry();
     private Jeep jeep = new Jeep();
     private LightTank lightTank = new LightTank();
-    ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
+    private ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
         heavyTank, infantry, jeep, lightTank));
-    private int bazookaTrooperCount = 0;
-    private int chopperCounter = 0;
-    private int heavyTankCounter = 0;
-    private int infantryCounter = 0;
-    private int jeepCounter = 0;
-    private int lightTankCounter = 0;
     private int leftUnits = 10;
-    // saveMode = true -> Buttons save configuration.
-    // saveMode = false -> Buttons laod configuration
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
-    /*
-        0 -> Bazooka Trooper
-        1 -> Chopper
-        2 -> Heavy Tank
-        3 -> Infantry
-        4 -> Jeep
-        5 -> Light Tank
-     */
-
-    private ArrayList<Army> savedArmies = new ArrayList<>();
-    private Army currentArmy = new Army();
-    private Army armySave1 = null;
-    private Army armySave2 = null;
-    private Army armySave3 = null;
-    static String selectedArmyId;
+    public static Army currentArmy = new Army();
+    private Army[] armySaves = new Army[3];
+    static boolean joiningGame;
+    private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
+    private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
         Theming.setTheme(mainPane, mainPane1);
@@ -136,11 +121,9 @@ public class ArmyManagerController {
                 controller.setUpUnitObject(unit, this);
                 unitObjectControllers.add(controller);
                 unitList.getItems().add(parent);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -180,6 +163,7 @@ public class ArmyManagerController {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
+
             if (serverArmies.size() == 0) {
                 loadFromServer();
             } else {
@@ -195,6 +179,7 @@ public class ArmyManagerController {
 
     public void changeSaveMode() {
         saveMode = !saveMode;
+
         if (saveMode) {
             btnSave1.setText("Save 1");
             btnSave2.setText("Save 2");
@@ -210,13 +195,13 @@ public class ArmyManagerController {
         QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
         req.sendRequest();
         ArrayList<Army> serverArmies = req.getArmies();
+
         if (serverArmies.size() == 0) {
             NotificationHandler.getNotificationHandler()
                 .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
         } else {
             Army firstArmy = serverArmies.get(0);
             currentArmy = firstArmy;
-            selectedArmyId = firstArmy.getId();
             labelArmyName.setText(currentArmy.getName());
             updateConfigurationView(firstArmy);
         }
@@ -229,22 +214,31 @@ public class ArmyManagerController {
         }
 
         for (String unitId : army.getUnits()) {
-            if (unitId.equals("5cc051bd62083600017db3b7")) {
-                unitObjectControllers.get(0).increaseCount();
-            } else if (unitId.equals("5cc051bd62083600017db3bb")) {
-                unitObjectControllers.get(1).increaseCount();
-            } else if (unitId.equals("5cc051bd62083600017db3ba")) {
-                unitObjectControllers.get(2).increaseCount();
-            } else if (unitId.equals("5cc051bd62083600017db3b6")) {
-                unitObjectControllers.get(3).increaseCount();
-            } else if (unitId.equals("5cc051bd62083600017db3b8")) {
-                unitObjectControllers.get(4).increaseCount();
-            } else if (unitId.equals("5cc051bd62083600017db3b9")) {
-                unitObjectControllers.get(5).increaseCount();
+            switch (unitId) {
+                case "5cc051bd62083600017db3b7":
+                    unitObjectControllers.get(0).increaseCount();
+                    break;
+                case "5cc051bd62083600017db3bb":
+                    unitObjectControllers.get(1).increaseCount();
+                    break;
+                case "5cc051bd62083600017db3ba":
+                    unitObjectControllers.get(2).increaseCount();
+                    break;
+                case "5cc051bd62083600017db3b6":
+                    unitObjectControllers.get(3).increaseCount();
+                    break;
+                case "5cc051bd62083600017db3b8":
+                    unitObjectControllers.get(4).increaseCount();
+                    break;
+                case "5cc051bd62083600017db3b9":
+                    unitObjectControllers.get(5).increaseCount();
+                    break;
+                default:
+                    NotificationHandler.getNotificationHandler().sendWarning("Unknown unit id!", logger);
             }
         }
-        labelArmyName.setText(army.getName());
 
+        labelArmyName.setText(army.getName());
     }
 
     public void saveToServer() {
@@ -269,7 +263,6 @@ public class ArmyManagerController {
                 LoginController.getUserKey());
             req.sendRequest();
             currentArmy.setId(req.getArmyID());
-
         } else {
             UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
                 LoginController.getUserKey());
@@ -284,38 +277,34 @@ public class ArmyManagerController {
     }
 
     private Army getCurrentConfiguration() {
-        int bazTroopCount = unitObjectControllers.get(0).getCount();
         ArrayList<String> allIds = new ArrayList<>();
-        for (int i = 0; i < bazTroopCount; i++) {
+
+        for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
             allIds.add("5cc051bd62083600017db3b7");
         }
 
-        int chopperCount = unitObjectControllers.get(1).getCount();
-        for (int i = 0; i < chopperCount; i++) {
+        for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
             allIds.add("5cc051bd62083600017db3bb");
         }
 
-        int heavyTankCount = unitObjectControllers.get(2).getCount();
-        for (int i = 0; i < heavyTankCount; i++) {
+        for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
             allIds.add("5cc051bd62083600017db3ba");
         }
 
-        int infantryCount = unitObjectControllers.get(3).getCount();
-        for (int i = 0; i < infantryCount; i++) {
+        for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
             allIds.add("5cc051bd62083600017db3b6");
         }
 
-        int jeepCount = unitObjectControllers.get(4).getCount();
-        for (int i = 0; i < jeepCount; i++) {
+        for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
             allIds.add("5cc051bd62083600017db3b8");
         }
 
-        int lightTankCount = unitObjectControllers.get(5).getCount();
-        for (int i = 0; i < lightTankCount; i++) {
+        for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
             allIds.add("5cc051bd62083600017db3b9");
         }
 
         currentArmy.setUnits(allIds);
+
         return currentArmy;
     }
 
@@ -324,6 +313,7 @@ public class ArmyManagerController {
             NotificationHandler.getNotificationHandler().sendError("You have to type in a name!", logger);
             return;
         }
+
         currentArmy.setName(txtfldArmyName.getText());
         labelArmyName.setText(txtfldArmyName.getText());
         txtfldArmyName.setText("");
@@ -334,9 +324,11 @@ public class ArmyManagerController {
             saveCurrentConfig(1);
         } else {
             currentArmy = loadConfig(1);
+
             if (currentArmy == null) {
                 NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
             }
+
             updateConfigurationView(currentArmy);
         }
     }
@@ -346,9 +338,11 @@ public class ArmyManagerController {
             saveCurrentConfig(2);
         } else {
             currentArmy = loadConfig(2);
+
             if (currentArmy == null) {
                 NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
             }
+
             updateConfigurationView(currentArmy);
         }
     }
@@ -358,56 +352,24 @@ public class ArmyManagerController {
             saveCurrentConfig(3);
         } else {
             currentArmy = loadConfig(3);
+
             if (currentArmy == null) {
                 NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
             }
+
             updateConfigurationView(currentArmy);
         }
     }
 
     private Army loadConfig(int number) {
-        switch (number) {
-            case 1:
-                return SerializeUtils.deserialize(new File(armysavePath1), Army.class);
-            case 2:
-                return SerializeUtils.deserialize(new File(armysavePath2), Army.class);
-            case 3:
-                return SerializeUtils.deserialize(new File(armysavePath3), Army.class);
-            default:
-                return null;
-        }
+        return SerializeUtils.deserialize(new File(String.format(armysavePath, number)), Army.class);
     }
 
     private void saveCurrentConfig(int configNum) {
-
-        currentArmy = getCurrentConfiguration();
-        switch (configNum) {
-            case 1:
-                armySave1 = currentArmy;
-                SerializeUtils.serialize(armysavePath1, armySave1);
-                NotificationHandler.getNotificationHandler()
-                    .sendSuccess("Configuration saved to Save 1.", logger);
-                break;
-
-            case 2:
-                armySave2 = currentArmy;
-                SerializeUtils.serialize(armysavePath2, armySave2);
-                NotificationHandler.getNotificationHandler()
-                    .sendSuccess("Configuration saved to Save 2.", logger);
-                break;
-
-            case 3:
-                armySave3 = currentArmy;
-                SerializeUtils.serialize(armysavePath3, armySave3);
-                NotificationHandler.getNotificationHandler()
-                    .sendSuccess("Configuration saved to Save 3.", logger);
-                break;
-
-            default:
-                NotificationHandler.getNotificationHandler()
-                    .sendError("Wrong configNumber", logger);
-
-        }
+        armySaves[configNum] = getCurrentConfiguration();
+        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum]);
+        NotificationHandler.getNotificationHandler()
+            .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
 }
 

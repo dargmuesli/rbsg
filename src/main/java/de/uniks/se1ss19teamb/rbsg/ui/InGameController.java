@@ -16,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 
 public class InGameController {
 
-    ArmyManagerController armyManagerController = new ArmyManagerController();
     @FXML
     private AnchorPane inGameScreen;
     @FXML
@@ -32,6 +31,8 @@ public class InGameController {
 
     private final GameSocket gameSocket = new GameSocket(
         LoginController.getUserKey(),
+        GameFieldController.joinedGame.getId(),
+        ArmyManagerController.currentArmy.getId());
 
     public static InGameMetadata inGameMetadata;
     public static ArrayList<InGameTile> inGameTiles = new ArrayList<>();

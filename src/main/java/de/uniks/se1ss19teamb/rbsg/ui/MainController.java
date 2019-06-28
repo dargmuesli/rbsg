@@ -261,6 +261,7 @@ public class MainController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
         } else if (event.getSource().equals(btnArmyManager)) {
+            ArmyManagerController.joiningGame = false;
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
         } else if (event.getSource().equals(btnSend)) {
