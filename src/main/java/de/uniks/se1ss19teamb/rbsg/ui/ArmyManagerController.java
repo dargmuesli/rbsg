@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
+import de.uniks.se1ss19teamb.rbsg.model.Troops;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
@@ -211,23 +212,23 @@ public class ArmyManagerController {
         }
 
         for (String unitId : army.getUnits()) {
-            switch (unitId) {
-                case "5cc051bd62083600017db3b7":
+            switch (Troops.valueOf(unitId)) {
+                case BAZOOKA_TROOPER:
                     unitObjectControllers.get(0).increaseCount();
                     break;
-                case "5cc051bd62083600017db3bb":
+                case CHOPPER:
                     unitObjectControllers.get(1).increaseCount();
                     break;
-                case "5cc051bd62083600017db3ba":
+                case HEAVY_TANK:
                     unitObjectControllers.get(2).increaseCount();
                     break;
-                case "5cc051bd62083600017db3b6":
+                case INFANTRY:
                     unitObjectControllers.get(3).increaseCount();
                     break;
-                case "5cc051bd62083600017db3b8":
+                case JEEP:
                     unitObjectControllers.get(4).increaseCount();
                     break;
-                case "5cc051bd62083600017db3b9":
+                case LIGHT_TANK:
                     unitObjectControllers.get(5).increaseCount();
                     break;
                 default:
@@ -277,27 +278,27 @@ public class ArmyManagerController {
         ArrayList<String> allIds = new ArrayList<>();
 
         for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
-            allIds.add("5cc051bd62083600017db3b7");
+            allIds.add(Troops.BAZOOKA_TROOPER.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
-            allIds.add("5cc051bd62083600017db3bb");
+            allIds.add(Troops.CHOPPER.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
-            allIds.add("5cc051bd62083600017db3ba");
+            allIds.add(Troops.HEAVY_TANK.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
-            allIds.add("5cc051bd62083600017db3b6");
+            allIds.add(Troops.INFANTRY.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
-            allIds.add("5cc051bd62083600017db3b8");
+            allIds.add(Troops.JEEP.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
-            allIds.add("5cc051bd62083600017db3b9");
+            allIds.add(Troops.LIGHT_TANK.toString());
         }
 
         currentArmy.setUnits(allIds);
