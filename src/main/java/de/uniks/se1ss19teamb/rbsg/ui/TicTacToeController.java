@@ -2,11 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
-
-import java.io.File;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,10 +11,8 @@ import javafx.scene.layout.AnchorPane;
 
 
 public class TicTacToeController {
-    private static boolean turn = true;
     private static boolean playable = true;
-    public int number;
-    ArrayList<JFXButton> buttons = new ArrayList<>();
+
     @FXML
     private AnchorPane tictactoeScreen;
     @FXML
@@ -40,11 +35,10 @@ public class TicTacToeController {
     private JFXButton nine;
     @FXML
     private JFXButton btnReplay;
-    private String signX = "X";
-    private String signO = "O";
     @FXML
     private Label label;
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json";
+
+    private ArrayList<JFXButton> buttons = new ArrayList<>();
 
     public void initialize() {
         buttons.add(0, one);
@@ -57,13 +51,14 @@ public class TicTacToeController {
         buttons.add(7, eight);
         buttons.add(8, nine);
 
-        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
+        if (Theming.darkModeActive()) {
             tictactoeScreen.getStylesheets().clear();
             tictactoeScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/tictactoedark.css");
         } else {
             tictactoeScreen.getStylesheets().clear();
             tictactoeScreen.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/tictactoewhite.css");
         }
+
         one.setStyle("-fx-font-size: 72.0");
         two.setStyle("-fx-font-size: 72.0");
         three.setStyle("-fx-font-size: 72.0");
@@ -78,7 +73,7 @@ public class TicTacToeController {
 
     }
 
-    public void getTurn() {
+    private void getTurn() {
         if (playable) {
             one.setDisable(false);
             two.setDisable(false);
@@ -103,6 +98,8 @@ public class TicTacToeController {
     }
 
     public void setOnAction(ActionEvent event) {
+        String signX = "X";
+
         if (event.getSource().equals(one)) {
             one.setText(signX);
             setNextTurn();
@@ -149,7 +146,6 @@ public class TicTacToeController {
             nine.setDisable(true);
         } else if (event.getSource().equals(btnReplay)) {
             playable = true;
-            turn = true;
             getTurn();
             one.setText("");
             two.setText("");
@@ -164,7 +160,7 @@ public class TicTacToeController {
         }
     }
 
-    public void calculateWinner(String x, String winner) {
+    private void calculateWinner(String x, String winner) {
         if ((one.getText().equals(x) && two.getText().equals(x)) && (two.getText().equals(x)
             && three.getText().equals(x))) {
             label.setText(winner);
@@ -208,21 +204,25 @@ public class TicTacToeController {
         }
     }
 
-    public void setNextTurn() {
-        turn = false;
-        number = (int) (Math.random() * 8) + 0;
+    private void setNextTurn() {
+        int number = (int) (Math.random() * 8);
+
         if (one.getText().equals("") || two.getText().equals("") || three.getText().equals("")
             || four.getText().equals("") || five.getText().equals("") || six.getText().equals("")
             || seven.getText().equals("") || eight.getText().equals("") || nine.getText().equals("")) {
+
             while (!buttons.get(number).getText().equals("")) {
-                number = (int) (Math.random() * 8) + 0;
+                number = (int) (Math.random() * 8);
             }
+
+            String signO = "O";
+
             if (label.getText().equals("")) {
                 buttons.get(number).setText(signO);
                 buttons.get(number).setDisable(true);
             }
+
             calculateWinner(signO, "Computer Wins!");
-            turn = true;
         }
     }
 }
