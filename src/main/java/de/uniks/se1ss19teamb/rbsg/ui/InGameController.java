@@ -104,7 +104,15 @@ public class InGameController {
         }
 
         for (int i = 0; i < maxY; i++) {
-            for (int j = 0; i < maxX; j++) {
+            for (int j = 0; j < maxX; j++) {
+                InGameTile tile = inGameTiles.get(new Pair<>(j, i));
+                if (tile != null) {
+                    System.out.println(tile.getName());
+                    if (tile.getName().equals("Unit")) {
+                        continue;
+                    }
+                }
+
                 gameGrid.add(TextureManager.computeTerrainTextureInstance(inGameTiles, j, i), j, i);
             }
         }
