@@ -26,10 +26,12 @@ import org.apache.logging.log4j.Logger;
 public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
-    private static String userKey;
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+
     private static String user;
-    private static ChatSocket chatSocket;
-    UserData userData;
+    private static String userKey;
+    private static UserData userData;
+
     @FXML
     private AnchorPane loginScreen;
     @FXML
@@ -48,15 +50,6 @@ public class LoginController {
     private JFXCheckBox rememberLogin;
     @FXML
     private AnchorPane loginScreen1;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
-
-    public static String getUserKey() {
-        return userKey;
-    }
-
-    public static void setUserKey(String key) {
-        userKey = key;
-    }
 
     static String getUser() {
         return user;
@@ -66,19 +59,19 @@ public class LoginController {
         user = name;
     }
 
-    static ChatSocket getChatSocket() {
-        return chatSocket;
+    public static String getUserKey() {
+        return userKey;
     }
 
-    static void setChatSocket(ChatSocket chatSocket) {
-        LoginController.chatSocket = chatSocket;
+    public static void setUserKey(String key) {
+        userKey = key;
     }
 
     public void initialize() {
+        Theming.setTheme(loginScreen, loginScreen1);
+
         // load user data
         userData = UserData.loadUserData(notificationHandler);
-
-        Theming.setTheme(loginScreen, loginScreen1);
 
         if (userData == null) {
             userData = new UserData();

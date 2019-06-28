@@ -47,6 +47,18 @@ import org.apache.logging.log4j.Logger;
 public class MainController {
 
     private static final Logger logger = LogManager.getLogger();
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+
+    static MainController instance;
+
+    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+    private static Chat chat = new Chat(ChatSocket.instance, chatLogPath);
+    private static SingleSelectionModel<Tab> selectionModel;
+    private static String userKey = LoginController.getUserKey();
+    private static String userName = LoginController.getUser();
+    private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
+    private static String sendTo = null;
+
     @FXML
     private AnchorPane mainScreen;
     @FXML
@@ -75,11 +87,6 @@ public class MainController {
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnArmyManager;
-    private String userKey = LoginController.getUserKey();
-    private final SystemSocket system = new SystemSocket(userKey);
-    private String userName = LoginController.getUser();
-    private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
-    // TODO - after some time it automaticly disconnects system and chatSocket
     @FXML
     private VBox chatWindow;
     @FXML
@@ -106,18 +113,6 @@ public class MainController {
     private JFXButton btnMode;
     @FXML
     private JFXButton btnTicTacToe;
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    private ArmyManagerController armyManagerController = new ArmyManagerController();
-    private SingleSelectionModel<Tab> selectionModel;
-    private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
-
-    private Chat chat = new Chat(this.chatSocket, chatLogPath);
-
-    private String sendTo = null;
-
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
-
-    static MainController instance;
 
     public void initialize() {
         instance = this;
@@ -125,6 +120,10 @@ public class MainController {
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
         Theming.setTheme(mainScreen, mainScreen1);
+
+        // TODO - after some time it automaticly disconnects system and chatSocket
+        SystemSocket.instance = new SystemSocket(userKey);
+        ChatSocket.instance = new ChatSocket(userName, userKey);
 
         Platform.runLater(() -> {
             Theming.hamburgerMenuTransition(ham, btnFullscreen);
@@ -181,7 +180,7 @@ public class MainController {
             selectionModel = chatPane.getSelectionModel();
         });
 
-        chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
+        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {
@@ -189,22 +188,24 @@ public class MainController {
             }
         });
 
-        system.registerUserJoinHandler((name) -> addElement(name, " has joined the Chat!", textArea, false));
+        SystemSocket.instance.registerUserJoinHandler(
+            (name) -> addElement(name, " has joined the Chat!", textArea, false));
 
-        system.registerUserLeftHandler((name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
+        SystemSocket.instance.registerUserLeftHandler(
+            (name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
 
-        system.registerGameCreateHandler((gameName, id, neededPlayers)
+        SystemSocket.instance.registerGameCreateHandler((gameName, id, neededPlayers)
             -> addElement(null, gameName + " game was created with " + id + " id and needs " + neededPlayers
             + " players.", textArea, false));
 
-        system.registerGameDeleteHandler((id) -> addElement(null, "Game with id: " + id + " was deleted!",
+        SystemSocket.instance.registerGameDeleteHandler(
+            (id) -> addElement(null, "Game with id: " + id + " was deleted!",
             textArea, false));
 
-        system.connect();
+        SystemSocket.instance.connect();
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
-        LoginController.setChatSocket(chatSocket);
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
     }

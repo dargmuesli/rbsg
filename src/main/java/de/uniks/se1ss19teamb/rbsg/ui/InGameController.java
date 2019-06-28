@@ -32,27 +32,28 @@ public class InGameController {
     @FXML
     private AnchorPane inGameScreen1;
 
-    private final GameSocket gameSocket = new GameSocket(
-        LoginController.getUserKey(),
-        GameFieldController.joinedGame.getId(),
-        ArmyManagerController.currentArmy.getId());
-
     public static InGameMetadata inGameMetadata;
     public static Map<Pair<Integer, Integer>, InGameTile> inGameTiles = new HashMap<>();
     public static boolean gameInitFinished = false;
 
     public void initialize() {
-        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> {
-            // TODO route incoming messages to ingame chat
-        });
-
-        gameSocket.connect();
         Theming.setTheme(inGameScreen, inGameScreen1);
-        UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         Theming.hamburgerMenuTransition(ham, btnBack);
         Theming.hamburgerMenuTransition(ham, btnLogout);
         Theming.hamburgerMenuTransition(ham, btnFullscreen);
 
+        GameSocket.instance = new GameSocket(
+            LoginController.getUserKey(),
+            GameFieldController.joinedGame.getId(),
+            ArmyManagerController.currentArmy.getId());
+
+        GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
+            // TODO route incoming messages to ingame chat
+        });
+
+        GameSocket.instance.connect();
+
+        UserInterfaceUtils.makeFadeInTransition(inGameScreen);
     }
 
     public void setOnAction(ActionEvent event) {
