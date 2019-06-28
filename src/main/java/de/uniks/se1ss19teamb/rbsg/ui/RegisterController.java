@@ -44,11 +44,8 @@ public class RegisterController {
     private JFXPasswordField passwordRepeat;
     @FXML
     private AnchorPane registerScreen1;
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private UserData userData;
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
 
     public void initialize() {
         // load user data
