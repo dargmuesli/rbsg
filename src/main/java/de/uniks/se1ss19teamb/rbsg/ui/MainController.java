@@ -57,51 +57,51 @@ public class MainController {
     private static HashMap<String, GameMeta> existingGames;
 
     @FXML
-    private AnchorPane mainScreen;
-    @FXML
     private AnchorPane errorContainer;
-    @FXML
-    private ListView<Label> playerListView;
-    @FXML
-    private JFXButton btnFullscreen;
-    @FXML
-    private ListView<Parent> gameListView;
-    @FXML
-    private JFXButton btnCreate;
-    @FXML
-    private ToggleGroup playerNumberToggleGroup;
-    @FXML
-    private JFXTextField gameName;
-    @FXML
-    private Toggle twoPlayers;
-    @FXML
-    private Toggle fourPlayers;
-    @FXML
-    private JFXButton btnLogout;
-    @FXML
-    private JFXButton btnArmyManager;
-    @FXML
-    private VBox chatWindow;
-    @FXML
-    private VBox chatBox;
-    @FXML
-    private JFXButton btnSend;
-    @FXML
-    private JFXButton btnMinimize;
-    @FXML
-    private TextField message;
-    @FXML
-    private VBox textArea;
-    @FXML
-    private JFXTabPane chatPane;
-    @FXML
-    private ScrollPane allPane;
-    @FXML
-    private JFXHamburger hamburgerMenu;
     @FXML
     private AnchorPane mainScreen1;
     @FXML
+    private AnchorPane mainScreen;
+    @FXML
+    private JFXButton btnArmyManager;
+    @FXML
+    private JFXButton btnCreate;
+    @FXML
+    private JFXButton btnFullscreen;
+    @FXML
+    private JFXButton btnLogout;
+    @FXML
+    private JFXButton btnMinimize;
+    @FXML
     private JFXButton btnMode;
+    @FXML
+    private JFXButton btnSend;
+    @FXML
+    private JFXHamburger hamburgerMenu;
+    @FXML
+    private JFXTabPane chatPane;
+    @FXML
+    private JFXTextField gameName;
+    @FXML
+    private ListView<Label> playerListView;
+    @FXML
+    private ListView<Parent> gameListView;
+    @FXML
+    private ScrollPane allPane;
+    @FXML
+    private TextField message;
+    @FXML
+    private Toggle fourPlayers;
+    @FXML
+    private Toggle twoPlayers;
+    @FXML
+    private ToggleGroup playerNumberToggleGroup;
+    @FXML
+    private VBox chatBox;
+    @FXML
+    private VBox chatWindow;
+    @FXML
+    private VBox textArea;
 
     public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
