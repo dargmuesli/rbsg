@@ -7,10 +7,13 @@ import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Pair;
 
 
 public class InGameController {
@@ -39,7 +42,7 @@ public class InGameController {
         LoginController.getUserKey(), GameFieldController.joinedGame.getId(), ArmyManagerController.selectedArmyId);
 
     public static InGameMetadata inGameMetadata;
-    public static ArrayList<InGameTile> inGameTiles = new ArrayList<>();
+    public static Map<Pair<Integer, Integer>, InGameTile> inGameTiles = new HashMap<>();
     public static boolean gameInitFinished = false;
 
     public void initialize() {
