@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
 import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
 
@@ -32,6 +34,8 @@ public class InGameController {
     private JFXButton btnFullscreen;
     @FXML
     private AnchorPane inGameScreen1;
+    @FXML
+    private GridPane gameGrid;
 
     // TODO: store those paths in a single location?!
     private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
@@ -57,6 +61,7 @@ public class InGameController {
         armyManagerController.hamTran(ham, btnBack);
         armyManagerController.hamTran(ham, btnLogout);
         armyManagerController.hamTran(ham, btnFullscreen);
+        fillGameGrid();
 
     }
 
@@ -78,6 +83,29 @@ public class InGameController {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
+            }
+        }
+    }
+
+    private void fillGameGrid() {
+        int maxX = 0;
+        int maxY = 0;
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while(inGameTiles.get(new Pair<>(0,maxX)) != null) {
+            maxX++;
+        }
+        while(inGameTiles.get(new Pair<>(maxY, 0)) != null) {
+            maxY++;
+        }
+
+        for (int i = 0; i < maxY; i++) {
+            for (int j = 0; i < maxX; j++) {
+                gameGrid.add(TextureManager.computeTerrainTextureInstance(inGameTiles, j, i), j, i);
             }
         }
     }
