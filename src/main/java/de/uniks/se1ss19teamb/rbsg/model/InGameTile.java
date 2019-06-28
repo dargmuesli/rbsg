@@ -11,6 +11,10 @@ public class InGameTile {
     private String bottom;
     private String top;
     
+    public String getName() {
+        return id.split("@")[0];
+    }
+    
     public String getId() {
         return id;
     }

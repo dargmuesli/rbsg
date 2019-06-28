@@ -54,16 +54,16 @@ public class TextureManager {
         
         
         TextureFancy water = new TextureFancy("water.png", "water.png", 0);
-        instance.texturesTerrain.put("water", water);
+        instance.texturesTerrain.put("Water", water);
         
-        TextureFancy sand = new TextureFancy("sand.png", "sandOverlay.png", 1);
-        instance.texturesTerrain.put("sand", sand);
+        TextureFancy sand = new TextureFancy("grass.png", "grassOverlay.png", 1);
+        instance.texturesTerrain.put("Grass", sand);
         
-        TextureFancy grass = new TextureFancy("grass.png", "grassOverlay.png", 2);
-        instance.texturesTerrain.put("grass", grass);
+        TextureFancy grass = new TextureFancy("forest.png", "grassOverlay.png", 2);
+        instance.texturesTerrain.put("Forest", grass);
         
         TextureFancy mountain = new TextureFancy("mountain.png", "mountainOverlay.png", 3);
-        instance.texturesTerrain.put("mountain", mountain);
+        instance.texturesTerrain.put("Mountain", mountain);
     }
 
     public static Pane getTextureInstance(String toFetch) {
@@ -71,7 +71,7 @@ public class TextureManager {
     }
     
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
-        TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getId());
+        TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getName());
         
         GridPane overlay = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints(32);
@@ -96,13 +96,13 @@ public class TextureManager {
                 InGameTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
                 
                 if (horizontal != null && vertical != null 
-                    && horizontal.getId().equals(texture.getKey()) && vertical.getId().equals(texture.getKey())) {
+                    && horizontal.getName().equals(texture.getKey()) && vertical.getName().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.BOTH;
-                } else if (horizontal != null && horizontal.getId().equals(texture.getKey())) {
+                } else if (horizontal != null && horizontal.getName().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.HORIZONTAL;
-                } else if (vertical != null && vertical.getId().equals(texture.getKey())) {
+                } else if (vertical != null && vertical.getName().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.VERTICAL;
-                } else if (diagonal != null && diagonal.getId().equals(texture.getKey())) {
+                } else if (diagonal != null && diagonal.getName().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.DIAGONAL;
                 }
                 

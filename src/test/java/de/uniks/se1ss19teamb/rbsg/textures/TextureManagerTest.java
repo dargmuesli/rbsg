@@ -46,13 +46,13 @@ public class TextureManagerTest {
         Assert.assertTrue(animPane instanceof AnimatedPane);
         
         InGameTile sand = new InGameTile();
-        sand.setId("sand");
+        sand.setId("Forest@23467");
         InGameTile water = new InGameTile();
-        water.setId("water");
+        water.setId("Water@345678");
         InGameTile mountain = new InGameTile();
-        mountain.setId("mountain");
+        mountain.setId("Mountain@456789");
         InGameTile grass = new InGameTile();
-        grass.setId("grass");
+        grass.setId("Grass@12345");
         
         Map<Pair<Integer, Integer>, InGameTile> map = new HashMap<>();
         map.put(new Pair<>(0,0), mountain);
