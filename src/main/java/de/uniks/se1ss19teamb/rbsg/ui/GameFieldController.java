@@ -38,7 +38,6 @@ public class GameFieldController {
     public void deleteGame() {
         DeleteGameRequest deleteGameRequest = new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey());
         deleteGameRequest.sendRequest();
-        MainController.instance.updateGameView();
     }
 
 }

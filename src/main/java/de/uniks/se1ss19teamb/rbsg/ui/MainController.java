@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import generated.fulib.testmodel.Game;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,12 +55,13 @@ public class MainController {
     static MainController instance;
 
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
-    private static Chat chat = new Chat(ChatSocket.instance, chatLogPath);
+    private static Chat chat;
     private static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
     private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
     private static String sendTo = null;
+    private static HashMap<String, GameMeta> existingGames;
 
     @FXML
     private AnchorPane mainScreen;
@@ -66,11 +70,7 @@ public class MainController {
     @FXML
     private ListView<Label> playerListView;
     @FXML
-    private ScrollPane playerScrollPane;
-    @FXML
     private JFXButton btnFullscreen;
-    @FXML
-    private ScrollPane gameScrollPane;
     @FXML
     private ListView<Parent> gameListView;
     @FXML
@@ -125,11 +125,15 @@ public class MainController {
         SystemSocket.instance = new SystemSocket(userKey);
         ChatSocket.instance = new ChatSocket(userName, userKey);
 
+        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+
+        updateGameView();
+        updatePlayerView();
+
         Platform.runLater(() -> {
             Theming.hamburgerMenuTransition(ham, btnFullscreen);
             Theming.hamburgerMenuTransition(ham, btnLogout);
             Theming.hamburgerMenuTransition(ham, btnMode);
-            setGameListView();
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
@@ -189,18 +193,30 @@ public class MainController {
         });
 
         SystemSocket.instance.registerUserJoinHandler(
-            (name) -> addElement(name, " has joined the Chat!", textArea, false));
+            (name) -> {
+                updatePlayerView();
+                addElement(name, " joined.", textArea, false);
+            });
 
         SystemSocket.instance.registerUserLeftHandler(
-            (name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
+            (name) -> {
+                addElement(name, " left.", textArea, false);
+                updatePlayerView();
+            });
 
-        SystemSocket.instance.registerGameCreateHandler((gameName, id, neededPlayers)
-            -> addElement(null, gameName + " game was created with " + id + " id and needs " + neededPlayers
-            + " players.", textArea, false));
+        SystemSocket.instance.registerGameCreateHandler(
+            (gameName, id, neededPlayers) -> {
+                updateGameView();
+                addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
+                    textArea, false);
+            });
 
         SystemSocket.instance.registerGameDeleteHandler(
-            (id) -> addElement(null, "Game with id: " + id + " was deleted!",
-            textArea, false));
+            (id) -> {
+                addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
+                    textArea, false);
+                updateGameView();
+            });
 
         SystemSocket.instance.connect();
 
@@ -217,37 +233,17 @@ public class MainController {
         }
     }
 
-    private void setGameListView() {
-        gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        gameScrollPane.setStyle("-fx-background-color:transparent;");
-        gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        updateGameView();
-        updatePlayerView();
-    }
-
-    private void setPlayerListView() {
-        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        ArrayList<String> existingPlayers = getExistingPlayers();
-        for (String name : existingPlayers) {
-            playerListView.getItems().add(new Label(name));
-        }
-    }
-
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
                 String userKey = LoginController.getUserKey();
+
                 if (selected.equals(twoPlayers)) {
                     new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
                 } else if (selected.equals(fourPlayers)) {
                     new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
-                updateGameView();
             } else {
                 notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
@@ -328,47 +324,51 @@ public class MainController {
         ham.requestFocus();
     }
 
-    void updateGameView() {
-        ObservableList items = gameListView.getItems();
-        while (items.size() != 0) {
-            items.remove(0);
-        }
-
-        ArrayList<GameMeta> existingGameMetas = getExistingGames();
-        for (GameMeta gameMeta : existingGameMetas) {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
-            try {
-                Parent parent = fxmlLoader.load();
-                GameFieldController controller = fxmlLoader.getController();
-                controller.setUpGameLabel(gameMeta);
-                gameListView.getItems().add(parent);
-            } catch (IOException e) {
-                notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
-            }
-        }
-    }
-
-    private static ArrayList<GameMeta> getExistingGames() {
+    private static HashMap<String, GameMeta> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
         return queryGamesRequest.getGames();
     }
 
-    private void updatePlayerView() {
-        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerListView.setStyle("-fx-background-color:transparent;");
-        ObservableList playerList = playerListView.getItems();
-        while (playerList.size() != 0) {
-            playerList.remove(0);
-        }
+    private void updateGameView() {
+        existingGames = getExistingGames();
 
-        ArrayList<String> existingPlayers = getExistingPlayers();
-        for (String player : existingPlayers) {
-            playerListView.getItems().add(addPlayerlabel(player));
-        }
+        Platform.runLater(() -> {
+            ObservableList items = gameListView.getItems();
+
+            while (items.size() != 0) {
+                items.remove(0);
+            }
+
+            existingGames.forEach((s, gameMeta) -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+
+                try {
+                    Parent parent = fxmlLoader.load();
+                    GameFieldController controller = fxmlLoader.getController();
+                    controller.setUpGameLabel(gameMeta);
+                    gameListView.getItems().add(parent);
+                } catch (IOException e) {
+                    notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                }
+            });
+        });
+    }
+
+    private void updatePlayerView() {
+        Platform.runLater(() -> {
+            ObservableList playerList = playerListView.getItems();
+
+            while (playerList.size() != 0) {
+                playerList.remove(0);
+            }
+
+            for (String player : getExistingPlayers()) {
+                playerListView.getItems().add(addPlayerlabel(player));
+            }
+        });
     }
 
     private ArrayList<String> getExistingPlayers() {
