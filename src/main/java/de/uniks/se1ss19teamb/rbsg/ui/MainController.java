@@ -74,7 +74,7 @@ public class MainController {
     @FXML
     private JFXButton btnMinimize;
     @FXML
-    private JFXButton btnMode;
+    private JFXButton btnColorMode;
     @FXML
     private JFXButton btnSend;
     @FXML
@@ -164,7 +164,7 @@ public class MainController {
         Platform.runLater(() -> {
             Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
             Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-            Theming.hamburgerMenuTransition(hamburgerMenu, btnMode);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnColorMode);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
@@ -273,7 +273,7 @@ public class MainController {
 
                 message.setText("");
             }
-        } else if (event.getSource().equals(btnMode)) {
+        } else if (event.getSource().equals(btnColorMode)) {
             SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
             Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
 
