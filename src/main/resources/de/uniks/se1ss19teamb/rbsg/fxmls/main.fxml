@@ -18,10 +18,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainScreen1" xmlns="http://javafx.com/javafx/8.0.162-ea"
-            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-    <AnchorPane fx:id="mainScreen" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainScreen1" stylesheets="@../css/dark-design.css"
+            xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
+    <AnchorPane fx:id="mainScreen" stylesheets="@../css/dark-design.css" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
                     AnchorPane.topAnchor="50.0"/>
         <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

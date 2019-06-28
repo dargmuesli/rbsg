@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="loginScreen1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="loginScreen1" stylesheets="@../css/dark-design.css"
             xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
-    <AnchorPane fx:id="loginScreen" AnchorPane.bottomAnchor="0.0"
+    <AnchorPane fx:id="loginScreen" stylesheets="@../css/dark-design.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0"
                     AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0"/>
@@ -44,8 +44,8 @@
                 </JFXButton>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
-                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" text="Fullscreen">
+        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler" text="Fullscreen"
+                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
             <graphic>
                 <FontAwesomeIconView glyphName="EXPAND" size="15"/>
             </graphic>
