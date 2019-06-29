@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class QueryGamesRequest extends AbstractRestRequest {
 
@@ -36,8 +37,8 @@ public class QueryGamesRequest extends AbstractRestRequest {
 
     //Custom Request Helper
 
-    public ArrayList<GameMeta> getGames() {
-        ArrayList<GameMeta> gameMetas = new ArrayList<GameMeta>();
+    public HashMap<String, GameMeta> getGames() {
+        HashMap<String, GameMeta> gameMetas = new HashMap<>();
 
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
             GameMeta current = new GameMeta();
@@ -46,7 +47,7 @@ public class QueryGamesRequest extends AbstractRestRequest {
             current.setName(game.get("name").getAsString());
             current.setJoinedPlayers(game.get("joinedPlayer").getAsLong());
             current.setNeededPlayers(game.get("neededPlayer").getAsLong());
-            gameMetas.add(current);
+            gameMetas.put(current.getId(), current);
         }
 
         return gameMetas;

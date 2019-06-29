@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Label?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="tictactoeScreen" prefHeight="600.0" prefWidth="800.0"
-            xmlns="http://javafx.com/javafx/8.0.172-ea"
+            xmlns="http://javafx.com/javafx/8.0.162-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController">
-    <JFXButton fx:id="one" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"
-               text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="two" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0"
-               AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0" text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="three" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="400.0"
-               AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="four" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.topAnchor="200.0" text="" style="-fx-border-color: white" onAction="#setOnAction"/>
-    <JFXButton fx:id="five" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0"
-               AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="200.0" text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="six" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="400.0"
-               AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="200.0" text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="seven" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.topAnchor="400.0" text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="eight" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0"
-               AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="400.0" text="" onAction="#setOnAction"/>
-    <JFXButton fx:id="nine" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="400.0"
-               AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="400.0" text="" onAction="#setOnAction"/>
+    <JFXButton fx:id="one" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    <JFXButton fx:id="two" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0"/>
+    <JFXButton fx:id="three" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0"/>
+    <JFXButton fx:id="four" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: white"
+               text="" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0"/>
+    <JFXButton fx:id="five" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="200.0"/>
+    <JFXButton fx:id="six" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="200.0"/>
+    <JFXButton fx:id="seven" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="400.0"/>
+    <JFXButton fx:id="eight" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="400.0"/>
+    <JFXButton fx:id="nine" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text=""
+               AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="400.0"/>
     <VBox prefHeight="600.0" prefWidth="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER">
             <VBox alignment="TOP_CENTER" spacing="20.0">
-                <JFXButton fx:id="btnReplay" onAction="#setOnAction" text="Replay" prefWidth="150.0"/>
-                <Label fx:id="label" text="" alignment="BASELINE_CENTER"></Label>
+                <JFXButton fx:id="btnReplay" onAction="#setOnAction" prefWidth="150.0" text="Replay"/>
+                <Label fx:id="label" alignment="BASELINE_CENTER" text=""/>
             </VBox>
         </HBox>
     </VBox>
+    <stylesheets>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/darkDesign.css"/>
+    </stylesheets>
 </AnchorPane>
