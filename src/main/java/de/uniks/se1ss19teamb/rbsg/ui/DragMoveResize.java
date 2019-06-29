@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
@@ -11,21 +10,13 @@ public class DragMoveResize {
 
     private final Region region;
 
-    private double yvalue;
-    private double xvalue;
-
-    private boolean initMinHeight;
-    private boolean initMinWidth;
     private boolean moving;
     private boolean dragging;
 
-    private double lastX;
-    private double lastY;
-
     private Cursor usedCursor;
 
-    double orgSceneX, orgSceneY;
-    double orgTranslateX, orgTranslateY;
+    private double orgSceneX, orgSceneY;
+    private double orgTranslateX, orgTranslateY;
 
     private DragMoveResize(Region region) {
         this.region = region;
@@ -34,29 +25,13 @@ public class DragMoveResize {
     public static void makeChangeable(Region region) {
         final DragMoveResize resizer = new DragMoveResize(region);
 
-        region.setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                resizer.mousePressed(event);
-            }
-        });
+        region.setOnMousePressed(resizer::mousePressed);
 
-        region.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                resizer.mouseDragged(event);
-            }
-        });
+        region.setOnMouseDragged(resizer::mouseDragged);
 
-        region.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                resizer.mouseOver(event);
-            }
-        });
+        region.setOnMouseMoved(resizer::mouseOver);
 
-        region.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                resizer.mouseReleased(event);
-            }
-        });
+        region.setOnMouseReleased(resizer::mouseReleased);
     }
 
     private void mousePressed(MouseEvent event) {
@@ -72,12 +47,12 @@ public class DragMoveResize {
         dragging = true;
     }
 
-    protected void mouseReleased(MouseEvent event) {
+    private void mouseReleased(MouseEvent event) {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
     }
 
-    protected void mouseOver(MouseEvent event) {
+    private void mouseOver(MouseEvent event) {
         // wenn cursor null ist, darf nicht vergroesstert / verkleinert werden
         usedCursor = getCorrectCursor(event);
 
@@ -122,7 +97,7 @@ public class DragMoveResize {
 
 
 
-    protected void mouseDragged(MouseEvent event) {
+    private void mouseDragged(MouseEvent event) {
 
         if (moving) {
             return;
