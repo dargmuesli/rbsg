@@ -222,8 +222,9 @@ public class MainController {
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
 
-        DragResizer.makeResizable(chatPane);
+        DragMoveResize.makeChangeable(chatWindow);
 
+        // TODO change chatPane heights
         chatPane.widthProperty().addListener(((observable, oldValue, newValue) -> {
             //System.out.println((Double) newValue - (Double) oldValue);
             // chatPane.setMinWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue);
