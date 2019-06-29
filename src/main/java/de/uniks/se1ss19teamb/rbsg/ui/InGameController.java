@@ -11,16 +11,14 @@ import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -128,8 +126,9 @@ public class InGameController {
                         continue;
                     }
                 }
-
-                gameGrid.add(TextureManager.computeTerrainTextureInstance(inGameTiles, j, i), j, i);
+                StackPane stack = new StackPane();
+                stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(inGameTiles, j, i));
+                gameGrid.add(stack, j, i);
             }
         }
     }
