@@ -52,6 +52,7 @@ public class DragMoveResize {
     private void mouseReleased(MouseEvent event) {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
+        region.setOpacity(1);
     }
 
     private void mouseOver(MouseEvent event) {
@@ -60,8 +61,18 @@ public class DragMoveResize {
 
         if (usedCursor != null || dragging) {
             region.setCursor(usedCursor);
+            region.setStyle(
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 10, 0, 0, 0);"
+            );
         } else {
             region.setCursor(Cursor.DEFAULT);
+            region.setStyle(
+                "-fx-border-width: none;" +
+                "-fx-border-insets: none;" +
+                "-fx-effect: none;"
+            );
         }
     }
 
@@ -127,6 +138,7 @@ public class DragMoveResize {
             region.setPrefWidth(event.getX());
         }
 
+        // TODO calculations for west and all of south
         if (usedCursor != null && usedCursor.equals(Cursor.W_RESIZE)) {
             region.setPrefWidth(region.getWidth() - event.getX());
         }
@@ -146,6 +158,7 @@ public class DragMoveResize {
         }
 
         if (usedCursor == null) {
+            region.setOpacity(0.5);
             double offsetX = event.getSceneX() - orgSceneX;
             double offsetY = event.getSceneY() - orgSceneY;
             double newTranslateX = orgTranslateX + offsetX;

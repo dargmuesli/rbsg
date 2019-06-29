@@ -225,14 +225,14 @@ public class MainController {
         DragMoveResize.makeChangeable(chatWindow);
 
         // TODO change chatPane heights
-        chatPane.widthProperty().addListener(((observable, oldValue, newValue) -> {
+        chatWindow.widthProperty().addListener(((observable, oldValue, newValue) -> {
             //System.out.println((Double) newValue - (Double) oldValue);
-            // chatPane.setMinWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue);
+            chatPane.setPrefWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue);
         }));
 
-        chatPane.heightProperty().addListener(((observable, oldValue, newValue) -> {
+        chatWindow.heightProperty().addListener(((observable, oldValue, newValue) -> {
             //System.out.println((Double) newValue - (Double) oldValue);
-            // chatPane.setMinHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue);
+            chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue);
         }));
     }
 
