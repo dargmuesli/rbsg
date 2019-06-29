@@ -119,7 +119,10 @@ public class InGameController {
                 InGameTile tile = inGameTiles.get(new Pair<>(j, i));
                 if (tile != null) {
                     System.out.println(tile.getName());
-                    if (tile.getName().equals("Unit")) {
+                    if (!tile.getName().equals("Grass") && !tile.getName().equals("Mountain") &&
+                        !tile.getName().equals("Water") && !tile.getName().equals("Sand") &&
+                        !tile.getName().equals("Forest")) {
+                        System.out.println("Wrong tile: " + tile.getName());
                         continue;
                     }
                 }
