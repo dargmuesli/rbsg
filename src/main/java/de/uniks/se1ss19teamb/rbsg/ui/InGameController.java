@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class InGameController {
@@ -90,17 +93,26 @@ public class InGameController {
     private void fillGameGrid() {
         int maxX = 0;
         int maxY = 0;
+        int tryCounter = 0;
 
-        try {
-            Thread.sleep(700);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        while (inGameTiles.get(new Pair<>(0,maxX)) != null) {
-            maxX++;
-        }
-        while (inGameTiles.get(new Pair<>(maxY, 0)) != null) {
-            maxY++;
+        while (maxX * maxY != 1024) {
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            while (inGameTiles.get(new Pair<>(0, maxX)) != null) {
+                maxX++;
+            }
+            while (inGameTiles.get(new Pair<>(maxY, 0)) != null) {
+                maxY++;
+            }
+            tryCounter++;
+            if (tryCounter == 5) {
+                NotificationHandler.getNotificationHandler().sendError("The tiles couldn't be load.",
+                    LogManager.getLogger());
+                break;
+            }
         }
 
         for (int i = 0; i < maxY; i++) {
