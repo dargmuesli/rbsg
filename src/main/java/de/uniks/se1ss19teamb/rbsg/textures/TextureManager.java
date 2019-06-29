@@ -70,7 +70,7 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate();
     }
 
-    public static Pane computeTerrainTextureInstance(Object map, int x, int y){
+    public static Pane computeTerrainTextureInstance(Object map, int x, int y) {
         return getTextureInstance("missing");
     }
     

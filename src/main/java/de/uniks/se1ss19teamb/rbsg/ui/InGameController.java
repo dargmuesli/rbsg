@@ -92,14 +92,14 @@ public class InGameController {
         int maxY = 0;
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(700);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        while(inGameTiles.get(new Pair<>(0,maxX)) != null) {
+        while (inGameTiles.get(new Pair<>(0,maxX)) != null) {
             maxX++;
         }
-        while(inGameTiles.get(new Pair<>(maxY, 0)) != null) {
+        while (inGameTiles.get(new Pair<>(maxY, 0)) != null) {
             maxY++;
         }
 
