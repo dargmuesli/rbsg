@@ -11,6 +11,7 @@ import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,9 @@ public class InGameController {
     public static InGameMetadata inGameMetadata;
     public static Map<Pair<Integer, Integer>, InGameTile> inGameTiles = new HashMap<>();
     public static boolean gameInitFinished = false;
+
+    private ArrayList<String> knownTileNames = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
+        "Water", "Mountain"));
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
@@ -119,9 +123,7 @@ public class InGameController {
                 InGameTile tile = inGameTiles.get(new Pair<>(j, i));
                 if (tile != null) {
                     System.out.println(tile.getName());
-                    if (!tile.getName().equals("Grass") && !tile.getName().equals("Mountain") &&
-                        !tile.getName().equals("Water") && !tile.getName().equals("Sand") &&
-                        !tile.getName().equals("Forest")) {
+                    if (!knownTileNames.contains(tile.getName())) {
                         System.out.println("Wrong tile: " + tile.getName());
                         continue;
                     }
