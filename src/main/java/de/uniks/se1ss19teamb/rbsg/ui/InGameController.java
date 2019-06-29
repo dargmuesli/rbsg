@@ -120,9 +120,9 @@ public class InGameController {
             for (int j = 0; j < maxX; j++) {
                 InGameTile tile = inGameTiles.get(new Pair<>(j, i));
                 if (tile != null) {
-                    System.out.println(tile.getName());
                     if (!knownTileNames.contains(tile.getName())) {
-                        System.out.println("Wrong tile: " + tile.getName());
+                        NotificationHandler.getNotificationHandler().sendError("Wrong tile: "
+                            + tile.getName(), LogManager.getLogger());
                         continue;
                     }
                 }
