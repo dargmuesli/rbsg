@@ -15,8 +15,10 @@ public class DragMoveResize {
 
     private Cursor usedCursor;
 
-    private double orgSceneX, orgSceneY;
-    private double orgTranslateX, orgTranslateY;
+    private double orgSceneX;
+    private double orgSceneY;
+    private double orgTranslateX;
+    private double orgTranslateY;
 
     private DragMoveResize(Region region) {
         this.region = region;
