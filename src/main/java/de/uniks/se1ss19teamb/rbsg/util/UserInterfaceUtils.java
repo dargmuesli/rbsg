@@ -34,8 +34,8 @@ public class UserInterfaceUtils {
                     node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
                 } else {
                     VBox chatWindow = (VBox) node.lookup("#chatWindow");
-                    chatWindow.setPrefWidth(230);
-                    chatWindow.setPrefHeight(230);
+                    // chatWindow.setPrefWidth(230);
+                    chatWindow.setPrefHeight(250);
                     DragMoveResize.makeChangeable(chatWindow);
 
                     AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));

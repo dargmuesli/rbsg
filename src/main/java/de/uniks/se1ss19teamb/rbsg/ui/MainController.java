@@ -277,18 +277,18 @@ public class MainController {
         } else if (event.getSource().equals(btnMode)) {
             SerializeUtils.serialize(path, !Theming.darkModeActive());
             Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
-        } else if (event.getSource().equals(btnMinimize)) {
+        } else if (event.getSource().equals(btnMinimize)) { // TODO proper minimize
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
-                chatBox.setMaxHeight(0);
-                chatBox.setMaxWidth(0);
+                chatBox.setPrefHeight(0);
+                chatBox.setPrefWidth(0);
                 chatWindow.setAlignment(Pos.BOTTOM_LEFT);
                 chatWindow.setPadding(new Insets(0, 0, 0, 15));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
                 chatBox.setVisible(true);
-                chatBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
-                chatBox.setMaxWidth(Region.USE_COMPUTED_SIZE);
+                chatBox.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                chatBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
                 chatWindow.setAlignment(Pos.CENTER);
                 chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));

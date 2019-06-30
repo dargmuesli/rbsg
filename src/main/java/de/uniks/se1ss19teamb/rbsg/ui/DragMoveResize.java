@@ -38,8 +38,13 @@ public class DragMoveResize {
 
         region.setOnMouseReleased(resizer::mouseReleased);
 
-        region.setOnMouseExited(e -> region.setStyle("-fx-border-width: none; "
-            + "-fx-border-insets: none; -fx-effect: none;"));
+        region.setOnMouseExited(e -> {
+            region.setStyle("-fx-border-width: none; "
+                + "-fx-border-insets: none; -fx-effect: none;");
+            region.setOpacity(0.3);
+        });
+
+        region.setOnMouseEntered(e -> region.setOpacity(0.85));
     }
 
     private void mousePressed(MouseEvent event) {
@@ -62,7 +67,6 @@ public class DragMoveResize {
     private void mouseReleased(MouseEvent event) {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
-        region.setOpacity(1);
         borderNone();
     }
 
@@ -161,7 +165,6 @@ public class DragMoveResize {
         }
 
         if (usedCursor == null) {
-            region.setOpacity(0.5);
             double offsetX = event.getSceneX() - orgSceneX;
             double offsetY = event.getSceneY() - orgSceneY;
             double newTranslateX = orgTranslateX + offsetX;
@@ -171,6 +174,7 @@ public class DragMoveResize {
             ((Region)(event.getSource())).setTranslateY(newTranslateY);
         }
 
+        region.setOpacity(0.85);
         lastX = event.getSceneX();
         lastY = event.getSceneY();
     }
