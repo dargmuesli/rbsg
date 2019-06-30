@@ -6,10 +6,12 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import java.io.IOException;
 
+import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +33,9 @@ public class UserInterfaceUtils {
                     node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
                 } else {
                     AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
-                    pane.getChildren().add(node.lookup("#chatWindow"));
+                    VBox chatWindow = (VBox) node.lookup("#chatWindow");
+                    DragMoveResize.makeChangeable(chatWindow);
+                    pane.getChildren().add(chatWindow);
                     node.getScene().setRoot(pane);
                 }
             } catch (IOException e) {

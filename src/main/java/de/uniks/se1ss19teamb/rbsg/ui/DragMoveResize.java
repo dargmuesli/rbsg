@@ -53,6 +53,7 @@ public class DragMoveResize {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
         region.setOpacity(1);
+        borderNone();
     }
 
     private void mouseOver(MouseEvent event) {
@@ -61,18 +62,11 @@ public class DragMoveResize {
 
         if (usedCursor != null || dragging) {
             region.setCursor(usedCursor);
-            region.setStyle(
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 10, 0, 0, 0);"
-            );
+            borderShadow();
         } else {
+            // TODO shadow staying when mouse goes beyound region
             region.setCursor(Cursor.DEFAULT);
-            region.setStyle(
-                "-fx-border-width: none;" +
-                "-fx-border-insets: none;" +
-                "-fx-effect: none;"
-            );
+            borderNone();
         }
     }
 
@@ -95,6 +89,7 @@ public class DragMoveResize {
             return Cursor.W_RESIZE;
         }
 
+        // TODO south east and west cursor not showing
         if (event.getY() > (region.getHeight() - RESIZE_MARGIN)) {
             if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
                 return Cursor.SE_RESIZE;
@@ -167,5 +162,14 @@ public class DragMoveResize {
             ((Region)(event.getSource())).setTranslateX(newTranslateX);
             ((Region)(event.getSource())).setTranslateY(newTranslateY);
         }
+    }
+
+    private void borderShadow() {
+        region.setStyle("-fx-border-width: 2; -fx-border-insets: 5;"
+                + "-fx-effect: dropshadow(three-pass-box, derive(-fx-secondary, -20%), 10, 0, 0, 0);");
+    }
+
+    private void borderNone() {
+        region.setStyle("-fx-border-width: none; -fx-border-insets: none; -fx-effect: none;");
     }
 }

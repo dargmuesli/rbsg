@@ -222,18 +222,12 @@ public class MainController {
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
 
-        DragMoveResize.makeChangeable(chatWindow);
+        chatWindow.widthProperty().addListener(((observable, oldValue, newValue) ->
+            chatPane.setPrefWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue)));
 
-        // TODO change chatPane heights
-        chatWindow.widthProperty().addListener(((observable, oldValue, newValue) -> {
-            //System.out.println((Double) newValue - (Double) oldValue);
-            chatPane.setPrefWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue);
-        }));
+        chatWindow.heightProperty().addListener(((observable, oldValue, newValue) ->
+            chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue)));
 
-        chatWindow.heightProperty().addListener(((observable, oldValue, newValue) -> {
-            //System.out.println((Double) newValue - (Double) oldValue);
-            chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue);
-        }));
     }
 
     @FXML

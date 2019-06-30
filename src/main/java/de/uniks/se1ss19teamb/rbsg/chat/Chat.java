@@ -53,7 +53,6 @@ public class Chat {
     }
 
     public void sendMessage(String message) {
-        // TODO send action (All)
         this.chatSocket.sendMessage(message);
     }
 
