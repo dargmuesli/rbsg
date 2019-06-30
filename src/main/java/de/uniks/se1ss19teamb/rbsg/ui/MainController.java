@@ -307,7 +307,7 @@ public class MainController {
                 }*/
         }
 
-        hamburgerMenu.requestFocus();
+        message.requestFocus();
     }
 
     private static HashMap<String, GameMeta> getExistingGames() {
