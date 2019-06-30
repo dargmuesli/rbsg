@@ -81,15 +81,6 @@ public class DragMoveResize {
             return Cursor.N_RESIZE;
         }
 
-        if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
-            return Cursor.E_RESIZE;
-        }
-
-        if (event.getX() < RESIZE_MARGIN) {
-            return Cursor.W_RESIZE;
-        }
-
-        // TODO south east and west cursor not showing
         if (event.getY() > (region.getHeight() - RESIZE_MARGIN)) {
             if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
                 return Cursor.SE_RESIZE;
@@ -100,6 +91,14 @@ public class DragMoveResize {
             return Cursor.S_RESIZE;
         }
 
+        if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
+            return Cursor.E_RESIZE;
+        }
+
+        if (event.getX() < RESIZE_MARGIN) {
+            return Cursor.W_RESIZE;
+        }
+        
         return null;
     }
 
