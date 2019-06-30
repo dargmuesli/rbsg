@@ -15,6 +15,9 @@ public class DragMoveResize {
 
     private Cursor usedCursor;
 
+    private double lastX;
+    private double lastY;
+
     private double orgSceneX;
     private double orgSceneY;
     private double orgTranslateX;
@@ -40,6 +43,10 @@ public class DragMoveResize {
     }
 
     private void mousePressed(MouseEvent event) {
+
+        lastX = event.getSceneX();
+        lastY = event.getSceneY();
+
         if (getCorrectCursor(event) == null) {
             moving = true;
             orgSceneX = event.getSceneX();
@@ -127,7 +134,7 @@ public class DragMoveResize {
 
         if (usedCursor != null && usedCursor.equals(Cursor.NW_RESIZE)) {
             region.setPrefHeight(region.getHeight() - event.getY());
-            region.setPrefWidth(region.getWidth() - event.getX());
+            region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
         }
 
         if (usedCursor != null && usedCursor.equals(Cursor.E_RESIZE)) {
@@ -136,21 +143,21 @@ public class DragMoveResize {
 
         // TODO calculations for west and all of south
         if (usedCursor != null && usedCursor.equals(Cursor.W_RESIZE)) {
-            region.setPrefWidth(region.getWidth() - event.getX());
+            region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
         }
 
         if (usedCursor != null && usedCursor.equals(Cursor.S_RESIZE)) {
-            region.setPrefHeight(event.getY());
+            region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
         }
 
         if (usedCursor != null && usedCursor.equals(Cursor.SE_RESIZE)) {
-            region.setPrefHeight(event.getY());
+            region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
             region.setPrefWidth(event.getX());
         }
 
         if (usedCursor != null && usedCursor.equals(Cursor.SW_RESIZE)) {
-            region.setPrefHeight(event.getY());
-            region.setPrefWidth(region.getWidth() - event.getX());
+            region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
+            region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
         }
 
         if (usedCursor == null) {
@@ -163,6 +170,9 @@ public class DragMoveResize {
             ((Region)(event.getSource())).setTranslateX(newTranslateX);
             ((Region)(event.getSource())).setTranslateY(newTranslateY);
         }
+
+        lastX = event.getSceneX();
+        lastY = event.getSceneY();
     }
 
     private void borderShadow() {
