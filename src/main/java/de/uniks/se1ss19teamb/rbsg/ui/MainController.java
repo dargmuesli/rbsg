@@ -227,7 +227,6 @@ public class MainController {
 
         chatWindow.heightProperty().addListener(((observable, oldValue, newValue) ->
             chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue)));
-
     }
 
     @FXML
@@ -284,6 +283,7 @@ public class MainController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
         } else if (event.getSource().equals(btnArmyManager)) {
+
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
         } else if (event.getSource().equals(btnSend)) {
