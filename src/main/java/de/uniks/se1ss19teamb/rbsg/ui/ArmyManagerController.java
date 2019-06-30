@@ -166,6 +166,7 @@ public class ArmyManagerController {
             loadFromServer();
 
             if (serverArmies.size() != 0) {
+                mainPane.getChildren().add(mainPane.getScene().lookup("#chatWindow"));
                 UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
             }
         }

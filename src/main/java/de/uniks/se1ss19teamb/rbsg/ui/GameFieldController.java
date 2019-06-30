@@ -31,6 +31,7 @@ public class GameFieldController {
         joinedGame = gameMeta;
 
         ArmyManagerController.joiningGame = true;
+        root.getChildren().add(root.getScene().lookup("#chatWindow"));
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root);
     }
