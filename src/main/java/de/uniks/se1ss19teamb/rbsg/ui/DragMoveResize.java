@@ -34,6 +34,9 @@ public class DragMoveResize {
         region.setOnMouseMoved(resizer::mouseOver);
 
         region.setOnMouseReleased(resizer::mouseReleased);
+
+        region.setOnMouseExited(e -> region.setStyle("-fx-border-width: none; "
+            + "-fx-border-insets: none; -fx-effect: none;"));
     }
 
     private void mousePressed(MouseEvent event) {
@@ -64,7 +67,6 @@ public class DragMoveResize {
             region.setCursor(usedCursor);
             borderShadow();
         } else {
-            // TODO shadow staying when mouse goes beyound region
             region.setCursor(Cursor.DEFAULT);
             borderNone();
         }
@@ -98,7 +100,7 @@ public class DragMoveResize {
         if (event.getX() < RESIZE_MARGIN) {
             return Cursor.W_RESIZE;
         }
-        
+
         return null;
     }
 
