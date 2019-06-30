@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import de.uniks.se1ss19teamb.rbsg.features.Snake;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
@@ -52,6 +53,9 @@ public class LoginController {
     private JFXCheckBox rememberLogin;
     @FXML
     private AnchorPane loginScreen1;
+    @FXML
+    private JFXButton btnSnake;
+    Snake snake = new Snake();
 
     static String getUser() {
         return user;
@@ -121,6 +125,8 @@ public class LoginController {
             login();
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
+        } else if (event.getSource().equals(btnSnake)) {
+            snake.start(Snake.classStage);
         }
     }
 
