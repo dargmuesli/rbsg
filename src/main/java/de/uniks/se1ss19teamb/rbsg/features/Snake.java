@@ -6,7 +6,6 @@ import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class Snake extends Application {
     // variable
@@ -141,6 +141,7 @@ public class Snake extends Application {
                     gameOver = true;
                 }
                 break;
+            default:
         }
 
         if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
@@ -179,6 +180,7 @@ public class Snake extends Application {
             case 4:
                 cc = Color.ORANGE;
                 break;
+            default:
         }
         gc.setFill(cc);
         gc.fillOval(foodX * cornersize, foodY * cornersize, cornersize, cornersize);
