@@ -11,6 +11,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
+import java.util.Arrays;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,10 +28,12 @@ import org.apache.logging.log4j.Logger;
 public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
-    private static String userKey;
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+
     private static String user;
-    private static ChatSocket chatSocket;
-    UserData userData;
+    private static String userKey;
+    private static UserData userData;
+
     @FXML
     private AnchorPane loginScreen;
     @FXML
@@ -48,19 +52,6 @@ public class LoginController {
     private JFXCheckBox rememberLogin;
     @FXML
     private AnchorPane loginScreen1;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
-    private String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design.css";
-    private String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design.css";
-
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-
-    public static String getUserKey() {
-        return userKey;
-    }
-
-    public static void setUserKey(String key) {
-        userKey = key;
-    }
 
     static String getUser() {
         return user;
@@ -70,24 +61,19 @@ public class LoginController {
         user = name;
     }
 
-    static ChatSocket getChatSocket() {
-        return chatSocket;
+    public static String getUserKey() {
+        return userKey;
     }
 
-    static void setChatSocket(ChatSocket chatSocket) {
-        LoginController.chatSocket = chatSocket;
+    public static void setUserKey(String key) {
+        userKey = key;
     }
 
     public void initialize() {
+        Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
+
         // load user data
         userData = UserData.loadUserData(notificationHandler);
-
-        while (!new File(path).exists()) {
-            SerializeUtils.serialize(path, true);
-        }
-        if (new File(path).exists()) {
-            changeTheme(loginScreen, loginScreen1, path, cssDark, cssWhite);
-        }
 
         if (userData == null) {
             userData = new UserData();
@@ -124,35 +110,6 @@ public class LoginController {
 
         } catch (IOException e) {
             notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
-        }
-    }
-
-    public void changeTheme(AnchorPane anchorPane1, AnchorPane anchorPane2, String path,
-                            String cssDark, String cssWhite) {
-        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
-            anchorPane1.getStylesheets().clear();
-            anchorPane1.getStylesheets().add(cssDark);
-            anchorPane2.getStylesheets().clear();
-            anchorPane2.getStylesheets().add(cssDark);
-        } else {
-            anchorPane1.getStylesheets().clear();
-            anchorPane1.getStylesheets().add(cssWhite);
-            anchorPane2.getStylesheets().clear();
-            anchorPane2.getStylesheets().add(cssWhite);
-        }
-    }
-
-    public void changeThemeOnButton(AnchorPane anchorPane1, AnchorPane anchorPane2, String path) {
-        if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
-            anchorPane1.getStylesheets().clear();
-            anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");
-            anchorPane2.getStylesheets().clear();
-            anchorPane2.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css");
-        } else {
-            anchorPane1.getStylesheets().clear();
-            anchorPane1.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design2.css");
-            anchorPane2.getStylesheets().clear();
-            anchorPane2.getStylesheets().add("/de/uniks/se1ss19teamb/rbsg/css/white-design2.css");
         }
     }
 

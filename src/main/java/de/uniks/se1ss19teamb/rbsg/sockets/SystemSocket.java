@@ -7,6 +7,8 @@ import java.util.List;
 
 public class SystemSocket extends AbstractWebSocket {
 
+    public static SystemSocket instance;
+
     private String userKey;
 
     private List<SystemSocketMessageHandler.SystemSocketUserJoinHandler> handlersUserJoin
@@ -50,6 +52,7 @@ public class SystemSocket extends AbstractWebSocket {
                     }
                     break;
                 case "playerJoinedGame":
+                case "playerLeftGame":
                     // TODO
                     break;
                 default:

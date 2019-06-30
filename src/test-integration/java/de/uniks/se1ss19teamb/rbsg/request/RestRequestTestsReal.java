@@ -1,10 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
 
 import org.apache.http.ParseException;
 import org.junit.After;
@@ -119,11 +121,9 @@ public class RestRequestTestsReal {
 
             Assert.assertTrue(req.getSuccessful());
 
-            boolean hasTeamBTestGame = false;
-            for (Game game : req.getGames()) {
-                hasTeamBTestGame |= game.getName().equals("testTeamBGame");
-            }
-            Assert.assertTrue(hasTeamBTestGame);
+            final boolean[] hasTeamBTestGame = {false};
+            req.getGames().forEach((s, gameMeta) -> hasTeamBTestGame[0] |= gameMeta.getName().equals("testTeamBGame"));
+            Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -169,8 +169,11 @@ public class RestRequestTestsReal {
             QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
             query.sendRequest();
 
-            Assert.assertEquals(1, query.getGames().stream().filter((game) -> game.getId()
-                .equals(createGame.getGameId())).findFirst().get().getJoinedPlayers());
+            Optional<Map.Entry<String, GameMeta>> optionalStringGameMetaEntry =  query.getGames().entrySet().stream()
+                .filter(stringGameMetaEntry -> stringGameMetaEntry.getKey()
+                .equals(createGame.getGameId())).findFirst();
+            Assert.assertEquals(1L, (long) optionalStringGameMetaEntry.map(stringGameMetaEntry
+                -> stringGameMetaEntry.getValue().getJoinedPlayers()).orElse(0L));
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -319,10 +322,14 @@ public class RestRequestTestsReal {
         QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
         query.sendRequest();
 
-        query.getGames().stream().filter((game) -> game.getName().equals("testTeamBGame"))
-            .forEach((game) -> {
-                System.out.println("Tidying up Game " + game.getName() + " with id " + game.getId() + "...");
-                DeleteGameRequest req = new DeleteGameRequest(game.getId(), login.getUserKey());
+        query.getGames().entrySet().stream().filter(stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
+            .equals("testTeamBGame"))
+            .forEach(stringGameMetaEntry -> {
+                System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
+                    + " with id " + stringGameMetaEntry.getValue().getId() + "...");
+                DeleteGameRequest req =
+                    new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), login.getUserKey());
+
                 try {
                     req.sendRequest();
                 } catch (ParseException e) {

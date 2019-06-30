@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
-import fulib.generated.testmodel.Game; //TODO needs to be changed when we implement the game
+import generated.fulib.testmodel.Game; //TODO needs to be changed when we implement the game
 
 import java.io.File;
 import java.io.IOException;

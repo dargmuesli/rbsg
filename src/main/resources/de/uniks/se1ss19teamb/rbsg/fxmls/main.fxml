@@ -6,8 +6,8 @@
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
@@ -19,10 +19,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainScreen1" xmlns="http://javafx.com/javafx/8.0.162-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-    <AnchorPane fx:id="mainScreen" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane fx:id="mainScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
                     AnchorPane.topAnchor="50.0"/>
         <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -37,10 +37,10 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fx:id="playerScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0"
+                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" vbarPolicy="NEVER"
                                 VBox.vgrow="ALWAYS">
-                        <ListView fx:id="playerListView"/>
+                        <ListView fx:id="playerListView" styleClass="background-color_transparent"/>
                     </ScrollPane>
                 </VBox>
                 <Pane prefWidth="1.0" style="-fx-background-color: grey;">
@@ -57,10 +57,11 @@
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
                     </Label>
-                    <ScrollPane fx:id="gameScrollPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
+                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="200.0"
+                                minWidth="150.0" prefHeight="250.0" prefWidth="150.0" vbarPolicy="NEVER"
+                                VBox.vgrow="ALWAYS">
 
-                        <ListView fx:id="gameListView"/>
+                        <ListView fx:id="gameListView" styleClass="background-color_transparent"/>
                     </ScrollPane>
                 </VBox>
             </HBox>
@@ -155,8 +156,8 @@
                             <Insets/>
                         </HBox.margin>
                     </Pane>
-                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" spacing="5.0">
-                        <Label alignment="CENTER" text="Armeemanager" textAlignment="CENTER">
+                    <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label alignment="CENTER" text="Army Manager" textAlignment="CENTER">
                             <font>
                                 <Font size="15.0"/>
                             </font>
@@ -169,11 +170,6 @@
                                 <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnTicTacToe" mnemonicParsing="false" onAction="#setOnAction">
-                            <graphic>
-                                <FontAwesomeIconView glyphName="PLUS"/>
-                            </graphic>
-                        </JFXButton>
                         <VBox.margin>
                             <Insets bottom="10.0"/>
                         </VBox.margin>
@@ -181,13 +177,6 @@
                 </VBox>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnPlayerRefresh" alignment="CENTER_LEFT" contentDisplay="GRAPHIC_ONLY"
-                   onAction="#setOnAction"
-                   AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-            <graphic>
-                <FontAwesomeIconView boundsType="VISUAL" glyphName="REFRESH" size="15"/>
-            </graphic>
-        </JFXButton>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
             <JFXButton fx:id="btnMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
                        visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
@@ -207,22 +196,11 @@
                     <FontAwesomeIconView glyphName="EXPAND" size="15"/>
                 </graphic>
             </JFXButton>
-            <JFXHamburger fx:id="ham" prefHeight="0.0" prefWidth="47.0"/>
+            <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0"/>
         </HBox>
-        <!--        <MenuButton alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0">-->
-        <!--            <items>-->
-        <!--                <MenuItem mnemonicParsing="false">-->
-        <!--                    <graphic>-->
-        <!--                        <JFXButton fx:id="btnLogout" alignment="CENTER" mnemonicParsing="false" onAction="#setOnAction" text="Logout" />-->
-        <!--                    </graphic>-->
-        <!--                </MenuItem>-->
-        <!--            </items>-->
-        <!--            <font>-->
-        <!--                <Font size="8.0" />-->
-        <!--            </font>-->
-        <!--            <graphic>-->
-        <!--                <FontAwesomeIconView accessibleRole="MENU_BUTTON" glyphName="COG" size="25" wrappingWidth="1.0" />-->
-        <!--            </graphic>-->
-        <!--        </MenuButton>-->
     </AnchorPane>
+    <stylesheets>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/darkDesign.css"/>
+    </stylesheets>
 </AnchorPane>

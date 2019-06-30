@@ -7,20 +7,22 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -30,15 +32,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,105 +47,82 @@ import org.apache.logging.log4j.Logger;
 public class MainController {
 
     private static final Logger logger = LogManager.getLogger();
-    @FXML
-    private AnchorPane mainScreen;
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+
+    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+    private static Chat chat;
+    private static SingleSelectionModel<Tab> selectionModel;
+    private static String userKey = LoginController.getUserKey();
+    private static String userName = LoginController.getUser();
+    private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json";
+    private static String sendTo = null;
+    private static HashMap<String, GameMeta> existingGames;
+
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private ListView<Label> playerListView;
+    private AnchorPane mainScreen1;
     @FXML
-    private ScrollPane playerScrollPane;
+    private AnchorPane mainScreen;
     @FXML
-    private JFXButton btnFullscreen;
-    @FXML
-    private ScrollPane gameScrollPane;
-    @FXML
-    private ListView<Parent> gameListView;
+    private JFXButton btnArmyManager;
     @FXML
     private JFXButton btnCreate;
     @FXML
-    private ToggleGroup playerNumberToggleGroup;
-    @FXML
-    private JFXTextField gameName;
-    @FXML
-    private Toggle twoPlayers;
-    @FXML
-    private Toggle fourPlayers;
+    private JFXButton btnFullscreen;
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnArmyManager;
-    private String userKey = LoginController.getUserKey();
-    private final SystemSocket system = new SystemSocket(userKey);
-    private String userName = LoginController.getUser();
-    private final ChatSocket chatSocket = new ChatSocket(userName, userKey);
-    // TODO - after some time it automaticly disconnects system and chatSocket
-    @FXML
-    private VBox chatWindow;
-    @FXML
-    private VBox chatBox;
-    @FXML
-    private JFXButton btnSend;
-    @FXML
     private JFXButton btnMinimize;
-    @FXML
-    private TextField message;
-    @FXML
-    private VBox textArea;
-    @FXML
-    private JFXTabPane chatPane;
-    @FXML
-    private ScrollPane allPane;
-    @FXML
-    private JFXButton btnPlayerRefresh;
-    @FXML
-    private JFXHamburger ham;
-    @FXML
-    private AnchorPane mainScreen1;
     @FXML
     private JFXButton btnMode;
     @FXML
-    private JFXButton btnTicTacToe;
-    private String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/cssMode.json";
-    private LoginController loginController = new LoginController();
-    private String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
-        + "-fx-padding: 0px;";
-    private String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
-        + "-fx-padding: 0px;";
-    private String mode;
-    private ArmyManagerController armyManagerController = new ArmyManagerController();
-    private SingleSelectionModel<Tab> selectionModel;
-    private Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
-
-    private Chat chat = new Chat(this.chatSocket, chatLogPath);
-
-    private String sendTo = null;
-
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
-
-    private Game joinedGame;
+    private JFXButton btnSend;
+    @FXML
+    private JFXHamburger hamburgerMenu;
+    @FXML
+    private JFXTabPane chatPane;
+    @FXML
+    private JFXTextField gameName;
+    @FXML
+    private ListView<Label> playerListView;
+    @FXML
+    private ListView<Parent> gameListView;
+    @FXML
+    private ScrollPane allPane;
+    @FXML
+    private TextField message;
+    @FXML
+    private Toggle fourPlayers;
+    @FXML
+    private Toggle twoPlayers;
+    @FXML
+    private ToggleGroup playerNumberToggleGroup;
+    @FXML
+    private VBox chatBox;
+    @FXML
+    private VBox chatWindow;
+    @FXML
+    private VBox textArea;
 
     public void initialize() {
-
         UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
-        String cssWhite = "/de/uniks/se1ss19teamb/rbsg/css/white-design2.css";
-        String cssDark = "/de/uniks/se1ss19teamb/rbsg/css/dark-design2.css";
-        if (SerializeUtils.deserialize(new File(path), boolean.class)) {
-            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
-            mode = darkMode;
-        } else {
-            loginController.changeTheme(mainScreen, mainScreen1, path, cssDark, cssWhite);
-            mode = whiteMode;
-        }
+        Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
 
+        // TODO - after some time it automaticly disconnects system and chatSocket
+        SystemSocket.instance = new SystemSocket(userKey);
+        ChatSocket.instance = new ChatSocket(userName, userKey);
+
+        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+
+        updateGameView();
+        updatePlayerView();
 
         Platform.runLater(() -> {
-
-            armyManagerController.hamTran(ham, btnFullscreen);
-            armyManagerController.hamTran(ham, btnLogout);
-            armyManagerController.hamTran(ham, btnMode);
-            setGameListView();
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnMode);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
@@ -158,8 +136,6 @@ public class MainController {
             } catch (IOException e) {
                 notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
-
-            //UserInterfaceUtils.makeFadeInTransition(mainScreen);
 
             // ChatTabController
             chatPane.getSelectionModel().selectedItemProperty().addListener(
@@ -195,7 +171,7 @@ public class MainController {
             selectionModel = chatPane.getSelectionModel();
         });
 
-        chatSocket.registerChatMessageHandler((message, from, isPrivate) -> {
+        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {
@@ -203,22 +179,35 @@ public class MainController {
             }
         });
 
-        system.registerUserJoinHandler((name) -> addElement(name, " has joined the Chat!", textArea, false));
+        SystemSocket.instance.registerUserJoinHandler(
+            (name) -> {
+                updatePlayerView();
+                addElement(name, " joined.", textArea, false);
+            });
 
-        system.registerUserLeftHandler((name) -> addElement(name, " has left us...RIP in Peace bro", textArea, false));
+        SystemSocket.instance.registerUserLeftHandler(
+            (name) -> {
+                addElement(name, " left.", textArea, false);
+                updatePlayerView();
+            });
 
-        system.registerGameCreateHandler((gameName, id, neededPlayers)
-            -> addElement(null, gameName + " game was created with " + id + " id and needs " + neededPlayers
-            + " players.", textArea, false));
+        SystemSocket.instance.registerGameCreateHandler(
+            (gameName, id, neededPlayers) -> {
+                updateGameView();
+                addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
+                    textArea, false);
+            });
 
-        system.registerGameDeleteHandler((id) -> addElement(null, "Game with id: " + id + " was deleted!",
-            textArea, false));
+        SystemSocket.instance.registerGameDeleteHandler(
+            (id) -> {
+                addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
+                    textArea, false);
+                updateGameView();
+            });
 
-        system.connect();
+        SystemSocket.instance.connect();
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
-
-        LoginController.setChatSocket(chatSocket);
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
 
@@ -236,45 +225,24 @@ public class MainController {
         }
     }
 
-    private void setGameListView() {
-        gameScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        gameScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        gameScrollPane.setStyle("-fx-background-color:transparent;");
-        gameListView.setStyle(mode);
-        gameListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        updateGameView();
-        updatePlayerView();
-    }
-
-    private void setPlayerListView() {
-        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle(mode);
-        playerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        ArrayList<String> existingPlayers = getExistingPlayers();
-        for (String name : existingPlayers) {
-            playerListView.getItems().add(new Label(name));
-        }
-    }
-
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
                 String userKey = LoginController.getUserKey();
+
                 if (selected.equals(twoPlayers)) {
                     new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
                 } else if (selected.equals(fourPlayers)) {
                     new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
-                updateGameView();
             } else {
                 notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
             logout.sendRequest();
+
             if (logout.getSuccessful()) {
                 chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
@@ -283,7 +251,7 @@ public class MainController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
         } else if (event.getSource().equals(btnArmyManager)) {
-
+            ArmyManagerController.joiningGame = false;
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
         } else if (event.getSource().equals(btnSend)) {
@@ -291,6 +259,7 @@ public class MainController {
                 if (checkInput(message.getText())) {
                     return;
                 }
+
                 if (sendTo != null) {
                     if (sendTo.trim().equals("")) {
                         sendTo = null;
@@ -302,23 +271,12 @@ public class MainController {
                 } else {
                     chat.sendMessage(message.getText());
                 }
+
                 message.setText("");
             }
-        } else if (event.getSource().equals(btnPlayerRefresh)) {
-            updatePlayerView();
-            updateGameView();
         } else if (event.getSource().equals(btnMode)) {
-            if (SerializeUtils.deserialize(new File(path), boolean.class)) {
-                playerListView.setStyle(whiteMode);
-                gameListView.setStyle(whiteMode);
-                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
-                SerializeUtils.serialize(path, false);
-            } else if (!SerializeUtils.deserialize(new File(path), boolean.class)) {
-                playerListView.setStyle(darkMode);
-                gameListView.setStyle(darkMode);
-                loginController.changeThemeOnButton(mainScreen, mainScreen1, path);
-                SerializeUtils.serialize(path, true);
-            }
+            SerializeUtils.serialize(path, !Theming.darkModeActive());
+            Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
@@ -335,63 +293,68 @@ public class MainController {
                 chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
-        } else if (event.getSource().equals(btnTicTacToe)) {
-            try {
-                Parent root = FXMLLoader
-                    .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root, 800, 600));
-                stage.show();
-                stage.setResizable(false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // TODO: find a better place for tictactoe, or add hotkeys like for easter eggs
+            /*} else if (event.getSource().equals(btnTicTacToe)) {
+                try {
+                    Parent root = FXMLLoader
+                        .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root, 800, 600));
+                    stage.show();
+                    stage.setResizable(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
         }
-        message.requestFocus();
+
+        hamburgerMenu.requestFocus();
     }
 
-    void updateGameView() {
-        ObservableList items = gameListView.getItems();
-        while (items.size() != 0) {
-            items.remove(0);
-        }
-
-        ArrayList<Game> existingGames = getExistingGames();
-        for (Game game : existingGames) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
-            try {
-                Parent parent = fxmlLoader.load();
-                GameFieldController controller = fxmlLoader.getController();
-                controller.setUpGameLabel(game, this);
-                gameListView.getItems().add(parent);
-            } catch (IOException e) {
-                notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
-            }
-        }
-    }
-
-    private ArrayList<Game> getExistingGames() {
+    private static HashMap<String, GameMeta> getExistingGames() {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
         return queryGamesRequest.getGames();
     }
 
-    private void updatePlayerView() {
-        playerScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        playerListView.setStyle("-fx-background-color:transparent;");
-        playerListView.setStyle(mode);
-        ObservableList playerList = playerListView.getItems();
-        while (playerList.size() != 0) {
-            playerList.remove(0);
-        }
+    private void updateGameView() {
+        existingGames = getExistingGames();
 
-        ArrayList<String> existingPlayers = getExistingPlayers();
-        for (String player : existingPlayers) {
-            playerListView.getItems().add(addPlayerlabel(player));
-        }
+        Platform.runLater(() -> {
+            ObservableList items = gameListView.getItems();
+
+            while (items.size() != 0) {
+                items.remove(0);
+            }
+
+            existingGames.forEach((s, gameMeta) -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+
+                try {
+                    Parent parent = fxmlLoader.load();
+                    GameFieldController controller = fxmlLoader.getController();
+                    controller.setUpGameLabel(gameMeta);
+                    gameListView.getItems().add(parent);
+                } catch (IOException e) {
+                    notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                }
+            });
+        });
+    }
+
+    private void updatePlayerView() {
+        Platform.runLater(() -> {
+            ObservableList playerList = playerListView.getItems();
+
+            while (playerList.size() != 0) {
+                playerList.remove(0);
+            }
+
+            for (String player : getExistingPlayers()) {
+                playerListView.getItems().add(addPlayerlabel(player));
+            }
+        });
     }
 
     private ArrayList<String> getExistingPlayers() {
@@ -399,11 +362,6 @@ public class MainController {
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
         return usersInLobbyRequest.getUsersInLobby();
-    }
-
-    void setJoinedGame(Game joinedGame) {
-        this.joinedGame = joinedGame;
-        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainScreen);
     }
 
     private Label addPlayerlabel(String player) {
@@ -479,9 +437,9 @@ public class MainController {
     }
 
     private void setChatStyle(Label label) {
-        label.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+        label.setStyle("-fx-text-fill: " + (Theming.darkModeActive()
             ? "-fx-primary" : "black") + ";"
-            + "-fx-background-color: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            + "-fx-background-color: " + (Theming.darkModeActive()
             ? "-fx-secondary" : "white") + ";"
             + "-fx-border-radius: 20px;"
             + "-fx-background-radius: 10px;");
@@ -505,7 +463,7 @@ public class MainController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/PrivateTab.fxml"));
+                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/privateTab.fxml"));
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
@@ -579,9 +537,9 @@ public class MainController {
 
         Platform.runLater(() -> {
             message.clear();
-            message.setStyle("-fx-text-fill: " + (SerializeUtils.deserialize(new File(path), boolean.class)
+            message.setStyle("-fx-text-fill: " + (Theming.darkModeActive()
                 ? "-fx-secondary;" : "black;") + "-jfx-focus-color: "
-                + (SerializeUtils.deserialize(new File(path), boolean.class)
+                + (Theming.darkModeActive()
                 ? "-fx-secondary;" : "black;"));
         });
     }

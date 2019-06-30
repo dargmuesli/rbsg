@@ -1,37 +1,43 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import de.uniks.se1ss19teamb.rbsg.model.Game;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
+import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class GameFieldController {
 
     @FXML
+    private HBox root;
+
+    @FXML
     private Label gameNameLabel;
 
-    private Game game;
+    private GameMeta gameMeta;
+    static GameMeta joinedGame;
 
-    private MainController mainController;
 
-
-    void setUpGameLabel(Game game, MainController mainController) {
-        this.game = game;
-        this.mainController = mainController;
-        gameNameLabel.setText(game.getName());
+    void setUpGameLabel(GameMeta gameMeta) {
+        this.gameMeta = gameMeta;
+        gameNameLabel.setText(gameMeta.getName());
     }
 
     public void joinGame() {
-        JoinGameRequest joinGameRequest = new JoinGameRequest(game.getId(), LoginController.getUserKey());
+        JoinGameRequest joinGameRequest = new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey());
         joinGameRequest.sendRequest();
-        mainController.setJoinedGame(game);
+        joinedGame = gameMeta;
+
+        ArmyManagerController.joiningGame = true;
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root);
     }
 
     public void deleteGame() {
-        DeleteGameRequest deleteGameRequest = new DeleteGameRequest(game.getId(), LoginController.getUserKey());
+        DeleteGameRequest deleteGameRequest = new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey());
         deleteGameRequest.sendRequest();
-        mainController.updateGameView();
     }
 
 }
