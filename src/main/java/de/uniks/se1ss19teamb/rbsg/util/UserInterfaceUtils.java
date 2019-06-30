@@ -4,9 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
+import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
+
 import java.io.IOException;
 
-import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -32,11 +33,12 @@ public class UserInterfaceUtils {
                 if (node.lookup("#chatWindow") == null) {
                     node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
                 } else {
-                    AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
                     VBox chatWindow = (VBox) node.lookup("#chatWindow");
                     chatWindow.setPrefWidth(285);
                     chatWindow.setPrefHeight(190);
                     DragMoveResize.makeChangeable(chatWindow);
+
+                    AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
                     pane.getChildren().add(chatWindow);
                     node.getScene().setRoot(pane);
                 }
