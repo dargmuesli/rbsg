@@ -17,19 +17,20 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Snake extends Application {
-    // variable
-    static int speed = 5;
-    static int foodcolor = 0;
-    static int width = 20;
-    static int height = 20;
-    static int foodX = 0;
-    static int foodY = 0;
-    static int cornersize = 25;
-    static List<Corner> snake = new ArrayList<>();
-    static Dir direction = Dir.left;
-    static boolean gameOver = false;
-    static Random rand = new Random();
+    private static int speed = 0;
+    private static int foodcolor = 0;
+    private static int width = 20;
+    private static int height = 20;
+    private static int foodX = 0;
+    private static int foodY = 0;
+    private static int cornersize = 25;
+    private static int score = 0;
+    private static List<Corner> snake = new ArrayList<>();
+    private static Dir direction = Dir.left;
+    public static boolean gameOver = false;
+    private static Random rand = new Random();
     public static Stage classStage = new Stage();
+    private long lastTick = 0;
 
     public enum Dir {
         left, right, up, down
@@ -48,18 +49,17 @@ public class Snake extends Application {
 
     public void start(Stage primaryStage) {
         try {
-            newFood();
-
+            lastTick = 0;
             VBox root = new VBox();
             Canvas c = new Canvas(width * cornersize, height * cornersize);
             GraphicsContext gc = c.getGraphicsContext2D();
             root.getChildren().add(c);
             classStage = primaryStage;
 
-            new AnimationTimer() {
-                long lastTick = 0;
-
+            AnimationTimer animationTimer = new AnimationTimer() {
+                @Override
                 public void handle(long now) {
+
                     if (lastTick == 0) {
                         lastTick = now;
                         tick(gc);
@@ -71,23 +71,41 @@ public class Snake extends Application {
                         tick(gc);
                     }
                 }
-
-            }.start();
+            };
+            animationTimer.start();
+            if (gameOver){
+                animationTimer.stop();
+                lastTick = 0;
+            }
+            newFood();
+            animationTimer.start();
 
             Scene scene = new Scene(root, width * cornersize, height * cornersize);
             
             scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-                if (key.getCode() == KeyCode.W) {
+                if (key.getCode() == KeyCode.W || key.getCode() == KeyCode.UP) {
                     direction = Dir.up;
+                    if (speed == 1){
+                        speed = 5;
+                    }
                 }
-                if (key.getCode() == KeyCode.A) {
+                if (key.getCode() == KeyCode.A || key.getCode() == KeyCode.LEFT) {
                     direction = Dir.left;
+                    if (speed == 1){
+                        speed = 5;
+                    }
                 }
-                if (key.getCode() == KeyCode.S) {
+                if (key.getCode() == KeyCode.S || key.getCode() == KeyCode.DOWN) {
                     direction = Dir.down;
+                    if (speed == 1){
+                        speed = 5;
+                    }
                 }
-                if (key.getCode() == KeyCode.D) {
+                if (key.getCode() == KeyCode.D || key.getCode() == KeyCode.RIGHT) {
                     direction = Dir.right;
+                    if (speed == 1){
+                        speed = 5;
+                    }
                 }
 
             });
@@ -95,9 +113,9 @@ public class Snake extends Application {
             snake.add(new Corner(width / 2, height / 2));
             snake.add(new Corner(width / 2, height / 2));
             snake.add(new Corner(width / 2, height / 2));
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("SNAKE");
-            primaryStage.show();
+            classStage.setScene(scene);
+            classStage.setTitle("SNAKE");
+            classStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,7 +143,7 @@ public class Snake extends Application {
                 break;
             case down:
                 snake.get(0).y++;
-                if (snake.get(0).y > height) {
+                if (snake.get(0).y >= height) {
                     gameOver = true;
                 }
                 break;
@@ -137,7 +155,7 @@ public class Snake extends Application {
                 break;
             case right:
                 snake.get(0).x++;
-                if (snake.get(0).x > width) {
+                if (snake.get(0).x >= width) {
                     gameOver = true;
                 }
                 break;
@@ -160,7 +178,7 @@ public class Snake extends Application {
 
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 30));
-        gc.fillText("Score: " + (speed - 6), 10, 30);
+        gc.fillText("Score: " + (score - 1), 10, 30);
 
         Color cc = Color.WHITE;
 
@@ -204,8 +222,15 @@ public class Snake extends Application {
                     continue start;
                 }
             }
+            if (gameOver){
+                score = 0;
+                speed = 0;
+                snake.clear();
+                gameOver = false;
+            }
             foodcolor = rand.nextInt(5);
             speed++;
+            score++;
             break;
 
         }
