@@ -69,10 +69,6 @@ public class TextureManager {
     public static Pane getTextureInstance(String toFetch) {
         return instance.fetchTexture(toFetch).instantiate();
     }
-
-    public static Pane computeTerrainTextureInstance(Object map, int x, int y) {
-        return getTextureInstance("missing");
-    }
     
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
         TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getName());
