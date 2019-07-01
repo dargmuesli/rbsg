@@ -62,6 +62,7 @@ public class InGameController {
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
             switch (((JFXButton) event.getSource()).getId()) {
+                // TODO handshake error
                 case "btnBack":
                     UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
