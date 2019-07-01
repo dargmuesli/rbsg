@@ -145,7 +145,6 @@ public class DragMoveResize {
             region.setPrefWidth(event.getX());
         }
 
-        // TODO calculations for west and all of south
         if (usedCursor != null && usedCursor.equals(Cursor.W_RESIZE)) {
             region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
         }

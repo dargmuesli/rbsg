@@ -166,8 +166,8 @@ public class ArmyManagerController {
             loadFromServer();
 
             if (serverArmies.size() != 0) {
-                // TODO VADIM mainPane.getChildren().add(mainPane.getScene().lookup("#chatWindow"));
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
+                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
+                    mainPane.getScene().lookup("#chatWindow"));
             }
         }
     }

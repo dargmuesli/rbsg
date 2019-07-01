@@ -30,7 +30,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -102,6 +101,8 @@ public class MainController {
     private VBox chatBox;
     @FXML
     private VBox chatWindow;
+    private double chatWindowWidth;
+    private double chatWindowHeight;
     @FXML
     private VBox textArea;
 
@@ -209,23 +210,20 @@ public class MainController {
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
-        chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
-
-        // TODO VADIM
-        btnMinimize.setVisible(false);
         /*
-        chatWindow.widthProperty().addListener(((observable, oldValue, newValue) ->
-            chatPane.setPrefWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue)));
+        chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            this.message.requestFocus();
+            System.out.println("prefwidth: "+chatWindow.getPrefWidth());
+            System.out.println("prefheight: "+chatWindow.getPrefHeight());
+            System.out.println("minwidth: "+chatWindow.getMinWidth());
+            System.out.println("minheight: "+chatWindow.getMinHeight());
+            System.out.println("maxwidth: "+chatWindow.getMaxWidth());
+            System.out.println("maxheight: "+chatWindow.getMaxHeight());
+            System.out.println(chatWindow.lookup("#btnMinimize"));
+        });
+        */
 
-        chatWindow.heightProperty().addListener(((observable, oldValue, newValue) ->
-        {
-            // chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue);
-        }));
-
-
-         */
-
-
+        btnMinimize.setDisable(true);
     }
 
     @FXML
@@ -261,8 +259,10 @@ public class MainController {
             }
         } else if (event.getSource().equals(btnArmyManager)) {
             ArmyManagerController.joiningGame = false;
+            btnMinimize.setDisable(false);
+            btnMinimize.fire();
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen, chatWindow);
         } else if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
                 if (checkInput(message.getText())) {
@@ -286,12 +286,18 @@ public class MainController {
         } else if (event.getSource().equals(btnMode)) {
             SerializeUtils.serialize(path, !Theming.darkModeActive());
             Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
-        } else if (event.getSource().equals(btnMinimize)) { // TODO proper minimize
+        } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
+                chatWindowWidth = chatWindow.getWidth();
+                chatWindowHeight = chatWindow.getHeight();
+                chatWindow.setPrefWidth(0);
+                chatWindow.setPrefHeight(0);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
                 chatBox.setVisible(true);
+                chatWindow.setPrefWidth(chatWindowWidth);
+                chatWindow.setPrefHeight(chatWindowHeight);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
             // TODO: find a better place for tictactoe, or add hotkeys like for easter eggs
@@ -395,7 +401,6 @@ public class MainController {
     private void addElement(String player, String message, VBox box, boolean whisper) {
 
         VBox container = new VBox();
-        // TODO container.maxWidthProperty().bind(chatPane.widthProperty().multiply(0.98));
 
         if (player != null) {
             Label name = new Label(player + ":");

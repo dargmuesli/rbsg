@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -7,6 +8,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class GameFieldController {
 
@@ -31,9 +33,13 @@ public class GameFieldController {
         joinedGame = gameMeta;
 
         ArmyManagerController.joiningGame = true;
-        // TODO VADIM root.getChildren().add(root.getScene().lookup("#chatWindow"));
+
+        VBox chatWindow = (VBox) root.getScene().lookup("#chatWindow");
+        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+        btnMinimize.setDisable(false);
+        btnMinimize.fire();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
     }
 
     public void deleteGame() {

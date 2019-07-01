@@ -12,6 +12,7 @@ import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -30,19 +31,28 @@ public class UserInterfaceUtils {
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             try {
-                // TODO VADIM
-                // if (node.lookup("#chatWindow") == null) {
-                    node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
-                // } else {
-                //     VBox chatWindow = (VBox) node.lookup("#chatWindow");
-                //     // chatWindow.setPrefWidth(230);
-                //     chatWindow.setPrefHeight(250);
-                //     DragMoveResize.makeChangeable(chatWindow);
+                node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
 
-                //     AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
-                //     pane.getChildren().add(chatWindow);
-                //     node.getScene().setRoot(pane);
-                // }
+            } catch (IOException e) {
+                notificationHandler.sendError(
+                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
+            }
+        });
+        fadeTransition.play();
+    }
+
+    public static void makeFadeOutTransition(String path, Node node, Node chatWindow) {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(750));
+        fadeTransition.setNode(node);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.setOnFinished(event -> {
+            try {
+                DragMoveResize.makeChangeable((Region) chatWindow);
+                AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
+                pane.getChildren().add(chatWindow);
+                node.getScene().setRoot(pane);
             } catch (IOException e) {
                 notificationHandler.sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
