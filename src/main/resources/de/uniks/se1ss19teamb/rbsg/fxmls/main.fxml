@@ -81,7 +81,7 @@
                         </graphic>
                     </JFXButton>
                     <VBox fx:id="chatBox" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-                        <JFXTabPane fx:id="chatPane" prefHeight="225" prefWidth="425">
+                        <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
                             <Tab closable="false" text="All">
                                 <ScrollPane fx:id="allPane" fitToHeight="true" fitToWidth="true">
                                     <VBox fx:id="textArea"/>

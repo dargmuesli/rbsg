@@ -211,11 +211,21 @@ public class MainController {
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
 
+        // TODO VADIM
+        btnMinimize.setVisible(false);
+        /*
         chatWindow.widthProperty().addListener(((observable, oldValue, newValue) ->
             chatPane.setPrefWidth(chatPane.getWidth() + (Double) newValue - (Double) oldValue)));
 
         chatWindow.heightProperty().addListener(((observable, oldValue, newValue) ->
-            chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue)));
+        {
+            // chatPane.setPrefHeight(chatPane.getHeight() + (Double) newValue - (Double) oldValue);
+        }));
+
+
+         */
+
+
     }
 
     @FXML
@@ -244,9 +254,8 @@ public class MainController {
             logout.sendRequest();
 
             if (logout.getSuccessful()) {
-                chatWindow.setId("none"); // renaming id so it will not be give to login
+                // chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
-                System.out.println(mainScreen.lookup("#chatWindow"));
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
@@ -280,17 +289,9 @@ public class MainController {
         } else if (event.getSource().equals(btnMinimize)) { // TODO proper minimize
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
-                chatBox.setPrefHeight(0);
-                chatBox.setPrefWidth(0);
-                chatWindow.setAlignment(Pos.BOTTOM_LEFT);
-                chatWindow.setPadding(new Insets(0, 0, 0, 15));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
                 chatBox.setVisible(true);
-                chatBox.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                chatBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                chatWindow.setAlignment(Pos.CENTER);
-                chatWindow.setPadding(new Insets(0));
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
             // TODO: find a better place for tictactoe, or add hotkeys like for easter eggs
@@ -394,7 +395,7 @@ public class MainController {
     private void addElement(String player, String message, VBox box, boolean whisper) {
 
         VBox container = new VBox();
-        container.maxWidthProperty().bind(chatPane.widthProperty().multiply(0.98));
+        // TODO container.maxWidthProperty().bind(chatPane.widthProperty().multiply(0.98));
 
         if (player != null) {
             Label name = new Label(player + ":");

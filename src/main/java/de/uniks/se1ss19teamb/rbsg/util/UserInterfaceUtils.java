@@ -30,18 +30,19 @@ public class UserInterfaceUtils {
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             try {
-                if (node.lookup("#chatWindow") == null) {
+                // TODO VADIM
+                // if (node.lookup("#chatWindow") == null) {
                     node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
-                } else {
-                    VBox chatWindow = (VBox) node.lookup("#chatWindow");
-                    // chatWindow.setPrefWidth(230);
-                    chatWindow.setPrefHeight(250);
-                    DragMoveResize.makeChangeable(chatWindow);
+                // } else {
+                //     VBox chatWindow = (VBox) node.lookup("#chatWindow");
+                //     // chatWindow.setPrefWidth(230);
+                //     chatWindow.setPrefHeight(250);
+                //     DragMoveResize.makeChangeable(chatWindow);
 
-                    AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
-                    pane.getChildren().add(chatWindow);
-                    node.getScene().setRoot(pane);
-                }
+                //     AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
+                //     pane.getChildren().add(chatWindow);
+                //     node.getScene().setRoot(pane);
+                // }
             } catch (IOException e) {
                 notificationHandler.sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
