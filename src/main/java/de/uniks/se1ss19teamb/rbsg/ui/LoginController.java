@@ -55,7 +55,6 @@ public class LoginController {
     private AnchorPane loginScreen1;
     @FXML
     private JFXButton btnSnake;
-    Snake snake = new Snake();
 
     static String getUser() {
         return user;
@@ -126,7 +125,7 @@ public class LoginController {
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
         } else if (event.getSource().equals(btnSnake)) {
-            snake.start(Snake.classStage);
+            new Snake().start(Snake.classStage);
         }
     }
 

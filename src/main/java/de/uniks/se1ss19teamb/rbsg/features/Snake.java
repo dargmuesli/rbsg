@@ -72,38 +72,36 @@ public class Snake extends Application {
                     }
                 }
             };
-            animationTimer.start();
-            if (gameOver){
+            if (gameOver) {
                 animationTimer.stop();
-                lastTick = 0;
             }
-            newFood();
             animationTimer.start();
+            newFood();
 
             Scene scene = new Scene(root, width * cornersize, height * cornersize);
             
             scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
                 if (key.getCode() == KeyCode.W || key.getCode() == KeyCode.UP) {
                     direction = Dir.up;
-                    if (speed == 1){
+                    if (speed == 1) {
                         speed = 5;
                     }
                 }
                 if (key.getCode() == KeyCode.A || key.getCode() == KeyCode.LEFT) {
                     direction = Dir.left;
-                    if (speed == 1){
+                    if (speed == 1) {
                         speed = 5;
                     }
                 }
                 if (key.getCode() == KeyCode.S || key.getCode() == KeyCode.DOWN) {
                     direction = Dir.down;
-                    if (speed == 1){
+                    if (speed == 1) {
                         speed = 5;
                     }
                 }
                 if (key.getCode() == KeyCode.D || key.getCode() == KeyCode.RIGHT) {
                     direction = Dir.right;
-                    if (speed == 1){
+                    if (speed == 1) {
                         speed = 5;
                     }
                 }
@@ -222,7 +220,7 @@ public class Snake extends Application {
                     continue start;
                 }
             }
-            if (gameOver){
+            if (gameOver) {
                 score = 0;
                 speed = 0;
                 snake.clear();
