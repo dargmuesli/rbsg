@@ -43,7 +43,6 @@ public class Chat {
     public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
         this.chatSocket.registerChatMessageHandler(chatMessageHandler);
-        this.chatSocket.connect();
         this.path = path;
     }
 

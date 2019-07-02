@@ -138,9 +138,9 @@ public class MainController {
                         textArea, false);
                     updateGameView();
                 });
-
-            SystemSocket.instance.connect();
         }
+
+        SystemSocket.instance.connect();
 
         if (ChatSocket.instance == null) {
             ChatSocket.instance = new ChatSocket(userName, userKey);
@@ -154,9 +154,9 @@ public class MainController {
             });
         }
 
-        if (MainController.chat == null) {
-            MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
-        }
+        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+
+        ChatSocket.instance.connect();
 
         updateGameView();
         updatePlayerView();
