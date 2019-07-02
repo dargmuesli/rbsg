@@ -92,7 +92,8 @@ public class RegisterController {
             NotificationHandler.getInstance().setPopupController(controller);
 
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }
     }
 

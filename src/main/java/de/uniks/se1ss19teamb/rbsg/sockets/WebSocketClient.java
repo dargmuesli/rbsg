@@ -41,7 +41,8 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                NotificationHandler.getInstance().sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
+                NotificationHandler.getInstance()
+                    .sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
             }
         }
     }

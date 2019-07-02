@@ -50,7 +50,8 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            NotificationHandler.getInstance().sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
+            NotificationHandler.getInstance()
+                .sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
         }
 
         websocket = null;

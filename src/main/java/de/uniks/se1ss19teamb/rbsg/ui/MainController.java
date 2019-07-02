@@ -177,7 +177,8 @@ public class MainController {
                 NotificationHandler.getInstance().setPopupController(controller);
                 Platform.runLater(() -> errorContainer.getChildren().add(parent));
             } catch (IOException e) {
-                NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+                NotificationHandler.getInstance()
+                    .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
 
             // ChatTabController
@@ -340,7 +341,8 @@ public class MainController {
                     controller.setUpGameLabel(gameMeta);
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
-                    NotificationHandler.getInstance().sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                    NotificationHandler.getInstance()
+                        .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
                 }
             });
         });
@@ -475,7 +477,8 @@ public class MainController {
                             getPrivate(from, message, newTab);
                         }
                     } catch (IOException e) {
-                        NotificationHandler.getInstance().sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                        NotificationHandler.getInstance()
+                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
                     }
                 }
             );

@@ -54,7 +54,8 @@ public class GameSocket extends AbstractWebSocket {
                                         NotificationHandler.getInstance().sendWarning(message, logger);
                                         break;
                                     default:
-                                        NotificationHandler.getInstance().sendWarning("Unknown message \"" + message + "\"", logger);
+                                        NotificationHandler.getInstance()
+                                            .sendWarning("Unknown message \"" + message + "\"", logger);
                                 }
                             }
                         }

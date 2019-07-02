@@ -94,7 +94,8 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                NotificationHandler.getInstance().sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
+                NotificationHandler.getInstance()
+                    .sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
             }
         }
 
