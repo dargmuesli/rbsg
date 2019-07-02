@@ -20,7 +20,8 @@ public class WebSocketClient {
 
     private static final String NOOP = "noop";
 
-    private Session mySession;
+    Session mySession;
+
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
 

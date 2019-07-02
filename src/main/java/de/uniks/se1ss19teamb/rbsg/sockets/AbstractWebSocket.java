@@ -31,7 +31,7 @@ public abstract class AbstractWebSocket implements WebSocket {
             WebSocket.changeUserKey(getUserKey());
         }
 
-        if (websocket == null) {
+        if (websocket == null || websocket.mySession == null) {
             try {
                 websocket = new WebSocketClient(new URI(url + getEndpoint()), (response) -> {
                     for (WebSocketMessageHandler handler : handlers) {
