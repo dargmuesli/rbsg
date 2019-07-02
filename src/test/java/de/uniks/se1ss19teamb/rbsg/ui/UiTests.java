@@ -71,6 +71,7 @@ class UiTests extends ApplicationTest {
         write("z").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#btnCancel");
+        sleep(2000);
     }
 
     @Test
@@ -108,6 +109,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnLoadServer");
         clickOn("#btnSaveServer");
         clickOn("#btnLogout");
+        sleep(2000);
     }
 
     @Test
@@ -147,6 +149,7 @@ class UiTests extends ApplicationTest {
             .drag(targetWindow().getX()+targetWindow().getX()/2, targetWindow().getY()*2)
             .drop();
         clickOn("#btnLogout");
+        sleep(2000);
     }
 
     @Test
@@ -184,5 +187,6 @@ class UiTests extends ApplicationTest {
         clickOn("#btnColorMode");
         clickOn("#btnColorMode");
         clickOn("#btnLogout");
+        sleep(2000);
     }
 }
