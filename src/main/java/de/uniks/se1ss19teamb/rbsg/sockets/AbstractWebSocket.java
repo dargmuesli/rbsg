@@ -13,11 +13,13 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractWebSocket implements WebSocket {
 
-    private static final String url = "wss://rbsg.uniks.de/ws";
     private static final Logger logger = LogManager.getLogger();
+    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+
+    private static final String url = "wss://rbsg.uniks.de/ws";
+
     List<WebSocketMessageHandler> handlers = new ArrayList<>();
     WebSocketClient websocket;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     protected abstract String getEndpoint();
 
@@ -51,6 +53,7 @@ public abstract class AbstractWebSocket implements WebSocket {
         } catch (Exception e) {
             notificationHandler.sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
         }
+
         websocket = null;
     }
 
