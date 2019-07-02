@@ -23,12 +23,7 @@ public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
 
     public static void makeFadeOutTransition(String path, Node node) {
-        // TODO ich weiss nicht wie ich dieses stück code nicht dupliziert verwende
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(750));
-        fadeTransition.setNode(node);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
+        FadeTransition fadeTransition = setTransition(node);
         fadeTransition.setOnFinished(event -> {
             try {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
@@ -41,12 +36,7 @@ public class UserInterfaceUtils {
     }
 
     public static void makeFadeOutTransition(String path, Node node, Node chatWindow) {
-        // TODO
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(750));
-        fadeTransition.setNode(node);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
+        FadeTransition fadeTransition = setTransition(node);
         fadeTransition.setOnFinished(event -> {
             try {
                 DragMoveResize.makeChangeable((Region) chatWindow);
@@ -59,6 +49,15 @@ public class UserInterfaceUtils {
             }
         });
         fadeTransition.play();
+    }
+
+    private static FadeTransition setTransition(Node node) {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(750));
+        fadeTransition.setNode(node);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        return fadeTransition;
     }
 
     public static void makeFadeInTransition(Node node) {
