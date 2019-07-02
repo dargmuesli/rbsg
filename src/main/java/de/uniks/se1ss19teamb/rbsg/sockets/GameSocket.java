@@ -51,6 +51,9 @@ public class GameSocket extends AbstractWebSocket {
                                     case "Initialize game, sending start situation...":
                                         firstGameInitObjectReceived = false;
                                         break;
+                                    case "You already joined a game.":
+                                        notificationHandler.sendWarning(message, logger);
+                                        break;
                                     default:
                                         notificationHandler.sendWarning("Unknown message \"" + message + "\"", logger);
                                 }
@@ -75,6 +78,9 @@ public class GameSocket extends AbstractWebSocket {
                         break;
                     case "gameInitFinished":
                         InGameController.gameInitFinished = true;
+                        break;
+                    case "gameRemoveObject":
+                        // TODO
                         break;
                     default:
                         notificationHandler.sendWarning("Unknown action \"" + action + "\"", logger);
