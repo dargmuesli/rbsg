@@ -78,23 +78,23 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate();
     }
     
-    public static Pane computeMinimapTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int width, int height, int size) {
-    	//TODO Render Unit positions.
-    	
-    	Pane result = new Pane();
-    	Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
-    	GraphicsContext gc = canvas.getGraphicsContext2D();
-    	
-    	for(Entry<Pair<Integer, Integer>, InGameTile> tile : map.entrySet()) {
-    		Pair<Integer, Integer> pos = tile.getKey();
-    		
-    		gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
-    		
-    		gc.fillRect(pos.getKey() * size, pos.getValue() * size, size, size);
-    	}
-    	
-    	result.getChildren().add(canvas);
-    	return result;
+    public static Pane computeMinimap(Map<Pair<Integer, Integer>, InGameTile> map, int width, int height, int size) {
+        //TODO Render Unit positions.
+        
+        Pane result = new Pane();
+        Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        for (Entry<Pair<Integer, Integer>, InGameTile> tile : map.entrySet()) {
+            Pair<Integer, Integer> pos = tile.getKey();
+            
+            gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
+            
+            gc.fillRect(pos.getKey() * size, pos.getValue() * size, size, size);
+        }
+        
+        result.getChildren().add(canvas);
+        return result;
     }
     
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
