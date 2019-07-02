@@ -127,7 +127,7 @@ class UiTests extends ApplicationTest {
         sleep(500);
         ListView list = lookup("#gameListView").queryAs(ListView.class);
         HBox box = new HBox();
-        for (int i = 0; i<list.getItems().size(); i++) {
+        for (int i = 0; i < list.getItems().size(); i++) {
             box = (HBox) list.getItems().get(i);
             Label label = (Label) box.lookup("Label");
             if (label.getText().equals("ayGame")) {
@@ -146,7 +146,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnFullscreen");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
-            .drag(targetWindow().getX()+targetWindow().getX()/2, targetWindow().getY()*2)
+            .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
             .drop();
         clickOn("#btnLogout");
         sleep(2000);
@@ -172,7 +172,7 @@ class UiTests extends ApplicationTest {
         sleep(500);
         ListView list = lookup("#gameListView").queryAs(ListView.class);
         HBox box;
-        for (int i = 0; i<list.getItems().size(); i++) {
+        for (int i = 0; i < list.getItems().size(); i++) {
             box = (HBox) list.getItems().get(i);
             Label label = (Label) box.lookup("Label");
             if (label.getText().equals("ayGame")) {
