@@ -198,7 +198,13 @@ public class ArmyManagerController {
         }
 
         for (String unitId : army.getUnits()) {
-            switch (Troop.keyOf(unitId)) {
+            String id;
+            if (unitId.length() != 24) {
+                id = Troop.valueOf(unitId).id;
+            } else {
+                id = unitId;
+            }
+            switch (Troop.keyOf(id)) {
                 case BAZOOKA_TROOPER:
                     unitObjectControllers.get(0).increaseCount();
                     break;
@@ -350,8 +356,8 @@ public class ArmyManagerController {
     }
 
     private void saveCurrentConfig(int configNum) {
-        armySaves[configNum] = getCurrentConfiguration();
-        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum]);
+        armySaves[configNum - 1] = getCurrentConfiguration();
+        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum - 1]);
         NotificationHandler.getNotificationHandler()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
