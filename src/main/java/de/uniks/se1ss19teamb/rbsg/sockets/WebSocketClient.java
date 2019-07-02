@@ -88,8 +88,14 @@ public class WebSocketClient {
 
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
-        notificationHandler.sendInfo("WS " + mySession.getRequestURI() + " closed."
-            + " Reason: " + closeReason.getReasonPhrase(), logger);
+        String info = "WS " + mySession.getRequestURI() + " closed.";
+
+        if (!closeReason.getReasonPhrase().equals("")) {
+            info += " Reason: " + closeReason.getReasonPhrase();
+            notificationHandler.sendWarning(info, logger);
+        } else {
+            notificationHandler.sendInfo(info, logger);
+        }
         this.mySession = null;
         this.noopTimer.cancel();
     }
