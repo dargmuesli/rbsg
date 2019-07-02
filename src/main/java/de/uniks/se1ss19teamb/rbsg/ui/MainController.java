@@ -218,19 +218,6 @@ public class MainController {
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
-        /*
-        chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            this.message.requestFocus();
-            System.out.println("prefwidth: "+chatWindow.getPrefWidth());
-            System.out.println("prefheight: "+chatWindow.getPrefHeight());
-            System.out.println("minwidth: "+chatWindow.getMinWidth());
-            System.out.println("minheight: "+chatWindow.getMinHeight());
-            System.out.println("maxwidth: "+chatWindow.getMaxWidth());
-            System.out.println("maxheight: "+chatWindow.getMaxHeight());
-            System.out.println(chatWindow.lookup("#btnMinimize"));
-        });
-        */
-
         btnMinimize.setDisable(true);
     }
 
