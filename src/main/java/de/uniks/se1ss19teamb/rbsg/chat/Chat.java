@@ -42,7 +42,6 @@ public class Chat {
      */
     public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
-        this.chatSocket.connect();
         this.chatSocket.registerChatMessageHandler(chatMessageHandler);
         this.path = path;
     }

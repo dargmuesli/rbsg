@@ -54,7 +54,6 @@ public class MainController {
     private static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
-    private static String path = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/darkModeActive.json";
     private static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
 
@@ -75,7 +74,7 @@ public class MainController {
     @FXML
     private JFXButton btnMinimize;
     @FXML
-    private JFXButton btnMode;
+    private JFXButton btnColorMode;
     @FXML
     private JFXButton btnSend;
     @FXML
@@ -111,10 +110,53 @@ public class MainController {
         Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
 
         // TODO - after some time it automaticly disconnects system and chatSocket
-        SystemSocket.instance = new SystemSocket(userKey);
-        ChatSocket.instance = new ChatSocket(userName, userKey);
+        if (SystemSocket.instance == null) {
+            SystemSocket.instance = new SystemSocket(userKey);
+
+            SystemSocket.instance.registerUserJoinHandler(
+                (name) -> {
+                    updatePlayerView();
+                    addElement(name, " joined.", textArea, false);
+                });
+
+            SystemSocket.instance.registerUserLeftHandler(
+                (name) -> {
+                    addElement(name, " left.", textArea, false);
+                    updatePlayerView();
+                });
+
+            SystemSocket.instance.registerGameCreateHandler(
+                (gameName, id, neededPlayers) -> {
+                    updateGameView();
+                    addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
+                        textArea, false);
+                });
+
+            SystemSocket.instance.registerGameDeleteHandler(
+                (id) -> {
+                    addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
+                        textArea, false);
+                    updateGameView();
+                });
+        }
+
+        SystemSocket.instance.connect();
+
+        if (ChatSocket.instance == null) {
+            ChatSocket.instance = new ChatSocket(userName, userKey);
+
+            ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
+                if (isPrivate) {
+                    addNewPane(from, message, false, chatPane);
+                } else {
+                    addElement(from, message, textArea, false);
+                }
+            });
+        }
 
         MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+
+        ChatSocket.instance.connect();
 
         updateGameView();
         updatePlayerView();
@@ -122,7 +164,7 @@ public class MainController {
         Platform.runLater(() -> {
             Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
             Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-            Theming.hamburgerMenuTransition(hamburgerMenu, btnMode);
+            Theming.hamburgerMenuTransition(hamburgerMenu, btnColorMode);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
@@ -171,42 +213,6 @@ public class MainController {
             selectionModel = chatPane.getSelectionModel();
         });
 
-        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
-            if (isPrivate) {
-                addNewPane(from, message, false, chatPane);
-            } else {
-                addElement(from, message, textArea, false);
-            }
-        });
-
-        SystemSocket.instance.registerUserJoinHandler(
-            (name) -> {
-                updatePlayerView();
-                addElement(name, " joined.", textArea, false);
-            });
-
-        SystemSocket.instance.registerUserLeftHandler(
-            (name) -> {
-                addElement(name, " left.", textArea, false);
-                updatePlayerView();
-            });
-
-        SystemSocket.instance.registerGameCreateHandler(
-            (gameName, id, neededPlayers) -> {
-                updateGameView();
-                addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
-                    textArea, false);
-            });
-
-        SystemSocket.instance.registerGameDeleteHandler(
-            (id) -> {
-                addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
-                    textArea, false);
-                updateGameView();
-            });
-
-        SystemSocket.instance.connect();
-
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
@@ -240,7 +246,6 @@ public class MainController {
             if (logout.getSuccessful()) {
                 chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
-                System.out.println(mainScreen.lookup("#chatWindow"));
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
@@ -268,9 +273,12 @@ public class MainController {
 
                 message.setText("");
             }
-        } else if (event.getSource().equals(btnMode)) {
-            SerializeUtils.serialize(path, !Theming.darkModeActive());
+        } else if (event.getSource().equals(btnColorMode)) {
+            SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
             Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
+
+            // the game view contains sub-fxmls and thus needs to be updated separately
+            updateGameView();
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);

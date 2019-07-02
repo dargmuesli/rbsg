@@ -1,10 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.Troops;
+import de.uniks.se1ss19teamb.rbsg.model.Troop;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
@@ -31,24 +30,16 @@ import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/*
-    0 -> Bazooka Trooper
-    1 -> Chopper
-    2 -> Heavy Tank
-    3 -> Infantry
-    4 -> Jeep
-    5 -> Light Tank
- */
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
+    static Army currentArmy = new Army();
+    static boolean joiningGame;
     @FXML
     private AnchorPane mainPane;
     @FXML
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnFullScreen;
-    @FXML
-    private JFXHamburger hamburgerMenu;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -69,7 +60,6 @@ public class ArmyManagerController {
     private AnchorPane mainPane1;
     @FXML
     private HBox hboxLowerButtons;
-
     private BazookaTrooper bazookaTrooper = new BazookaTrooper();
     private Chopper chopper = new Chopper();
     private HeavyTank heavyTank = new HeavyTank();
@@ -81,21 +71,17 @@ public class ArmyManagerController {
     private int leftUnits = 10;
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
-    static Army currentArmy = new Army();
     private Army[] armySaves = new Army[3];
-    static boolean joiningGame;
     private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
     private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
 
-        btnJoinGame.setOnAction(this::setOnAction);
-        hboxLowerButtons.getChildren().add(btnJoinGame);
-
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullScreen);
+        if (joiningGame) {
+            btnJoinGame.setOnAction(this::setOnAction);
+            hboxLowerButtons.getChildren().add(btnJoinGame);
+        }
 
         UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
@@ -138,12 +124,9 @@ public class ArmyManagerController {
 
     @FXML
     private void eventHandler(ActionEvent event) {
-        switch (((JFXButton) event.getSource()).getId()) {
-            case "btnBack":
-                UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
-                break;
-            default:
+        if (event.getSource().equals(btnBack)) {
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
         }
     }
 
@@ -212,7 +195,7 @@ public class ArmyManagerController {
         }
 
         for (String unitId : army.getUnits()) {
-            switch (Troops.valueOf(unitId)) {
+            switch (Troop.keyOf(unitId)) {
                 case BAZOOKA_TROOPER:
                     unitObjectControllers.get(0).increaseCount();
                     break;
@@ -278,27 +261,27 @@ public class ArmyManagerController {
         ArrayList<String> allIds = new ArrayList<>();
 
         for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
-            allIds.add(Troops.BAZOOKA_TROOPER.toString());
+            allIds.add(Troop.BAZOOKA_TROOPER.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
-            allIds.add(Troops.CHOPPER.toString());
+            allIds.add(Troop.CHOPPER.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
-            allIds.add(Troops.HEAVY_TANK.toString());
+            allIds.add(Troop.HEAVY_TANK.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
-            allIds.add(Troops.INFANTRY.toString());
+            allIds.add(Troop.INFANTRY.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
-            allIds.add(Troops.JEEP.toString());
+            allIds.add(Troop.JEEP.toString());
         }
 
         for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
-            allIds.add(Troops.LIGHT_TANK.toString());
+            allIds.add(Troop.LIGHT_TANK.toString());
         }
 
         currentArmy.setUnits(allIds);
