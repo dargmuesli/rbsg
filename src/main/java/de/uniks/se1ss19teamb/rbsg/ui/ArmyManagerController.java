@@ -39,7 +39,7 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnFullScreen;
+    private JFXButton btnFullscreen;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -77,6 +77,8 @@ public class ArmyManagerController {
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
+
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
@@ -140,8 +142,8 @@ public class ArmyManagerController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
             }
-        } else if (event.getSource().equals(btnFullScreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullScreen);
+        } else if (event.getSource().equals(btnFullscreen)) {
+            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnJoinGame)) {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();

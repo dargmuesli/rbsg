@@ -71,6 +71,8 @@ public class LoginController {
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         // load user data
         userData = UserData.loadUserData(notificationHandler);
 

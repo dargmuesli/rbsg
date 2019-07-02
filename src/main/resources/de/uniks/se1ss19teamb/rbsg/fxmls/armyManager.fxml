@@ -29,7 +29,7 @@
                         </graphic>
                     </JFXButton>
                     <Pane HBox.hgrow="ALWAYS"/>
-                    <JFXButton fx:id="btnFullScreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
                                onAction="#setOnAction">
                         <graphic>
                             <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>

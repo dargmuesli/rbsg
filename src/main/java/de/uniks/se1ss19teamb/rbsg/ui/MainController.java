@@ -109,6 +109,8 @@ public class MainController {
 
         Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
             SystemSocket.instance = new SystemSocket(userKey);

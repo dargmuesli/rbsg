@@ -45,6 +45,8 @@ public class InGameController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         GameSocket.instance = new GameSocket(
             LoginController.getUserKey(),
             GameFieldController.joinedGame.getId(),
