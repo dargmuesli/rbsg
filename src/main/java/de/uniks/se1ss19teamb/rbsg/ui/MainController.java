@@ -493,7 +493,9 @@ public class MainController {
     }
 
     private boolean checkInput(String input) {
-        if (input.length() < 4) {
+        if (input.length() < 2) {
+            return false;
+        } else if (input.length() < 4) {
             if (input.substring(0, 2).equals("//")) {
                 Window window = btnFullscreen.getScene().getWindow();
                 Image image = new Image(getClass()
