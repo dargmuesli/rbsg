@@ -63,6 +63,7 @@ public class InGameController {
         if (event.getSource().equals(btnBack)) {
             switch (((JFXButton) event.getSource()).getId()) {
                 case "btnBack":
+                    GameSocket.instance.disconnect();
                     UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
                     break;

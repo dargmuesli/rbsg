@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.Arrays;
@@ -33,6 +35,9 @@ public class GameFieldController {
     }
 
     public void joinGame() {
+        SystemSocket.instance.disconnect();
+        ChatSocket.instance.disconnect();
+
         JoinGameRequest joinGameRequest = new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey());
         joinGameRequest.sendRequest();
         joinedGame = gameMeta;
