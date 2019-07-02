@@ -3,8 +3,11 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import de.uniks.se1ss19teamb.rbsg.Main;
 
 import javafx.application.Platform;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -119,15 +122,30 @@ class UiTests extends ApplicationTest {
         clickOn("#gameName");
         write("ayGame");
         clickOn("#btnCreate");
+        sleep(500);
         ListView list = lookup("#gameListView").queryAs(ListView.class);
-        HBox box = (HBox) list.getItems().get(list.getItems().size() - 1);
+        HBox box = new HBox();
+        for (int i = 0; i<list.getItems().size(); i++) {
+            box = (HBox) list.getItems().get(i);
+            Label label = (Label) box.lookup("Label");
+            if (label.getText().equals("ayGame")) {
+                break;
+            }
+        }
         // ingame
-        clickOn(box.getChildren().get(1));
+        clickOn(box.lookup("#join"));
         sleep(2000);
-        clickOn("#ham");
+        clickOn("#btnLoadServer");
+        clickOn("Join Game");
+        sleep(2000);
+        clickOn("#hamburgerMenu");
         WaitForAsyncUtils.waitForFxEvents();
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
+        clickOn("#chatWindow")
+            .press(MouseButton.PRIMARY)
+            .drag(targetWindow().getX()+targetWindow().getX()/2, targetWindow().getY()*2)
+            .drop();
         clickOn("#btnLogout");
     }
 
@@ -144,32 +162,27 @@ class UiTests extends ApplicationTest {
         write("/all ");
         write("/w me test");
         clickOn("#btnSend");
-        clickOn("#btnMinimize");
-        clickOn("#btnMinimize");
         // game
         clickOn("#gameName");
         write("ayGame");
         clickOn("#btnCreate");
+        sleep(500);
         ListView list = lookup("#gameListView").queryAs(ListView.class);
-        HBox box = (HBox) list.getItems().get(list.getItems().size() - 1);
-        // ingame
-        clickOn(box.getChildren().get(1));
-        sleep(2000);
-        clickOn("#ham");
-        WaitForAsyncUtils.waitForFxEvents();
-        clickOn("#btnBack");
-        sleep(2000);
-        list = lookup("#gameListView").queryAs(ListView.class);
-        box = (HBox) list.getItems().get(list.getItems().size() - 1);
-        clickOn(box.getChildren().get(2));
-        list = lookup("#gameListView").queryAs(ListView.class);
-        box = (HBox) list.getItems().get(list.getItems().size() - 1);
-        clickOn(box.getChildren().get(2));
+        HBox box;
+        for (int i = 0; i<list.getItems().size(); i++) {
+            box = (HBox) list.getItems().get(i);
+            Label label = (Label) box.lookup("Label");
+            if (label.getText().equals("ayGame")) {
+                Button button = (Button) box.lookup("#delete");
+                clickOn(button);
+                sleep(500);
+            }
+        }
         // logout
-        clickOn("#ham");
+        clickOn("#hamburgerMenu");
         WaitForAsyncUtils.waitForFxEvents();
-        clickOn("#btnMode");
-        clickOn("#btnMode");
+        clickOn("#btnColorMode");
+        clickOn("#btnColorMode");
         clickOn("#btnLogout");
     }
 }

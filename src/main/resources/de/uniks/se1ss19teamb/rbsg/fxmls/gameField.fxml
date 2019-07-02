@@ -10,12 +10,12 @@
 <HBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" alignment="CENTER_LEFT" spacing="10.0"
       xmlns="http://javafx.com/javafx/8.0.162-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameFieldController">
     <Label fx:id="gameNameLabel" maxWidth="1.7976931348623157E308" text="gamename" HBox.hgrow="ALWAYS"/>
-    <Button onMouseClicked="#joinGame">
+    <Button fx:id="join" onMouseClicked="#joinGame">
         <graphic>
             <FontAwesomeIconView glyphName="PLAY"/>
         </graphic>
     </Button>
-    <Button onMouseClicked="#deleteGame">
+    <Button fx:id="delete" onMouseClicked="#deleteGame">
         <graphic>
             <FontAwesomeIconView glyphName="TRASH"/>
         </graphic>
