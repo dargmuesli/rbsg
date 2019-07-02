@@ -47,7 +47,6 @@ import org.apache.logging.log4j.Logger;
 public class MainController {
 
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static Chat chat;
@@ -175,10 +174,11 @@ public class MainController {
                 Parent parent = fxmlLoader.load();
                 // controller not used yet, but it's good to have it for later purposes.
                 PopupController controller = fxmlLoader.getController();
-                notificationHandler.setPopupController(controller);
+                NotificationHandler.getInstance().setPopupController(controller);
                 Platform.runLater(() -> errorContainer.getChildren().add(parent));
             } catch (IOException e) {
-                notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+                NotificationHandler.getInstance()
+                    .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
             }
 
             // ChatTabController
@@ -239,7 +239,7 @@ public class MainController {
                     new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
             } else {
-                notificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
+                NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
@@ -341,7 +341,8 @@ public class MainController {
                     controller.setUpGameLabel(gameMeta);
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
-                    notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                    NotificationHandler.getInstance()
+                        .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
                 }
             });
         });
@@ -476,7 +477,8 @@ public class MainController {
                             getPrivate(from, message, newTab);
                         }
                     } catch (IOException e) {
-                        notificationHandler.sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                        NotificationHandler.getInstance()
+                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
                     }
                 }
             );
