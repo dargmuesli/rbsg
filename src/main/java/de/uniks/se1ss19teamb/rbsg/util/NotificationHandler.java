@@ -12,7 +12,7 @@ public class NotificationHandler {
 
     }
 
-    public static NotificationHandler getNotificationHandler() {
+    public static NotificationHandler getInstance() {
         if (notificationHandler == null) {
             notificationHandler = new NotificationHandler();
         }

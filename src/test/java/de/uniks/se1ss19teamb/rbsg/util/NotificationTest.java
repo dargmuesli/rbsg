@@ -8,7 +8,7 @@ public class NotificationTest {
 
     // This Test class is for coverage purpose only
 
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
     private Logger logger = LogManager.getLogger();
 
     @Test

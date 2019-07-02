@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 
 public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     public static void makeFadeOutTransition(String path, Node node) {
         FadeTransition fadeTransition = new FadeTransition();

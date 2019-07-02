@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     private static String user;
     private static String userKey;

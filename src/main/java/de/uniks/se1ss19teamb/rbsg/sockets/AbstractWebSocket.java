@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 public abstract class AbstractWebSocket implements WebSocket {
 
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     private static final String url = "wss://rbsg.uniks.de/ws";
 

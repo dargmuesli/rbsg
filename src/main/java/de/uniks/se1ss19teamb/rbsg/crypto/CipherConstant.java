@@ -13,7 +13,7 @@ class CipherConstant {
     private static final Logger logger = LogManager.getLogger();
     static PublicKey publicKey;
     static PrivateKey privateKey;
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     static {
         try {

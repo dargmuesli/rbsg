@@ -20,7 +20,7 @@ public abstract class AbstractRestRequest implements RestRequest {
     private static final Logger logger = LogManager.getLogger();
     static HttpManager httpManager = new HttpManager();
     private JsonObject response = null;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     protected abstract JsonObject buildJson();
 

@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class WebSocketClient {
 
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     private static final String NOOP = "noop";
 

@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 class CipherController {
     private static final Logger logger = LogManager.getLogger();
 
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
     //This string needs to be related with data
 
     public void encryptMessage(String msg, String filename) {

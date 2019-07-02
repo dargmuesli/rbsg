@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class GameSocket extends AbstractWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private static final NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     public static GameSocket instance;
     private static String userKey;

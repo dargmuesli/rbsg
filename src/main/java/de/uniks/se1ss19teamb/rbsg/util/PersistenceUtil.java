@@ -18,7 +18,7 @@ class PersistenceUtil {
     private static final String SAVEGAME_YAML = "./savegame.yaml";
     private static final Logger logger = LogManager.getLogger();
     private YamlIdMap yamlIdMap = new YamlIdMap(Game.class.getPackage().getName());
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     public void save(Game game) {
 

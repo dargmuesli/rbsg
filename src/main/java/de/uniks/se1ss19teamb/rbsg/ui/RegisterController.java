@@ -11,7 +11,6 @@ import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javafx.application.Platform;
@@ -47,7 +46,7 @@ public class RegisterController {
     private JFXPasswordField passwordRepeat;
     @FXML
     private AnchorPane registerScreen1;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
+    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
     private UserData userData;
 
     public void initialize() {

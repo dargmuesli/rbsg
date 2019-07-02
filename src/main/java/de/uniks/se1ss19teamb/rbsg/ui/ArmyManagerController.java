@@ -180,7 +180,7 @@ public class ArmyManagerController {
         ArrayList<Army> serverArmies = req.getArmies();
 
         if (serverArmies.size() == 0) {
-            NotificationHandler.getNotificationHandler()
+            NotificationHandler.getInstance()
                 .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
         } else {
             Army firstArmy = serverArmies.get(0);
@@ -217,7 +217,7 @@ public class ArmyManagerController {
                     unitObjectControllers.get(5).increaseCount();
                     break;
                 default:
-                    NotificationHandler.getNotificationHandler().sendWarning("Unknown unit id!", logger);
+                    NotificationHandler.getInstance().sendWarning("Unknown unit id!", logger);
             }
         }
 
@@ -231,13 +231,13 @@ public class ArmyManagerController {
         ArrayList<String> currentArmyUnits = currentArmy.getUnits();
 
         if (currentArmyName == null) {
-            NotificationHandler.getNotificationHandler().sendError("You have to give the army a name!",
+            NotificationHandler.getInstance().sendError("You have to give the army a name!",
                 logger);
             return;
         }
 
         if (currentArmyUnits.size() < 10) {
-            NotificationHandler.getNotificationHandler().sendError("You need at least ten units!", logger);
+            NotificationHandler.getInstance().sendError("You need at least ten units!", logger);
             return;
         }
 
@@ -252,7 +252,7 @@ public class ArmyManagerController {
             req.sendRequest();
         }
 
-        NotificationHandler.getNotificationHandler().sendSuccess("The Army was saved.", logger);
+        NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
     }
 
     private void setArmyConfiguration() {
@@ -293,7 +293,7 @@ public class ArmyManagerController {
 
     public void setArmyName() {
         if (txtfldArmyName.getText().equals("")) {
-            NotificationHandler.getNotificationHandler().sendError("You have to type in a name!", logger);
+            NotificationHandler.getInstance().sendError("You have to type in a name!", logger);
             return;
         }
 
@@ -309,7 +309,7 @@ public class ArmyManagerController {
             currentArmy = loadConfig(1);
 
             if (currentArmy == null) {
-                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
             }
 
             updateConfigurationView(currentArmy);
@@ -323,7 +323,7 @@ public class ArmyManagerController {
             currentArmy = loadConfig(2);
 
             if (currentArmy == null) {
-                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
             }
 
             updateConfigurationView(currentArmy);
@@ -337,7 +337,7 @@ public class ArmyManagerController {
             currentArmy = loadConfig(3);
 
             if (currentArmy == null) {
-                NotificationHandler.getNotificationHandler().sendInfo("The save is empty", logger);
+                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
             }
 
             updateConfigurationView(currentArmy);
@@ -351,7 +351,7 @@ public class ArmyManagerController {
     private void saveCurrentConfig(int configNum) {
         armySaves[configNum] = getCurrentConfiguration();
         SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum]);
-        NotificationHandler.getNotificationHandler()
+        NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
 }
