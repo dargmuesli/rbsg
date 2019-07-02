@@ -15,7 +15,6 @@ import java.util.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -43,9 +42,10 @@ public class InGameController {
 
     public static InGameMetadata inGameMetadata;
     public static Map<Pair<Integer, Integer>, InGameTile> inGameTiles = new HashMap<>();
+    public static List<InGameTile> unitList = new ArrayList<>();
     public static boolean gameInitFinished = false;
 
-    private ArrayList<String> knownTileNames = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
+    public final static ArrayList<String> KNOWN_TILE_NAMES = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
         "Water", "Mountain"));
 
     public void initialize() {
@@ -96,7 +96,7 @@ public class InGameController {
         int maxY = 0;
         int tryCounter = 0;
 
-        while (maxX * maxY != 1024) {
+        while (maxX * maxY != 1024 || maxX * maxY != 4096) {
             try {
                 Thread.sleep(700);
             } catch (InterruptedException e) {
@@ -120,7 +120,7 @@ public class InGameController {
             for (int j = 0; j < maxX; j++) {
                 InGameTile tile = inGameTiles.get(new Pair<>(j, i));
                 if (tile != null) {
-                    if (!knownTileNames.contains(tile.getName())) {
+                    if (!KNOWN_TILE_NAMES.contains(tile.getName())) {
                         NotificationHandler.getNotificationHandler().sendError("Wrong tile: "
                             + tile.getName(), LogManager.getLogger());
                         continue;

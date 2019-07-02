@@ -69,7 +69,12 @@ public class GameSocket extends AbstractWebSocket {
                                     SerializeUtils.deserialize(data.toString(), InGameMetadata.class);
                             } else {
                                 InGameTile tile = SerializeUtils.deserialize(data.toString(), InGameTile.class);
-                                InGameController.inGameTiles.put(new Pair<>(tile.getX(), tile.getY()), tile);
+                                if (InGameController.KNOWN_TILE_NAMES.contains(tile.getName())) {
+                                    InGameController.inGameTiles.put(new Pair<>(tile.getX(), tile.getY()), tile);
+                                } else {
+                                    InGameController.unitList.add(tile);
+                                }
+
                             }
                         }
                         break;
