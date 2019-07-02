@@ -33,7 +33,7 @@ public class UserInterfaceUtils {
             try {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
-                notificationHandler.sendError(
+                NotificationHandler.getInstance().sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
             }
         });
