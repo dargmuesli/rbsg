@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
 import java.io.IOException;
 
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -74,13 +75,21 @@ public class UserInterfaceUtils {
     public static void toggleFullscreen(JFXButton btnFullscreen) {
         Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
 
-        if (stage.isFullScreen()) {
-            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
-        } else {
-            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.COMPRESS));
-        }
-
         stage.setFullScreen(!stage.isFullScreen());
+
+        updateBtnFullscreen(btnFullscreen);
+    }
+
+    public static void updateBtnFullscreen(JFXButton btnFullscreen) {
+        Platform.runLater(() -> {
+            Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
+
+            if (stage.isFullScreen()) {
+                btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.COMPRESS));
+            } else {
+                btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
+            }
+        });
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {

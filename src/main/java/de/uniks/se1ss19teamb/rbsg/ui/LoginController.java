@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
@@ -71,6 +70,8 @@ public class LoginController {
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
+
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         // load user data
         userData = UserData.loadUserData(notificationHandler);

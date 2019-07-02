@@ -45,6 +45,8 @@ public class InGameController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         GameSocket.instance = new GameSocket(
             LoginController.getUserKey(),
             GameFieldController.joinedGame.getId(),
@@ -64,6 +66,7 @@ public class InGameController {
             switch (((JFXButton) event.getSource()).getId()) {
                 // TODO handshake error
                 case "btnBack":
+                    GameSocket.instance.disconnect();
                     UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
                     break;

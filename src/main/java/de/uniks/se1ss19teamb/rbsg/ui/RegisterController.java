@@ -55,6 +55,8 @@ public class RegisterController {
         userData = UserData.loadUserData(notificationHandler);
         Theming.setTheme(Arrays.asList(new Pane[]{registerScreen, registerScreen1}));
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         if (userData == null) {
             notificationHandler.sendWarning("User data couldn't be deserialized!", logger);
             return;
