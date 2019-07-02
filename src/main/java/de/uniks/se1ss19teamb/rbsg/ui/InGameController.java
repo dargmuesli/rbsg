@@ -68,7 +68,7 @@ public class InGameController {
                 case "btnBack":
                     GameSocket.instance.disconnect();
                     UserInterfaceUtils.makeFadeOutTransition(
-                        "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen, null);
+                        "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
                     break;
                 default:
             }
@@ -80,7 +80,7 @@ public class InGameController {
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen, null);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
             }
         }
     }

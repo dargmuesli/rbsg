@@ -156,7 +156,7 @@ public class RegisterController {
         notificationHandler.sendSuccess("Registrierung erfolgreich!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen, null);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
     }
 
     private void goToLogin() {
@@ -168,6 +168,6 @@ public class RegisterController {
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen, null);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
     }
 }

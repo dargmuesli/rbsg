@@ -87,16 +87,9 @@ class UiTests extends ApplicationTest {
         clickOn("#txtfldArmyName");
         write("testArmy");
         clickOn("#btnSetArmyName");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
-        clickOn("+");
+        for (int i = 0; i < 10; i++) {
+            clickOn("+");
+        }
         clickOn("#btnMinimize");
         clickOn("#btnMinimize");
         clickOn("#btnSave1");

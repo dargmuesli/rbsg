@@ -36,7 +36,7 @@ public class DragMoveResize {
 
         region.setOnMouseMoved(resizer::mouseOver);
 
-        region.setOnMouseReleased(resizer::mouseReleased);
+        region.setOnMouseReleased(event -> resizer.mouseReleased());
 
         region.setOnMouseExited(e -> {
             region.setStyle("-fx-border-width: none; "
@@ -64,7 +64,7 @@ public class DragMoveResize {
         dragging = true;
     }
 
-    private void mouseReleased(MouseEvent event) {
+    private void mouseReleased() {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
         borderNone();
@@ -88,6 +88,7 @@ public class DragMoveResize {
             if (event.getX() < RESIZE_MARGIN) {
                 return Cursor.NW_RESIZE;
             }
+
             if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
                 return Cursor.NE_RESIZE;
             }
@@ -98,6 +99,7 @@ public class DragMoveResize {
             if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
                 return Cursor.SE_RESIZE;
             }
+
             if (event.getX() < RESIZE_MARGIN) {
                 return Cursor.SW_RESIZE;
             }
@@ -127,42 +129,6 @@ public class DragMoveResize {
             return;
         }
 
-        if (usedCursor != null && usedCursor.equals(Cursor.N_RESIZE)) {
-            region.setPrefHeight(region.getHeight() - event.getY());
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.NE_RESIZE)) {
-            region.setPrefHeight(region.getHeight() - event.getY());
-            region.setPrefWidth(event.getX());
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.NW_RESIZE)) {
-            region.setPrefHeight(region.getHeight() - event.getY());
-            region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.E_RESIZE)) {
-            region.setPrefWidth(event.getX());
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.W_RESIZE)) {
-            region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.S_RESIZE)) {
-            region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.SE_RESIZE)) {
-            region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
-            region.setPrefWidth(event.getX());
-        }
-
-        if (usedCursor != null && usedCursor.equals(Cursor.SW_RESIZE)) {
-            region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
-            region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
-        }
-
         if (usedCursor == null) {
             double offsetX = event.getSceneX() - orgSceneX;
             double offsetY = event.getSceneY() - orgSceneY;
@@ -171,6 +137,42 @@ public class DragMoveResize {
 
             ((Region)(event.getSource())).setTranslateX(newTranslateX);
             ((Region)(event.getSource())).setTranslateY(newTranslateY);
+        } else {
+            if (usedCursor.equals(Cursor.N_RESIZE)) {
+                region.setPrefHeight(region.getHeight() - event.getY());
+            }
+
+            if (usedCursor.equals(Cursor.NE_RESIZE)) {
+                region.setPrefHeight(region.getHeight() - event.getY());
+                region.setPrefWidth(event.getX());
+            }
+
+            if (usedCursor.equals(Cursor.NW_RESIZE)) {
+                region.setPrefHeight(region.getHeight() - event.getY());
+                region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
+            }
+
+            if (usedCursor.equals(Cursor.E_RESIZE)) {
+                region.setPrefWidth(event.getX());
+            }
+
+            if (usedCursor.equals(Cursor.W_RESIZE)) {
+                region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
+            }
+
+            if (usedCursor.equals(Cursor.S_RESIZE)) {
+                region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
+            }
+
+            if (usedCursor.equals(Cursor.SE_RESIZE)) {
+                region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
+                region.setPrefWidth(event.getX());
+            }
+
+            if (usedCursor.equals(Cursor.SW_RESIZE)) {
+                region.setPrefHeight(region.getHeight() - (lastY - event.getSceneY()));
+                region.setPrefWidth(region.getWidth() + (lastX - event.getSceneX()));
+            }
         }
 
         region.setOpacity(0.85);

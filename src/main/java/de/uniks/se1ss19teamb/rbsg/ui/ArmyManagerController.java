@@ -128,7 +128,7 @@ public class ArmyManagerController {
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane, null);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
         }
     }
 
@@ -140,7 +140,7 @@ public class ArmyManagerController {
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane, null);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
             }
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
@@ -197,6 +197,8 @@ public class ArmyManagerController {
             leftUnits = 10;
         }
 
+        // seit letzten rework wird in der gespeicherten JSON nicht die ID sondern der Name der Unit gespeichert.
+        // Die IDs habe alle eine länge von 24.
         for (String unitId : army.getUnits()) {
             String id;
             if (unitId.length() != 24) {
