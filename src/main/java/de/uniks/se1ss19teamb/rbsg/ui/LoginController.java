@@ -154,13 +154,13 @@ public class LoginController {
         setUser(userName.getText());
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen, null);
     }
 
     private void goToRegister() {
         saveUserData();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen, null);
     }
 
     private void saveUserData() {

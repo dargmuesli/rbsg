@@ -128,7 +128,7 @@ public class ArmyManagerController {
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane, null);
         }
     }
 
@@ -140,7 +140,7 @@ public class ArmyManagerController {
             if (logout.getSuccessful()) {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane, null);
             }
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);

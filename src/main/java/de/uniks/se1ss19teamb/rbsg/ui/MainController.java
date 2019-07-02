@@ -250,7 +250,7 @@ public class MainController {
                 // chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen, null);
             }
         } else if (event.getSource().equals(btnArmyManager)) {
             ArmyManagerController.joiningGame = false;
