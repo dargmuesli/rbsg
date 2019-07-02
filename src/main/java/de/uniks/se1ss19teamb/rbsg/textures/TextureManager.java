@@ -9,10 +9,13 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javafx.geometry.Dimension2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 public class TextureManager {
@@ -20,6 +23,7 @@ public class TextureManager {
     private static TextureManager instance = null;
     private Map<String, Texture> textures = new HashMap<>();
     private Map<String, TextureFancy> texturesTerrain = new HashMap<>();
+    private Map<String, Color> terrainColors = new HashMap<>();
 
     private TextureManager() {
     }
@@ -55,19 +59,42 @@ public class TextureManager {
         
         TextureFancy water = new TextureFancy("water.png", "water.png", 0);
         instance.texturesTerrain.put("Water", water);
+        instance.terrainColors.put("Water", Color.CYAN);
         
         TextureFancy sand = new TextureFancy("grass.png", "grassOverlay.png", 1);
         instance.texturesTerrain.put("Grass", sand);
+        instance.terrainColors.put("Grass", Color.LIME);
         
         TextureFancy grass = new TextureFancy("forest.png", "grassOverlay.png", 2);
         instance.texturesTerrain.put("Forest", grass);
+        instance.terrainColors.put("Forest", Color.SEAGREEN);
         
         TextureFancy mountain = new TextureFancy("mountain.png", "mountainOverlay.png", 3);
         instance.texturesTerrain.put("Mountain", mountain);
+        instance.terrainColors.put("Mountain", Color.SLATEGREY);
     }
 
     public static Pane getTextureInstance(String toFetch) {
         return instance.fetchTexture(toFetch).instantiate();
+    }
+    
+    public static Pane computeMinimap(Map<Pair<Integer, Integer>, InGameTile> map, int width, int height, int size) {
+        //TODO Render Unit positions.
+        
+        Pane result = new Pane();
+        Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        for (Entry<Pair<Integer, Integer>, InGameTile> tile : map.entrySet()) {
+            Pair<Integer, Integer> pos = tile.getKey();
+            
+            gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
+            
+            gc.fillRect(pos.getKey() * size, pos.getValue() * size, size, size);
+        }
+        
+        result.getChildren().add(canvas);
+        return result;
     }
     
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
