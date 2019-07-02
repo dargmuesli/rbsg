@@ -8,7 +8,6 @@ public class NotificationTest {
 
     // This Test class is for coverage purpose only
 
-    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
     private Logger logger = LogManager.getLogger();
 
     @Test
@@ -19,14 +18,14 @@ public class NotificationTest {
 
         // Actual Test
         try {
-            notificationHandler.setPopupController(null);
+            NotificationHandler.getInstance().setPopupController(null);
             System.out.println(test[2]);
         } catch (Exception e) {
-            notificationHandler.sendError("Test ERROR NullPointerException", logger, e);
-            notificationHandler.sendError("Test ERROR NullPointerException Without e Exception", logger);
-            notificationHandler.sendWarning("Test WARNING", logger);
-            notificationHandler.sendInfo("Test INFO", logger);
-            notificationHandler.sendSuccess("Test SUCCESS", logger);
+            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException", logger, e);
+            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException Without e Exception", logger);
+            NotificationHandler.getInstance().sendWarning("Test WARNING", logger);
+            NotificationHandler.getInstance().sendInfo("Test INFO", logger);
+            NotificationHandler.getInstance().sendSuccess("Test SUCCESS", logger);
         }
     }
 }

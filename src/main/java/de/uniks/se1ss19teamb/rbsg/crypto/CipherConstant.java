@@ -13,7 +13,6 @@ class CipherConstant {
     private static final Logger logger = LogManager.getLogger();
     static PublicKey publicKey;
     static PrivateKey privateKey;
-    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     static {
         try {
@@ -22,7 +21,7 @@ class CipherConstant {
             privateKey = CipherUtils
                 .readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
         } catch (Exception e) {
-            notificationHandler.sendError("Ein Schlüssel konnte nicht gelesen werden!", logger, e);
+            NotificationHandler.getInstance().sendError("Ein Schlüssel konnte nicht gelesen werden!", logger, e);
         }
     }
 }

@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 class CipherController {
     private static final Logger logger = LogManager.getLogger();
 
-    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
     //This string needs to be related with data
 
     public void encryptMessage(String msg, String filename) {
@@ -35,7 +34,7 @@ class CipherController {
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
             | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            notificationHandler.sendError("Fehler beim Verschlüsseln einer Nachricht!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler beim Verschlüsseln einer Nachricht!", logger, e);
         }
     }
 
@@ -66,7 +65,7 @@ class CipherController {
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
             | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            notificationHandler.sendError("Fehler beim Entschlüsseln einer Nachricht!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler beim Entschlüsseln einer Nachricht!", logger, e);
         }
         return decryptedMessage;
     }

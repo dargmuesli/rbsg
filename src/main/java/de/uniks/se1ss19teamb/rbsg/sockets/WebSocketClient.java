@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 public class WebSocketClient {
 
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     private static final String NOOP = "noop";
 
@@ -33,7 +32,7 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            notificationHandler.sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
         }
     }
 
@@ -42,7 +41,7 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                notificationHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
+                NotificationHandler.getInstance().sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
             }
         }
     }
@@ -57,7 +56,7 @@ public class WebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         this.mySession = session;
-        notificationHandler.sendInfo("WS connected to " + this.mySession.getRequestURI(), logger);
+        NotificationHandler.getInstance().sendInfo("WS connected to " + this.mySession.getRequestURI(), logger);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -65,7 +64,7 @@ public class WebSocketClient {
                     try {
                         mySession.getBasicRemote().sendText(NOOP);
                     } catch (Exception e) {
-                        notificationHandler.sendError("Can not send NOOP", logger);
+                        NotificationHandler.getInstance().sendError("Can not send NOOP", logger);
                     }
                 }
             }
@@ -92,9 +91,9 @@ public class WebSocketClient {
 
         if (!closeReason.getReasonPhrase().equals("")) {
             info += " Reason: " + closeReason.getReasonPhrase();
-            notificationHandler.sendWarning(info, logger);
+            NotificationHandler.getInstance().sendWarning(info, logger);
         } else {
-            notificationHandler.sendInfo(info, logger);
+            NotificationHandler.getInstance().sendInfo(info, logger);
         }
         this.mySession = null;
         this.noopTimer.cancel();

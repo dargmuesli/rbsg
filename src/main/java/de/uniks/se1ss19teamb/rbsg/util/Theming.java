@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 
 public class Theming {
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     public static final File cssModeFile =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rgsb_dark-mode-active.json").toFile();
@@ -43,7 +42,7 @@ public class Theming {
         Boolean cssMode = SerializeUtils.deserialize(cssModeFile, boolean.class);
 
         if (cssMode == null) {
-            notificationHandler.sendError("Could not load css mode from file!", logger);
+            NotificationHandler.getInstance().sendError("Could not load css mode from file!", logger);
             return false;
         }
 

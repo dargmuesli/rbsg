@@ -7,13 +7,12 @@ import org.apache.logging.log4j.Logger;
 
 public class SerializeUtils {
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     public static <T> T deserialize(File file, Class<T> myClass) {
         try (Reader reader = new FileReader(file)) {
             return new Gson().fromJson(reader, myClass);
         } catch (IOException e) {
-            notificationHandler.sendError(
+            NotificationHandler.getInstance().sendError(
                 "Could not deserialize " + file.getName() + " to " + myClass.getName() + "!", logger, e);
         }
         return null;
@@ -27,7 +26,7 @@ public class SerializeUtils {
         try (FileWriter writer = new FileWriter(fileString)) {
             new Gson().toJson(object, writer);
         } catch (IOException e) {
-            notificationHandler.sendError(
+            NotificationHandler.getInstance().sendError(
                 "Could not serialize " + object + " to " + fileString + "!", logger, e);
         }
     }

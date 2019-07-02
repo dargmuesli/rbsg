@@ -18,7 +18,6 @@ class PersistenceUtil {
     private static final String SAVEGAME_YAML = "./savegame.yaml";
     private static final Logger logger = LogManager.getLogger();
     private YamlIdMap yamlIdMap = new YamlIdMap(Game.class.getPackage().getName());
-    private NotificationHandler notificationHandler = NotificationHandler.getInstance();
 
     public void save(Game game) {
 
@@ -35,7 +34,7 @@ class PersistenceUtil {
             Files.write(Paths.get(file.toURI()), yaml.getBytes(StandardCharsets.UTF_8));
 
         } catch (IOException e) {
-            notificationHandler.sendError("Spielstand konnte nicht in eine Datei geschrieben werden!", logger, e);
+            NotificationHandler.getInstance().sendError("Spielstand konnte nicht in eine Datei geschrieben werden!", logger, e);
         }
     }
 
@@ -55,7 +54,7 @@ class PersistenceUtil {
             return game;
 
         } catch (IOException e) {
-            notificationHandler.sendError("Spielstand konnte nicht geladen werden!", logger, e);
+            NotificationHandler.getInstance().sendError("Spielstand konnte nicht geladen werden!", logger, e);
             return null;
         }
     }
