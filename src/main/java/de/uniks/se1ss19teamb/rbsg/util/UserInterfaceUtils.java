@@ -21,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 
 public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static void makeFadeOutTransition(String path, Node node) {
         // TODO ich weiss nicht wie ich dieses stück code nicht dupliziert verwende
@@ -55,7 +54,7 @@ public class UserInterfaceUtils {
                 pane.getChildren().add(chatWindow);
                 node.getScene().setRoot(pane);
             } catch (IOException e) {
-                notificationHandler.sendError(
+                NotificationHandler.getInstance().sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
             }
         });
