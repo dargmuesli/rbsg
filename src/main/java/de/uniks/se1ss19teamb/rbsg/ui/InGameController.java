@@ -15,8 +15,10 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.util.*;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -44,6 +46,8 @@ public class InGameController {
 
     public static InGameMetadata inGameMetadata;
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
+    private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
+    private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     public static List<PlayerTile> playerTiles = new ArrayList<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
@@ -127,8 +131,23 @@ public class InGameController {
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
                 gameGrid.add(stack, j, i);
+                stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
+                environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),
+                    environmentTiles.get(new Pair<>(j, i)));
             }
         }
+
+        for (UnitTile unitTile : unitTiles) {
+            gameGrid.getChildren().remove(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()));
+            StackPane newStackPane = new StackPane();
+            int posX = environmentTileMapById.get(unitTile.getPosition()).getX();
+            int posY = environmentTileMapById.get(unitTile.getPosition()).getY();
+            newStackPane.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, posX, posY));
+            newStackPane.getChildren().addAll(TextureManager.getTextureInstance(unitTile.getType()));
+            gameGrid.add(newStackPane, posX, posY);
+
+        }
+
         System.out.println(inGameMetadata.toString());
         for (UnitTile unit : unitTiles) {
             System.out.println(unit.getName());

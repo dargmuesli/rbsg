@@ -36,22 +36,22 @@ public class TextureManager {
         instance.textures.put("panzer", panzer);
 
         Texture heli = new AnimatedTexture("HelicopterV1anim.png", 125.0f);
-        instance.textures.put("helicopter", heli);
+        instance.textures.put("Chopper", heli);
 
         Texture bazooka = new Texture("BazookaV1.png");
-        instance.textures.put("bazooka", bazooka);
+        instance.textures.put("Bazooka Trooper", bazooka);
 
         Texture heavyTank = new Texture("HeavyTankV1.png");
-        instance.textures.put("heavyTank", heavyTank);
+        instance.textures.put("Heavy Tank", heavyTank);
 
         Texture infantry = new Texture("InfantryV1.png");
-        instance.textures.put("infantry", infantry);
+        instance.textures.put("Infantry", infantry);
 
         Texture jeep = new Texture("JeepV1.png");
-        instance.textures.put("jeep", jeep);
+        instance.textures.put("Jeep", jeep);
 
         Texture lightTank = new Texture("lightTankV1.png");
-        instance.textures.put("lightTank", lightTank);
+        instance.textures.put("Light Tank", lightTank);
 
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
