@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
-import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,16 +45,16 @@ public class TextureManagerTest {
         Pane animPane = TextureManager.getTextureInstance("panzer");
         Assert.assertTrue(animPane instanceof AnimatedPane);
         
-        InGameTile sand = new InGameTile();
+        EnvironmentTile sand = new EnvironmentTile();
         sand.setId("Forest@23467");
-        InGameTile water = new InGameTile();
+        EnvironmentTile water = new EnvironmentTile();
         water.setId("Water@345678");
-        InGameTile mountain = new InGameTile();
+        EnvironmentTile mountain = new EnvironmentTile();
         mountain.setId("Mountain@456789");
-        InGameTile grass = new InGameTile();
+        EnvironmentTile grass = new EnvironmentTile();
         grass.setId("Grass@12345");
         
-        Map<Pair<Integer, Integer>, InGameTile> map = new HashMap<>();
+        Map<Pair<Integer, Integer>, EnvironmentTile> map = new HashMap<>();
         map.put(new Pair<>(0,0), mountain);
         map.put(new Pair<>(0,1), mountain);
         map.put(new Pair<>(0,2), sand);

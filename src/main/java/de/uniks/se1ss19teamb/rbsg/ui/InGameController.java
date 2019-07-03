@@ -3,7 +3,9 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
-import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.PlayerTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
@@ -41,12 +43,10 @@ public class InGameController {
     private GridPane gameGrid;
 
     public static InGameMetadata inGameMetadata;
-    public static Map<Pair<Integer, Integer>, InGameTile> inGameTiles = new HashMap<>();
-    public static List<InGameTile> unitList = new ArrayList<>();
+    public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
+    public static List<PlayerTile> playerTiles = new ArrayList<>();
+    public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
-
-    public final static ArrayList<String> KNOWN_TILE_NAMES = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
-        "Water", "Mountain"));
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
@@ -114,31 +114,23 @@ public class InGameController {
             }
         }
 
-        while (inGameTiles.get(new Pair<>(0, maxX)) != null) {
+        while (environmentTiles.get(new Pair<>(0, maxX)) != null) {
             maxX++;
         }
-        while (inGameTiles.get(new Pair<>(maxY, 0)) != null) {
+        while (environmentTiles.get(new Pair<>(maxY, 0)) != null) {
             maxY++;
         }
 
 
         for (int i = 0; i < maxY; i++) {
             for (int j = 0; j < maxX; j++) {
-                InGameTile tile = inGameTiles.get(new Pair<>(j, i));
-                if (tile != null) {
-                    if (!KNOWN_TILE_NAMES.contains(tile.getName())) {
-                        NotificationHandler.getInstance().sendError("Wrong tile: "
-                            + tile.getName(), LogManager.getLogger());
-                        continue;
-                    }
-                }
                 StackPane stack = new StackPane();
-                stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(inGameTiles, j, i));
+                stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
                 gameGrid.add(stack, j, i);
             }
         }
         System.out.println(inGameMetadata.toString());
-        for (InGameTile unit : unitList) {
+        for (UnitTile unit : unitTiles) {
             System.out.println(unit.getName());
             if (unit.getName() == "Unit") {
                 //switch (unit.getId())
