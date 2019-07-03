@@ -107,7 +107,7 @@ public class InGameController {
             try {
                 Thread.sleep(1000);
                 tryCounter++;
-                if (tryCounter == 5) {
+                if (tryCounter == 10) {
                     NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
                         LogManager.getLogger());
                     break;
@@ -147,14 +147,6 @@ public class InGameController {
             newStackPane.getChildren().addAll(TextureManager.getTextureInstance(unitTile.getType()));
             gameGrid.add(newStackPane, posX, posY);
 
-        }
-
-        System.out.println(inGameMetadata.toString());
-        for (UnitTile unit : unitTiles) {
-            System.out.println(unit.getName());
-            if (unit.getName() == "Unit") {
-                //switch (unit.getId())
-            }
         }
     }
 }
