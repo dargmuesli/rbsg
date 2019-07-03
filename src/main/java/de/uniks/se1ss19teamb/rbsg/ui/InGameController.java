@@ -142,7 +142,8 @@ public class InGameController {
             StackPane newStackPane = new StackPane();
             int posX = environmentTileMapById.get(unitTile.getPosition()).getX();
             int posY = environmentTileMapById.get(unitTile.getPosition()).getY();
-            newStackPane.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, posX, posY));
+            newStackPane.getChildren().addAll(TextureManager
+                .computeTerrainTextureInstance(environmentTiles, posX, posY));
             newStackPane.getChildren().addAll(TextureManager.getTextureInstance(unitTile.getType()));
             gameGrid.add(newStackPane, posX, posY);
 
