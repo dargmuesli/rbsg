@@ -113,7 +113,7 @@ public class InGameController {
             }
             tryCounter++;
             if (tryCounter == 5) {
-                NotificationHandler.getNotificationHandler().sendError("The tiles couldn't be load.",
+                NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
                     LogManager.getLogger());
                 break;
             }
@@ -124,7 +124,7 @@ public class InGameController {
                 InGameTile tile = inGameTiles.get(new Pair<>(j, i));
                 if (tile != null) {
                     if (!KNOWN_TILE_NAMES.contains(tile.getName())) {
-                        NotificationHandler.getNotificationHandler().sendError("Wrong tile: "
+                        NotificationHandler.getInstance().sendError("Wrong tile: "
                             + tile.getName(), LogManager.getLogger());
                         continue;
                     }
