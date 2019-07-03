@@ -99,25 +99,28 @@ public class InGameController {
         int maxY = 0;
         int tryCounter = 0;
 
-        while (maxX * maxY != 1024 || maxX * maxY != 4096) {
+        while (!gameInitFinished) {
             try {
-                Thread.sleep(700);
+                Thread.sleep(1000);
+                tryCounter++;
+                if (tryCounter == 5) {
+                    NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
+                        LogManager.getLogger());
+                    break;
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            while (inGameTiles.get(new Pair<>(0, maxX)) != null) {
-                maxX++;
-            }
-            while (inGameTiles.get(new Pair<>(maxY, 0)) != null) {
-                maxY++;
-            }
-            tryCounter++;
-            if (tryCounter == 5) {
-                NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
-                    LogManager.getLogger());
-                break;
-            }
         }
+
+        while (inGameTiles.get(new Pair<>(0, maxX)) != null) {
+            maxX++;
+        }
+        while (inGameTiles.get(new Pair<>(maxY, 0)) != null) {
+            maxY++;
+        }
+
 
         for (int i = 0; i < maxY; i++) {
             for (int j = 0; j < maxX; j++) {
