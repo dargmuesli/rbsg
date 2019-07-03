@@ -114,47 +114,47 @@ public class MainController {
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
             SystemSocket.instance = new SystemSocket(userKey);
-
-            SystemSocket.instance.registerUserJoinHandler(
-                (name) -> {
-                    updatePlayerView();
-                    addElement(name, " joined.", textArea, false);
-                });
-
-            SystemSocket.instance.registerUserLeftHandler(
-                (name) -> {
-                    addElement(name, " left.", textArea, false);
-                    updatePlayerView();
-                });
-
-            SystemSocket.instance.registerGameCreateHandler(
-                (gameName, id, neededPlayers) -> {
-                    updateGameView();
-                    addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
-                        textArea, false);
-                });
-
-            SystemSocket.instance.registerGameDeleteHandler(
-                (id) -> {
-                    addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
-                        textArea, false);
-                    updateGameView();
-                });
         }
+
+        SystemSocket.instance.registerUserJoinHandler(
+            (name) -> {
+                updatePlayerView();
+                addElement(name, " joined.", textArea, false);
+            });
+
+        SystemSocket.instance.registerUserLeftHandler(
+            (name) -> {
+                addElement(name, " left.", textArea, false);
+                updatePlayerView();
+            });
+
+        SystemSocket.instance.registerGameCreateHandler(
+            (gameName, id, neededPlayers) -> {
+                updateGameView();
+                addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
+                    textArea, false);
+            });
+
+        SystemSocket.instance.registerGameDeleteHandler(
+            (id) -> {
+                addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
+                    textArea, false);
+                updateGameView();
+            });
 
         SystemSocket.instance.connect();
 
         if (ChatSocket.instance == null) {
             ChatSocket.instance = new ChatSocket(userName, userKey);
-
-            ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
-                if (isPrivate) {
-                    addNewPane(from, message, false, chatPane);
-                } else {
-                    addElement(from, message, textArea, false);
-                }
-            });
         }
+
+        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
+            if (isPrivate) {
+                addNewPane(from, message, false, chatPane);
+            } else {
+                addElement(from, message, textArea, false);
+            }
+        });
 
         MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
 
