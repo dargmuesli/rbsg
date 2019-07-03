@@ -138,8 +138,9 @@ public class MainController {
         SystemSocket.instance.registerGameDeleteHandler(
             (id) -> {
                 String deletedGameName = existingGames.get(id).getName();
-                Platform.runLater(() -> {addElement(null, "Game \"" + deletedGameName + "\" was deleted.",
-                    textArea, false);
+                Platform.runLater(() -> {
+                    addElement(null, "Game \"" + deletedGameName + "\" was deleted.",
+                        textArea, false);
                     updateGameView();
                 });
             });
