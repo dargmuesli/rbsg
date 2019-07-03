@@ -45,7 +45,7 @@ public class InGameController {
     public static List<InGameTile> unitList = new ArrayList<>();
     public static boolean gameInitFinished = false;
 
-    public static final ArrayList<String> KNOWN_TILE_NAMES = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
+    public final static ArrayList<String> KNOWN_TILE_NAMES = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
         "Water", "Mountain"));
 
     public void initialize() {
@@ -135,6 +135,13 @@ public class InGameController {
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(inGameTiles, j, i));
                 gameGrid.add(stack, j, i);
+            }
+        }
+        System.out.println(inGameMetadata.toString());
+        for (InGameTile unit : unitList) {
+            System.out.println(unit.getName());
+            if (unit.getName() == "Unit") {
+                //switch (unit.getId())
             }
         }
     }
