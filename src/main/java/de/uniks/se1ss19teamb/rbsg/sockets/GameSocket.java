@@ -2,7 +2,9 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
-import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.PlayerTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -71,13 +73,33 @@ public class GameSocket extends AbstractWebSocket {
                                 InGameController.inGameMetadata =
                                     SerializeUtils.deserialize(data.toString(), InGameMetadata.class);
                             } else {
-                                InGameTile tile = SerializeUtils.deserialize(data.toString(), InGameTile.class);
-                                if (InGameController.KNOWN_TILE_NAMES.contains(tile.getName())) {
-                                    InGameController.inGameTiles.put(new Pair<>(tile.getX(), tile.getY()), tile);
-                                } else {
-                                    InGameController.unitList.add(tile);
-                                }
+                                if (data.has("id")) {
+                                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
 
+                                    switch (type) {
+                                        case "Forest":
+                                        case "Sand":
+                                        case "Grass":
+                                        case "Water":
+                                        case "Mountain":
+                                            EnvironmentTile environmentTile =
+                                                SerializeUtils.deserialize(data.toString(), EnvironmentTile.class);
+                                            InGameController.environmentTiles.put(new Pair<>(
+                                                environmentTile.getX(), environmentTile.getY()), environmentTile);
+                                            break;
+                                        case "Player":
+                                            InGameController.playerTiles.add(
+                                                SerializeUtils.deserialize(data.toString(), PlayerTile.class));
+                                            break;
+                                        case "Unit":
+                                            InGameController.unitTiles.add(
+                                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                            break;
+                                        default:
+                                            NotificationHandler.getInstance().sendWarning(
+                                                "Unknown tile type: " + type, logger);
+                                    }
+                                }
                             }
                         }
                         break;

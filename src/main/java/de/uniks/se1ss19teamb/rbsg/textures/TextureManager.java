@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
-import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,14 +78,15 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate();
     }
     
-    public static Pane computeMinimap(Map<Pair<Integer, Integer>, InGameTile> map, int width, int height, int size) {
+    public static Pane computeMinimap(
+        Map<Pair<Integer, Integer>, EnvironmentTile> map, int width, int height, int size) {
         //TODO Render Unit positions.
         
         Pane result = new Pane();
         Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
-        for (Entry<Pair<Integer, Integer>, InGameTile> tile : map.entrySet()) {
+        for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : map.entrySet()) {
             Pair<Integer, Integer> pos = tile.getKey();
             
             gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
@@ -97,7 +98,7 @@ public class TextureManager {
         return result;
     }
     
-    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
+    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, EnvironmentTile> map, int x, int y) {
         TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getName());
         
         GridPane overlay = new GridPane();
@@ -118,9 +119,9 @@ public class TextureManager {
                 
                 TextureFancyOverlayType type = null;
                 
-                InGameTile horizontal = map.get(new Pair<>(x + pos.x, y));
-                InGameTile vertical = map.get(new Pair<>(x, y + pos.y));
-                InGameTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
+                EnvironmentTile horizontal = map.get(new Pair<>(x + pos.x, y));
+                EnvironmentTile vertical = map.get(new Pair<>(x, y + pos.y));
+                EnvironmentTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
                 
                 if (horizontal != null && vertical != null 
                     && horizontal.getName().equals(texture.getKey()) && vertical.getName().equals(texture.getKey())) {
