@@ -45,7 +45,7 @@ public class InGameController {
     public static List<InGameTile> unitList = new ArrayList<>();
     public static boolean gameInitFinished = false;
 
-    public final static ArrayList<String> KNOWN_TILE_NAMES = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
+    public static final ArrayList<String> KNOWN_TILE_NAMES = new ArrayList<>(Arrays.asList("Forest", "Sand", "Grass",
         "Water", "Mountain"));
 
     public void initialize() {
