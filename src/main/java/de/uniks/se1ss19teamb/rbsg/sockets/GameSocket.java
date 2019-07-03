@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 public class GameSocket extends AbstractWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static GameSocket instance;
     private static String userKey;
@@ -46,13 +45,17 @@ public class GameSocket extends AbstractWebSocket {
 
                                 switch (message) {
                                     case "You have no army with the given id.":
-                                        notificationHandler.sendError(message, logger);
+                                        NotificationHandler.getInstance().sendError(message, logger);
                                         break;
                                     case "Initialize game, sending start situation...":
                                         firstGameInitObjectReceived = false;
                                         break;
+                                    case "You already joined a game.":
+                                        NotificationHandler.getInstance().sendWarning(message, logger);
+                                        break;
                                     default:
-                                        notificationHandler.sendWarning("Unknown message \"" + message + "\"", logger);
+                                        NotificationHandler.getInstance()
+                                            .sendWarning("Unknown message \"" + message + "\"", logger);
                                 }
                             }
                         }
@@ -81,8 +84,11 @@ public class GameSocket extends AbstractWebSocket {
                     case "gameInitFinished":
                         InGameController.gameInitFinished = true;
                         break;
+                    case "gameRemoveObject":
+                        // TODO
+                        break;
                     default:
-                        notificationHandler.sendWarning("Unknown action \"" + action + "\"", logger);
+                        NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);
                 }
             }
 

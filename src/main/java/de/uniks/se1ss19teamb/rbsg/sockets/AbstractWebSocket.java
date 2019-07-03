@@ -13,11 +13,12 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractWebSocket implements WebSocket {
 
-    private static final String url = "wss://rbsg.uniks.de/ws";
     private static final Logger logger = LogManager.getLogger();
+
+    private static final String url = "wss://rbsg.uniks.de/ws";
+
     List<WebSocketMessageHandler> handlers = new ArrayList<>();
     WebSocketClient websocket;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     protected abstract String getEndpoint();
 
@@ -29,7 +30,7 @@ public abstract class AbstractWebSocket implements WebSocket {
             WebSocket.changeUserKey(getUserKey());
         }
 
-        if (websocket == null) {
+        if (websocket == null || websocket.mySession == null) {
             try {
                 websocket = new WebSocketClient(new URI(url + getEndpoint()), (response) -> {
                     for (WebSocketMessageHandler handler : handlers) {
@@ -37,10 +38,10 @@ public abstract class AbstractWebSocket implements WebSocket {
                     }
                 });
             } catch (URISyntaxException e) {
-                notificationHandler.sendError("Fehler in der Websocket-URI-Syntax", logger, e);
+                NotificationHandler.getInstance().sendError("Fehler in der Websocket-URI-Syntax", logger, e);
             }
         } else {
-            notificationHandler.sendInfo("Es besteht bereits eine Websocket-Verbindung!", logger);
+            NotificationHandler.getInstance().sendInfo("Es besteht bereits eine Websocket-Verbindung!", logger);
         }
     }
 
@@ -49,8 +50,10 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            notificationHandler.sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
+            NotificationHandler.getInstance()
+                .sendError("Websocket-Verbindung konnte nicht gestoppt werden!", logger, e);
         }
+
         websocket = null;
     }
 
