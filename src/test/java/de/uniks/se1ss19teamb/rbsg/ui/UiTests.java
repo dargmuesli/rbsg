@@ -6,7 +6,10 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import org.junit.Assert;
@@ -204,7 +207,25 @@ class UiTests extends ApplicationTest {
         sleep(1000);
         HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
         clickOn(btnBox.getChildren().get(2));
-        sleep(10000);
+        sleep(7000);
+        GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
+        StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
+        Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
+        clickOn("#hamburgerMenu");
+        sleep(1000);
+        clickOn("#btnFullscreen");
+        sleep(1000);
+        clickOn("#btnBack");
+        sleep(3000);
+        ListView<HBox> list2 = lookup("#gameListView").queryAs(ListView.class);
+        for (HBox gameField : list2.getItems()) {
+            Label label = (Label) gameField.getChildren().get(0);
+            if (label.getText().equals("junitTestGameB")) {
+                clickOn(gameField.getChildren().get(2));
+                sleep(1000);
+            }
+        }
+
     }
 
 }
