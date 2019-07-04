@@ -11,6 +11,7 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -54,6 +55,7 @@ public class MainController {
     private static String userName = LoginController.getUser();
     private static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
+    private static boolean inGameChat = false;
 
     @FXML
     private AnchorPane errorContainer;
@@ -231,6 +233,15 @@ public class MainController {
         }
     }
 
+    public static void setGameChat(GameSocket gameSocket) {
+        MainController.chat = new Chat(gameSocket, chatLogPath);
+        gameSocket.connect();
+    }
+
+    public static void setInGameChat(boolean state) {
+        inGameChat = state;
+    }
+
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
@@ -269,13 +280,25 @@ public class MainController {
                 if (sendTo != null) {
                     if (sendTo.trim().equals("")) {
                         sendTo = null;
-                        chat.sendMessage(message.getText());
+                        if (!inGameChat) {
+                            chat.sendMessage(message.getText());
+                        } else {
+                            chat.gameSendMessage(message.getText());
+                        }
                     } else {
-                        chat.sendMessage(message.getText(), sendTo);
+                        if (!inGameChat) {
+                            chat.sendMessage(message.getText(), sendTo);
+                        } else {
+                            chat.gameSendMessage(message.getText(), sendTo);
+                        }
                         addNewPane(sendTo, message.getText(), true, chatPane);
                     }
                 } else {
-                    chat.sendMessage(message.getText());
+                    if (!inGameChat) {
+                        chat.sendMessage(message.getText());
+                    } else {
+                        chat.gameSendMessage(message.getText());
+                    }
                 }
 
                 message.setText("");

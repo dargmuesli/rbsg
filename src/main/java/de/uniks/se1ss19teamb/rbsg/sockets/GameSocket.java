@@ -27,8 +27,10 @@ public class GameSocket extends AbstractWebSocket {
     private static String armyId;
     private static boolean firstGameInitObjectReceived;
     private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
+    private String userName;
 
-    public GameSocket(String userKey, String gameId, String armyId) {
+    public GameSocket(String userName, String userKey, String gameId, String armyId) {
+        this.userName = userName;
         GameSocket.userKey = userKey;
         GameSocket.gameId = gameId;
         GameSocket.armyId = armyId;
@@ -126,6 +128,10 @@ public class GameSocket extends AbstractWebSocket {
     @Override
     protected String getUserKey() {
         return userKey;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public void registerGameMessageHandler(ChatMessageHandler handler) {

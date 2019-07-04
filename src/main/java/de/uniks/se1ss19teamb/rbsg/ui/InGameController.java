@@ -60,17 +60,24 @@ public class InGameController {
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
 
         GameSocket.instance = new GameSocket(
+            LoginController.getUser(),
             LoginController.getUserKey(),
             GameFieldController.joinedGame.getId(),
             ArmyManagerController.currentArmy.getId());
 
+        MainController.setGameChat(GameSocket.instance);
+
+        MainController.setInGameChat(true);
+/*
         GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
         });
 
         GameSocket.instance.connect();
-
+*/
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         fillGameGrid();
+
+        System.out.println();
     }
 
     public void setOnAction(ActionEvent event) {
@@ -79,6 +86,7 @@ public class InGameController {
                 // TODO handshake error
                 case "btnBack":
                     GameSocket.instance.disconnect();
+                    MainController.setInGameChat(false);
                     UserInterfaceUtils.makeFadeOutTransition(
                         "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
                     break;
