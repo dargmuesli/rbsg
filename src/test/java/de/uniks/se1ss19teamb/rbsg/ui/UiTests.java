@@ -3,11 +3,13 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import de.uniks.se1ss19teamb.rbsg.Main;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -173,4 +175,36 @@ class UiTests extends ApplicationTest {
         clickOn("#btnMode");
         clickOn("#btnLogout");
     }
+
+    // username and password: junit
+    @Test
+    void testInGame() {
+        clickOn("#userName");
+        write("junit");
+        clickOn("#password");
+        write("junit");
+        clickOn("#btnLogin");
+        sleep(5000);
+        clickOn("#gameName");
+        write("junitTestGameB");
+        clickOn("#btnCreate");
+        sleep(2000);
+        ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
+        HBox box = null;
+        for (HBox gameField : list.getItems()) {
+            Label label = (Label) gameField.getChildren().get(0);
+            if (label.getText().equals("junitTestGameB")) {
+                box = gameField;
+                break;
+            }
+        }
+        clickOn(box.getChildren().get(1));
+        sleep(2000);
+        clickOn("#btnLoadServer");
+        sleep(1000);
+        HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
+        clickOn(btnBox.getChildren().get(2));
+        sleep(10000);
+    }
+
 }
