@@ -36,7 +36,6 @@ public class UnitObjectController {
         labelUnitType.setText(unit.getType());
         updateCount();
         btnDecrease.setDisable(true);
-        System.out.println();
         imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
     }
 
