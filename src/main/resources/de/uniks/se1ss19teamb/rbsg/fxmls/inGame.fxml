@@ -43,7 +43,7 @@
                 </HBox>
                 <StackPane prefWidth="200.0">
                     <children>
-                        <ScrollPane fx:id="mapScrollPane" prefWidth="200.0">
+                        <ScrollPane fx:id="mapScrollPane" prefWidth="200.0" pannable="true">
                             <content>
                                 <GridPane fx:id="gameGrid">
                                     <columnConstraints>
