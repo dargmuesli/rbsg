@@ -1,26 +1,34 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.util.Theming;
+import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+
 
 public class UnitObjectController {
 
     @FXML
-    Label labelUnitType;
+    private HBox root;
     @FXML
-    Label labelUnitCount;
+    private Label labelUnitType;
     @FXML
-    Button btnIncrease;
+    private Label labelUnitCount;
     @FXML
-    Button btnDecrease;
-    private Unit unit;
+    private Button btnDecrease;
+
     private ArmyManagerController armyManagerController;
     private int count = 0;
 
+    public void initialize() {
+        Theming.setTheme(Arrays.asList(new Pane[]{root}));
+    }
+
     void setUpUnitObject(Unit unit, ArmyManagerController armyManagerController) {
-        this.unit = unit;
         this.armyManagerController = armyManagerController;
         labelUnitType.setText(unit.getType());
         updateCount();
@@ -28,11 +36,11 @@ public class UnitObjectController {
 
     }
 
-    public int getCount() {
+    int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    void setCount(int count) {
         this.count = count;
         updateCount();
     }

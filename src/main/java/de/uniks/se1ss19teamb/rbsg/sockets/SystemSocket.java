@@ -22,32 +22,30 @@ public class SystemSocket extends AbstractWebSocket {
 
     public SystemSocket(String userKey) {
         this.userKey = userKey;
+
         registerWebSocketHandler((response) -> {
             String action = response.get("action").getAsString();
             JsonObject data = response.get("data").getAsJsonObject();
+
             switch (action) {
                 case "userJoined":
-                    for (SystemSocketMessageHandler.SystemSocketUserJoinHandler handler
-                        : handlersUserJoin) {
+                    for (SystemSocketMessageHandler.SystemSocketUserJoinHandler handler : handlersUserJoin) {
                         handler.handle(data.get("name").getAsString());
                     }
                     break;
                 case "userLeft":
-                    for (SystemSocketMessageHandler.SystemSocketUserLeftHandler handler
-                        : handlersUserLeft) {
+                    for (SystemSocketMessageHandler.SystemSocketUserLeftHandler handler : handlersUserLeft) {
                         handler.handle(data.get("name").getAsString());
                     }
                     break;
                 case "gameCreated":
-                    for (SystemSocketMessageHandler.SystemSocketGameCreateHandler handler
-                        : handlersGameCreate) {
+                    for (SystemSocketMessageHandler.SystemSocketGameCreateHandler handler : handlersGameCreate) {
                         handler.handle(data.get("name").getAsString(),
                             data.get("id").getAsString(), data.get("neededPlayer").getAsInt());
                     }
                     break;
                 case "gameDeleted":
-                    for (SystemSocketMessageHandler.SystemSocketGameDeleteHandler handler
-                        : handlersGameDelete) {
+                    for (SystemSocketMessageHandler.SystemSocketGameDeleteHandler handler : handlersGameDelete) {
                         handler.handle(data.get("id").getAsString());
                     }
                     break;

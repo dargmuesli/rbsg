@@ -2,10 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -145,13 +143,18 @@ public class TicTacToeController {
         if (one.getText().equals("") || two.getText().equals("") || three.getText().equals("")
             || four.getText().equals("") || five.getText().equals("") || six.getText().equals("")
             || seven.getText().equals("") || eight.getText().equals("") || nine.getText().equals("")) {
+
             while (!buttons.get(number).getText().equals("")) {
                 number = (int) (Math.random() * 8);
             }
+
+            String signO = "O";
+
             if (label.getText().equals("")) {
                 buttons.get(number).setText(signO);
                 buttons.get(number).setDisable(true);
             }
+
             calculateWinner(signO, "Computer Wins!");
         }
     }

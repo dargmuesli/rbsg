@@ -24,7 +24,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class Chat {
     private static final Logger logger = LogManager.getLogger();
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private ArrayList<ChatHistoryEntry> history = new ArrayList<>();
     private ChatSocket chatSocket;
     /**
@@ -42,7 +41,6 @@ public class Chat {
      */
     public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
-        this.chatSocket.connect();
         this.chatSocket.registerChatMessageHandler(chatMessageHandler);
         this.path = path;
     }
@@ -96,7 +94,8 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                notificationHandler.sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
+                NotificationHandler.getInstance()
+                    .sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
             }
         }
 
@@ -107,7 +106,7 @@ public class Chat {
                 out.println(SerializeUtils.serialize(cle));
             }
         } catch (IOException e) {
-            notificationHandler.sendError("Fehler beim Schreiben im Chat-Verzeichnis!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler beim Schreiben im Chat-Verzeichnis!", logger, e);
         }
     }
 
@@ -118,7 +117,7 @@ public class Chat {
         try {
             Files.deleteIfExists(path);
         } catch (IOException e) {
-            NotificationHandler.getNotificationHandler().sendError("Chat log could not be deleted!", logger, e);
+            NotificationHandler.getInstance().sendError("Chat log could not be deleted!", logger, e);
         }
     }
 }
