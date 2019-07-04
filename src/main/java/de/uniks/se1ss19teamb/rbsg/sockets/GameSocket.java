@@ -27,10 +27,11 @@ public class GameSocket extends AbstractWebSocket {
     private static String armyId;
     private static boolean firstGameInitObjectReceived;
     private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
-    private String userName;
+    private static String userName;
+    private boolean ignoreOwn = false;
 
     public GameSocket(String userName, String userKey, String gameId, String armyId) {
-        this.userName = userName;
+        GameSocket.userName = userName;
         GameSocket.userKey = userKey;
         GameSocket.gameId = gameId;
         GameSocket.armyId = armyId;
@@ -58,6 +59,7 @@ public class GameSocket extends AbstractWebSocket {
                                         NotificationHandler.getInstance().sendWarning(message, logger);
                                         break;
                                     default:
+                                        System.out.println();
                                         NotificationHandler.getInstance()
                                             .sendWarning("Unknown message \"" + message + "\"", logger);
                                 }
@@ -110,6 +112,26 @@ public class GameSocket extends AbstractWebSocket {
                         break;
                     case "gameRemoveObject":
                         // TODO
+                        break;
+                    case "gameChat":
+                        if (response.has("data")) {
+                            JsonObject data = response.getAsJsonObject("data");
+                            if (data.get("msg") != null) {
+                                //TODO Handle error in MSG
+                                return;
+                            }
+
+                            String from = data.get("from").getAsString();
+                            if (this.ignoreOwn && from.equals(userName)) {
+                                return;
+                            }
+
+                            String msg = data.get("message").getAsString();
+                            boolean isPrivate = data.get("channel").getAsString().equals("private");
+                            for (ChatMessageHandler handler : handlersChat) {
+                                handler.handle(msg, from, isPrivate);
+                            }
+                        }
                         break;
                     default:
                         NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);

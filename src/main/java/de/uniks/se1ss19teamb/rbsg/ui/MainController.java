@@ -234,6 +234,7 @@ public class MainController {
     }
 
     public static void setGameChat(GameSocket gameSocket) {
+        // TODO games socket needs connection to chatWindow, cant be set in here because static
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
     }
