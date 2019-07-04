@@ -20,6 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
+// UI Tests take a lot of time.
+// To load new Scenes and finish actions javaFX needs time. All the sleeping time below is estimated and can
+// probably be reduced if estimated properly.
+
 class UiTests extends ApplicationTest {
 
     private Main main;
@@ -61,7 +65,7 @@ class UiTests extends ApplicationTest {
     @Test
     void registerTest() {
         clickOn("#btnRegistration");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
         clickOn("#username");
         write("testTeamB").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
@@ -75,7 +79,7 @@ class UiTests extends ApplicationTest {
         write("z").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#btnCancel");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
     }
 
     @Test
@@ -85,9 +89,9 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
         clickOn("#btnArmyManager");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
         clickOn("#txtfldArmyName");
         write("testArmy");
         clickOn("#btnSetArmyName");
@@ -106,7 +110,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnLoadServer");
         clickOn("#btnSaveServer");
         clickOn("#btnLogout");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
     }
 
     @Test
@@ -116,12 +120,12 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
         // game
         clickOn("#gameName");
         write("ayGame");
         clickOn("#btnCreate");
-        sleep(500);
+        sleep(500); // sleep to finisch action
         ListView list = lookup("#gameListView").queryAs(ListView.class);
         HBox box = new HBox();
         for (int i = 0; i < list.getItems().size(); i++) {
@@ -133,10 +137,10 @@ class UiTests extends ApplicationTest {
         }
         // ingame
         clickOn(box.lookup("#join"));
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
         clickOn("#btnLoadServer");
         clickOn("Join Game");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
         clickOn("#hamburgerMenu");
         WaitForAsyncUtils.waitForFxEvents();
         clickOn("#btnFullscreen");
@@ -146,7 +150,7 @@ class UiTests extends ApplicationTest {
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
             .drop();
         clickOn("#btnLogout");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
     }
 
     @Test
@@ -156,7 +160,7 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000);
+        sleep(2000); // sleep to finisch action
         // chat
         clickOn("#message");
         write("/all ");
@@ -166,7 +170,7 @@ class UiTests extends ApplicationTest {
         clickOn("#gameName");
         write("ayGame");
         clickOn("#btnCreate");
-        sleep(500);
+        sleep(500); // sleep to finisch action
         ListView list = lookup("#gameListView").queryAs(ListView.class);
         HBox box;
         for (int i = 0; i < list.getItems().size(); i++) {
@@ -175,7 +179,7 @@ class UiTests extends ApplicationTest {
             if (label.getText().equals("ayGame")) {
                 Button button = (Button) box.lookup("#delete");
                 clickOn(button);
-                sleep(500);
+                sleep(500); // sleep to finisch action
             }
         }
         // logout
@@ -184,7 +188,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnColorMode");
         clickOn("#btnColorMode");
         clickOn("#btnLogout");
-        sleep(2000);
+        sleep(2000); // sleep to finisch transition
     }
 
     // username and password: junit
@@ -195,11 +199,11 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("junit");
         clickOn("#btnLogin");
-        sleep(5000);
+        sleep(5000); // sleep to finisch action
         clickOn("#gameName");
         write("junitTestGameB");
         clickOn("#btnCreate");
-        sleep(2000);
+        sleep(2000); // sleep to finisch action
         ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
         HBox box = null;
         for (HBox gameField : list.getItems()) {
@@ -210,27 +214,27 @@ class UiTests extends ApplicationTest {
             }
         }
         clickOn(box.getChildren().get(1));
-        sleep(2000);
+        sleep(2000); // sleep to finisch action
         clickOn("#btnLoadServer");
-        sleep(1000);
+        sleep(1000); // sleep to finisch action
         HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
         clickOn(btnBox.getChildren().get(2));
-        sleep(7000);
+        sleep(7000); // sleep to finisch action
         GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
         StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
         Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
         clickOn("#hamburgerMenu");
-        sleep(1000);
+        sleep(1000); // sleep to finisch action
         clickOn("#btnFullscreen");
-        sleep(1000);
+        sleep(1000); // sleep to finisch action
         clickOn("#btnBack");
-        sleep(3000);
+        sleep(3000); // sleep to finisch action
         ListView<HBox> list2 = lookup("#gameListView").queryAs(ListView.class);
         for (HBox gameField : list2.getItems()) {
             Label label = (Label) gameField.getChildren().get(0);
             if (label.getText().equals("junitTestGameB")) {
                 clickOn(gameField.getChildren().get(2));
-                sleep(1000);
+                sleep(1000); // sleep to finisch action
             }
         }
 

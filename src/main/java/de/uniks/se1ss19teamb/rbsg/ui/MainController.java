@@ -223,6 +223,8 @@ public class MainController {
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
+        chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
+
         btnMinimize.setDisable(true);
     }
 
@@ -235,6 +237,15 @@ public class MainController {
 
     public static void setGameChat(GameSocket gameSocket) {
         // TODO games socket needs connection to chatWindow, cant be set in here because static
+        /*
+        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> {
+            if (isPrivate) {
+                addNewPane(from, message, false, chatPane);
+            } else {
+                addElement(from, message, textArea, false);
+            }
+        });
+        */
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
     }
