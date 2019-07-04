@@ -8,9 +8,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -182,4 +186,54 @@ class UiTests extends ApplicationTest {
         clickOn("#btnLogout");
         sleep(2000);
     }
+
+    // username and password: junit
+    @Test
+    void testInGame() {
+        clickOn("#userName");
+        write("junit");
+        clickOn("#password");
+        write("junit");
+        clickOn("#btnLogin");
+        sleep(5000);
+        clickOn("#gameName");
+        write("junitTestGameB");
+        clickOn("#btnCreate");
+        sleep(2000);
+        ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
+        HBox box = null;
+        for (HBox gameField : list.getItems()) {
+            Label label = (Label) gameField.getChildren().get(0);
+            if (label.getText().equals("junitTestGameB")) {
+                box = gameField;
+                break;
+            }
+        }
+        clickOn(box.getChildren().get(1));
+        sleep(2000);
+        clickOn("#btnLoadServer");
+        sleep(1000);
+        HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
+        clickOn(btnBox.getChildren().get(2));
+        sleep(7000);
+        GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
+        StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
+        Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
+        clickOn("#hamburgerMenu");
+        sleep(1000);
+        clickOn("#btnFullscreen");
+        sleep(1000);
+        clickOn("#btnBack");
+        sleep(3000);
+        ListView<HBox> list2 = lookup("#gameListView").queryAs(ListView.class);
+        for (HBox gameField : list2.getItems()) {
+            Label label = (Label) gameField.getChildren().get(0);
+            if (label.getText().equals("junitTestGameB")) {
+                clickOn(gameField.getChildren().get(2));
+                sleep(1000);
+            }
+        }
+
+    }
+
 }
