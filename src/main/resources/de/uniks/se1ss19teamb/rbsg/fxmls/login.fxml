@@ -51,12 +51,6 @@
                 <FontAwesomeIconView glyphName="EXPAND" size="15"/>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="btnSnake" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler"
-                   AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
-            <graphic>
-                <FontAwesomeIconView glyphName="PLUS" size="15"/>
-            </graphic>
-        </JFXButton>
     </AnchorPane>
     <stylesheets>
         <URL value="@../css/base.css"/>
