@@ -49,6 +49,12 @@ public class Chat {
         this.path = path;
     }
 
+    /**
+     * Constructor that connects to the chat socket and registers the {@link #gameChatMessageHandler}.
+     *
+     * @param gameSocket The chat socket for in game communication.
+     * @param path       The location at which the chat history is saved.
+     */
     public Chat(GameSocket gameSocket, Path path) {
         this.gameSocket = gameSocket;
         this.gameSocket.registerGameMessageHandler(gameChatMessageHandler);
@@ -73,10 +79,6 @@ public class Chat {
         this.chatSocket.sendMessage(message);
     }
 
-    public void gameSendMessage(String message) {
-        this.gameSocket.sendMessage(message);
-    }
-
     /**
      * Sends a private message via the chat socket.
      *
@@ -88,6 +90,21 @@ public class Chat {
         this.chatSocket.sendPrivateMessage(message, receiver);
     }
 
+    /**
+     * Sends a public message via the game socket.
+     *
+     * @param message The textual content.
+     */
+    public void gameSendMessage(String message) {
+        this.gameSocket.sendMessage(message);
+    }
+
+    /**
+     * Sends a private message via the game socket.
+     *
+     * @param message  The textual content.
+     * @param receiver The receiver's name.
+     */
     public void gameSendMessage(String message, String receiver) {
         addToHistory(message, this.gameSocket.getUserName(), receiver);
         this.gameSocket.sendPrivateMessage(message, receiver);

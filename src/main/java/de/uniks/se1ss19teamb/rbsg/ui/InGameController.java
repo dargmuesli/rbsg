@@ -68,16 +68,9 @@ public class InGameController {
         MainController.setGameChat(GameSocket.instance);
 
         MainController.setInGameChat(true);
-/*
-        GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
-        });
 
-        GameSocket.instance.connect();
-*/
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         fillGameGrid();
-
-        System.out.println();
     }
 
     public void setOnAction(ActionEvent event) {
