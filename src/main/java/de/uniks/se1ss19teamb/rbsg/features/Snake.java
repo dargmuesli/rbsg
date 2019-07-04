@@ -27,7 +27,7 @@ public class Snake extends Application {
     private static int score = 0;
     private static List<Corner> snake = new ArrayList<>();
     private static Dir direction = Dir.left;
-    public static boolean gameOver = false;
+    private static boolean gameOver = false;
     private static Random rand = new Random();
     public static Stage classStage = new Stage();
     private long lastTick = 0;
@@ -40,7 +40,7 @@ public class Snake extends Application {
         int x;
         int y;
 
-        public Corner(int x, int y) {
+        private Corner(int x, int y) {
             this.x = x;
             this.y = y;
         }
@@ -55,6 +55,7 @@ public class Snake extends Application {
             GraphicsContext gc = c.getGraphicsContext2D();
             root.getChildren().add(c);
             classStage = primaryStage;
+            classStage.setResizable(false);
 
             AnimationTimer animationTimer = new AnimationTimer() {
                 @Override
@@ -119,7 +120,7 @@ public class Snake extends Application {
         }
     }
 
-    public static void tick(GraphicsContext gc) {
+    private static void tick(GraphicsContext gc) {
         if (gameOver) {
             gc.setFill(Color.RED);
             gc.setFont(new Font("", 50));
@@ -210,7 +211,7 @@ public class Snake extends Application {
 
     }
 
-    public static void newFood() {
+    private static void newFood() {
         start: while (true) {
             foodX = rand.nextInt(width);
             foodY = rand.nextInt(height);
