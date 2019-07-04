@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
-import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +9,13 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javafx.geometry.Dimension2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 public class TextureManager {
@@ -20,6 +23,7 @@ public class TextureManager {
     private static TextureManager instance = null;
     private Map<String, Texture> textures = new HashMap<>();
     private Map<String, TextureFancy> texturesTerrain = new HashMap<>();
+    private Map<String, Color> terrainColors = new HashMap<>();
 
     private TextureManager() {
     }
@@ -32,22 +36,22 @@ public class TextureManager {
         instance.textures.put("panzer", panzer);
 
         Texture heli = new AnimatedTexture("HelicopterV1anim.png", 125.0f);
-        instance.textures.put("helicopter", heli);
+        instance.textures.put("Chopper", heli);
 
         Texture bazooka = new Texture("BazookaV1.png");
-        instance.textures.put("bazooka", bazooka);
+        instance.textures.put("Bazooka Trooper", bazooka);
 
         Texture heavyTank = new Texture("HeavyTankV1.png");
-        instance.textures.put("heavyTank", heavyTank);
+        instance.textures.put("Heavy Tank", heavyTank);
 
         Texture infantry = new Texture("InfantryV1.png");
-        instance.textures.put("infantry", infantry);
+        instance.textures.put("Infantry", infantry);
 
         Texture jeep = new Texture("JeepV1.png");
-        instance.textures.put("jeep", jeep);
+        instance.textures.put("Jeep", jeep);
 
         Texture lightTank = new Texture("lightTankV1.png");
-        instance.textures.put("lightTank", lightTank);
+        instance.textures.put("Light Tank", lightTank);
 
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
@@ -55,22 +59,46 @@ public class TextureManager {
         
         TextureFancy water = new TextureFancy("water.png", "water.png", 0);
         instance.texturesTerrain.put("Water", water);
+        instance.terrainColors.put("Water", Color.CYAN);
         
         TextureFancy sand = new TextureFancy("grass.png", "grassOverlay.png", 1);
         instance.texturesTerrain.put("Grass", sand);
+        instance.terrainColors.put("Grass", Color.LIME);
         
         TextureFancy grass = new TextureFancy("forest.png", "grassOverlay.png", 2);
         instance.texturesTerrain.put("Forest", grass);
+        instance.terrainColors.put("Forest", Color.SEAGREEN);
         
         TextureFancy mountain = new TextureFancy("mountain.png", "mountainOverlay.png", 3);
         instance.texturesTerrain.put("Mountain", mountain);
+        instance.terrainColors.put("Mountain", Color.SLATEGREY);
     }
 
     public static Pane getTextureInstance(String toFetch) {
         return instance.fetchTexture(toFetch).instantiate();
     }
     
-    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, InGameTile> map, int x, int y) {
+    public static Pane computeMinimap(
+        Map<Pair<Integer, Integer>, EnvironmentTile> map, int width, int height, int size) {
+        //TODO Render Unit positions.
+        
+        Pane result = new Pane();
+        Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : map.entrySet()) {
+            Pair<Integer, Integer> pos = tile.getKey();
+            
+            gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
+            
+            gc.fillRect(pos.getKey() * size, pos.getValue() * size, size, size);
+        }
+        
+        result.getChildren().add(canvas);
+        return result;
+    }
+    
+    public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, EnvironmentTile> map, int x, int y) {
         TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getName());
         
         GridPane overlay = new GridPane();
@@ -91,9 +119,9 @@ public class TextureManager {
                 
                 TextureFancyOverlayType type = null;
                 
-                InGameTile horizontal = map.get(new Pair<>(x + pos.x, y));
-                InGameTile vertical = map.get(new Pair<>(x, y + pos.y));
-                InGameTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
+                EnvironmentTile horizontal = map.get(new Pair<>(x + pos.x, y));
+                EnvironmentTile vertical = map.get(new Pair<>(x, y + pos.y));
+                EnvironmentTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
                 
                 if (horizontal != null && vertical != null 
                     && horizontal.getName().equals(texture.getKey()) && vertical.getName().equals(texture.getKey())) {

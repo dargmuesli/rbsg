@@ -180,7 +180,8 @@
             </HBox>
         </VBox>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-            <JFXButton fx:id="btnMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+            <JFXButton fx:id="btnColorMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY"
+                       onAction="#setOnAction"
                        visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15"/>

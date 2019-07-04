@@ -2,7 +2,9 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
-import de.uniks.se1ss19teamb.rbsg.model.InGameTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.PlayerTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -18,7 +20,6 @@ import org.apache.logging.log4j.Logger;
 public class GameSocket extends AbstractWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static GameSocket instance;
     private static String userKey;
@@ -46,13 +47,17 @@ public class GameSocket extends AbstractWebSocket {
 
                                 switch (message) {
                                     case "You have no army with the given id.":
-                                        notificationHandler.sendError(message, logger);
+                                        NotificationHandler.getInstance().sendError(message, logger);
                                         break;
                                     case "Initialize game, sending start situation...":
                                         firstGameInitObjectReceived = false;
                                         break;
+                                    case "You already joined a game.":
+                                        NotificationHandler.getInstance().sendWarning(message, logger);
+                                        break;
                                     default:
-                                        notificationHandler.sendWarning("Unknown message \"" + message + "\"", logger);
+                                        NotificationHandler.getInstance()
+                                            .sendWarning("Unknown message \"" + message + "\"", logger);
                                 }
                             }
                         }
@@ -68,16 +73,44 @@ public class GameSocket extends AbstractWebSocket {
                                 InGameController.inGameMetadata =
                                     SerializeUtils.deserialize(data.toString(), InGameMetadata.class);
                             } else {
-                                InGameTile tile = SerializeUtils.deserialize(data.toString(), InGameTile.class);
-                                InGameController.inGameTiles.put(new Pair<>(tile.getX(), tile.getY()), tile);
+                                if (data.has("id")) {
+                                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                                    switch (type) {
+                                        case "Forest":
+                                        case "Sand":
+                                        case "Grass":
+                                        case "Water":
+                                        case "Mountain":
+                                            EnvironmentTile environmentTile =
+                                                SerializeUtils.deserialize(data.toString(), EnvironmentTile.class);
+                                            InGameController.environmentTiles.put(new Pair<>(
+                                                environmentTile.getX(), environmentTile.getY()), environmentTile);
+                                            break;
+                                        case "Player":
+                                            InGameController.playerTiles.add(
+                                                SerializeUtils.deserialize(data.toString(), PlayerTile.class));
+                                            break;
+                                        case "Unit":
+                                            InGameController.unitTiles.add(
+                                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                            break;
+                                        default:
+                                            NotificationHandler.getInstance().sendWarning(
+                                                "Unknown tile type: " + type, logger);
+                                    }
+                                }
                             }
                         }
                         break;
                     case "gameInitFinished":
                         InGameController.gameInitFinished = true;
                         break;
+                    case "gameRemoveObject":
+                        // TODO
+                        break;
                     default:
-                        notificationHandler.sendWarning("Unknown action \"" + action + "\"", logger);
+                        NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);
                 }
             }
 

@@ -20,7 +20,6 @@ public abstract class AbstractRestRequest implements RestRequest {
     private static final Logger logger = LogManager.getLogger();
     static HttpManager httpManager = new HttpManager();
     private JsonObject response = null;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     protected abstract JsonObject buildJson();
 
@@ -58,7 +57,7 @@ public abstract class AbstractRestRequest implements RestRequest {
                     throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
-            notificationHandler.sendError("Fehler bei einer Webanfrage!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler bei einer Webanfrage!", logger, e);
         } finally {
             JsonParser parser = new JsonParser();
             response = (JsonObject) parser.parse(result == null ? "" : result.body);
