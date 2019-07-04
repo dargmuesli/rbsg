@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
@@ -28,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     private static String user;
     private static String userKey;
@@ -72,8 +70,10 @@ public class LoginController {
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         // load user data
-        userData = UserData.loadUserData(notificationHandler);
+        userData = UserData.loadUserData(NotificationHandler.getInstance());
 
         if (userData == null) {
             userData = new UserData();
@@ -93,7 +93,7 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData(notificationHandler);
+        UserData.deleteUserData(NotificationHandler.getInstance());
 
         loginScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(loginScreen);
@@ -106,10 +106,10 @@ public class LoginController {
             errorContainer.getChildren().add(parent);
 
             PopupController controller = fxmlLoader.getController();
-            notificationHandler.setPopupController(controller);
+            NotificationHandler.getInstance().setPopupController(controller);
 
         } catch (IOException e) {
-            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
         }
     }
 
@@ -131,7 +131,7 @@ public class LoginController {
 
     private void login() {
         if (userName.getText().isEmpty() || password.getText().isEmpty()) {
-            notificationHandler.sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
             return;
         }
 
@@ -139,14 +139,14 @@ public class LoginController {
         login.sendRequest();
 
         if (!login.getSuccessful()) {
-            notificationHandler.sendWarning("Login fehlgeschlagen!", logger);
+            NotificationHandler.getInstance().sendWarning("Login fehlgeschlagen!", logger);
             return;
         }
 
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
-            UserData.deleteUserData(notificationHandler);
+            UserData.deleteUserData(NotificationHandler.getInstance());
         }
 
         setUserKey(login.getUserKey());

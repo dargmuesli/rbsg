@@ -15,12 +15,14 @@ import org.apache.logging.log4j.Logger;
 @ClientEndpoint(configurator = CustomWebSocketConfigurator.class)
 public class WebSocketClient {
 
-    private static final String NOOP = "noop";
     private static final Logger logger = LogManager.getLogger();
-    private Session mySession;
+
+    private static final String NOOP = "noop";
+
+    Session mySession;
+
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
         this.noopTimer = new Timer();
@@ -30,7 +32,7 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            notificationHandler.sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
+            NotificationHandler.getInstance().sendError("Fehler beim Erstellen des Websocket-Clients!", logger, e);
         }
     }
 
@@ -39,7 +41,8 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                notificationHandler.sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
+                NotificationHandler.getInstance()
+                    .sendError("Nachricht konnte nicht an den Websocket gesendet werden!", logger, e);
             }
         }
     }
@@ -54,7 +57,7 @@ public class WebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         this.mySession = session;
-        notificationHandler.sendInfo("WS connected to " + this.mySession.getRequestURI(), logger);
+        NotificationHandler.getInstance().sendInfo("WS connected to " + this.mySession.getRequestURI(), logger);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -62,7 +65,7 @@ public class WebSocketClient {
                     try {
                         mySession.getBasicRemote().sendText(NOOP);
                     } catch (Exception e) {
-                        notificationHandler.sendError("Can not send NOOP", logger);
+                        NotificationHandler.getInstance().sendError("Can not send NOOP", logger);
                     }
                 }
             }
@@ -84,8 +87,15 @@ public class WebSocketClient {
     }
 
     @OnClose
-    public void onClose(Session session) {
-        notificationHandler.sendInfo("WS " + mySession.getRequestURI() + " closed.", logger);
+    public void onClose(Session session, CloseReason closeReason) {
+        String info = "WS " + mySession.getRequestURI() + " closed.";
+
+        if (!closeReason.getReasonPhrase().equals("")) {
+            info += " Reason: " + closeReason.getReasonPhrase();
+            NotificationHandler.getInstance().sendWarning(info, logger);
+        } else {
+            NotificationHandler.getInstance().sendInfo(info, logger);
+        }
         this.mySession = null;
         this.noopTimer.cancel();
     }

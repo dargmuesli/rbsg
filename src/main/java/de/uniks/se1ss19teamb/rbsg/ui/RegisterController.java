@@ -11,7 +11,6 @@ import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javafx.application.Platform;
@@ -47,16 +46,17 @@ public class RegisterController {
     private JFXPasswordField passwordRepeat;
     @FXML
     private AnchorPane registerScreen1;
-    private NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
     private UserData userData;
 
     public void initialize() {
         // load user data
-        userData = UserData.loadUserData(notificationHandler);
+        userData = UserData.loadUserData(NotificationHandler.getInstance());
         Theming.setTheme(Arrays.asList(new Pane[]{registerScreen, registerScreen1}));
 
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
         if (userData == null) {
-            notificationHandler.sendWarning("User data couldn't be deserialized!", logger);
+            NotificationHandler.getInstance().sendWarning("User data couldn't be deserialized!", logger);
             return;
         }
 
@@ -76,7 +76,7 @@ public class RegisterController {
             }
         });
 
-        UserData.deleteUserData(notificationHandler);
+        UserData.deleteUserData(NotificationHandler.getInstance());
 
         registerScreen.setOpacity(0);
         UserInterfaceUtils.makeFadeInTransition(registerScreen);
@@ -89,10 +89,11 @@ public class RegisterController {
             errorContainer.getChildren().add(parent);
 
             PopupController controller = fxmlLoader.getController();
-            notificationHandler.setPopupController(controller);
+            NotificationHandler.getInstance().setPopupController(controller);
 
         } catch (IOException e) {
-            notificationHandler.sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
         }
     }
 
@@ -127,12 +128,12 @@ public class RegisterController {
         if (username.getText().isEmpty()
             || password.getText().isEmpty()
             || passwordRepeat.getText().isEmpty()) {
-            notificationHandler.sendWarning("Bitte geben Sie etwas ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Bitte geben Sie etwas ein.", logger);
             return;
         }
 
         if (!password.getText().equals(passwordRepeat.getText())) {
-            notificationHandler.sendWarning("Die Passwörter sind verschieden!", logger);
+            NotificationHandler.getInstance().sendWarning("Die Passwörter sind verschieden!", logger);
             return;
         }
 
@@ -141,7 +142,7 @@ public class RegisterController {
         register.sendRequest();
 
         if (!register.getSuccessful()) {
-            notificationHandler.sendWarning("Die Registrierung ist fehlgeschlagen!", logger);
+            NotificationHandler.getInstance().sendWarning("Die Registrierung ist fehlgeschlagen!", logger);
             return;
         }
 
@@ -151,7 +152,7 @@ public class RegisterController {
 
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
-        notificationHandler.sendSuccess("Registrierung erfolgreich!", logger);
+        NotificationHandler.getInstance().sendSuccess("Registrierung erfolgreich!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);

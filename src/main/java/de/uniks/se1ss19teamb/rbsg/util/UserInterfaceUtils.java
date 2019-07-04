@@ -7,6 +7,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -17,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 
 public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
-    private static NotificationHandler notificationHandler = NotificationHandler.getNotificationHandler();
 
     public static void makeFadeOutTransition(String path, Node node) {
         FadeTransition fadeTransition = new FadeTransition();
@@ -35,7 +35,7 @@ public class UserInterfaceUtils {
                     node.getScene().setRoot(pane);
                 }
             } catch (IOException e) {
-                notificationHandler.sendError(
+                NotificationHandler.getInstance().sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
             }
         });
@@ -55,13 +55,21 @@ public class UserInterfaceUtils {
     public static void toggleFullscreen(JFXButton btnFullscreen) {
         Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
 
-        if (stage.isFullScreen()) {
-            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
-        } else {
-            btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.COMPRESS));
-        }
-
         stage.setFullScreen(!stage.isFullScreen());
+
+        updateBtnFullscreen(btnFullscreen);
+    }
+
+    public static void updateBtnFullscreen(JFXButton btnFullscreen) {
+        Platform.runLater(() -> {
+            Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
+
+            if (stage.isFullScreen()) {
+                btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.COMPRESS));
+            } else {
+                btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
+            }
+        });
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
