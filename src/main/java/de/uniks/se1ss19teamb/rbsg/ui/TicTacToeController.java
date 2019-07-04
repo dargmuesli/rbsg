@@ -4,11 +4,15 @@ import com.jfoenix.controls.JFXButton;
 
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+
 
 
 public class TicTacToeController {
@@ -52,7 +56,7 @@ public class TicTacToeController {
 
         Theming.setTheme(Arrays.asList(new Pane[]{tictactoeScreen}));
 
-        for (JFXButton button: buttons){
+        for (JFXButton button: buttons) {
             button.setStyle("-fx-font-size: 72.0;" + "-fx-border-radius: 0.0;" + "-fx-background-radius: 0.0;");
         }
         btnReplay.setStyle("-fx-font-size: 20.0");
@@ -74,8 +78,8 @@ public class TicTacToeController {
 
     public void setOnAction(ActionEvent event) {
         String signX = "X";
-        for (JFXButton button: buttons){
-            if (event.getSource().equals(button)){
+        for (JFXButton button: buttons) {
+            if (event.getSource().equals(button)) {
                 button.setText(signX);
                 setNextTurn();
                 calculateWinner(signX, "Player wins!");
@@ -85,7 +89,7 @@ public class TicTacToeController {
         if (event.getSource().equals(btnReplay)) {
             playable = true;
             getTurn();
-            for (JFXButton button: buttons){
+            for (JFXButton button: buttons) {
                 button.setText("");
             }
             label.setText("");
@@ -147,8 +151,6 @@ public class TicTacToeController {
             while (!buttons.get(number).getText().equals("")) {
                 number = (int) (Math.random() * 8);
             }
-
-            String signO = "O";
 
             if (label.getText().equals("")) {
                 buttons.get(number).setText(signO);

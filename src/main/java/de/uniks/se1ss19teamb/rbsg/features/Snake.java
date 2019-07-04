@@ -52,7 +52,7 @@ public class Snake extends Application {
             lastTick = 0;
             VBox root = new VBox();
             Canvas c = new Canvas(width * cornersize, height * cornersize);
-            GraphicsContext gc = c.getGraphicsContext2D();
+            final GraphicsContext gc = c.getGraphicsContext2D();
             root.getChildren().add(c);
             classStage = primaryStage;
             classStage.setResizable(false);
