@@ -61,7 +61,7 @@ public class InGameController {
     }
 
     public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(this.btnBack)) {
+        if (event.getSource().equals(btnBack)) {
             switch (((JFXButton) event.getSource()).getId()) {
                 // TODO handshake error
                 case "btnBack":
