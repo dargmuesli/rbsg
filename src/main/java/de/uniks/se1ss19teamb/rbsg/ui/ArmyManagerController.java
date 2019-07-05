@@ -27,6 +27,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -149,6 +150,9 @@ public class ArmyManagerController {
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
             loadFromServer();
+            VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
+            JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+            btnMinimize.setDisable(false);
 
             if (serverArmies.size() != 0) {
                 UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,

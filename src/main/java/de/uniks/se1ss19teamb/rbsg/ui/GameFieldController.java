@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.Arrays;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -47,8 +48,13 @@ public class GameFieldController {
 
         VBox chatWindow = (VBox) root.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+        // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
+        // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
+        // damit gehts:
         btnMinimize.setDisable(false);
         btnMinimize.fire();
+        btnMinimize.setDisable(true);
+
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
     }
