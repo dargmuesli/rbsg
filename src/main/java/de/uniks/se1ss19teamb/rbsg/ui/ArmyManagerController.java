@@ -145,6 +145,10 @@ public class ArmyManagerController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnJoinGame)) {
+            if (leftUnits > 0) {
+                NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
+                return;
+            }
             saveToServer();
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
