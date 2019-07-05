@@ -50,10 +50,10 @@ public class MainController {
 
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static Chat chat;
-    private static SingleSelectionModel<Tab> selectionModel;
+    public static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
-    private static String sendTo = null;
+    public static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
     private static boolean inGameChat = false;
 
