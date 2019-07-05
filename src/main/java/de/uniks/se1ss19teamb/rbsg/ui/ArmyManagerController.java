@@ -349,8 +349,8 @@ public class ArmyManagerController {
     }
 
     private void saveCurrentConfig(int configNum) {
-        armySaves[configNum] = getCurrentConfiguration();
-        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum]);
+        armySaves[configNum - 1] = getCurrentConfiguration();
+        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum - 1]);
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
