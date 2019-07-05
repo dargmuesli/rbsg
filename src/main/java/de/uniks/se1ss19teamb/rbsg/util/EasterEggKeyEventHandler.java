@@ -1,8 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController;
+
 import java.io.IOException;
 
-import de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
