@@ -133,6 +133,15 @@ public class GameSocket extends AbstractWebSocket {
                             }
                         }
                         break;
+                    case "gameNewObject":
+                        if (response.has("data")) {
+                            // TODO maybe handler to chat window
+                            JsonObject data = response.getAsJsonObject("data");
+                            NotificationHandler.getInstance().sendInfo("New Player joined! \""
+                                + data.get("name").getAsString() + "(" + data.get("color").getAsString() + ")"
+                                + "\"", logger);
+                        }
+                        break;
                     default:
                         NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);
                 }
