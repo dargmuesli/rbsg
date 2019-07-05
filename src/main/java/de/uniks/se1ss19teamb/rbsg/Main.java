@@ -21,7 +21,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final EasterEggKeyEventHandler easterEggKeyEventHandler = new EasterEggKeyEventHandler();
         TextureManager.init();
         SoundManager.init();
 
@@ -36,7 +35,7 @@ public class Main extends Application {
         primaryStage.setMinHeight(621);
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
-        easterEggKeyEventHandler.setTicTacToe(scene, new KeyCodeCombination(KeyCode.F1, KeyCombination.SHIFT_ANY));
-        easterEggKeyEventHandler.setSnake(scene, new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY));
+        EasterEggKeyEventHandler.setTicTacToe(scene, new KeyCodeCombination(KeyCode.F1, KeyCombination.SHIFT_ANY));
+        EasterEggKeyEventHandler.setSnake(scene, new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY));
     }
 }
