@@ -145,6 +145,7 @@ public class ArmyManagerController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnJoinGame)) {
+            saveToServer();
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
