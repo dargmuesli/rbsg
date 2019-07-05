@@ -335,18 +335,6 @@ public class MainController {
                 chatWindow.setPrefHeight(chatWindowHeight);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
-            // TODO: find a better place for tictactoe, or add hotkeys like for easter eggs
-            /*} else if (event.getSource().equals(btnTicTacToe)) {
-                try {
-                    Parent root = FXMLLoader
-                        .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/tictactoe.fxml"));
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root, 800, 600));
-                    stage.show();
-                    stage.setResizable(false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
         }
 
         message.requestFocus();

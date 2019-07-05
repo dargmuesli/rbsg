@@ -14,7 +14,7 @@ ListView {
 }
 
 .background-color_transparent {
-    -fx-background-color: transparent;
+    -fx-background-color: -fx-primary;
 }
 
 .button {
