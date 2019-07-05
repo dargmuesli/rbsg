@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import de.uniks.se1ss19teamb.rbsg.features.Snake;
 import de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController;
 
 import java.io.IOException;
@@ -35,7 +36,8 @@ public class EasterEggKeyEventHandler {
     public static void setSnake(Scene scene, KeyCombination keyCombination) {
         scene.setOnKeyPressed(e -> {
             if (keyCombination.match(e)) {
-                // Snake needs to be implemented
+                Snake snake = new Snake();
+                snake.start(Snake.classStage);
             }
         });
     }
