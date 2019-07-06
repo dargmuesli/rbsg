@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
+import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
+
 import java.io.IOException;
 
 import javafx.animation.*;
@@ -11,6 +13,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
@@ -20,26 +23,41 @@ public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
 
     public static void makeFadeOutTransition(String path, Node node) {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(750));
-        fadeTransition.setNode(node);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
+        FadeTransition fadeTransition = setTransition(node);
         fadeTransition.setOnFinished(event -> {
             try {
-                if (node.lookup("#chatWindow") == null) {
-                    node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
-                } else {
-                    AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
-                    pane.getChildren().add(node.lookup("#chatWindow"));
-                    node.getScene().setRoot(pane);
-                }
+                node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
                     "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
             }
         });
         fadeTransition.play();
+    }
+
+    public static void makeFadeOutTransition(String path, Node node, Node chatWindow) {
+        FadeTransition fadeTransition = setTransition(node);
+        fadeTransition.setOnFinished(event -> {
+            try {
+                DragMoveResize.makeChangeable((Region) chatWindow);
+                AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
+                pane.getChildren().add(chatWindow);
+                node.getScene().setRoot(pane);
+            } catch (IOException e) {
+                NotificationHandler.getInstance().sendError(
+                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
+            }
+        });
+        fadeTransition.play();
+    }
+
+    private static FadeTransition setTransition(Node node) {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(750));
+        fadeTransition.setNode(node);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        return fadeTransition;
     }
 
     public static void makeFadeInTransition(Node node) {

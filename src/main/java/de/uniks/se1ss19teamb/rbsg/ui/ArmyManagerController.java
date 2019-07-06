@@ -28,6 +28,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -169,9 +170,13 @@ public class ArmyManagerController {
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
             loadFromServer();
+            VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
+            JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+            btnMinimize.setDisable(false);
 
             if (serverArmies.size() != 0) {
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane);
+                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
+                    mainPane.getScene().lookup("#chatWindow"));
             }
         }
     }
@@ -216,8 +221,16 @@ public class ArmyManagerController {
             leftUnits = 10;
         }
 
+        // seit letzten rework wird in der gespeicherten JSON nicht die ID sondern der Name der Unit gespeichert.
+        // Die IDs habe alle eine länge von 24.
         for (String unitId : army.getUnits()) {
-            switch (Troop.keyOf(unitId)) {
+            String id;
+            if (unitId.length() != 24) {
+                id = Troop.valueOf(unitId).id;
+            } else {
+                id = unitId;
+            }
+            switch (Troop.keyOf(id)) {
                 case BAZOOKA_TROOPER:
                     unitObjectControllers.get(0).increaseCount();
                     break;
@@ -369,8 +382,8 @@ public class ArmyManagerController {
     }
 
     private void saveCurrentConfig(int configNum) {
-        armySaves[configNum] = getCurrentConfiguration();
-        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum]);
+        armySaves[configNum - 1] = getCurrentConfiguration();
+        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum - 1]);
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }

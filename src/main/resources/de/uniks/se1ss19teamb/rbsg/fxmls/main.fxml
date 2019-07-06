@@ -66,11 +66,10 @@
                 </VBox>
             </HBox>
             <Pane prefHeight="1.0" style="-fx-background-color: grey;"/>
-            <HBox spacing="5" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" VBox.vgrow="ALWAYS">
-                <VBox fx:id="chatWindow" alignment="CENTER" spacing="5" style="-fx-background-color: transparent;"
-                      AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" HBox.hgrow="ALWAYS">
-                    <JFXButton fx:id="btnMinimize" alignment="CENTER" onAction="#setOnAction" text="Chat"
-                               AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+            <HBox VBox.vgrow="ALWAYS">
+                <VBox fx:id="chatWindow" alignment="BOTTOM_CENTER" style="-fx-background-color: transparent;"
+                      spacing="5" HBox.hgrow="ALWAYS" AnchorPane.leftAnchor="5.0" AnchorPane.bottomAnchor="5.0">
+                    <JFXButton fx:id="btnMinimize" alignment="CENTER" onAction="#setOnAction" text="Chat">
                         <font>
                             <Font size="15.0"/>
                         </font>
@@ -81,16 +80,15 @@
                             <FontAwesomeIconView glyphName="WINDOW_MINIMIZE" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <VBox fx:id="chatBox" maxHeight="300">
+                    <VBox fx:id="chatBox" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
                         <JFXTabPane fx:id="chatPane" VBox.vgrow="ALWAYS">
                             <Tab closable="false" text="All">
-                                <ScrollPane fx:id="allPane" fitToHeight="true" fitToWidth="true" minHeight="200.0"
-                                            minWidth="400.0">
+                                <ScrollPane fx:id="allPane" fitToHeight="true" fitToWidth="true">
                                     <VBox fx:id="textArea"/>
                                 </ScrollPane>
                             </Tab>
                         </JFXTabPane>
-                        <HBox alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
+                        <HBox alignment="BOTTOM_CENTER">
                             <JFXTextField fx:id="message" onAction="#onEnter" HBox.hgrow="ALWAYS">
                                 <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0"/>
