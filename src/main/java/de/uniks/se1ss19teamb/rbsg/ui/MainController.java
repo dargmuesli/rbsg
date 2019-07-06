@@ -200,6 +200,7 @@ public class MainController {
                     } else {
                         setPrivate(t1.getText(), -1);
                     }
+                    t1.setGraphic(null);
                 }
             );
 
@@ -224,9 +225,6 @@ public class MainController {
             });
 
             selectionModel = chatPane.getSelectionModel();
-
-            chatPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) ->
-                chatPane.getTabs().get((Integer) newValue).setGraphic(null));
         });
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
