@@ -24,11 +24,10 @@ class UiTests extends ApplicationTest {
 
     @BeforeAll
     public static void setupHeadlessMode() {
-        /*
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");*/
+        System.setProperty("prism.text", "t2k");
     }
 
     @Override
@@ -145,7 +144,7 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(200000);
+        sleep(2000);
         // chat
         clickOn("#message");
         write("/all ");
