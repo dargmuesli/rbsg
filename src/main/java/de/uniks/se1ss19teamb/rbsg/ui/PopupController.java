@@ -49,15 +49,17 @@ public class PopupController {
 
     private void show() {
         popup.setVisible(true);
+        popup.getScene().lookup("#errorContainer").setVisible(true);
         new Thread(new Task<Void>() {
             @Override
             public Void call() {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 popup.setVisible(false);
+                popup.getScene().lookup("#errorContainer").setVisible(false);
                 return null;
             }
         }).start();
