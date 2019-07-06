@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -213,6 +215,9 @@ public class MainController {
             });
 
             selectionModel = chatPane.getSelectionModel();
+
+            chatPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) ->
+                chatPane.getTabs().get((Integer) newValue).setGraphic(null));
         });
 
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
@@ -427,6 +432,10 @@ public class MainController {
         }
 
         Platform.runLater(() -> box.getChildren().add(container));
+        if (!chatPane.getTabs().get(0).isSelected()) {
+            Platform.runLater(() ->
+                chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+        }
     }
 
     private void setChatStyle(Label label) {
@@ -442,6 +451,9 @@ public class MainController {
         boolean createTab = true;
         for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
+                if (!t.isSelected()) {
+                    Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+                }
                 if (mymessage) {
                     getPrivate(userName, message, t);
                     createTab = false;
@@ -464,6 +476,7 @@ public class MainController {
                         } else {
                             getPrivate(from, message, newTab);
                         }
+                        selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
                             .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -479,7 +492,6 @@ public class MainController {
         if (message != null) {
             addElement(from, message, area, true);
         }
-        selectionModel.select(tab);
     }
 
     private boolean checkInput(String input) {
