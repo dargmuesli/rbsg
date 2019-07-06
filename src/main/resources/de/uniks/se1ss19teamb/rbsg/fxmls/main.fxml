@@ -24,7 +24,7 @@
     <AnchorPane fx:id="mainScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
-                    AnchorPane.topAnchor="50.0"/>
+                    AnchorPane.topAnchor="50.0" visible="false"/>
         <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">

@@ -110,6 +110,23 @@ public class MainController {
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            PopupController controller = fxmlLoader.getController();
+            NotificationHandler.getInstance().setPopupController(controller);
+            Platform.runLater(() -> {
+                errorContainer.getChildren().add(parent);
+                errorContainer.toFront();
+            });
+        } catch (IOException e) {
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
+
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
             SystemSocket.instance = new SystemSocket(userKey);
@@ -166,20 +183,6 @@ public class MainController {
             Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
             Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
             Theming.hamburgerMenuTransition(hamburgerMenu, btnColorMode);
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-            try {
-                Parent parent = fxmlLoader.load();
-                // controller not used yet, but it's good to have it for later purposes.
-                PopupController controller = fxmlLoader.getController();
-                NotificationHandler.getInstance().setPopupController(controller);
-                Platform.runLater(() -> errorContainer.getChildren().add(parent));
-            } catch (IOException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-            }
 
             // ChatTabController
             chatPane.getSelectionModel().selectedItemProperty().addListener(

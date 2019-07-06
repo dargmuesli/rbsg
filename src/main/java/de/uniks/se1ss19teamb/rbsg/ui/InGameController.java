@@ -13,24 +13,33 @@ import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
+import java.io.IOException;
 import java.util.*;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class InGameController {
 
+    private static final Logger logger = LogManager.getLogger();
+
     @FXML
     private AnchorPane inGameScreen;
+    @FXML
+    private AnchorPane errorContainer;
     @FXML
     private JFXHamburger hamburgerMenu;
     @FXML
@@ -59,6 +68,23 @@ public class InGameController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            PopupController controller = fxmlLoader.getController();
+            NotificationHandler.getInstance().setPopupController(controller);
+            Platform.runLater(() -> {
+                errorContainer.getChildren().add(parent);
+                errorContainer.toFront();
+            });
+        } catch (IOException e) {
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
 
         GameSocket.instance = new GameSocket(
             LoginController.getUserKey(),
@@ -109,12 +135,13 @@ public class InGameController {
                 tryCounter++;
                 if (tryCounter == 10) {
                     NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
-                        LogManager.getLogger());
+                        logger);
                     break;
                 }
 
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                NotificationHandler.getInstance()
+                    .sendError("Fehler beim initialisieren vom Spiel!", logger, e);
             }
         }
 
@@ -148,5 +175,6 @@ public class InGameController {
             gameGrid.add(newStackPane, posX, posY);
 
         }
+        NotificationHandler.getInstance().sendSuccess("Spiel wurde initialisiert!", logger);
     }
 }

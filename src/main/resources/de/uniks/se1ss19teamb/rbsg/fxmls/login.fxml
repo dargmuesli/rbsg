@@ -16,7 +16,7 @@
     <AnchorPane fx:id="loginScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0"
-                    AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0"/>
+                    AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" visible="false"/>
         <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <FontAwesomeIconView glyphName="LOCK" size="40" textAlignment="CENTER" wrappingWidth="56.0"/>
