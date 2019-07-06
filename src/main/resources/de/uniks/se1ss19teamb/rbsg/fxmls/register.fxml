@@ -14,7 +14,7 @@
     <AnchorPane fx:id="registerScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" layoutX="200.0" layoutY="20.0" prefHeight="50.0" AnchorPane.leftAnchor="25.0"
-                    AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0"/>
+                    AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" visible="false"/>
         <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <FontAwesomeIconView glyphName="USER_CIRCLE" size="40"/>

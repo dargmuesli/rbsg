@@ -104,6 +104,7 @@ public class LoginController {
         try {
             Parent parent = fxmlLoader.load();
             errorContainer.getChildren().add(parent);
+            errorContainer.toFront();
 
             PopupController controller = fxmlLoader.getController();
             NotificationHandler.getInstance().setPopupController(controller);
