@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import java.util.Arrays;
 import javafx.fxml.FXML;
@@ -20,6 +21,8 @@ public class UnitObjectController {
     private Label labelUnitCount;
     @FXML
     private Button btnDecrease;
+    @FXML
+    private Pane imageUnitType;
 
     private ArmyManagerController armyManagerController;
     private int count = 0;
@@ -33,7 +36,7 @@ public class UnitObjectController {
         labelUnitType.setText(unit.getType());
         updateCount();
         btnDecrease.setDisable(true);
-
+        imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
     }
 
     int getCount() {
