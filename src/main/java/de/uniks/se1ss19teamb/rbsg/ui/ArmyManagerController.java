@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +38,8 @@ public class ArmyManagerController {
     static boolean joiningGame;
     @FXML
     private AnchorPane mainPane;
+    @FXML
+    private AnchorPane errorContainer;
     @FXML
     private JFXButton btnLogout;
     @FXML
@@ -80,6 +83,23 @@ public class ArmyManagerController {
         Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            PopupController controller = fxmlLoader.getController();
+            NotificationHandler.getInstance().setPopupController(controller);
+            Platform.runLater(() -> {
+                errorContainer.getChildren().add(parent);
+                errorContainer.toFront();
+            });
+        } catch (IOException e) {
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);

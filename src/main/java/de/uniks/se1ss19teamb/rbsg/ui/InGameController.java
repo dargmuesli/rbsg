@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -36,6 +37,8 @@ public class InGameController {
 
     @FXML
     private AnchorPane inGameScreen;
+    @FXML
+    private AnchorPane errorContainer;
     @FXML
     private JFXHamburger hamburgerMenu;
     @FXML
@@ -77,6 +80,23 @@ public class InGameController {
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            PopupController controller = fxmlLoader.getController();
+            NotificationHandler.getInstance().setPopupController(controller);
+            Platform.runLater(() -> {
+                errorContainer.getChildren().add(parent);
+                errorContainer.toFront();
+            });
+        } catch (IOException e) {
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
 
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
@@ -136,12 +156,13 @@ public class InGameController {
                 tryCounter++;
                 if (tryCounter == 10) {
                     NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
-                        LogManager.getLogger());
+                        logger);
                     break;
                 }
 
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                NotificationHandler.getInstance()
+                    .sendError("Fehler beim initialisieren vom Spiel!", logger, e);
             }
         }
 
@@ -175,6 +196,7 @@ public class InGameController {
             gameGrid.add(newStackPane, posX, posY);
 
         }
+        NotificationHandler.getInstance().sendSuccess("Spiel wurde initialisiert!", logger);
     }
 
     private void addElement(String player, String message, VBox box, boolean whisper) {
