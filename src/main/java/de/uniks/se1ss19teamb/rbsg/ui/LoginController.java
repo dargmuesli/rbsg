@@ -90,6 +90,7 @@ public class LoginController {
         random = (int) (Math.random() * jokes.length);
         jokeLabel.setText(jokes[random]);
         jokeLabel.setLayoutX(-500);
+        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
