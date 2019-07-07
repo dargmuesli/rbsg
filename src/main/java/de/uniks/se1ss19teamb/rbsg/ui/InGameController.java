@@ -125,6 +125,9 @@ public class InGameController {
 
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         fillGameGrid();
+        miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
+        miniMap.setVisible(false);
+        inGameScreen.getChildren().add(miniMap);
     }
 
     public void setOnAction(ActionEvent event) {
@@ -210,10 +213,6 @@ public class InGameController {
 
         }
         NotificationHandler.getInstance().sendSuccess("Spiel wurde initialisiert!", logger);
-        miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
-        miniMap.setVisible(false);
-        inGameScreen.getChildren().add(miniMap);
-
     }
 
     private void addElement(String player, String message, VBox box, boolean whisper) {
