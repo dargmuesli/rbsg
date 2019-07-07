@@ -53,6 +53,10 @@ public class InGameController {
     private AnchorPane inGameScreen1;
     @FXML
     private GridPane gameGrid;
+    @FXML
+    private Pane miniMap;
+    @FXML
+    private JFXButton btnMiniMap;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -72,6 +76,7 @@ public class InGameController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnMiniMap);
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
@@ -120,6 +125,9 @@ public class InGameController {
 
         UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         fillGameGrid();
+        miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
+        miniMap.setVisible(false);
+        inGameScreen.getChildren().add(miniMap);
     }
 
     public void setOnAction(ActionEvent event) {
@@ -143,6 +151,12 @@ public class InGameController {
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
+            }
+        } else if (event.getSource().equals(btnMiniMap)) {
+            if (miniMap.isVisible()) {
+                miniMap.setVisible(false);
+            } else {
+                miniMap.setVisible(true);
             }
         }
     }
