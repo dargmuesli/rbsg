@@ -29,9 +29,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.stage.Window;
 import javafx.util.Pair;
-import org.apache.commons.net.telnet.WindowSizeOptionHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -153,7 +151,7 @@ public class InGameController {
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
             }
         } else if (event.getSource().equals(btnMiniMap)) {
-            if (miniMap.isVisible()){
+            if (miniMap.isVisible()) {
                 miniMap.setVisible(false);
             } else {
                 miniMap.setVisible(true);
