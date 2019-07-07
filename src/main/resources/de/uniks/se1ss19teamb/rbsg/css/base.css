@@ -16,3 +16,15 @@ ScrollPane {
 .text-field {
     -fx-font-size: 12pt;
 }
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #dedede;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #bdbdbd;
+}
+
+.jfx-tab-pane .tab .tab-label {
+    -fx-text-fill: black;
+}

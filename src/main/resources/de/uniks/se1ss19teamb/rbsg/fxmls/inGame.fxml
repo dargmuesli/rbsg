@@ -17,8 +17,7 @@
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
     <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
-                    AnchorPane.topAnchor="50.0" visible="false"/>
+        <AnchorPane fx:id="errorContainer" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" visible="false"/>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <children>
