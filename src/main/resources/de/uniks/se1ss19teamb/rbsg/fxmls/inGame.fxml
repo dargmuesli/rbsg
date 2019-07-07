@@ -12,11 +12,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="inGameScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
     <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"></Pane>
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
                     AnchorPane.topAnchor="50.0" visible="false"/>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

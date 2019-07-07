@@ -29,7 +29,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.stage.Window;
 import javafx.util.Pair;
+import org.apache.commons.net.telnet.WindowSizeOptionHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,6 +53,8 @@ public class InGameController {
     private AnchorPane inGameScreen1;
     @FXML
     private GridPane gameGrid;
+    @FXML
+    private Pane miniMap;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -197,6 +201,9 @@ public class InGameController {
 
         }
         NotificationHandler.getInstance().sendSuccess("Spiel wurde initialisiert!", logger);
+        miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
+        inGameScreen.getChildren().add(miniMap);
+
     }
 
     private void addElement(String player, String message, VBox box, boolean whisper) {
