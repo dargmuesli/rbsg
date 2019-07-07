@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Label?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="loginScreen1" xmlns="http://javafx.com/javafx/8.0.162-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.LoginController">
     <AnchorPane fx:id="loginScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
@@ -44,6 +45,9 @@
                     </font>
                 </JFXButton>
             </HBox>
+            <AnchorPane>
+                <Label fx:id="jokeLabel" text="chuckNorrisJokes"></Label>
+            </AnchorPane>
         </VBox>
         <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler" text="Fullscreen"
                    AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
