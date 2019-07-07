@@ -166,6 +166,11 @@ public class ArmyManagerController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnJoinGame)) {
+            if (leftUnits > 0) {
+                NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
+                return;
+            }
+            saveToServer();
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
@@ -296,27 +301,27 @@ public class ArmyManagerController {
         ArrayList<String> allIds = new ArrayList<>();
 
         for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
-            allIds.add(Troop.BAZOOKA_TROOPER.toString());
+            allIds.add(Troop.BAZOOKA_TROOPER.id);
         }
 
         for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
-            allIds.add(Troop.CHOPPER.toString());
+            allIds.add(Troop.CHOPPER.id);
         }
 
         for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
-            allIds.add(Troop.HEAVY_TANK.toString());
+            allIds.add(Troop.HEAVY_TANK.id);
         }
 
         for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
-            allIds.add(Troop.INFANTRY.toString());
+            allIds.add(Troop.INFANTRY.id);
         }
 
         for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
-            allIds.add(Troop.JEEP.toString());
+            allIds.add(Troop.JEEP.id);
         }
 
         for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
-            allIds.add(Troop.LIGHT_TANK.toString());
+            allIds.add(Troop.LIGHT_TANK.id);
         }
 
         currentArmy.setUnits(allIds);
