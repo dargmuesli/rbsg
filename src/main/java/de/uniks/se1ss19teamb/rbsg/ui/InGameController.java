@@ -55,6 +55,8 @@ public class InGameController {
     private GridPane gameGrid;
     @FXML
     private Pane miniMap;
+    @FXML
+    private JFXButton btnMiniMap;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -74,6 +76,7 @@ public class InGameController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+        Theming.hamburgerMenuTransition(hamburgerMenu, btnMiniMap);
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
@@ -146,6 +149,12 @@ public class InGameController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
             }
+        } else if (event.getSource().equals(btnMiniMap)) {
+            if (miniMap.isVisible()){
+                miniMap.setVisible(false);
+            } else {
+                miniMap.setVisible(true);
+            }
         }
     }
 
@@ -202,6 +211,7 @@ public class InGameController {
         }
         NotificationHandler.getInstance().sendSuccess("Spiel wurde initialisiert!", logger);
         miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
+        miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
 
     }

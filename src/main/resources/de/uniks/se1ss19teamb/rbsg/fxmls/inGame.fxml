@@ -18,7 +18,7 @@
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
     <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"></Pane>
+        <Pane fx:id="miniMap"></Pane>
         <AnchorPane fx:id="errorContainer" minHeight="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
                     AnchorPane.topAnchor="50.0" visible="false"/>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -41,6 +41,12 @@
                                onAction="#setOnAction" visible="false">
                         <graphic>
                             <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>
+                        </graphic>
+                    </JFXButton>
+                    <JFXButton fx:id="btnMiniMap" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#setOnAction" visible="false">
+                        <graphic>
+                            <FontAwesomeIconView boundsType="VISUAL" glyphName="MAP" size="15"/>
                         </graphic>
                     </JFXButton>
                     <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0"/>
