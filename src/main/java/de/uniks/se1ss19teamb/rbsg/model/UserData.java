@@ -7,6 +7,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,8 @@ public class UserData {
     public static UserData loadUserData(NotificationHandler notificationHandler) {
         if (!UserData.USER_DATA_PATH.toFile().exists()) {
             if (notificationHandler != null) {
-                notificationHandler.sendError("User data doesn't exist!", logger);
+                Platform.runLater(() -> notificationHandler.sendError("User data doesn't exist!", logger));
+
             }
 
             return null;
@@ -40,7 +42,7 @@ public class UserData {
 
         if (userDataFile.exists()) {
             if (!userDataFile.delete()) {
-                notificationHandler.sendError("User data file could not be deleted!", logger);
+                Platform.runLater(() -> notificationHandler.sendError("User data file could not be deleted!", logger));
             }
         }
     }

@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTabPane;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.PlayerTile;
@@ -295,6 +297,9 @@ public class InGameController {
         boolean createTab = true;
         for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
+                if (!t.isSelected()) {
+                    Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+                }
                 if (mymessage) {
                     getPrivate(LoginController.getUser(), message, t);
                     createTab = false;

@@ -103,6 +103,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnSave1");
         clickOn("#btnSave2");
         clickOn("#btnSave3");
+        sleep(2600); // wating for notification do disappear
         clickOn("Save/Load");
         clickOn("#btnSave1");
         clickOn("#btnSave2");
@@ -114,49 +115,9 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void inGameTest() {
-        clickOn("#userName");
-        write("testTeamB");
-        clickOn("#password");
-        write("qwertz");
-        clickOn("#btnLogin");
-        sleep(2000); // sleep to finisch transition
-        // game
-        clickOn("#gameName");
-        write("ayGame");
-        clickOn("#btnCreate");
-        sleep(500); // sleep to finisch action
-        ListView list = lookup("#gameListView").queryAs(ListView.class);
-        HBox box = new HBox();
-        for (int i = 0; i < list.getItems().size(); i++) {
-            box = (HBox) list.getItems().get(i);
-            Label label = (Label) box.lookup("Label");
-            if (label.getText().equals("ayGame")) {
-                break;
-            }
-        }
-        // ingame
-        clickOn(box.lookup("#join"));
-        sleep(2000); // sleep to finisch transition
-        clickOn("#btnLoadServer");
-        clickOn("Join Game");
-        sleep(2000); // sleep to finisch transition
-        clickOn("#hamburgerMenu");
-        WaitForAsyncUtils.waitForFxEvents();
-        clickOn("#btnFullscreen");
-        clickOn("#btnFullscreen");
-        clickOn("#chatWindow")
-            .press(MouseButton.PRIMARY)
-            .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
-            .drop();
-        clickOn("#btnLogout");
-        sleep(2000); // sleep to finisch transition
-    }
-
-    @Test
     void loginMainTest() {
         clickOn("#userName");
-        write("testTeamB");
+        write("testTeamB2");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
@@ -226,18 +187,30 @@ class UiTests extends ApplicationTest {
         clickOn("#hamburgerMenu");
         sleep(1000); // sleep to finisch action
         clickOn("#btnFullscreen");
-        sleep(1000); // sleep to finisch action
+        clickOn("#btnFullscreen");
+        clickOn("#chatWindow")
+            .press(MouseButton.PRIMARY)
+            .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
+            .drop();
         clickOn("#btnBack");
         sleep(3000); // sleep to finisch action
-        ListView<HBox> list2 = lookup("#gameListView").queryAs(ListView.class);
-        for (HBox gameField : list2.getItems()) {
-            Label label = (Label) gameField.getChildren().get(0);
+        ListView list2 = lookup("#gameListView").queryAs(ListView.class);
+        HBox box2;
+        for (int i = 0; i < list2.getItems().size(); i++) {
+            box2 = (HBox) list2.getItems().get(i);
+            Label label = (Label) box2.lookup("Label");
             if (label.getText().equals("junitTestGameB")) {
-                clickOn(gameField.getChildren().get(2));
-                sleep(1000); // sleep to finisch action
+                Button button = (Button) box2.lookup("#delete");
+                clickOn(button);
+                sleep(500); // sleep to finisch action
             }
         }
-
+        sleep(500); // needed to avoid sception
+        // logout
+        clickOn("#hamburgerMenu");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnLogout");
+        sleep(2000); // sleep to finisch transition
     }
 
 }
