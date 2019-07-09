@@ -5,12 +5,14 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import de.uniks.se1ss19teamb.rbsg.features.ZuendorfMeme;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Random;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -111,6 +113,11 @@ public class LoginController {
 
         } catch (IOException e) {
             NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+        }
+
+        // 1% meme chance
+        if (new Random().nextFloat() < 0.01) {
+            ZuendorfMeme.setup(loginScreen1);
         }
     }
 
