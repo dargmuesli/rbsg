@@ -227,4 +227,14 @@ class UiTests extends ApplicationTest {
         }
     }
 
+    @Test
+    void snakeTest() {
+        press(KeyCode.SHIFT).press(KeyCode.F2);
+        sleep(500); // given some time to open window
+        push(KeyCode.LEFT);
+        push(KeyCode.UP);
+        push(KeyCode.RIGHT);
+        push(KeyCode.DOWN);
+    }
+
 }
