@@ -57,15 +57,15 @@ public class GameSocketTestsMocked {
         gameSocket.registerGameMessageHandler((message, from, isPrivate)
             -> msg.add(message + '|' + from + '|' + isPrivate));
 
-        setupSocket("{\"channel\":\"all\",\"from\":\"testTeamB\",\"message\":\"Hello World!\"}", gameSocket);
+        setupSocket("{\"channel\":\"all\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World!\"}", gameSocket);
         gameSocket.sendMessage("Hello World!");
 
-        setupSocket("{\"channel\":\"private\",\"from\":\"testTeamB\",\"message\":\"Hello World! Private\"}",
+        setupSocket("{\"channel\":\"private\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World! Private\"}",
             gameSocket);
-        gameSocket.sendPrivateMessage("Hello World! Private", "testTeamB2");
+        gameSocket.sendPrivateMessage("Hello World! Private", "TeamBTestUser2");
 
-        Assert.assertTrue(msg.contains("Hello World!|testTeamB|false"));
-        Assert.assertTrue(msg.contains("Hello World! Private|testTeamB|true")); */
+        Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser|false"));
+        Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true")); */
     }
 
 }

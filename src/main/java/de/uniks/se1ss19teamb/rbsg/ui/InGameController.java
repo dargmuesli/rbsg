@@ -70,6 +70,8 @@ public class InGameController {
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
+    private VBox chatBox;
+    private JFXButton btnMinimize;
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
@@ -82,6 +84,8 @@ public class InGameController {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
             textArea = (VBox) btnLogout.getScene().lookup("#textArea");
             message = (TextField) btnLogout.getScene().lookup("#message");
+            chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
+            btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
@@ -257,6 +261,15 @@ public class InGameController {
         }
 
         Platform.runLater(() -> box.getChildren().add(container));
+        if (!chatPane.getTabs().get(0).isSelected() && !whisper) {
+            Platform.runLater(() ->
+                chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+        }
+
+        if (!chatBox.isVisible()) {
+            Platform.runLater(() ->
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+        }
     }
 
     private void setChatStyle(Label label) {
@@ -322,6 +335,7 @@ public class InGameController {
                         } else {
                             getPrivate(from, message, newTab);
                         }
+                        MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
                             .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
