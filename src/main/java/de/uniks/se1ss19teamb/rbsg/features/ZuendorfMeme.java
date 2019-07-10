@@ -58,8 +58,8 @@ public class ZuendorfMeme {
     }
 
     private static void replaceZuendorf(Pane root) {
-        int staticXPosOffset = (int) IMAGE.getWidth() / 2;
-        int staticYPosOffset = (int) IMAGE.getHeight() / 2;
+        double staticXPosOffset = IMAGE.getWidth() / 2;
+        double staticYPosOffset = IMAGE.getHeight() / 2;
         double randomXPos = RandomUtil.distributedPosition(root.getWidth(), IMAGE.getWidth()) - staticXPosOffset;
         double randomYPos = RandomUtil.distributedPosition(root.getHeight(), IMAGE.getHeight()) - staticYPosOffset;
         int side;
