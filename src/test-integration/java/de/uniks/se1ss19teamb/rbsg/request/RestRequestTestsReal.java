@@ -122,7 +122,8 @@ public class RestRequestTestsReal {
             Assert.assertTrue(req.getSuccessful());
 
             final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta) -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
+            req.getGames().forEach((s, gameMeta) ->
+                hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
             Assert.fail(e.toString());
