@@ -46,6 +46,8 @@
                     </JFXButton>
                     <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0" />
                 </HBox>
+                <AnchorPane fx:id="turnUI" >
+                </AnchorPane>
                 <StackPane prefWidth="200.0">
                     <children>
                         <ScrollPane fx:id="mapScrollPane" hbarPolicy="NEVER" pannable="true" prefWidth="200.0" vbarPolicy="NEVER">

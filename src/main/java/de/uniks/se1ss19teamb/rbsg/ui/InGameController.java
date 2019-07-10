@@ -57,6 +57,8 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private JFXButton btnMiniMap;
+    @FXML
+    private AnchorPane turnUI;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -103,6 +105,16 @@ public class InGameController {
         } catch (IOException e) {
             NotificationHandler.getInstance()
                 .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
+        try {
+            Parent parent = loader.load();
+            TurnUIController controller = loader.getController();
+                turnUI.getChildren().add(parent);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         GameSocket.instance = new GameSocket(
