@@ -42,7 +42,7 @@ public class RestRequestTestsMocked {
     }
 
     private HttpRequestResponse getHttpQueryUsersResponse() {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"testTeamB\"]}";
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"TeamBTestUser\"]}";
         int status = 200;
         String errorMsg = "test";
         return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
@@ -57,7 +57,7 @@ public class RestRequestTestsMocked {
 
     private HttpRequestResponse getHttpQueryGamesResponse() {
         String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":"
-            + "[{\"id\":\"123456789012345678901234\",\"name\":\"testTeamBGame\",\"neededPlayer\":2,"
+            + "[{\"id\":\"123456789012345678901234\",\"name\":\"TeamBTestUserGame\",\"neededPlayer\":2,"
             + "\"joinedPlayer\":0}]}";
         int statusLogout = 200;
         String errorMsgLogout = "test";
@@ -97,7 +97,7 @@ public class RestRequestTestsMocked {
             e.printStackTrace();
         }
 
-        RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz");
+        RegisterUserRequest req = new RegisterUserRequest("TeamBTestUser", "qwertz");
 
         try {
             req.sendRequest();
@@ -120,7 +120,7 @@ public class RestRequestTestsMocked {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LoginUserRequest req = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest req = new LoginUserRequest("TeamBTestUser", "qwertz");
 
         try {
             //Query Request
@@ -150,7 +150,7 @@ public class RestRequestTestsMocked {
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertTrue(req.getUsersInLobby().contains("testTeamB"));
+            Assert.assertTrue(req.getUsersInLobby().contains("TeamBTestUser"));
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -187,7 +187,7 @@ public class RestRequestTestsMocked {
             e.printStackTrace();
         }
 
-        CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, "111111111111111111111111111111111111");
+        CreateGameRequest req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111");
         try {
             req.sendRequest();
 
@@ -216,7 +216,7 @@ public class RestRequestTestsMocked {
 
             final boolean[] hasTeamBTestGame = {false};
             req.getGames().forEach((s, gameMeta) -> {
-                hasTeamBTestGame[0] |= gameMeta.getName().equals("testTeamBGame");
+                hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame");
             });
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {

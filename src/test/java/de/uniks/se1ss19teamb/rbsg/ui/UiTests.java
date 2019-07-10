@@ -67,7 +67,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnRegistration");
         sleep(2000); // sleep to finisch transition
         clickOn("#username");
-        write("testTeamB").push(KeyCode.ENTER);
+        write("TeamBTestUser").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#password");
         write("qwertz").push(KeyCode.ENTER);
@@ -85,7 +85,7 @@ class UiTests extends ApplicationTest {
     @Test
     void saveArmyTest() {
         clickOn("#userName");
-        write("testTeamB");
+        write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
@@ -117,7 +117,7 @@ class UiTests extends ApplicationTest {
     @Test
     void loginMainTest() {
         clickOn("#userName");
-        write("testTeamB2");
+        write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
@@ -156,11 +156,11 @@ class UiTests extends ApplicationTest {
     @Test
     void testInGame() {
         clickOn("#userName");
-        write("junit");
+        write("TeamBTestUser2");
         clickOn("#password");
-        write("junit");
+        write("qwertz");
         clickOn("#btnLogin");
-        sleep(5000); // sleep to finisch action
+        sleep(2000); // sleep to finisch action
         clickOn("#gameName");
         write("junitTestGameB");
         clickOn("#btnCreate");
@@ -177,7 +177,10 @@ class UiTests extends ApplicationTest {
         clickOn(box.getChildren().get(1));
         sleep(2000); // sleep to finisch action
         clickOn("#btnLoadServer");
-        sleep(1000); // sleep to finisch action
+        for (int i = 0; i < 10; i++) {
+            clickOn("+");
+        }
+        // sleep(1000); // sleep to finisch action // not working at hte moment replaced with loop
         HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
         clickOn(btnBox.getChildren().get(2));
         sleep(7000); // sleep to finisch action
@@ -188,6 +191,8 @@ class UiTests extends ApplicationTest {
         sleep(1000); // sleep to finisch action
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
+        clickOn("#btnMiniMap");
+        clickOn("#btnMiniMap");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
