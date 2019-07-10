@@ -213,4 +213,18 @@ class UiTests extends ApplicationTest {
         sleep(2000); // sleep to finisch transition
     }
 
+    @Test
+    void ticTacToeTest() {
+        push(KeyCode.SHIFT).push(KeyCode.F1);
+        sleep(500); // given some time to open window
+        String[] buttons = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        for (String s : buttons) {
+            clickOn(String.format("#%s", s));
+        }
+        clickOn("#btnReplay");
+        for (int i = buttons.length - 1; i >= 0; i--) {
+            clickOn(String.format("#%s", buttons[i]));
+        }
+    }
+
 }
