@@ -13,8 +13,15 @@ public class RandomUtilTest {
     }
 
     @Test
+    public void distributedPositionTest() {
+        Assert.assertEquals(50, RandomUtil.distributedPosition(100, 49), 1);
+        Assert.assertEquals(28, RandomUtil.distributedPosition(100, 10), 1);
+    }
+
+    @Test
     public void inRangeTest() {
-        Assert.assertEquals(98, RandomUtil.inRange(0, 100));
-        Assert.assertEquals(19, RandomUtil.inRange(0, 100));
+        Assert.assertEquals(1, RandomUtil.inRange(0, 1));
+        Assert.assertEquals(0, RandomUtil.inRange(0, 1));
+        Assert.assertEquals(72, RandomUtil.inRange(0, 100));
     }
 }

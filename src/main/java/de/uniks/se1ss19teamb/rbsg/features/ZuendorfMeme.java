@@ -6,8 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Random;
-import javafx.application.Platform;
+
+import de.uniks.se1ss19teamb.rbsg.util.RandomUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -18,7 +18,7 @@ public class ZuendorfMeme {
     private static int HOVER_MEDIUM_COUNT = 10;
     private static int HOVER_MAX_COUNT = 25;
     private static Image IMAGE;
-    private static ImageView IMAGE_VIEW;
+    protected static ImageView IMAGE_VIEW;
     private static int LAST_SIDE = -1;
 
     static {
@@ -60,8 +60,8 @@ public class ZuendorfMeme {
     private static void replaceZuendorf(Pane root) {
         int staticXPosOffset = (int) IMAGE.getWidth() / 2;
         int staticYPosOffset = (int) IMAGE.getHeight() / 2;
-        double randomXPos = distributedPosition(root.getWidth(), IMAGE.getWidth()) - staticXPosOffset;
-        double randomYPos = distributedPosition(root.getHeight(), IMAGE.getHeight()) - staticYPosOffset;
+        double randomXPos = RandomUtil.distributedPosition(root.getWidth(), IMAGE.getWidth()) - staticXPosOffset;
+        double randomYPos = RandomUtil.distributedPosition(root.getHeight(), IMAGE.getHeight()) - staticYPosOffset;
         int side;
 
         do {
@@ -95,9 +95,5 @@ public class ZuendorfMeme {
         }
 
         LAST_SIDE = side;
-    }
-
-    private static double distributedPosition(double parentSize, double imageSize) {
-        return (parentSize - (2 * imageSize)) * new Random().nextFloat() + imageSize;
     }
 }
