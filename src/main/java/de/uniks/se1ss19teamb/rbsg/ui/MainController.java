@@ -464,6 +464,11 @@ public class MainController {
             Platform.runLater(() ->
                 chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
         }
+
+        if (!chatBox.isVisible()) {
+            Platform.runLater(() ->
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+        }
     }
 
     private void setChatStyle(Label label) {
