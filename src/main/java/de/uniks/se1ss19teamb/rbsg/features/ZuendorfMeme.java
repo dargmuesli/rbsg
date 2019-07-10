@@ -14,11 +14,13 @@ import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 
 public class ZuendorfMeme {
+    protected static ImageView IMAGE_VIEW;
+    protected static boolean QUIET = false;
+
     private static int HOVER_COUNT;
     private static int HOVER_MEDIUM_COUNT = 10;
     private static int HOVER_MAX_COUNT = 25;
     private static Image IMAGE;
-    protected static ImageView IMAGE_VIEW;
     private static int LAST_SIDE = -1;
 
     static {
@@ -43,12 +45,15 @@ public class ZuendorfMeme {
             if (HOVER_COUNT < HOVER_MAX_COUNT) {
                 replaceZuendorf(root);
 
-                if (HOVER_COUNT == HOVER_MEDIUM_COUNT) {
+                if (HOVER_COUNT == HOVER_MEDIUM_COUNT && !QUIET) {
                     SoundManager.playSound("meme_bad_bitch", 0);
                 }
             } else {
                 root.getChildren().remove(IMAGE_VIEW);
-                SoundManager.playSound("meme_beer", 0);
+
+                if (!QUIET) {
+                    SoundManager.playSound("meme_beer", 0);
+                }
             }
         });
 

@@ -14,6 +14,8 @@ public class ZuendorfMemeTest {
     public void prepareTest() throws ExceptionInInitializerError, InterruptedException {
         TestUtil.initJfx();
         TestUtil.initRandom();
+
+        ZuendorfMeme.QUIET = true;
     }
 
     @Test
