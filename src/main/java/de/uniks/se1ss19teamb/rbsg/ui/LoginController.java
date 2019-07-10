@@ -117,7 +117,8 @@ public class LoginController {
 
         // 1% meme chance
         if (new Random().nextFloat() < 0.01) {
-            ZuendorfMeme.setup(loginScreen1);
+            // needed because of root.getWidth/Height
+            Platform.runLater(() -> ZuendorfMeme.setup(loginScreen1));
         }
     }
 

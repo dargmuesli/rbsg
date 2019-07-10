@@ -58,48 +58,43 @@ public class ZuendorfMeme {
     }
 
     private static void replaceZuendorf(Pane root) {
-        // needed because of root.getWidth/Height
-        Platform.runLater(() -> {
-            int min = 0;
-            int max = 3;
-            int staticXPosOffset = (int) IMAGE.getWidth() / 2;
-            int staticYPosOffset = (int) IMAGE.getHeight() / 2;
-            double randomXPos = distributedPosition(root.getWidth(), IMAGE.getWidth()) - staticXPosOffset;
-            double randomYPos = distributedPosition(root.getHeight(), IMAGE.getHeight()) - staticYPosOffset;
-            int side;
+        int staticXPosOffset = (int) IMAGE.getWidth() / 2;
+        int staticYPosOffset = (int) IMAGE.getHeight() / 2;
+        double randomXPos = distributedPosition(root.getWidth(), IMAGE.getWidth()) - staticXPosOffset;
+        double randomYPos = distributedPosition(root.getHeight(), IMAGE.getHeight()) - staticYPosOffset;
+        int side;
 
-            do {
-                side = min + new Random().nextInt(max - min + 1);
-            } while (LAST_SIDE == side);
+        do {
+            side = RandomUtil.inRange(0, 3);
+        } while (LAST_SIDE == side);
 
-            switch (side) {
-                case 0:
-                    IMAGE_VIEW.setRotate(180);
-                    IMAGE_VIEW.setX(randomXPos);
-                    IMAGE_VIEW.setY(staticYPosOffset * -1);
-                    break;
-                case 1:
-                    IMAGE_VIEW.setRotate(270);
-                    IMAGE_VIEW.setX(root.getWidth() - staticXPosOffset);
-                    IMAGE_VIEW.setY(randomYPos);
-                    break;
-                case 2:
-                    IMAGE_VIEW.setRotate(0);
-                    IMAGE_VIEW.setX(randomXPos);
-                    IMAGE_VIEW.setY(root.getHeight() - staticYPosOffset);
-                    break;
-                case 3:
-                    IMAGE_VIEW.setRotate(90);
-                    IMAGE_VIEW.setX(staticXPosOffset * -1);
-                    IMAGE_VIEW.setY(randomYPos);
-                    break;
-                default:
-                    NotificationHandler.getInstance().sendError(
-                        "You really need to check your code!", LogManager.getLogger());
-            }
+        switch (side) {
+            case 0:
+                IMAGE_VIEW.setRotate(180);
+                IMAGE_VIEW.setX(randomXPos);
+                IMAGE_VIEW.setY(staticYPosOffset * -1);
+                break;
+            case 1:
+                IMAGE_VIEW.setRotate(270);
+                IMAGE_VIEW.setX(root.getWidth() - staticXPosOffset);
+                IMAGE_VIEW.setY(randomYPos);
+                break;
+            case 2:
+                IMAGE_VIEW.setRotate(0);
+                IMAGE_VIEW.setX(randomXPos);
+                IMAGE_VIEW.setY(root.getHeight() - staticYPosOffset);
+                break;
+            case 3:
+                IMAGE_VIEW.setRotate(90);
+                IMAGE_VIEW.setX(staticXPosOffset * -1);
+                IMAGE_VIEW.setY(randomYPos);
+                break;
+            default:
+                NotificationHandler.getInstance().sendError(
+                    "You really need to check your code!", LogManager.getLogger());
+        }
 
-            LAST_SIDE = side;
-        });
+        LAST_SIDE = side;
     }
 
     private static double distributedPosition(double parentSize, double imageSize) {
