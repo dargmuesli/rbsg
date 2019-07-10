@@ -21,7 +21,7 @@ public class RestRequestTestsReal {
     @Test
     public void registerUserTest() {
 
-        RegisterUserRequest req = new RegisterUserRequest("testTeamB", "qwertz");
+        RegisterUserRequest req = new RegisterUserRequest("TeamBTestUser", "qwertz");
         try {
             //Test Returning Json
             //Demonstration on how to directly process Json with Lambda
@@ -45,7 +45,7 @@ public class RestRequestTestsReal {
     @Test
     public void loginUserTest() {
 
-        LoginUserRequest req = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest req = new LoginUserRequest("TeamBTestUser", "qwertz");
         try {
             //Query Request
             req.sendRequest();
@@ -60,7 +60,7 @@ public class RestRequestTestsReal {
 
     @Test
     public void queryUsersInLobbyTest() throws ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
         QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getUserKey());
@@ -68,7 +68,7 @@ public class RestRequestTestsReal {
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertTrue(req.getUsersInLobby().contains("testTeamB"));
+            Assert.assertTrue(req.getUsersInLobby().contains("TeamBTestUser"));
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -76,7 +76,7 @@ public class RestRequestTestsReal {
 
     @Test
     public void logoutUserTest() throws ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
         LogoutUserRequest req = new LogoutUserRequest(login.getUserKey());
@@ -92,10 +92,10 @@ public class RestRequestTestsReal {
 
     @Test
     public void createGameTest() throws ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest req = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest req = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
         try {
             //Query Request
             req.sendRequest();
@@ -109,10 +109,10 @@ public class RestRequestTestsReal {
 
     @Test
     public void queryGamesTest() throws ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
         createGame.sendRequest();
 
         QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
@@ -122,7 +122,7 @@ public class RestRequestTestsReal {
             Assert.assertTrue(req.getSuccessful());
 
             final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta) -> hasTeamBTestGame[0] |= gameMeta.getName().equals("testTeamBGame"));
+            req.getGames().forEach((s, gameMeta) -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -131,10 +131,10 @@ public class RestRequestTestsReal {
 
     @Test
     public void deleteGameTest() throws ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
         createGame.sendRequest();
 
         DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
@@ -150,10 +150,10 @@ public class RestRequestTestsReal {
 
     @Test
     public void joinGameTest() throws ParseException {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("testTeamBGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
         createGame.sendRequest();
 
         JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
@@ -180,7 +180,7 @@ public class RestRequestTestsReal {
     }
 
     private LoginUserRequest loginUser() {
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
         userKey = login.getUserKey();
         return login;
@@ -316,14 +316,14 @@ public class RestRequestTestsReal {
     @After
     public void cleanupGames() throws ParseException {
         deleteAllArmies();
-        LoginUserRequest login = new LoginUserRequest("testTeamB", "qwertz");
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
         QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
         query.sendRequest();
 
         query.getGames().entrySet().stream().filter(stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
-            .equals("testTeamBGame"))
+            .equals("TeamBTestUserGame"))
             .forEach(stringGameMetaEntry -> {
                 System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
                     + " with id " + stringGameMetaEntry.getValue().getId() + "...");
