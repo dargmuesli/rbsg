@@ -89,7 +89,7 @@ public class LoginController {
     public void initialize() {
         random = (int) (Math.random() * jokes.length);
         jokeLabel.setText(jokes[random]);
-        jokeLabel.setLayoutX(-500);
+        jokeLabel.setLayoutX(2200);
         jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
 
@@ -98,12 +98,12 @@ public class LoginController {
             @Override
             public void handle(long now) {
 
-                if (jokeLabel.getLayoutX() != 2200) {
-                    jokeLabel.setLayoutX(jokeLabel.getLayoutX() + 2);
-                } else if (jokeLabel.getLayoutX() == 2200) {
+                if (jokeLabel.getLayoutX() != -1000) {
+                    jokeLabel.setLayoutX(jokeLabel.getLayoutX() - 2);
+                } else if (jokeLabel.getLayoutX() == -1000) {
                     random = (int) (Math.random() * jokes.length);
                     jokeLabel.setText(jokes[random]);
-                    jokeLabel.setLayoutX(-500);
+                    jokeLabel.setLayoutX(2200);
                 }
             }
         };
