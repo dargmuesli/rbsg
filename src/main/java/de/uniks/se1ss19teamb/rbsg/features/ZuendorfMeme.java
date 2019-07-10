@@ -2,12 +2,12 @@ package de.uniks.se1ss19teamb.rbsg.features;
 
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.RandomUtil;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import de.uniks.se1ss19teamb.rbsg.util.RandomUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;

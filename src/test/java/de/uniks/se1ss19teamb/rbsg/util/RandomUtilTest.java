@@ -1,10 +1,10 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import java.util.Random;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Random;
 
 public class RandomUtilTest {
     @Before
