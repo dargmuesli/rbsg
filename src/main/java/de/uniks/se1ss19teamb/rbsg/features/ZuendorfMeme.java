@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.features;
 
-import de.uniks.se1ss19teamb.rbsg.sound.Sound;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,7 +26,7 @@ public class ZuendorfMeme {
             IMAGE = new Image(
                 new FileInputStream(
                     URLDecoder.decode(
-                        ZuendorfMeme.class.getResource("/de/uniks/se1ss19teamb/rbsg/memes/zuendorf/zuendorf_icon.png")
+                        ZuendorfMeme.class.getResource("/de/uniks/se1ss19teamb/rbsg/memes/zuendorf_icon.png")
                             .getFile(), "UTF-8")));
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             NotificationHandler.getInstance().sendError("Couldn't load Zündorf meme image.", LogManager.getLogger());
@@ -44,11 +44,11 @@ public class ZuendorfMeme {
                 replaceZuendorf(root);
 
                 if (HOVER_COUNT == HOVER_MEDIUM_COUNT) {
-                    new Sound("../memes/zuendorf/bad_bitch.wav", true).play(1);
+                    SoundManager.playSound("meme_bad_bitch", 0);
                 }
             } else {
                 root.getChildren().remove(IMAGE_VIEW);
-                new Sound("../memes/zuendorf/beer.wav", true).play(1);
+                SoundManager.playSound("meme_beer", 0);
             }
         });
 
@@ -58,6 +58,7 @@ public class ZuendorfMeme {
     }
 
     private static void replaceZuendorf(Pane root) {
+        // needed because of root.getWidth/Height
         Platform.runLater(() -> {
             int min = 0;
             int max = 3;

@@ -10,7 +10,7 @@ public class Sound {
 
     protected Object sound;
 
-    public Sound(String classPath, boolean keepInRam) {
+    protected Sound(String classPath, boolean keepInRam) {
         String url = this.getClass().getResource(classPath).toExternalForm();
         this.keepInRam = keepInRam;
 

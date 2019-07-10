@@ -14,6 +14,9 @@ public class SoundManager {
     public static void init() {
         instance = new SoundManager();
 
+        instance.sounds.put("meme_bad_bitch", new Sound("bad_bitch.wav", false));
+        instance.sounds.put("meme_beer", new Sound("beer.wav", false));
+
         Sound test = new Sound("panzer.wav", true);
         instance.sounds.put("panzer", test);
 
