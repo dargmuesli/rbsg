@@ -89,7 +89,7 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000); // sleep to finisch transition
+        sleep(3000); // sleep to finisch transition
         clickOn("#btnArmyManager");
         sleep(2000); // sleep to finisch transition
         clickOn("#txtfldArmyName");
