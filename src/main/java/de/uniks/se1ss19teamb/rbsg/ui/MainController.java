@@ -460,7 +460,7 @@ public class MainController {
         }
 
         Platform.runLater(() -> box.getChildren().add(container));
-        if (!chatPane.getTabs().get(0).isSelected()) {
+        if (!chatPane.getTabs().get(0).isSelected() && !whisper) {
             Platform.runLater(() ->
                 chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
         }

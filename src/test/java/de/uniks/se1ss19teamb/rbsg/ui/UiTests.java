@@ -67,7 +67,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnRegistration");
         sleep(2000); // sleep to finisch transition
         clickOn("#username");
-        write("testTeamB").push(KeyCode.ENTER);
+        write("TeamBTestUser").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#password");
         write("qwertz").push(KeyCode.ENTER);
@@ -85,7 +85,7 @@ class UiTests extends ApplicationTest {
     @Test
     void saveArmyTest() {
         clickOn("#userName");
-        write("testTeamB");
+        write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
@@ -117,7 +117,7 @@ class UiTests extends ApplicationTest {
     @Test
     void loginMainTest() {
         clickOn("#userName");
-        write("testTeamB2");
+        write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
