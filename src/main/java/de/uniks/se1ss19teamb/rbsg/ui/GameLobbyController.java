@@ -46,6 +46,7 @@ public class GameLobbyController {
 
 
     public void initialize(){
+        /*
         Theming.setTheme(Arrays.asList(new Pane[]{gameLobby,gameLobby1}));
         Theming.hamburgerMenuTransition(hamburgerMenu,btnBack);
         Theming.hamburgerMenuTransition(hamburgerMenu,btnLogout);
@@ -55,6 +56,8 @@ public class GameLobbyController {
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         UserInterfaceUtils.makeFadeInTransition(gameLobby);
+
+         */
     }
 
 

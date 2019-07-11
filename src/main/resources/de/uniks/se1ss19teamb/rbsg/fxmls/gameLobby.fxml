@@ -4,47 +4,157 @@
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
    <children>
-      <AnchorPane fx:id="gameLobby" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/darkDesign.css">
+      <AnchorPane fx:id="gameLobby" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="19.0" prefWidth="200.0">
-               <children>
-                  <JFXButton>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="REPLY" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="SIGN_OUT" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="EXPAND" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXHamburger />
-               </children>
-            </HBox>
-            <Label layoutX="129.0" layoutY="39.0" text="Name" />
-            <Label layoutX="37.0" layoutY="38.0" text="Game Name:" />
-            <HBox layoutX="7.0" layoutY="79.0" prefHeight="40.0" prefWidth="200.0">
-               <children>
-                  <VBox prefHeight="40.0" prefWidth="100.0" />
-                  <VBox prefHeight="40.0" prefWidth="100.0" />
-               </children>
-            </HBox>
-            <JFXButton layoutX="135.0" layoutY="157.0" text="READY" />
-            <Label layoutX="5.0" layoutY="63.0" text="Players" />
-            <Label layoutX="163.0" layoutY="63.0" text="Armies" />
+            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <HBox alignment="TOP_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                  <children>
+                     <JFXButton>
+                        <graphic>
+                           <FontAwesomeIconView glyphName="REPLY" size="15" />
+                        </graphic>
+                     </JFXButton>
+                     <JFXButton>
+                        <graphic>
+                           <FontAwesomeIconView glyphName="SIGN_OUT" size="15" />
+                        </graphic>
+                     </JFXButton>
+                     <JFXButton>
+                        <graphic>
+                           <FontAwesomeIconView glyphName="EXPAND" size="15" />
+                        </graphic>
+                     </JFXButton>
+                     <JFXHamburger prefHeight="0.0" prefWidth="47.0" />
+                  </children>
+               </HBox>
+               <HBox alignment="CENTER" spacing="5">
+                  <Label alignment="CENTER" text="GameName:" textAlignment="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" text="GAME_NAME" textAlignment="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+               </HBox>
+               <HBox>
+                  <children>
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Players" textAlignment="CENTER">
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <ListView prefHeight="200.0" prefWidth="200.0" />
+                                 <JFXButton text="READY" />
+                              </children>
+                           </HBox>
+                        </children>
+                        <HBox.margin>
+                           <Insets left="10.0" />
+                        </HBox.margin>
+                     </VBox>
+                     <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label alignment="CENTER_RIGHT" text="My Armies">
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                       <Pane prefHeight="200.0" prefWidth="0.0">
+                                          <VBox.margin>
+                                             <Insets top="15.0" />
+                                          </VBox.margin>
+                                       </Pane>
+                                       <JFXButton text="Select">
+                                          <VBox.margin>
+                                             <Insets top="5.0" />
+                                          </VBox.margin>
+                                       </JFXButton>
+                                       <JFXButton text="Select">
+                                          <VBox.margin>
+                                             <Insets top="5.0" />
+                                          </VBox.margin>
+                                       </JFXButton>
+                                       <JFXButton text="Select">
+                                          <VBox.margin>
+                                             <Insets top="5.0" />
+                                          </VBox.margin>
+                                       </JFXButton>
+                                    </children>
+                                 </VBox>
+                                 <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                       <Label text="Name">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                       </Label>
+                                       <Label text="Army 1">
+                                          <VBox.margin>
+                                             <Insets />
+                                          </VBox.margin>
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                       </Label>
+                                       <Label text="Army 2">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <VBox.margin>
+                                             <Insets top="10.0" />
+                                          </VBox.margin>
+                                       </Label>
+                                       <Label text="Army 3">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <VBox.margin>
+                                             <Insets top="10.0" />
+                                          </VBox.margin>
+                                       </Label>
+                                    </children>
+                                 </VBox>
+                                 <ListView prefHeight="200.0" prefWidth="200.0" />
+                              </children>
+                           </HBox>
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+               <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <children>
+                     <JFXButton text="I AM READY" />
+                  </children>
+               </HBox>
+            </VBox>
          </children>
       </AnchorPane>
    </children>
