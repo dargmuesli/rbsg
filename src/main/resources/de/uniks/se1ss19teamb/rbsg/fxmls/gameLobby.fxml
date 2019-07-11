@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="gameLobby1" maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
+   <children>
+      <AnchorPane fx:id="gameLobby" stylesheets="@../css/darkDesign.css">
+         <children>
+            <HBox>
+               <children>
+                  <JFXButton fx:id="btnBack">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="REPLY" />
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="btnLogout">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="SIGN_OUT" />
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="btnFullscreen">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="EXPAND" />
+                     </graphic></JFXButton>
+                  <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0" />
+               </children>
+            </HBox>
+            <Pane layoutX="9.0" layoutY="30.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="4.0" prefHeight="20.0" prefWidth="112.0" text="GameName: " textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelGameName" alignment="CENTER" contentDisplay="CENTER" layoutX="126.0" layoutY="4.0" text="Label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <HBox layoutY="86.0">
+               <children>
+                  <VBox>
+                     <children>
+                        <Label text="Players" />
+                        <VBox fx:id="playerList">
+                           <children>
+                              <JFXButton />
+                           </children>
+                        </VBox>
+                        <Label fx:id="labelMorePlayer" text="Label" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Label text="My Armies" />
+                        <VBox />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox layoutY="233.0">
+               <children>
+                  <JFXButton fx:id="btnReady1" text="I AM READY" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/base.css" />
+      <URL value="@../css/darkDesign.css" />
+   </stylesheets>
+</AnchorPane>

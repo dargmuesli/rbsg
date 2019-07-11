@@ -56,7 +56,7 @@ public class GameFieldController {
         btnMinimize.setDisable(true);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
     }
 
     public void deleteGame() {
