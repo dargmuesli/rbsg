@@ -7,76 +7,49 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gameLobby1" maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
+
+<AnchorPane fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
    <children>
-      <AnchorPane fx:id="gameLobby" stylesheets="@../css/darkDesign.css">
+      <AnchorPane fx:id="gameLobby" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/darkDesign.css">
          <children>
-            <HBox>
+            <HBox prefHeight="19.0" prefWidth="200.0">
                <children>
-                  <JFXButton fx:id="btnBack">
+                  <JFXButton>
                      <graphic>
                         <FontAwesomeIconView glyphName="REPLY" />
-                     </graphic></JFXButton>
-                  <JFXButton fx:id="btnLogout">
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton>
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" />
-                     </graphic></JFXButton>
-                  <JFXButton fx:id="btnFullscreen">
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton>
                      <graphic>
                         <FontAwesomeIconView glyphName="EXPAND" />
-                     </graphic></JFXButton>
-                  <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXHamburger />
                </children>
             </HBox>
-            <Pane layoutX="9.0" layoutY="30.0">
+            <Label layoutX="129.0" layoutY="39.0" text="Name" />
+            <Label layoutX="37.0" layoutY="38.0" text="Game Name:" />
+            <HBox layoutX="7.0" layoutY="79.0" prefHeight="40.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="14.0" layoutY="4.0" prefHeight="20.0" prefWidth="112.0" text="GameName: " textAlignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelGameName" alignment="CENTER" contentDisplay="CENTER" layoutX="126.0" layoutY="4.0" text="Label">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <HBox layoutY="86.0">
-               <children>
-                  <VBox>
-                     <children>
-                        <Label text="Players" />
-                        <VBox fx:id="playerList">
-                           <children>
-                              <JFXButton />
-                           </children>
-                        </VBox>
-                        <Label fx:id="labelMorePlayer" text="Label" />
-                     </children>
-                  </VBox>
-                  <VBox>
-                     <children>
-                        <Label text="My Armies" />
-                        <VBox />
-                     </children>
-                  </VBox>
+                  <VBox prefHeight="40.0" prefWidth="100.0" />
+                  <VBox prefHeight="40.0" prefWidth="100.0" />
                </children>
             </HBox>
-            <HBox layoutY="233.0">
-               <children>
-                  <JFXButton fx:id="btnReady1" text="I AM READY" />
-               </children>
-            </HBox>
+            <JFXButton layoutX="135.0" layoutY="157.0" text="READY" />
+            <Label layoutX="5.0" layoutY="63.0" text="Players" />
+            <Label layoutX="163.0" layoutY="63.0" text="Armies" />
          </children>
       </AnchorPane>
    </children>
    <stylesheets>
-      <URL value="@../css/base.css" />
       <URL value="@../css/darkDesign.css" />
+      <URL value="@../css/base.css" />
    </stylesheets>
 </AnchorPane>
