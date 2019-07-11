@@ -1,8 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.sound;
 
-import de.uniks.se1ss19teamb.rbsg.Main;
-
-import javafx.application.Application;
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,17 +11,7 @@ public class SoundManagerTest {
 
     @Before
     public void prepareTest() throws ExceptionInInitializerError, InterruptedException {
-        //Sound Manager needs JFX Intitialized
-        Thread t = new Thread("JavaFX Init Thread") {
-            public void run() {
-                Application.launch(Main.class);
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        Thread.sleep(500);
-
-        SoundManager.init();
+        TestUtil.initJfx();
     }
 
     @Test
