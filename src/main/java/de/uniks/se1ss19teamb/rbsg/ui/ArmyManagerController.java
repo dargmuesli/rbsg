@@ -341,38 +341,22 @@ public class ArmyManagerController {
     }
 
     public void saveLoadCurrent1() {
-        if (saveMode) {
-            saveCurrentConfig(1);
-        } else {
-            currentArmy = loadConfig(1);
-
-            if (currentArmy == null) {
-                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
-            }
-
-            updateConfigurationView(currentArmy);
-        }
+        saveLoadCurrent(1);
     }
 
     public void saveLoadCurrent2() {
-        if (saveMode) {
-            saveCurrentConfig(2);
-        } else {
-            currentArmy = loadConfig(2);
-
-            if (currentArmy == null) {
-                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
-            }
-
-            updateConfigurationView(currentArmy);
-        }
+        saveLoadCurrent(2);
     }
 
     public void saveLoadCurrent3() {
+        saveLoadCurrent(3);
+    }
+
+    private void saveLoadCurrent(int number) {
         if (saveMode) {
-            saveCurrentConfig(3);
+            saveCurrentConfig(number);
         } else {
-            currentArmy = loadConfig(3);
+            currentArmy = loadConfig(number);
 
             if (currentArmy == null) {
                 NotificationHandler.getInstance().sendInfo("The save is empty", logger);
