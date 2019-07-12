@@ -1,13 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import com.google.gson.JsonObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 public class GameSocketTest {
     private ArgumentCaptor<JsonObject> argumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
@@ -59,7 +59,8 @@ public class GameSocketTest {
         gameSocket.moveUnit("123456789", new String[]{"987", "654", "321"});
         verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
         Assert.assertEquals(
-            "{\"messageType\":\"command\",\"action\":\"moveUnit\",\"unitId\":\"123456789\",\"path\":\"[\\\"987\\\",\\\"654\\\",\\\"321\\\"]\"}",
+            "{\"messageType\":\"command\",\"action\":\"moveUnit\","
+                + "\"unitId\":\"123456789\",\"path\":\"[\\\"987\\\",\\\"654\\\",\\\"321\\\"]\"}",
             argumentCaptor.getValue().toString());
     }
 
@@ -68,7 +69,8 @@ public class GameSocketTest {
         gameSocket.attackUnit("123456789", "987654321");
         verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
         Assert.assertEquals(
-            "{\"messageType\":\"command\",\"action\":\"attackUnit\",\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}",
+            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
+                + "\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}",
             argumentCaptor.getValue().toString());
     }
 
