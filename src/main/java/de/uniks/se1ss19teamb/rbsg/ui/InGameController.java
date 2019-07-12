@@ -26,14 +26,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,9 +63,9 @@ public class InGameController {
     @FXML
     private HBox head;
     @FXML
-    private JFXButton yes;
+    private JFXButton btnYes;
     @FXML
-    private JFXButton no;
+    private JFXButton btnNo;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -347,23 +345,23 @@ public class InGameController {
 
     public void leaveGame(ActionEvent event) {
 
-        if(event.getSource().equals(btnBack)) {
-//            leaveGame.setLayoutX(inGameScreen1.getWidth() - 2 * leaveGame.getWidth());
-//            leaveGame.setLayoutY(inGameScreen1.getHeight() - 2 * leaveGame.getHeight());
+        if (event.getSource().equals(btnBack)) {
+            leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
+            leaveGame.setLayoutY(head.getHeight());
             leaveGame.setVisible(true);
-            for(Node node: leaveGame.getChildren()) {
+            for (Node node : leaveGame.getChildren()) {
                 node.setVisible(true);
             }
 
-        } else if (event.getSource().equals(yes)) {
+        } else if (event.getSource().equals(btnYes)) {
             GameSocket.instance.leaveGame();
             GameSocket.instance.disconnect();
             MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
-        } else if (event.getSource().equals(no)) {
+        } else if (event.getSource().equals(btnNo)) {
             leaveGame.setVisible(false);
-            for(Node node: leaveGame.getChildren()) {
+            for (Node node : leaveGame.getChildren()) {
                 node.setVisible(false);
             }
         }

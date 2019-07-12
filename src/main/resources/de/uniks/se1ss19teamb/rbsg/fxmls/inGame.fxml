@@ -68,8 +68,8 @@
     </AnchorPane>
    <AnchorPane fx:id="leaveGame" layoutX="50.0" layoutY="40.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2A2E37;" stylesheets="@../css/darkDesign.css" visible="false">
       <children>
-         <JFXButton fx:id="no" layoutX="110.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="No" visible="false" />
-         <JFXButton fx:id="yes" layoutX="55.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="Yes" visible="false" />
+         <JFXButton fx:id="btnNo" layoutX="110.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="No" visible="false" />
+         <JFXButton fx:id="btnYes" layoutX="55.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="Yes" visible="false" />
          <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="54.0" text="Concede?" textAlignment="CENTER" visible="false" />
       </children>
    </AnchorPane>
