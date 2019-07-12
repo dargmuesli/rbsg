@@ -95,7 +95,7 @@ public class GameSocket extends AbstractWebSocket {
                                             InGameController.playerTiles.add(
                                                 SerializeUtils.deserialize(data.toString(), PlayerTile.class));
                                             break;
-                                        case "AbstractUnit":
+                                        case "Unit":
                                             InGameController.unitTiles.add(
                                                 SerializeUtils.deserialize(data.toString(), UnitTile.class));
                                             break;

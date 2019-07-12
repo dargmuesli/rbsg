@@ -4,28 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Troop {
-    BAZOOKA_TROOPER("5cc051bd62083600017db3b7"),
-    CHOPPER("5cc051bd62083600017db3bb"),
-    HEAVY_TANK("5cc051bd62083600017db3ba"),
-    INFANTRY("5cc051bd62083600017db3b6"),
-    JEEP("5cc051bd62083600017db3b8"),
-    LIGHT_TANK("5cc051bd62083600017db3b9");
+    BAZOOKA_TROOPER("Bazooka Trooper"),
+    CHOPPER("Chopper"),
+    HEAVY_TANK("Heavy Tank"),
+    INFANTRY("Infantry"),
+    JEEP("Jeep"),
+    LIGHT_TANK("Light Tank");
 
     private static Map<String, Troop> map = new HashMap<>();
 
     static {
         for (Troop troop : Troop.values()) {
-            map.put(troop.id, troop);
+            map.put(troop.name, troop);
         }
     }
 
-    public final String id;
+    public final String name;
 
-    Troop(final String id) {
-        this.id = id;
+    Troop(final String name) {
+        this.name = name;
     }
 
-    public static Troop keyOf(String id) {
-        return map.get(id);
+    public static Troop keyOf(String name) {
+        return map.get(name);
     }
 }

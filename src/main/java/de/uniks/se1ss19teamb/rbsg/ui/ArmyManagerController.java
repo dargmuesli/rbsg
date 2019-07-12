@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Troop;
-import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -63,14 +62,6 @@ public class ArmyManagerController {
     private AnchorPane mainPane1;
     @FXML
     private HBox hboxLowerButtons;
-    private BazookaTrooper bazookaTrooper = new BazookaTrooper();
-    private Chopper chopper = new Chopper();
-    private HeavyTank heavyTank = new HeavyTank();
-    private Infantry infantry = new Infantry();
-    private Jeep jeep = new Jeep();
-    private LightTank lightTank = new LightTank();
-    private ArrayList<AbstractUnit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
-        heavyTank, infantry, jeep, lightTank));
     private int leftUnits = 10;
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
@@ -120,13 +111,13 @@ public class ArmyManagerController {
         unitList.setStyle("-fx-background-color:transparent;");
         unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
 
-        for (AbstractUnit unit : units) {
+        for (Troop troop : Troop.values()) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 UnitObjectController controller = fxmlLoader.getController();
-                controller.setUpUnitObject(unit, this);
+                controller.setUpUnitObject(troop, this);
                 unitObjectControllers.add(controller);
                 unitList.getItems().add(parent);
             } catch (IOException e) {
@@ -225,16 +216,8 @@ public class ArmyManagerController {
             leftUnits = 10;
         }
 
-        // seit letztem rework wird in der gespeicherten JSON nicht die ID sondern der Name der Unit gespeichert.
-        // Die IDs habe alle eine länge von 24.
         for (String unitId : army.getUnits()) {
-            String id;
-            if (unitId.length() != 24) {
-                id = Troop.valueOf(unitId).id;
-            } else {
-                id = unitId;
-            }
-            switch (Troop.keyOf(id)) {
+            switch (Troop.keyOf(unitId)) {
                 case BAZOOKA_TROOPER:
                     unitObjectControllers.get(0).increaseCount();
                     break;
@@ -300,27 +283,27 @@ public class ArmyManagerController {
         ArrayList<String> allIds = new ArrayList<>();
 
         for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
-            allIds.add(Troop.BAZOOKA_TROOPER.id);
+            allIds.add(Troop.BAZOOKA_TROOPER.name);
         }
 
         for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
-            allIds.add(Troop.CHOPPER.id);
+            allIds.add(Troop.CHOPPER.name);
         }
 
         for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
-            allIds.add(Troop.HEAVY_TANK.id);
+            allIds.add(Troop.HEAVY_TANK.name);
         }
 
         for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
-            allIds.add(Troop.INFANTRY.id);
+            allIds.add(Troop.INFANTRY.name);
         }
 
         for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
-            allIds.add(Troop.JEEP.id);
+            allIds.add(Troop.JEEP.name);
         }
 
         for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
-            allIds.add(Troop.LIGHT_TANK.id);
+            allIds.add(Troop.LIGHT_TANK.name);
         }
 
         currentArmy.setUnits(allIds);

@@ -3,7 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.units.AbstractUnit;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import java.util.ArrayList;
 import org.apache.http.ParseException;
 import org.junit.Assert;
@@ -433,7 +433,7 @@ public class RestRequestTestsMocked {
         }
         QueryUnitsRequest req = new QueryUnitsRequest(fakeUserKey);
         req.sendRequest();
-        ArrayList<AbstractUnit> unitList = req.getUnits();
+        ArrayList<Unit> unitList = req.getUnits();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals(6, unitList.size());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
