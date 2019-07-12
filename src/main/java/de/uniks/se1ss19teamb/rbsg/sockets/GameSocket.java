@@ -169,10 +169,50 @@ public class GameSocket extends AbstractWebSocket {
         handlersChat.add(handler);
     }
 
+    public void changeArmy(String armyId) {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "changeArmy");
+        json.addProperty("data", armyId);
+        sendToWebsocket(json);
+    }
+
     public void leaveGame() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
         json.addProperty("action", "leaveGame");
+        sendToWebsocket(json);
+    }
+
+    public void readyToPlay() {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "readyToPlay");
+        sendToWebsocket(json);
+    }
+
+    public void startGame() {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "startGame");
+        sendToWebsocket(json);
+    }
+
+    public void moveUnit(String unitId, String[] path) {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "moveUnit");
+        json.addProperty("unitId", unitId);
+        json.addProperty("path", SerializeUtils.serialize(path));
+        sendToWebsocket(json);
+    }
+
+    public void attackUnit(String unitId, String toAttackId) {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "attackUnit");
+        json.addProperty("unitId", unitId);
+        json.addProperty("toAttackId",  toAttackId);
         sendToWebsocket(json);
     }
 
