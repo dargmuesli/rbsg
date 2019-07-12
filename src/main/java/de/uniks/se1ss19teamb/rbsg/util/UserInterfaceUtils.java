@@ -5,14 +5,18 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
+import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -88,6 +92,32 @@ public class UserInterfaceUtils {
                 btnFullscreen.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXPAND));
             }
         });
+    }
+
+    public static void initialize(
+        Pane root, Pane rootChild, Class clazz, JFXButton btnFullscreen, Pane errorContainer) {
+
+        UserInterfaceUtils.makeFadeInTransition(root);
+
+        Theming.setTheme(Arrays.asList(root, rootChild));
+
+        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+
+        try {
+            Parent parent = fxmlLoader.load();
+            // controller not used yet, but it's good to have it for later purposes.
+            PopupController controller = fxmlLoader.getController();
+            NotificationHandler.getInstance().setPopupController(controller);
+            Platform.runLater(() -> {
+                errorContainer.getChildren().add(parent);
+                errorContainer.toFront();
+            });
+        } catch (IOException e) {
+            NotificationHandler.getInstance()
+                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+        }
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {
