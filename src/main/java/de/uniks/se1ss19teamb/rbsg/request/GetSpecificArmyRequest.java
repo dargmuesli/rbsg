@@ -43,13 +43,11 @@ public class GetSpecificArmyRequest extends AbstractRestRequest {
         String name = data.get("name").getAsString();
         JsonArray units = data.get("units").getAsJsonArray();
         ArrayList<String> unitList = new ArrayList<>();
+
         for (JsonElement e : units) {
             unitList.add(e.getAsString());
         }
-        Army reqArmy = new Army();
-        reqArmy.setId(armyID);
-        reqArmy.setName(name);
-        reqArmy.setUnits(unitList);
-        return reqArmy;
+
+        return new Army(armyID, name, unitList);
     }
 }
