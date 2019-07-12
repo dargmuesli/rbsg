@@ -74,7 +74,9 @@ public class InGameController {
     private JFXButton btnMinimize;
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
+        UserInterfaceUtils.initialize(
+            inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
+
         Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
@@ -87,27 +89,6 @@ public class InGameController {
             chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
             btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        UserInterfaceUtils.makeFadeInTransition(inGameScreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-        }
 
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
@@ -127,7 +108,6 @@ public class InGameController {
 
         MainController.setInGameChat(true);
 
-        UserInterfaceUtils.makeFadeInTransition(inGameScreen);
         fillGameGrid();
         miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
         miniMap.setVisible(false);

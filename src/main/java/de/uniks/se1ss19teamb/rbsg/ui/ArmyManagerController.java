@@ -83,33 +83,12 @@ public class ArmyManagerController {
     private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-        }
+        UserInterfaceUtils.initialize(mainPane, mainPane1, ArmyManagerController.class, btnFullscreen, errorContainer);
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
             hboxLowerButtons.getChildren().add(btnJoinGame);
         }
-
-        UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
     }
