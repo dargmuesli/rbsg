@@ -14,6 +14,8 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -76,7 +78,8 @@ public class ArmyManagerController {
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
     private Army[] armySaves = new Army[3];
-    private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
+    public static final Path ARMY_SAVE_PATH =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
@@ -383,12 +386,12 @@ public class ArmyManagerController {
     }
 
     private Army loadConfig(int number) {
-        return SerializeUtils.deserialize(new File(String.format(armysavePath, number)), Army.class);
+        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(), number)), Army.class);
     }
 
     private void saveCurrentConfig(int configNum) {
         armySaves[configNum - 1] = getCurrentConfiguration();
-        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum - 1]);
+        SerializeUtils.serialize(String.format(ARMY_SAVE_PATH.toString(), configNum), armySaves[configNum - 1]);
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
