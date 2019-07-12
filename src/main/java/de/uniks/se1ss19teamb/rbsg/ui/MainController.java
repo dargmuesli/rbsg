@@ -26,8 +26,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -359,7 +357,7 @@ public class MainController {
 
                 try {
                     Parent parent = fxmlLoader.load();
-                    GameFieldController controller = fxmlLoader.getController();
+                    GameSelectionController controller = fxmlLoader.getController();
                     controller.setUpGameLabel(gameMeta);
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
