@@ -25,12 +25,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,6 +59,10 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private JFXButton btnMiniMap;
+    @FXML
+    private JFXButton yes;
+    @FXML
+    private JFXButton no;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -72,6 +78,7 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
+    private Stage leaveGame = new Stage();
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
@@ -135,18 +142,7 @@ public class InGameController {
     }
 
     public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(btnBack)) {
-            switch (((JFXButton) event.getSource()).getId()) {
-                // TODO handshake error
-                case "btnBack":
-                    GameSocket.instance.disconnect();
-                    MainController.setInGameChat(false);
-                    UserInterfaceUtils.makeFadeOutTransition(
-                        "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
-                    break;
-                default:
-            }
-        } else if (event.getSource().equals(btnFullscreen)) {
+        if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
@@ -343,5 +339,29 @@ public class InGameController {
                 }
             );
         }
+    }
+
+    public void leaveGame(ActionEvent event) {
+
+        if(event.getSource().equals(btnBack)) {
+            try {
+                Parent parent = FXMLLoader
+                    .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/leave.fxml"));
+
+                leaveGame.setScene(new Scene(parent, 200, 100));
+                leaveGame.show();
+                leaveGame.setResizable(false);
+            } catch (IOException b) {
+                b.printStackTrace();
+            }
+        } else if (event.getSource().equals(yes)) {
+            GameSocket.instance.disconnect();
+            MainController.setInGameChat(false);
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
+        } else if (event.getSource().equals(no)) {
+            leaveGame.close();
+        }
+
     }
 }

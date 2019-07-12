@@ -24,7 +24,7 @@
               AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <children>
                 <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                    <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+                    <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#leaveGame" visible="false">
                         <graphic>
                             <FontAwesomeIconView glyphName="REPLY" />
                         </graphic>
