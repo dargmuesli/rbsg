@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -36,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
-    static Army currentArmy = new Army();
+    static Army currentArmy;
     static boolean joiningGame;
     @FXML
     private AnchorPane mainPane;
@@ -248,7 +249,7 @@ public class ArmyManagerController {
         setArmyConfiguration();
         String currentArmyName = currentArmy.getName();
         String currentArmyId = currentArmy.getId();
-        ArrayList<String> currentArmyUnits = currentArmy.getUnits();
+        List<String> currentArmyUnits = currentArmy.getUnits();
 
         if (currentArmyName == null) {
             NotificationHandler.getInstance().sendError("You have to give the army a name!",

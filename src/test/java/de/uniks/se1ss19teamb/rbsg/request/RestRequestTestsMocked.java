@@ -454,14 +454,14 @@ public class RestRequestTestsMocked {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Army testArmy = new Army();
-        testArmy.setId(fakeArmyId);
+
         ArrayList<String> unitIDs = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
             unitIDs.add("5cc051bd62083600017db3b7");
         }
-        testArmy.setUnits(unitIDs);
-        testArmy.setName("changedName");
+
+        Army testArmy = new Army(fakeArmyId, "changedName", unitIDs);
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
