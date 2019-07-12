@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -60,6 +61,10 @@ public class InGameController {
     @FXML
     private JFXButton btnMiniMap;
     @FXML
+    private AnchorPane leaveGame;
+    @FXML
+    private HBox head;
+    @FXML
     private JFXButton yes;
     @FXML
     private JFXButton no;
@@ -78,7 +83,6 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
-    private Stage leaveGame = new Stage();
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{inGameScreen, inGameScreen1}));
@@ -344,23 +348,24 @@ public class InGameController {
     public void leaveGame(ActionEvent event) {
 
         if(event.getSource().equals(btnBack)) {
-            try {
-                Parent parent = FXMLLoader
-                    .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/leave.fxml"));
-
-                leaveGame.setScene(new Scene(parent, 200, 100));
-                leaveGame.show();
-                leaveGame.setResizable(false);
-            } catch (IOException b) {
-                b.printStackTrace();
+//            leaveGame.setLayoutX(inGameScreen1.getWidth() - 2 * leaveGame.getWidth());
+//            leaveGame.setLayoutY(inGameScreen1.getHeight() - 2 * leaveGame.getHeight());
+            leaveGame.setVisible(true);
+            for(Node node: leaveGame.getChildren()) {
+                node.setVisible(true);
             }
+
         } else if (event.getSource().equals(yes)) {
+            GameSocket.instance.leaveGame();
             GameSocket.instance.disconnect();
             MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
         } else if (event.getSource().equals(no)) {
-            leaveGame.close();
+            leaveGame.setVisible(false);
+            for(Node node: leaveGame.getChildren()) {
+                node.setVisible(false);
+            }
         }
 
     }

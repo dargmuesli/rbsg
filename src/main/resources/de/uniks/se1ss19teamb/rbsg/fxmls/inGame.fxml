@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -14,16 +15,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="inGameScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea"
-            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
-  <Pane fx:id="miniMap" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" ></Pane>
-    <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" visible="false"/>
-        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
+<AnchorPane fx:id="inGameScreen1" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
+  <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+    <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <children>
-                <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                <HBox fx:id="head" alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                     <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#leaveGame" visible="false">
                         <graphic>
                             <FontAwesomeIconView glyphName="REPLY" />
@@ -68,6 +66,13 @@
             </children>
         </VBox>
     </AnchorPane>
+   <AnchorPane fx:id="leaveGame" layoutX="50.0" layoutY="40.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2A2E37;" stylesheets="@../css/darkDesign.css" visible="false">
+      <children>
+         <JFXButton fx:id="no" layoutX="110.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="No" visible="false" />
+         <JFXButton fx:id="yes" layoutX="55.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="Yes" visible="false" />
+         <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="54.0" text="Concede?" textAlignment="CENTER" visible="false" />
+      </children>
+   </AnchorPane>
     <stylesheets>
         <URL value="@../css/base.css" />
         <URL value="@../css/darkDesign.css" />
