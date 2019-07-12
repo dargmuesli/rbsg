@@ -170,7 +170,7 @@ public class LoginController {
         login.sendRequest();
 
         if (!login.getSuccessful()) {
-            NotificationHandler.getInstance().sendWarning("Login fehlgeschlagen!", logger);
+            NotificationHandler.getInstance().sendError("Login fehlgeschlagen!", logger);
             return;
         }
 
