@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-public class GameSocketTest {
+public class GameSocketTestsMocked {
     private ArgumentCaptor<JsonObject> argumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
     private GameSocket gameSocket = spy(new GameSocket("userName", "userKey", "gameId", "armyId"));
 
