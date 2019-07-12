@@ -1,24 +1,15 @@
-package de.uniks.se1ss19teamb.rbsg.model;
+package de.uniks.se1ss19teamb.rbsg.model.units;
 
 import java.util.ArrayList;
 
 // This class shows the build of a unit as is given by the server.
 
-public class Unit {
+public abstract class AbstractUnit implements IUnit {
 
-    private String id;
     private String type;
     private int mp;
     private int hp;
     private ArrayList<String> canAttack;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getType() {
         return type;
@@ -54,8 +45,7 @@ public class Unit {
 
     @Override
     public String toString() {
-        return "Unit{"
-            + "id='" + id + '\''
+        return "AbstractUnit{"
             + ", type='" + type + '\''
             + ", mp=" + mp
             + ", hp=" + hp

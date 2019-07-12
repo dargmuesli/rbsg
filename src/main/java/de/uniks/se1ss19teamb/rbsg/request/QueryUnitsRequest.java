@@ -3,9 +3,10 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
-
+import de.uniks.se1ss19teamb.rbsg.model.units.*;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
 
 public class QueryUnitsRequest extends AbstractRestRequest {
 
@@ -37,20 +38,47 @@ public class QueryUnitsRequest extends AbstractRestRequest {
 
     //Custom Request Helper
 
-    public ArrayList<Unit> getUnits() {
-        ArrayList<Unit> units = new ArrayList<>();
+    public ArrayList<AbstractUnit> getUnits() {
+        ArrayList<AbstractUnit> units = new ArrayList<>();
+
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
-            Unit current = new Unit();
             JsonObject unit = g.getAsJsonObject();
-            current.setId(unit.get("id").getAsString());
-            current.setType(unit.get("type").getAsString());
+            AbstractUnit current;
+
+            switch (unit.get("type").getAsString()) {
+                case "Bazooka Trooper":
+                    current = new BazookaTrooper();
+                    break;
+                case "Chopper":
+                    current = new Chopper();
+                    break;
+                case "Heavy Tank":
+                    current = new HeavyTank();
+                    break;
+                case "Infantry":
+                    current = new Infantry();
+                    break;
+                case "Jeep":
+                    current = new Jeep();
+                    break;
+                case "Light Tank":
+                    current = new LightTank();
+                    break;
+                default:
+                    NotificationHandler.getInstance()
+                        .sendError("Unit type unknown: " + unit.get("type").getAsString(), LogManager.getLogger());
+                    return null;
+            }
+
             current.setMp(unit.get("mp").getAsInt());
             current.setHp(unit.get("hp").getAsInt());
             ArrayList<String> unitsList = new ArrayList<>();
             JsonArray unitArray = unit.get("canAttack").getAsJsonArray();
+
             for (JsonElement o : unitArray) {
                 unitsList.add(o.getAsString());
             }
+
             current.setCanAttack(unitsList);
             units.add(current);
         }

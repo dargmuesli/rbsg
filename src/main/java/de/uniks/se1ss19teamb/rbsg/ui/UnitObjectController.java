@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.units.AbstractUnit;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public class UnitObjectController {
         Theming.setTheme(Arrays.asList(new Pane[]{root}));
     }
 
-    void setUpUnitObject(Unit unit, ArmyManagerController armyManagerController) {
+    void setUpUnitObject(AbstractUnit unit, ArmyManagerController armyManagerController) {
         this.armyManagerController = armyManagerController;
         labelUnitType.setText(unit.getType());
         updateCount();

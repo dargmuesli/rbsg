@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Troop;
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.units.*;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
@@ -70,7 +69,7 @@ public class ArmyManagerController {
     private Infantry infantry = new Infantry();
     private Jeep jeep = new Jeep();
     private LightTank lightTank = new LightTank();
-    private ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
+    private ArrayList<AbstractUnit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
         heavyTank, infantry, jeep, lightTank));
     private int leftUnits = 10;
     private boolean saveMode = true;
@@ -121,7 +120,7 @@ public class ArmyManagerController {
         unitList.setStyle("-fx-background-color:transparent;");
         unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
 
-        for (Unit unit : units) {
+        for (AbstractUnit unit : units) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
             try {
@@ -226,7 +225,7 @@ public class ArmyManagerController {
             leftUnits = 10;
         }
 
-        // seit letzten rework wird in der gespeicherten JSON nicht die ID sondern der Name der Unit gespeichert.
+        // seit letztem rework wird in der gespeicherten JSON nicht die ID sondern der Name der Unit gespeichert.
         // Die IDs habe alle eine länge von 24.
         for (String unitId : army.getUnits()) {
             String id;

@@ -3,8 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.units.AbstractUnit;
 import java.util.ArrayList;
 import org.apache.http.ParseException;
 import org.junit.Assert;
@@ -434,15 +433,9 @@ public class RestRequestTestsMocked {
         }
         QueryUnitsRequest req = new QueryUnitsRequest(fakeUserKey);
         req.sendRequest();
-        ArrayList<Unit> unitList = req.getUnits();
+        ArrayList<AbstractUnit> unitList = req.getUnits();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals(6, unitList.size());
-        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
-        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
-        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
 
