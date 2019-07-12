@@ -113,7 +113,8 @@ public class InGameController {
             LoginController.getUser(),
             LoginController.getUserKey(),
             GameFieldController.joinedGame.getId(),
-            ArmyManagerController.currentArmy.getId());
+            ArmyManagerController.currentArmy.getId(),
+            ArmyManagerController.spectator);
 
         GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {

@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
     static Army currentArmy = new Army();
+    static boolean spectator = false;
     static boolean joiningGame;
     @FXML
     private AnchorPane mainPane;
