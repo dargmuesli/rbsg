@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -57,6 +58,14 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private JFXButton btnMiniMap;
+    @FXML
+    private AnchorPane leaveGame;
+    @FXML
+    private HBox head;
+    @FXML
+    private JFXButton btnYes;
+    @FXML
+    private JFXButton btnNo;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -115,18 +124,7 @@ public class InGameController {
     }
 
     public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(btnBack)) {
-            switch (((JFXButton) event.getSource()).getId()) {
-                // TODO handshake error
-                case "btnBack":
-                    GameSocket.instance.disconnect();
-                    MainController.setInGameChat(false);
-                    UserInterfaceUtils.makeFadeOutTransition(
-                        "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
-                    break;
-                default:
-            }
-        } else if (event.getSource().equals(btnFullscreen)) {
+        if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogout)) {
             LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
@@ -323,5 +321,30 @@ public class InGameController {
                 }
             );
         }
+    }
+
+    public void leaveGame(ActionEvent event) {
+
+        if (event.getSource().equals(btnBack)) {
+            leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
+            leaveGame.setLayoutY(head.getHeight());
+            leaveGame.setVisible(true);
+            for (Node node : leaveGame.getChildren()) {
+                node.setVisible(true);
+            }
+
+        } else if (event.getSource().equals(btnYes)) {
+            GameSocket.instance.leaveGame();
+            GameSocket.instance.disconnect();
+            MainController.setInGameChat(false);
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
+        } else if (event.getSource().equals(btnNo)) {
+            leaveGame.setVisible(false);
+            for (Node node : leaveGame.getChildren()) {
+                node.setVisible(false);
+            }
+        }
+
     }
 }
