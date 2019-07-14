@@ -71,9 +71,16 @@ public class ArmyManagerController {
     public static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private JFXButton btnJoinGame = new JFXButton("Join Game");
+    private static ArmyManagerController instance;
+
+    public static ArmyManagerController getInstance() {
+        return instance;
+    }
 
     public void initialize() {
         UserInterfaceUtils.initialize(mainPane, mainPane1, ArmyManagerController.class, btnFullscreen, errorContainer);
+
+        ArmyManagerController.instance = this;
 
         QueryUnitsRequest queryUnitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
         queryUnitsRequest.sendRequest();
