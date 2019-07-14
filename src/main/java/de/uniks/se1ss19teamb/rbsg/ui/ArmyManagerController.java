@@ -75,6 +75,16 @@ public class ArmyManagerController {
     public void initialize() {
         UserInterfaceUtils.initialize(mainPane, mainPane1, ArmyManagerController.class, btnFullscreen, errorContainer);
 
+        QueryUnitsRequest queryUnitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
+        queryUnitsRequest.sendRequest();
+
+        if (!queryUnitsRequest.getSuccessful()) {
+            LogManager.getLogger().error("Could not query units!");
+            return;
+        }
+
+        availableUnits = queryUnitsRequest.getUnits();
+
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
             hboxLowerButtons.getChildren().add(btnJoinGame);
