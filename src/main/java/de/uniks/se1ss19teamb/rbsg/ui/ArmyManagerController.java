@@ -3,7 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.Troop;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -32,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
+    private static List<Unit> availableUnits;
     static Army currentArmy = new Army();
     static boolean joiningGame;
     @FXML
@@ -111,13 +113,13 @@ public class ArmyManagerController {
         unitList.setStyle("-fx-background-color:transparent;");
         unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
 
-        for (Troop troop : Troop.values()) {
+        for (Unit unit : availableUnits) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 UnitObjectController controller = fxmlLoader.getController();
-                controller.setUpUnitObject(troop, this);
+                controller.setUpUnitObject(unit);
                 unitObjectControllers.add(controller);
                 unitList.getItems().add(parent);
             } catch (IOException e) {
@@ -216,29 +218,12 @@ public class ArmyManagerController {
             leftUnits = 10;
         }
 
-        for (String unitId : army.getUnits()) {
-            switch (Troop.keyOf(unitId)) {
-                case BAZOOKA_TROOPER:
-                    unitObjectControllers.get(0).increaseCount();
-                    break;
-                case CHOPPER:
-                    unitObjectControllers.get(1).increaseCount();
-                    break;
-                case HEAVY_TANK:
-                    unitObjectControllers.get(2).increaseCount();
-                    break;
-                case INFANTRY:
-                    unitObjectControllers.get(3).increaseCount();
-                    break;
-                case JEEP:
-                    unitObjectControllers.get(4).increaseCount();
-                    break;
-                case LIGHT_TANK:
-                    unitObjectControllers.get(5).increaseCount();
-                    break;
-                default:
-                    NotificationHandler.getInstance().sendWarning("Unknown unit id!", logger);
-            }
+        for (Unit unit : army.getUnits()) {
+            unitObjectControllers.forEach(unitObjectController -> {
+                if (unitObjectController.getUnit().getId().equals(unit.getId())) {
+                    unitObjectController.increaseCount();
+                }
+            });
         }
 
         labelArmyName.setText(army.getName());
@@ -248,7 +233,7 @@ public class ArmyManagerController {
         setArmyConfiguration();
         String currentArmyName = currentArmy.getName();
         String currentArmyId = currentArmy.getId();
-        ArrayList<String> currentArmyUnits = currentArmy.getUnits();
+        List<Unit> currentArmyUnits = currentArmy.getUnits();
 
         if (currentArmyName == null) {
             NotificationHandler.getInstance().sendError("You have to give the army a name!",
@@ -279,36 +264,10 @@ public class ArmyManagerController {
         currentArmy.setUnits(getCurrentConfiguration().getUnits());
     }
 
-    private Army getCurrentConfiguration() {
-        ArrayList<String> allIds = new ArrayList<>();
-
-        for (int i = 0; i < unitObjectControllers.get(0).getCount(); i++) {
-            allIds.add(Troop.BAZOOKA_TROOPER.name);
+            if (req.getSuccessful()) {
+                NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
+            }
         }
-
-        for (int i = 0; i < unitObjectControllers.get(1).getCount(); i++) {
-            allIds.add(Troop.CHOPPER.name);
-        }
-
-        for (int i = 0; i < unitObjectControllers.get(2).getCount(); i++) {
-            allIds.add(Troop.HEAVY_TANK.name);
-        }
-
-        for (int i = 0; i < unitObjectControllers.get(3).getCount(); i++) {
-            allIds.add(Troop.INFANTRY.name);
-        }
-
-        for (int i = 0; i < unitObjectControllers.get(4).getCount(); i++) {
-            allIds.add(Troop.JEEP.name);
-        }
-
-        for (int i = 0; i < unitObjectControllers.get(5).getCount(); i++) {
-            allIds.add(Troop.LIGHT_TANK.name);
-        }
-
-        currentArmy.setUnits(allIds);
-
-        return currentArmy;
     }
 
     public void setArmyName() {
