@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,11 +38,11 @@ public class ArmyManagerController {
     static final int MAXIMUM_UNIT_COUNT = 10;
     static boolean spectator = false;
     static boolean joiningGame;
+    public static Map<String, Unit> availableUnits = new HashMap<>();
 
     private static final Logger logger = LogManager.getLogger();
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
-    private static List<Unit> availableUnits;
     private static ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
 
     @FXML
@@ -94,7 +96,9 @@ public class ArmyManagerController {
             return;
         }
 
-        availableUnits = queryUnitsRequest.getUnits();
+        for (Unit unit : queryUnitsRequest.getUnits()) {
+            availableUnits.put(unit.getId(), unit);
+        }
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
@@ -114,7 +118,7 @@ public class ArmyManagerController {
         unitList.setStyle("-fx-background-color:transparent;");
         unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
 
-        for (Unit unit : availableUnits) {
+        availableUnits.forEach((s, unit) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
             try {
@@ -126,7 +130,7 @@ public class ArmyManagerController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        });
     }
 
     @FXML
@@ -197,23 +201,21 @@ public class ArmyManagerController {
             NotificationHandler.getInstance()
                 .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
         } else {
-            Army firstArmy = serverArmies.get(0);
-            currentArmy = firstArmy;
-            labelArmyName.setText(currentArmy.getName());
-            updateConfigurationView(firstArmy);
+            currentArmy = serverArmies.get(0);
+            updateConfigurationView();
         }
     }
 
-    private void updateConfigurationView(Army army) {
-        for (Unit unit : army.getUnits()) {
-            unitObjectControllers.forEach(unitObjectController -> {
-                if (unitObjectController.getUnit().getId().equals(unit.getId())) {
-                    unitObjectController.increaseCount();
-                }
-            });
-        }
+    void updateConfigurationView() {
+        labelLeftUnits.setText("" + (MAXIMUM_UNIT_COUNT - currentArmy.getUnits().size()));
+        unitObjectControllers.forEach(
+            unitObjectController -> unitObjectController.update(
+                (int) currentArmy.getUnits().stream().filter(
+                    unit -> unit.getType()
+                        .equals(unitObjectController.getUnit().getType()))
+                    .count()));
 
-        labelArmyName.setText(army.getName());
+        labelArmyName.setText(currentArmy.getName());
     }
 
     public void saveToServer() {
@@ -236,10 +238,10 @@ public class ArmyManagerController {
             CreateArmyRequest req = new CreateArmyRequest(currentArmyName, currentArmyUnits,
                 LoginController.getUserKey());
             req.sendRequest();
-            currentArmy.setId(req.getArmyID());
 
             if (req.getSuccessful()) {
                 NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
+                currentArmy.setId(req.getArmyID());
             }
         } else {
             UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
@@ -285,7 +287,7 @@ public class ArmyManagerController {
                 NotificationHandler.getInstance().sendInfo("The save is empty", logger);
             }
 
-            updateConfigurationView(currentArmy);
+            updateConfigurationView();
         }
     }
 

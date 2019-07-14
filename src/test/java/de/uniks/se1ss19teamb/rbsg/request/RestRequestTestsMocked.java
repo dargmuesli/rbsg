@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -86,6 +87,7 @@ public class RestRequestTestsMocked {
     public void setupTests() {
         httpManager = mock(HttpManager.class);
         AbstractRestRequest.httpManager = httpManager;
+        ArmyManagerController.availableUnits.put("5cc051bd62083600017db3b6", new Unit("5cc051bd62083600017db3b6", "Infantry", 3, 3, new ArrayList<>()));
     }
 
     @Test
@@ -216,9 +218,7 @@ public class RestRequestTestsMocked {
             Assert.assertTrue(req.getSuccessful());
 
             final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta) -> {
-                hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame");
-            });
+            req.getGames().forEach((s, gameMeta) -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -404,6 +404,8 @@ public class RestRequestTestsMocked {
         Army reqArmy = req.getRequestedArmy();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals("testArmy001", reqArmy.getName());
+        Assert.assertNotNull(reqArmy.getUnits().get(0));
+        Assert.assertEquals("Infantry", reqArmy.getUnits().get(0).getType());
     }
 
     @Test
@@ -421,6 +423,8 @@ public class RestRequestTestsMocked {
         for (Army army : armies) {
             if (army.getId().equals(fakeArmyId)) {
                 containsArmyID = true;
+                Assert.assertNotNull(army.getUnits().get(0));
+                Assert.assertEquals("Infantry", army.getUnits().get(0).getType());
             }
         }
         Assert.assertTrue(containsArmyID);

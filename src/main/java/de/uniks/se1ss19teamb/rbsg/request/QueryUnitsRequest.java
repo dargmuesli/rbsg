@@ -39,7 +39,6 @@ public class QueryUnitsRequest extends AbstractRestRequest {
 
     public ArrayList<Unit> getUnits() {
         ArrayList<Unit> units = new ArrayList<>();
-
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
             Unit current = new Unit();
             JsonObject unit = g.getAsJsonObject();

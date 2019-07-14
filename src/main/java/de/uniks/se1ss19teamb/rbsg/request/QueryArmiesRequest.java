@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class QueryArmiesRequest extends AbstractRestRequest {
             List<Unit> unitList = new ArrayList<>();
 
             for (JsonElement unitId : unitIds) {
-                unitList.add(new Unit(unitId.getAsString()));
+                unitList.add(ArmyManagerController.availableUnits.get(unitId.getAsString()));
             }
 
             armies.add(new Army(id, name, unitList));

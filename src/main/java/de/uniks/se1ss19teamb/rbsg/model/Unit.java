@@ -20,6 +20,14 @@ public class Unit {
         this.id = id;
     }
 
+    public Unit(String id, String type, int mp, int hp, ArrayList<String> canAttack) {
+        this.id = id;
+        this.type = type;
+        this.mp = mp;
+        this.hp = hp;
+        this.canAttack = canAttack;
+    }
+
     public String getId() {
         return id;
     }

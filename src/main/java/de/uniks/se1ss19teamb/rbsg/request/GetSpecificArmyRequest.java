@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +48,9 @@ public class GetSpecificArmyRequest extends AbstractRestRequest {
         List<Unit> unitList = new ArrayList<>();
 
         for (JsonElement unitId : unitIds) {
-            unitList.add(new Unit(unitId.getAsString()));
+            unitList.add(ArmyManagerController.availableUnits.get(unitId.getAsString()));
         }
 
-        Army reqArmy = new Army(null, null, null);
-        reqArmy.setId(armyID);
-        reqArmy.setName(name);
-        reqArmy.setUnits(unitList);
-
-        return reqArmy;
+        return new Army(armyID, name, unitList);
     }
 }
