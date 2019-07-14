@@ -240,13 +240,19 @@ public class ArmyManagerController {
                 LoginController.getUserKey());
             req.sendRequest();
             currentArmy.setId(req.getArmyID());
+
+            if (req.getSuccessful()) {
+                NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
+            }
         } else {
             UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
                 LoginController.getUserKey());
             req.sendRequest();
-        }
 
-        NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
+            if (req.getSuccessful()) {
+                NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
+            }
+        }
     }
 
     public void setArmyName() {
