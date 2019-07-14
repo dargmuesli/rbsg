@@ -190,6 +190,10 @@ class UiTests extends ApplicationTest {
         clickOn("#btnFullscreen");
         clickOn("#btnMiniMap");
         clickOn("#btnMiniMap");
+        clickOn("#btnMinimize");
+        clickOn("#message").write("Hello").clickOn("#btnSend");
+        clickOn("#message").write("/w me asd").clickOn("#btnSend");
+        clickOn("#btnMinimize");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
