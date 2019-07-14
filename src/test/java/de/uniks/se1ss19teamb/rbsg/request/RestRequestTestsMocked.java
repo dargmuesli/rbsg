@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -356,16 +358,18 @@ public class RestRequestTestsMocked {
     public void createArmyRequestTest() {
         String name = "TestBArmy";
 
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
+            Unit unit = new Unit();
+            unit.setId("5cc051bd62083600017db3b6");
+            units.add(unit);
         }
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, fakeUserKey);
+        CreateArmyRequest req = new CreateArmyRequest(name, units, fakeUserKey);
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
@@ -449,11 +453,13 @@ public class RestRequestTestsMocked {
         }
         Army testArmy = new Army();
         testArmy.setId(fakeArmyId);
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b7");
+            Unit unit = new Unit();
+            unit.setId("5cc051bd62083600017db3b7");
+            units.add(unit);
         }
-        testArmy.setUnits(unitIDs);
+        testArmy.setUnits(units);
         testArmy.setName("changedName");
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);
         req.sendRequest();

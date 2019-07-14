@@ -5,6 +5,7 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -189,11 +190,13 @@ public class RestRequestTestsReal {
 
     private CreateArmyRequest createArmy() {
         String armyName = "testArmy001";
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
+            Unit unit = new Unit();
+            unit.setId("5cc051bd62083600017db3b6");
+            units.add(unit);
         }
-        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, unitIDs, userKey);
+        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, units, userKey);
         createArmyRequest.sendRequest();
         return createArmyRequest;
     }
@@ -218,11 +221,13 @@ public class RestRequestTestsReal {
         String name = "TestBArmy";
         LoginUserRequest login = loginUser();
 
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
+            Unit unit = new Unit();
+            unit.setId("5cc051bd62083600017db3b6");
+            units.add(unit);
         }
-        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, login.getUserKey());
+        CreateArmyRequest req = new CreateArmyRequest(name, units, login.getUserKey());
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
@@ -296,11 +301,13 @@ public class RestRequestTestsReal {
         CreateArmyRequest createArmyRequest = createArmy();
         Army testArmy = new Army();
         testArmy.setId(createArmyRequest.getArmyID());
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b7");
+            Unit unit = new Unit();
+            unit.setId("5cc051bd62083600017db3b7");
+            units.add(unit);
         }
-        testArmy.setUnits(unitIDs);
+        testArmy.setUnits(units);
         testArmy.setName("changedName");
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
         req.sendRequest();
