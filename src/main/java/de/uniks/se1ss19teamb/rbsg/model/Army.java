@@ -8,9 +8,9 @@ import java.util.List;
 public class Army {
     private String id;
     private String name;
-    private List<String> units;
+    private List<Unit> units;
 
-    public Army(String id, String name, List<String> units) {
+    public Army(String id, String name, List<Unit> units) {
         this.id = id;
         this.name = name;
         this.units = units;
@@ -57,7 +57,7 @@ public class Army {
      *
      * @return The army's units.
      */
-    public List<String> getUnits() {
+    public List<Unit> getUnits() {
         return units;
     }
 
@@ -66,7 +66,7 @@ public class Army {
      *
      * @param units The army's units.
      */
-    public void setUnits(List<String> units) {
+    public void setUnits(List<Unit> units) {
         this.units = units;
     }
 }

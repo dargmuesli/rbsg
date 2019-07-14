@@ -3,9 +3,11 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -85,6 +87,8 @@ public class RestRequestTestsMocked {
     public void setupTests() {
         httpManager = mock(HttpManager.class);
         AbstractRestRequest.httpManager = httpManager;
+        ArmyManagerController.availableUnits.put("5cc051bd62083600017db3b6",
+            new Unit("5cc051bd62083600017db3b6", "Infantry", 3, 3, new ArrayList<>()));
     }
 
     @Test
@@ -215,9 +219,8 @@ public class RestRequestTestsMocked {
             Assert.assertTrue(req.getSuccessful());
 
             final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta) -> {
-                hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame");
-            });
+            req.getGames().forEach((s, gameMeta)
+                -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
             Assert.fail(e.toString());
@@ -357,16 +360,16 @@ public class RestRequestTestsMocked {
     public void createArmyRequestTest() {
         String name = "TestBArmy";
 
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
+            units.add(new Unit("5cc051bd62083600017db3b6"));
         }
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, fakeUserKey);
+        CreateArmyRequest req = new CreateArmyRequest(name, units, fakeUserKey);
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
@@ -403,6 +406,8 @@ public class RestRequestTestsMocked {
         Army reqArmy = req.getRequestedArmy();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals("testArmy001", reqArmy.getName());
+        Assert.assertNotNull(reqArmy.getUnits().get(0));
+        Assert.assertEquals("Infantry", reqArmy.getUnits().get(0).getType());
     }
 
     @Test
@@ -420,6 +425,8 @@ public class RestRequestTestsMocked {
         for (Army army : armies) {
             if (army.getId().equals(fakeArmyId)) {
                 containsArmyID = true;
+                Assert.assertNotNull(army.getUnits().get(0));
+                Assert.assertEquals("Infantry", army.getUnits().get(0).getType());
             }
         }
         Assert.assertTrue(containsArmyID);
@@ -437,12 +444,6 @@ public class RestRequestTestsMocked {
         ArrayList<Unit> unitList = req.getUnits();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals(6, unitList.size());
-        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
-        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
-        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
 
@@ -455,13 +456,16 @@ public class RestRequestTestsMocked {
             e.printStackTrace();
         }
 
-        ArrayList<String> unitIDs = new ArrayList<>();
+        Army testArmy = new Army(null, null, null);
+        testArmy.setId(fakeArmyId);
+        List<Unit> units = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b7");
+            units.add(new Unit("5cc051bd62083600017db3b7"));
         }
 
-        Army testArmy = new Army(fakeArmyId, "changedName", unitIDs);
+        testArmy.setUnits(units);
+        testArmy.setName("changedName");
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());

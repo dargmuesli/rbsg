@@ -102,7 +102,7 @@ public class InGameController {
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
             LoginController.getUserKey(),
-            GameFieldController.joinedGame.getId(),
+            GameSelectionController.joinedGame.getId(),
             ArmyManagerController.currentArmy.getId(),
             ArmyManagerController.spectator);
 

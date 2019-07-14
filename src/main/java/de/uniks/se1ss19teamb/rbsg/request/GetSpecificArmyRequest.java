@@ -4,8 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GetSpecificArmyRequest extends AbstractRestRequest {
 
@@ -41,11 +44,11 @@ public class GetSpecificArmyRequest extends AbstractRestRequest {
         JsonObject data = getResponse().get("data").getAsJsonObject();
         String armyID = data.get("id").getAsString();
         String name = data.get("name").getAsString();
-        JsonArray units = data.get("units").getAsJsonArray();
-        ArrayList<String> unitList = new ArrayList<>();
+        JsonArray unitIds = data.get("units").getAsJsonArray();
+        List<Unit> unitList = new ArrayList<>();
 
-        for (JsonElement e : units) {
-            unitList.add(e.getAsString());
+        for (JsonElement unitId : unitIds) {
+            unitList.add(ArmyManagerController.availableUnits.get(unitId.getAsString()));
         }
 
         return new Army(armyID, name, unitList);

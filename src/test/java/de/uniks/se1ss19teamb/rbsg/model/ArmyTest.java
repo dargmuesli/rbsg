@@ -10,10 +10,10 @@ import org.junit.Test;
 public class ArmyTest {
     private String id = "123";
     private String name = "myName";
-    private List<String> units = Arrays.asList("123", "456");
+    private List<Unit> units = Arrays.asList(new Unit("123"), new Unit("456"));
     private String newId = "987";
     private String newName = "myNewName";
-    private List<String> newUnits = Arrays.asList("456", "789");
+    private List<Unit> newUnits = Arrays.asList(new Unit("456"), new Unit("789"));
     private Army army;
 
     @Before
