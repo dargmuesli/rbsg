@@ -25,16 +25,18 @@ public class GameSocket extends AbstractWebSocket {
     private static String userKey;
     private static String gameId;
     private static String armyId;
+    private static boolean spectator;
     private static boolean firstGameInitObjectReceived;
     private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
     private static String userName;
     private boolean ignoreOwn = false;
 
-    public GameSocket(String userName, String userKey, String gameId, String armyId) {
+    public GameSocket(String userName, String userKey, String gameId, String armyId, boolean spectator) {
         GameSocket.userName = userName;
         GameSocket.userKey = userKey;
         GameSocket.gameId = gameId;
         GameSocket.armyId = armyId;
+        GameSocket.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
             if (response.has("action")) {
@@ -153,7 +155,18 @@ public class GameSocket extends AbstractWebSocket {
 
     @Override
     protected String getEndpoint() {
-        return "/game?gameId=" + gameId + "&armyId=" + armyId;
+        StringBuilder stringBuilder = new StringBuilder("/game?gameId=")
+            .append(gameId);
+
+        // assumption: an armyId is only optional in spectator mode
+        if (!spectator) {
+            stringBuilder
+            .append("&armyId=")
+            .append(armyId)
+                .append("&spectator=true");
+        }
+
+        return stringBuilder.toString();
     }
 
     @Override
@@ -169,10 +182,50 @@ public class GameSocket extends AbstractWebSocket {
         handlersChat.add(handler);
     }
 
+    public void changeArmy(String armyId) {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "changeArmy");
+        json.addProperty("data", armyId);
+        sendToWebsocket(json);
+    }
+
     public void leaveGame() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
         json.addProperty("action", "leaveGame");
+        sendToWebsocket(json);
+    }
+
+    public void readyToPlay() {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "readyToPlay");
+        sendToWebsocket(json);
+    }
+
+    public void startGame() {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "startGame");
+        sendToWebsocket(json);
+    }
+
+    public void moveUnit(String unitId, String[] path) {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "moveUnit");
+        json.addProperty("unitId", unitId);
+        json.addProperty("path", SerializeUtils.serialize(path));
+        sendToWebsocket(json);
+    }
+
+    public void attackUnit(String unitId, String toAttackId) {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "attackUnit");
+        json.addProperty("unitId", unitId);
+        json.addProperty("toAttackId",  toAttackId);
         sendToWebsocket(json);
     }
 

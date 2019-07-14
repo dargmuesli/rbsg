@@ -4,16 +4,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateArmyRequest extends AbstractRestRequest {
 
     private String userToken;
     private String armyId;
     private String armyName;
-    private ArrayList<String> unitIDs;
+    private List<String> unitIDs;
 
-    public UpdateArmyRequest(String armyId, String armyName, ArrayList<String> unitIDs, String userToken) {
+    public UpdateArmyRequest(String armyId, String armyName, List<String> unitIDs, String userToken) {
         this.userToken = userToken;
         this.armyId = armyId;
         this.armyName = armyName;
