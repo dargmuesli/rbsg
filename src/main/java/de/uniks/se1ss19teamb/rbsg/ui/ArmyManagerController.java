@@ -12,11 +12,11 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +26,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +33,8 @@ import org.apache.logging.log4j.Logger;
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
     private static List<Unit> availableUnits;
-    static Army currentArmy = new Army();
+    static boolean spectator = false;
+    static Army currentArmy = new Army(null, null, null);
     static boolean joiningGame;
     @FXML
     private AnchorPane mainPane;
@@ -68,37 +68,17 @@ public class ArmyManagerController {
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
     private Army[] armySaves = new Army[3];
-    private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
+    public static final Path ARMY_SAVE_PATH =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-        }
+        UserInterfaceUtils.initialize(mainPane, mainPane1, ArmyManagerController.class, btnFullscreen, errorContainer);
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
             hboxLowerButtons.getChildren().add(btnJoinGame);
         }
-
-        UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
     }
@@ -230,7 +210,6 @@ public class ArmyManagerController {
     }
 
     public void saveToServer() {
-        setArmyConfiguration();
         String currentArmyName = currentArmy.getName();
         String currentArmyId = currentArmy.getId();
         List<Unit> currentArmyUnits = currentArmy.getUnits();
@@ -258,16 +237,6 @@ public class ArmyManagerController {
         }
 
         NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
-    }
-
-    private void setArmyConfiguration() {
-        currentArmy.setUnits(getCurrentConfiguration().getUnits());
-    }
-
-            if (req.getSuccessful()) {
-                NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
-            }
-        }
     }
 
     public void setArmyName() {
@@ -308,12 +277,12 @@ public class ArmyManagerController {
     }
 
     private Army loadConfig(int number) {
-        return SerializeUtils.deserialize(new File(String.format(armysavePath, number)), Army.class);
+        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(), number)), Army.class);
     }
 
     private void saveCurrentConfig(int configNum) {
-        armySaves[configNum - 1] = getCurrentConfiguration();
-        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum - 1]);
+        armySaves[configNum - 1] = currentArmy;
+        SerializeUtils.serialize(String.format(ARMY_SAVE_PATH.toString(), configNum), armySaves[configNum - 1]);
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }

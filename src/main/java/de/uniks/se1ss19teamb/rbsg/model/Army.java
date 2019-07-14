@@ -6,9 +6,15 @@ import java.util.List;
  * A model for armies.
  */
 public class Army {
-    private String id = null;
-    private String name = null;
-    private List<Unit> units = null;
+    private String id;
+    private String name;
+    private List<Unit> units;
+
+    public Army(String id, String name, List<Unit> units) {
+        this.id = id;
+        this.name = name;
+        this.units = units;
+    }
 
     /**
      * Standard getter.

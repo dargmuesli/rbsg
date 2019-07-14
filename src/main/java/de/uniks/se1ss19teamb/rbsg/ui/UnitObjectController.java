@@ -24,6 +24,8 @@ public class UnitObjectController {
     @FXML
     private Pane imageUnitType;
 
+    private Unit unit;
+
     private ArmyManagerController armyManagerController;
     private int count = 0;
 
@@ -46,6 +48,10 @@ public class UnitObjectController {
     void setCount(int count) {
         this.count = count;
         updateCount();
+    }
+
+    Unit getUnit() {
+        return this.unit;
     }
 
     public void increaseCount() {

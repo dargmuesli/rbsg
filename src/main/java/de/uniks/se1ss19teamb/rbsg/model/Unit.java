@@ -12,6 +12,14 @@ public class Unit {
     private int hp;
     private ArrayList<String> canAttack;
 
+    public Unit() {
+
+    }
+
+    public Unit(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

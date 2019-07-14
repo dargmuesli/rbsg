@@ -192,9 +192,7 @@ public class RestRequestTestsReal {
         String armyName = "testArmy001";
         List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Unit unit = new Unit();
-            unit.setId("5cc051bd62083600017db3b6");
-            units.add(unit);
+            units.add(new Unit("5cc051bd62083600017db3b6"));
         }
         CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, units, userKey);
         createArmyRequest.sendRequest();
@@ -223,9 +221,7 @@ public class RestRequestTestsReal {
 
         List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Unit unit = new Unit();
-            unit.setId("5cc051bd62083600017db3b6");
-            units.add(unit);
+            units.add(new Unit("5cc051bd62083600017db3b6"));
         }
         CreateArmyRequest req = new CreateArmyRequest(name, units, login.getUserKey());
 
@@ -299,14 +295,14 @@ public class RestRequestTestsReal {
     public void updateArmyRequestTest() {
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
-        Army testArmy = new Army();
+        Army testArmy = new Army(null, null, null);
         testArmy.setId(createArmyRequest.getArmyID());
         List<Unit> units = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
-            Unit unit = new Unit();
-            unit.setId("5cc051bd62083600017db3b7");
-            units.add(unit);
+            units.add(new Unit("5cc051bd62083600017db3b7"));
         }
+
         testArmy.setUnits(units);
         testArmy.setName("changedName");
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);

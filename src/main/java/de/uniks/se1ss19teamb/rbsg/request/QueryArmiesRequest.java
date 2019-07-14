@@ -43,22 +43,19 @@ public class QueryArmiesRequest extends AbstractRestRequest {
         ArrayList<Army> armies = new ArrayList<>();
 
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
-            Army current = new Army();
             JsonObject army = g.getAsJsonObject();
-            current.setId(army.get("id").getAsString());
-            current.setName(army.get("name").getAsString());
+            String id = army.get("id").getAsString();
+            String name = army.get("name").getAsString();
 
             JsonArray unitIds = army.get("units").getAsJsonArray();
             List<Unit> unitList = new ArrayList<>();
 
             for (JsonElement unitId : unitIds) {
-                Unit unit = new Unit();
-                unit.setId(unitId.getAsString());
+                Unit unit = new Unit(unitId.getAsString());
                 unitList.add(unit);
             }
 
-            current.setUnits(unitList);
-            armies.add(current);
+            armies.add(new Army(id, name, unitList));
         }
 
         return armies;

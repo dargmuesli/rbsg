@@ -360,9 +360,7 @@ public class RestRequestTestsMocked {
 
         List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Unit unit = new Unit();
-            unit.setId("5cc051bd62083600017db3b6");
-            units.add(unit);
+            units.add(new Unit("5cc051bd62083600017db3b6"));
         }
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
@@ -451,14 +449,15 @@ public class RestRequestTestsMocked {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Army testArmy = new Army();
+
+        Army testArmy = new Army(null, null, null);
         testArmy.setId(fakeArmyId);
         List<Unit> units = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
-            Unit unit = new Unit();
-            unit.setId("5cc051bd62083600017db3b7");
-            units.add(unit);
+            units.add(new Unit("5cc051bd62083600017db3b7"));
         }
+
         testArmy.setUnits(units);
         testArmy.setName("changedName");
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);

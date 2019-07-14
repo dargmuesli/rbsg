@@ -107,28 +107,7 @@ public class MainController {
     private VBox textArea;
 
     public void initialize() {
-        UserInterfaceUtils.makeFadeInTransition(mainScreen);
-
-        Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-        }
+        UserInterfaceUtils.initialize(mainScreen, mainScreen1, MainController.class, btnFullscreen, errorContainer);
 
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {

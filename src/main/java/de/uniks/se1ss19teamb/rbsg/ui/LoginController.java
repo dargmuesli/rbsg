@@ -89,13 +89,13 @@ public class LoginController {
     }
 
     public void initialize() {
+        UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
+
         random = (int) (Math.random() * jokes.length);
         jokeLabel.setText(jokes[random]);
         jokeLabel.setLayoutX(2200);
         jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
-        Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
 
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -135,22 +135,6 @@ public class LoginController {
         UserData.deleteUserData(NotificationHandler.getInstance());
 
         loginScreen.setOpacity(0);
-        UserInterfaceUtils.makeFadeInTransition(loginScreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            errorContainer.getChildren().add(parent);
-            errorContainer.toFront();
-
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-
-        } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
-        }
 
         // 1% meme chance
         if (new Random().nextFloat() < 0.01) {
