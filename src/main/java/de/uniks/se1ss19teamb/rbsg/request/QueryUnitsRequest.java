@@ -44,6 +44,7 @@ public class QueryUnitsRequest extends AbstractRestRequest {
             JsonObject unit = g.getAsJsonObject();
             Unit current = new Unit();
 
+            current.setId(unit.get("id").getAsString());
             current.setMp(unit.get("mp").getAsInt());
             current.setHp(unit.get("hp").getAsInt());
             current.setType(unit.get("type").getAsString());

@@ -6,10 +6,19 @@ import java.util.ArrayList;
 
 public class Unit {
 
+    private String id;
     private String type;
     private int mp;
     private int hp;
     private ArrayList<String> canAttack;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getType() {
         return type;
@@ -46,7 +55,8 @@ public class Unit {
     @Override
     public String toString() {
         return "Unit{"
-            + ", type='" + type + '\''
+            + ", id=" + id
+            + ", type='" + type + "'"
             + ", mp=" + mp
             + ", hp=" + hp
             + ", canAttack=" + canAttack
