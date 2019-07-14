@@ -9,7 +9,11 @@ public class TestUtil {
     public static void initJfx() throws InterruptedException {
         Thread t = new Thread("JavaFX Init Thread") {
             public void run() {
-                Application.launch(Main.class);
+                try {
+                    Application.launch(Main.class);
+                } catch (IllegalStateException e) {
+                    // Application launch was already called
+                }
             }
         };
         t.setDaemon(true);
