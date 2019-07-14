@@ -36,7 +36,7 @@ public class UnitObjectController {
     void setUpUnitObject(Unit unit) {
         this.unit = unit;
         labelUnitType.setText(unit.getType());
-        ArmyManagerController.getInstance().updateCounts();
+        ArmyManagerController.getInstance().updateConfigurationView();
         btnDecrease.setDisable(true);
         imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
     }
@@ -58,7 +58,7 @@ public class UnitObjectController {
             btnIncrease.setDisable(true);
         }
 
-        ArmyManagerController.getInstance().updateCounts();
+        ArmyManagerController.getInstance().updateConfigurationView();
     }
 
     public void decreaseCount() {
@@ -70,7 +70,7 @@ public class UnitObjectController {
             btnDecrease.setDisable(true);
         }
 
-        ArmyManagerController.getInstance().updateCounts();
+        ArmyManagerController.getInstance().updateConfigurationView();
     }
 
     void update(int count) {

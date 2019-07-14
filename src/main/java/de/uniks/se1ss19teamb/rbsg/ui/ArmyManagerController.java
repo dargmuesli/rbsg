@@ -301,15 +301,5 @@ public class ArmyManagerController {
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
-
-    void updateCounts() {
-        labelLeftUnits.setText("" + (MAXIMUM_UNIT_COUNT - currentArmy.getUnits().size()));
-        unitObjectControllers.forEach(
-            unitObjectController -> unitObjectController.update(
-                (int) currentArmy.getUnits().stream().filter(
-                    unit -> unit.getType()
-                            .equals(unitObjectController.getUnit().getType()))
-                    .count()));
-    }
 }
 
