@@ -20,7 +20,7 @@ public class InGameMetadataTest {
     }
 
     @Test
-    public void InGameMetadataToStringTest() {
+    public void inGameMetadataToStringTest() {
         Assert.assertEquals(expected, inGameMetadata.toString());
     }
 }
