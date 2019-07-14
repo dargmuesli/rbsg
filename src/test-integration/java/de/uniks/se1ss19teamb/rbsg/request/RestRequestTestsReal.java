@@ -300,14 +300,13 @@ public class RestRequestTestsReal {
     public void updateArmyRequestTest() {
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
-        Army testArmy = new Army();
-        testArmy.setId(createArmyRequest.getArmyID());
         ArrayList<String> unitIDs = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
             unitIDs.add("5cc051bd62083600017db3b7");
         }
-        testArmy.setUnits(unitIDs);
-        testArmy.setName("changedName");
+
+        Army testArmy = new Army(createArmyRequest.getArmyID(), "changedName", unitIDs);
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());

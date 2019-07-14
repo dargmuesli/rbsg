@@ -14,8 +14,11 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -34,8 +37,8 @@ import org.apache.logging.log4j.Logger;
 
 public class ArmyManagerController {
     private static final Logger logger = LogManager.getLogger();
-    static Army currentArmy = new Army();
     static boolean spectator = false;
+    static Army currentArmy = new Army();
     static boolean joiningGame;
     @FXML
     private AnchorPane mainPane;
@@ -77,37 +80,17 @@ public class ArmyManagerController {
     private boolean saveMode = true;
     private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
     private Army[] armySaves = new Army[3];
-    private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
+    public static final Path ARMY_SAVE_PATH =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private JFXButton btnJoinGame = new JFXButton("Join Game");
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{mainPane, mainPane1}));
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-        }
+        UserInterfaceUtils.initialize(mainPane, mainPane1, ArmyManagerController.class, btnFullscreen, errorContainer);
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
             hboxLowerButtons.getChildren().add(btnJoinGame);
         }
-
-        UserInterfaceUtils.makeFadeInTransition(mainPane);
         setLabelLeftUnits(10);
         setUpUnitObjects();
     }
@@ -267,7 +250,7 @@ public class ArmyManagerController {
         setArmyConfiguration();
         String currentArmyName = currentArmy.getName();
         String currentArmyId = currentArmy.getId();
-        ArrayList<String> currentArmyUnits = currentArmy.getUnits();
+        List<String> currentArmyUnits = currentArmy.getUnits();
 
         if (currentArmyName == null) {
             NotificationHandler.getInstance().sendError("You have to give the army a name!",
@@ -342,38 +325,22 @@ public class ArmyManagerController {
     }
 
     public void saveLoadCurrent1() {
-        if (saveMode) {
-            saveCurrentConfig(1);
-        } else {
-            currentArmy = loadConfig(1);
-
-            if (currentArmy == null) {
-                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
-            }
-
-            updateConfigurationView(currentArmy);
-        }
+        saveLoadCurrent(1);
     }
 
     public void saveLoadCurrent2() {
-        if (saveMode) {
-            saveCurrentConfig(2);
-        } else {
-            currentArmy = loadConfig(2);
-
-            if (currentArmy == null) {
-                NotificationHandler.getInstance().sendInfo("The save is empty", logger);
-            }
-
-            updateConfigurationView(currentArmy);
-        }
+        saveLoadCurrent(2);
     }
 
     public void saveLoadCurrent3() {
+        saveLoadCurrent(3);
+    }
+
+    private void saveLoadCurrent(int number) {
         if (saveMode) {
-            saveCurrentConfig(3);
+            saveCurrentConfig(number);
         } else {
-            currentArmy = loadConfig(3);
+            currentArmy = loadConfig(number);
 
             if (currentArmy == null) {
                 NotificationHandler.getInstance().sendInfo("The save is empty", logger);
@@ -384,12 +351,12 @@ public class ArmyManagerController {
     }
 
     private Army loadConfig(int number) {
-        return SerializeUtils.deserialize(new File(String.format(armysavePath, number)), Army.class);
+        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(), number)), Army.class);
     }
 
     private void saveCurrentConfig(int configNum) {
         armySaves[configNum - 1] = getCurrentConfiguration();
-        SerializeUtils.serialize(String.format(armysavePath, configNum), armySaves[configNum - 1]);
+        SerializeUtils.serialize(String.format(ARMY_SAVE_PATH.toString(), configNum), armySaves[configNum - 1]);
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }

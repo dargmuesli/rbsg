@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QueryArmiesRequest extends AbstractRestRequest {
 
@@ -41,18 +42,17 @@ public class QueryArmiesRequest extends AbstractRestRequest {
         ArrayList<Army> armies = new ArrayList<Army>();
 
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
-            Army current = new Army();
             JsonObject army = g.getAsJsonObject();
-            current.setId(army.get("id").getAsString());
-            current.setName(army.get("name").getAsString());
-
+            String id = army.get("id").getAsString();
+            String name = army.get("name").getAsString();
             JsonArray units = army.get("units").getAsJsonArray();
-            ArrayList<String> unitList = new ArrayList<>();
+            List<String> unitList = new ArrayList<>();
+
             for (JsonElement unit : units) {
                 unitList.add(unit.getAsString());
             }
-            current.setUnits(unitList);
-            armies.add(current);
+
+            armies.add(new Army(id, name, unitList));
         }
 
         return armies;
