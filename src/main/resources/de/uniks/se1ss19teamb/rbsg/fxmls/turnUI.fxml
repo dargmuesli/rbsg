@@ -6,13 +6,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Line?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUIController">
-    <HBox spacing="25">
-        <Label text="Team1"></Label>
-        <Label text="Team2"></Label>
-        <Label text="Team3"></Label>
-        <Label text="Team4"></Label>
+    <HBox AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" spacing="50">
+        <VBox>
+            <Label fx:id="labelOne" text="Team1"></Label>
+            <Line fx:id="linePlayerOne"></Line>
+        </VBox>
+        <VBox>
+            <Label fx:id="labelTwo" text="Team2"></Label>
+            <Line fx:id="linePlayerTwo"></Line>
+        </VBox>
+        <VBox>
+            <Label fx:id="labelThree" text="Team3"></Label>
+            <Line fx:id="linePlayerThree"></Line>
+        </VBox>
+        <VBox>
+            <Label fx:id="labelFour" text="Team4"></Label>
+            <Line fx:id="linePlayerFour"></Line>
+        </VBox>
     </HBox>
 </AnchorPane>
