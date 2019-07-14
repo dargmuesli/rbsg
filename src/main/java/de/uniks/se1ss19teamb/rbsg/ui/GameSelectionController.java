@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class GameFieldController {
+public class GameSelectionController {
 
     @FXML
     private HBox root;

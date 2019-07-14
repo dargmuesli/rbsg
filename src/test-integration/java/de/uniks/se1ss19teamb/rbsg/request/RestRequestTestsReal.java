@@ -5,6 +5,7 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -189,11 +190,11 @@ public class RestRequestTestsReal {
 
     private CreateArmyRequest createArmy() {
         String armyName = "testArmy001";
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
+            units.add(new Unit("5cc051bd62083600017db3b6"));
         }
-        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, unitIDs, userKey);
+        CreateArmyRequest createArmyRequest = new CreateArmyRequest(armyName, units, userKey);
         createArmyRequest.sendRequest();
         return createArmyRequest;
     }
@@ -218,11 +219,11 @@ public class RestRequestTestsReal {
         String name = "TestBArmy";
         LoginUserRequest login = loginUser();
 
-        ArrayList<String> unitIDs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b6");
+            units.add(new Unit("5cc051bd62083600017db3b6"));
         }
-        CreateArmyRequest req = new CreateArmyRequest(name, unitIDs, login.getUserKey());
+        CreateArmyRequest req = new CreateArmyRequest(name, units, login.getUserKey());
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
@@ -287,12 +288,6 @@ public class RestRequestTestsReal {
         ArrayList<Unit> unitList = req.getUnits();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals(6, unitList.size());
-        Assert.assertEquals("5cc051bd62083600017db3b6", unitList.get(0).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b7", unitList.get(1).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b8", unitList.get(2).getId());
-        Assert.assertEquals("5cc051bd62083600017db3b9", unitList.get(3).getId());
-        Assert.assertEquals("5cc051bd62083600017db3ba", unitList.get(4).getId());
-        Assert.assertEquals("5cc051bd62083600017db3bb", unitList.get(5).getId());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
     }
 
@@ -300,13 +295,16 @@ public class RestRequestTestsReal {
     public void updateArmyRequestTest() {
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
-        ArrayList<String> unitIDs = new ArrayList<>();
+        Army testArmy = new Army(null, null, null);
+        testArmy.setId(createArmyRequest.getArmyID());
+        List<Unit> units = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            unitIDs.add("5cc051bd62083600017db3b7");
+            units.add(new Unit("5cc051bd62083600017db3b7"));
         }
 
-        Army testArmy = new Army(createArmyRequest.getArmyID(), "changedName", unitIDs);
+        testArmy.setUnits(units);
+        testArmy.setName("changedName");
         UpdateArmyRequest req = new UpdateArmyRequest(testArmy, userKey);
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
