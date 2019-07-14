@@ -41,20 +41,17 @@ public class QueryUnitsRequest extends AbstractRestRequest {
         ArrayList<Unit> units = new ArrayList<>();
 
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
-            JsonObject unit = g.getAsJsonObject();
             Unit current = new Unit();
-
+            JsonObject unit = g.getAsJsonObject();
             current.setId(unit.get("id").getAsString());
+            current.setType(unit.get("type").getAsString());
             current.setMp(unit.get("mp").getAsInt());
             current.setHp(unit.get("hp").getAsInt());
-            current.setType(unit.get("type").getAsString());
             ArrayList<String> unitsList = new ArrayList<>();
             JsonArray unitArray = unit.get("canAttack").getAsJsonArray();
-
             for (JsonElement o : unitArray) {
                 unitsList.add(o.getAsString());
             }
-
             current.setCanAttack(unitsList);
             units.add(current);
         }

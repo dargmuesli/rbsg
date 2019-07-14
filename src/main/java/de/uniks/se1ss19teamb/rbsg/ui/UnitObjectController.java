@@ -20,13 +20,13 @@ public class UnitObjectController {
     @FXML
     private Label labelUnitCount;
     @FXML
+    private Button btnIncrease;
+    @FXML
     private Button btnDecrease;
     @FXML
     private Pane imageUnitType;
 
     private Unit unit;
-
-    private ArmyManagerController armyManagerController;
     private int count = 0;
 
     public void initialize() {
@@ -36,51 +36,69 @@ public class UnitObjectController {
     void setUpUnitObject(Unit unit) {
         this.unit = unit;
         labelUnitType.setText(unit.getType());
-        updateCount();
+        ArmyManagerController.getInstance().updateCounts();
         btnDecrease.setDisable(true);
         imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
-    }
-
-    int getCount() {
-        return count;
-    }
-
-    void setCount(int count) {
-        this.count = count;
-        updateCount();
     }
 
     Unit getUnit() {
         return this.unit;
     }
 
+    void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
     public void increaseCount() {
-        if (count >= 0) {
-            if (armyManagerController.getLeftUnits() > 0) {
-                count++;
-                armyManagerController.setLeftUnits(armyManagerController.getLeftUnits() - 1);
-                btnDecrease.setDisable(false);
-            }
-        } else {
-            count = 0;
+        count++;
+        ArmyManagerController.currentArmy.getUnits().add(0, unit);
+        btnDecrease.setDisable(false);
+
+        if (ArmyManagerController.currentArmy.getUnits().size() == ArmyManagerController.MAXIMUM_UNIT_COUNT) {
+            btnIncrease.setDisable(true);
         }
 
-        updateCount();
+        ArmyManagerController.getInstance().updateCounts();
     }
 
     public void decreaseCount() {
-        if (count > 0) {
-            count--;
-            armyManagerController.setLeftUnits(armyManagerController.getLeftUnits() + 1);
-            updateCount();
-            if (count == 0) {
-                btnDecrease.setDisable(true);
-            }
+        count--;
+        ArmyManagerController.currentArmy.getUnits().remove(unit);
+        btnIncrease.setDisable(false);
+
+        if (count == 0) {
+            btnDecrease.setDisable(true);
         }
 
+        ArmyManagerController.getInstance().updateCounts();
     }
 
-    private void updateCount() {
+    void update(int count) {
+        this.count = count;
         labelUnitCount.setText(Integer.toString(count));
+
+        if (ArmyManagerController.currentArmy.getUnits().size() == 10) {
+            btnIncrease.setDisable(true);
+
+            if (this.count > 0) {
+                btnDecrease.setDisable(false);
+            } else {
+                btnDecrease.setDisable(true);
+            }
+        } else if (ArmyManagerController.currentArmy.getUnits().size() == 0) {
+            btnDecrease.setDisable(true);
+
+            if (this.count == 0) {
+                btnIncrease.setDisable(false);
+            } else {
+                btnIncrease.setDisable(true);
+            }
+        } else {
+            btnIncrease.setDisable(false);
+
+            if (this.count > 0) {
+                btnDecrease.setDisable(false);
+            }
+        }
     }
 }

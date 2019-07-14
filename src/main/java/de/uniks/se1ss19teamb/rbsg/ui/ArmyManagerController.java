@@ -31,11 +31,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ArmyManagerController {
-    private static final Logger logger = LogManager.getLogger();
-    private static List<Unit> availableUnits;
+
+    static Army currentArmy = new Army(null, null, new ArrayList<>());
+    static final int MAXIMUM_UNIT_COUNT = 10;
     static boolean spectator = false;
-    static Army currentArmy = new Army(null, null, null);
     static boolean joiningGame;
+
+    private static final Logger logger = LogManager.getLogger();
+    private static final Path ARMY_SAVE_PATH =
+        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
+    private static List<Unit> availableUnits;
+    private static ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
+
     @FXML
     private AnchorPane mainPane;
     @FXML
@@ -64,12 +71,9 @@ public class ArmyManagerController {
     private AnchorPane mainPane1;
     @FXML
     private HBox hboxLowerButtons;
-    private int leftUnits = 10;
+
     private boolean saveMode = true;
-    private ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
     private Army[] armySaves = new Army[3];
-    public static final Path ARMY_SAVE_PATH =
-        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private JFXButton btnJoinGame = new JFXButton("Join Game");
     private static ArmyManagerController instance;
 
@@ -125,15 +129,6 @@ public class ArmyManagerController {
         }
     }
 
-    int getLeftUnits() {
-        return leftUnits;
-    }
-
-    void setLeftUnits(int leftUnits) {
-        this.leftUnits = leftUnits;
-        setLabelLeftUnits(leftUnits);
-    }
-
     @FXML
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
@@ -155,7 +150,7 @@ public class ArmyManagerController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnJoinGame)) {
-            if (leftUnits > 0) {
+            if (currentArmy.getUnits().size() < 10) {
                 NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
                 return;
             }
@@ -210,11 +205,6 @@ public class ArmyManagerController {
     }
 
     private void updateConfigurationView(Army army) {
-        for (UnitObjectController controller : unitObjectControllers) {
-            controller.setCount(0);
-            leftUnits = 10;
-        }
-
         for (Unit unit : army.getUnits()) {
             unitObjectControllers.forEach(unitObjectController -> {
                 if (unitObjectController.getUnit().getId().equals(unit.getId())) {
@@ -308,6 +298,16 @@ public class ArmyManagerController {
         SerializeUtils.serialize(String.format(ARMY_SAVE_PATH.toString(), configNum), armySaves[configNum - 1]);
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
+    }
+
+    void updateCounts() {
+        labelLeftUnits.setText("" + (MAXIMUM_UNIT_COUNT - currentArmy.getUnits().size()));
+        unitObjectControllers.forEach(
+            unitObjectController -> unitObjectController.update(
+                (int) currentArmy.getUnits().stream().filter(
+                    unit -> unit.getType()
+                            .equals(unitObjectController.getUnit().getType()))
+                    .count()));
     }
 }
 

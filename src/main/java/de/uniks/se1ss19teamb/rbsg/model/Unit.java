@@ -63,7 +63,7 @@ public class Unit {
     @Override
     public String toString() {
         return "Unit{"
-            + ", id=" + id
+            + "id='" + id + "'"
             + ", type='" + type + "'"
             + ", mp=" + mp
             + ", hp=" + hp

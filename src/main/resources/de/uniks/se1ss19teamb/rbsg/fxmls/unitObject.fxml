@@ -21,7 +21,7 @@
         </Pane>
         <Label layoutX="101.0" layoutY="10.0" text="Anzahl: " AnchorPane.leftAnchor="100.0"/>
         <Label fx:id="labelUnitCount" layoutX="143.0" layoutY="10.0" text="#" AnchorPane.leftAnchor="143.0"/>
-        <Button layoutX="158.0" layoutY="6.0" mnemonicParsing="false"
+        <Button fx:id="btnIncrease" layoutX="158.0" layoutY="6.0" mnemonicParsing="false"
                 onMouseClicked="#increaseCount" prefWidth="30.0" text="+" AnchorPane.rightAnchor="45.0"/>
         <Button fx:id="btnDecrease" layoutX="187.0" layoutY="6.0" mnemonicParsing="false"
                 onMouseClicked="#decreaseCount" prefWidth="30.0" text="-" AnchorPane.rightAnchor="8.0"/>
