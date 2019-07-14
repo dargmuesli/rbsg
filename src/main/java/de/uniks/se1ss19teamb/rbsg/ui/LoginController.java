@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import de.uniks.se1ss19teamb.rbsg.features.ChuckNorrisJokeTicker;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
@@ -87,27 +88,11 @@ public class LoginController {
     }
 
     public void initialize() {
-        random = (int) (Math.random() * jokes.length);
-        jokeLabel.setText(jokes[random]);
-        jokeLabel.setLayoutX(2200);
-        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
-
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-        animationTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
 
-                if (jokeLabel.getLayoutX() != -1000) {
-                    jokeLabel.setLayoutX(jokeLabel.getLayoutX() - 2);
-                } else if (jokeLabel.getLayoutX() == -1000) {
-                    random = (int) (Math.random() * jokes.length);
-                    jokeLabel.setText(jokes[random]);
-                    jokeLabel.setLayoutX(2200);
-                }
-            }
-        };
-        animationTimer.start();
+        new ChuckNorrisJokeTicker().setLabelPosition(jokeLabel);
+        new ChuckNorrisJokeTicker().moveLabel(jokeLabel);
 
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
@@ -158,7 +143,7 @@ public class LoginController {
             login();
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
-            animationTimer.stop();
+            new ChuckNorrisJokeTicker().stopAnimation();
         }
     }
 
@@ -189,7 +174,7 @@ public class LoginController {
 
         setUserKey(login.getUserKey());
         setUser(userName.getText());
-        animationTimer.stop();
+        new ChuckNorrisJokeTicker().stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
     }
