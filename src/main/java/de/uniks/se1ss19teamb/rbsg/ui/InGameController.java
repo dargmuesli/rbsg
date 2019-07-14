@@ -25,18 +25,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class InGameController {
+
+    public static Logger logger = LogManager.getLogger();
+    public static InGameMetadata inGameMetadata;
+    public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
+    public static List<PlayerTile> playerTiles = new ArrayList<>();
+    public static List<UnitTile> unitTiles = new ArrayList<>();
+    public static boolean gameInitFinished = false;
+
+    private static StackPane lastSelectedPane;
 
     @FXML
     private AnchorPane inGameScreen;
@@ -67,15 +76,8 @@ public class InGameController {
     @FXML
     private JFXButton btnNo;
 
-    public static Logger logger = LogManager.getLogger();
-    public static InGameMetadata inGameMetadata;
-    public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
-    public static List<PlayerTile> playerTiles = new ArrayList<>();
-    public static List<UnitTile> unitTiles = new ArrayList<>();
-    public static boolean gameInitFinished = false;
-
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
@@ -177,6 +179,25 @@ public class InGameController {
             for (int j = 0; j < maxX; j++) {
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
+
+                final Pane selectionOverlay = new Pane();
+                selectionOverlay.getStyleClass().add("selected");
+
+                stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    StackPane eventSource = (StackPane) event.getSource();
+
+                    if (lastSelectedPane == null) {
+                        eventSource.getChildren().add(selectionOverlay);
+                        lastSelectedPane = eventSource;
+                    } else if (eventSource == lastSelectedPane) {
+                        eventSource.getChildren().remove(selectionOverlay);
+                        lastSelectedPane = null;
+                    } else {
+                        lastSelectedPane.getChildren().remove(selectionOverlay);
+                        eventSource.getChildren().add(selectionOverlay);
+                        lastSelectedPane = eventSource;
+                    }
+                });
                 gameGrid.add(stack, j, i);
                 stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
                 environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),

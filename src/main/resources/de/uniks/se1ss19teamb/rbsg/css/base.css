@@ -28,3 +28,7 @@ ScrollPane {
 .jfx-tab-pane .tab .tab-label {
     -fx-text-fill: black;
 }
+
+.selected {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
