@@ -49,11 +49,11 @@ public class RegisterController {
     private UserData userData;
 
     public void initialize() {
+        UserInterfaceUtils.initialize(
+            registerScreen, registerScreen1, RegisterController.class, btnFullscreen, errorContainer);
+
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
-        Theming.setTheme(Arrays.asList(new Pane[]{registerScreen, registerScreen1}));
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         if (userData == null) {
             NotificationHandler.getInstance().sendWarning("User data couldn't be deserialized!", logger);
@@ -79,22 +79,6 @@ public class RegisterController {
         UserData.deleteUserData(NotificationHandler.getInstance());
 
         registerScreen.setOpacity(0);
-        UserInterfaceUtils.makeFadeInTransition(registerScreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            errorContainer.getChildren().add(parent);
-
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Registrierung!", logger, e);
-        }
     }
 
     @FXML

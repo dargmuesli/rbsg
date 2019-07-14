@@ -6,12 +6,14 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.uniks.se1ss19teamb.rbsg.features.ChuckNorrisJokeTicker;
+import de.uniks.se1ss19teamb.rbsg.features.ZuendorfMeme;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -88,11 +90,14 @@ public class LoginController {
     }
 
     public void initialize() {
+
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         new ChuckNorrisJokeTicker().setLabelPosition(jokeLabel);
         new ChuckNorrisJokeTicker().moveLabel(jokeLabel);
+      
+        UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer)
 
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
@@ -118,20 +123,11 @@ public class LoginController {
         UserData.deleteUserData(NotificationHandler.getInstance());
 
         loginScreen.setOpacity(0);
-        UserInterfaceUtils.makeFadeInTransition(loginScreen);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            errorContainer.getChildren().add(parent);
-
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-
-        } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
+        // 1% meme chance
+        if (new Random().nextFloat() < 0.01) {
+            // needed because of root.getWidth/Height
+            Platform.runLater(() -> ZuendorfMeme.setup(loginScreen1));
         }
     }
 
@@ -162,7 +158,7 @@ public class LoginController {
         login.sendRequest();
 
         if (!login.getSuccessful()) {
-            NotificationHandler.getInstance().sendWarning("Login fehlgeschlagen!", logger);
+            NotificationHandler.getInstance().sendError("Login fehlgeschlagen!", logger);
             return;
         }
 

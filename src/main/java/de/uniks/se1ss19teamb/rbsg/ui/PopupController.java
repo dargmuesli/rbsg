@@ -17,6 +17,7 @@ public class PopupController {
 
     public void displayError(String errorMessage) {
         Platform.runLater(() -> {
+            label.setStyle("-fx-text-fill: #e00909;");
             label.setText(errorMessage);
             show();
         });
@@ -24,39 +25,41 @@ public class PopupController {
 
     public void displayInformation(String informationMessage) {
         Platform.runLater(() -> {
+            label.setStyle("-fx-text-fill: #0c51c2;");
             label.setText(informationMessage);
-            // TODO blue @Patrick
             show();
         });
     }
 
     public void displaySuccess(String successMessage) {
         Platform.runLater(() -> {
+            label.setStyle("-fx-text-fill: #16b807;");
             label.setText(successMessage);
-            // TODO green @Patrick
             show();
         });
     }
 
     public void displayWarning(String warningMessage) {
         Platform.runLater(() -> {
+            label.setStyle("-fx-text-fill: #ffbb00;");
             label.setText(warningMessage);
-            // TODO orange @Patrick
             show();
         });
     }
 
     private void show() {
         popup.setVisible(true);
+        popup.getScene().lookup("#errorContainer").setVisible(true);
         new Thread(new Task<Void>() {
             @Override
             public Void call() {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 popup.setVisible(false);
+                popup.getScene().lookup("#errorContainer").setVisible(false);
                 return null;
             }
         }).start();

@@ -4,6 +4,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
@@ -26,11 +27,14 @@ public class Chat {
     private static final Logger logger = LogManager.getLogger();
     private ArrayList<ChatHistoryEntry> history = new ArrayList<>();
     private ChatSocket chatSocket;
+    private GameSocket gameSocket;
     /**
      * Defines that and how received messages are added to the chat history.
      */
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
         -> addToHistory(message, from, isPrivate ? chatSocket.getUserName() : "All");
+    public ChatMessageHandler gameChatMessageHandler = (message, from, isPrivate)
+        -> addToHistory(message, from, isPrivate ? gameSocket.getUserName() : "All");
     private Path path;
 
     /**
@@ -42,6 +46,18 @@ public class Chat {
     public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
         this.chatSocket.registerChatMessageHandler(chatMessageHandler);
+        this.path = path;
+    }
+
+    /**
+     * Constructor that connects to the chat socket and registers the {@link #gameChatMessageHandler}.
+     *
+     * @param gameSocket The chat socket for in game communication.
+     * @param path       The location at which the chat history is saved.
+     */
+    public Chat(GameSocket gameSocket, Path path) {
+        this.gameSocket = gameSocket;
+        this.gameSocket.registerGameMessageHandler(gameChatMessageHandler);
         this.path = path;
     }
 
@@ -60,7 +76,6 @@ public class Chat {
      * @param message The textual content.
      */
     public void sendMessage(String message) {
-        // TODO send action (All)
         this.chatSocket.sendMessage(message);
     }
 
@@ -73,6 +88,26 @@ public class Chat {
     public void sendMessage(String message, String receiver) {
         addToHistory(message, this.chatSocket.getUserName(), receiver);
         this.chatSocket.sendPrivateMessage(message, receiver);
+    }
+
+    /**
+     * Sends a public message via the game socket.
+     *
+     * @param message The textual content.
+     */
+    public void gameSendMessage(String message) {
+        this.gameSocket.sendMessage(message);
+    }
+
+    /**
+     * Sends a private message via the game socket.
+     *
+     * @param message  The textual content.
+     * @param receiver The receiver's name.
+     */
+    public void gameSendMessage(String message, String receiver) {
+        addToHistory(message, this.gameSocket.getUserName(), receiver);
+        this.gameSocket.sendPrivateMessage(message, receiver);
     }
 
     /**

@@ -57,7 +57,7 @@ public class WebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         this.mySession = session;
-        NotificationHandler.getInstance().sendInfo("WS connected to " + this.mySession.getRequestURI(), logger);
+        logger.info("WS connected to " + this.mySession.getRequestURI());
         TimerTask task = new TimerTask() {
             @Override
             public void run() {

@@ -57,13 +57,13 @@ public class WebSocketTestsMocked {
 
         system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
 
-        setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"testTeamB2\"}}", system);
+        setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"TeamBTestUser2\"}}", system);
         system.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"userLeft\",\"data\":{\"name\":\"testTeamB2\"}}", system);
+        setupSocket("{\"action\":\"userLeft\",\"data\":{\"name\":\"TeamBTestUser2\"}}", system);
         system.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameCreated\",\"data\":{\"name\":\"testTeamBGame\",\""
+        setupSocket("{\"action\":\"gameCreated\",\"data\":{\"name\":\"TeamBTestUserGame\",\""
             + "id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
         system.sendToWebsocket(null);
 
@@ -74,9 +74,9 @@ public class WebSocketTestsMocked {
 
         System.out.println(msg);
 
-        Assert.assertTrue(msg.contains("userJoin|testTeamB2"));
-        Assert.assertTrue(msg.contains("userLeft|testTeamB2"));
-        Assert.assertTrue(msg.contains("gameCreate|testTeamBGame|" + "123456789012345678901234" + "|2"));
+        Assert.assertTrue(msg.contains("userJoin|TeamBTestUser2"));
+        Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
+        Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + "123456789012345678901234" + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + "123456789012345678901234"));
 
     }
@@ -84,21 +84,21 @@ public class WebSocketTestsMocked {
     @Test
     public void chatSocketTest() throws ParseException {
 
-        ChatSocket chat = new ChatSocket("testTeamB2", "111111111111111111111111111111111111");
+        ChatSocket chat = new ChatSocket("TeamBTestUser2", "111111111111111111111111111111111111");
 
         List<String> msg = new ArrayList<>();
 
         chat.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
-        setupSocket("{\"channel\":\"all\",\"from\":\"testTeamB\",\"message\":\"Hello World!\"}", chat);
+        setupSocket("{\"channel\":\"all\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World!\"}", chat);
         chat.sendMessage("Hello World!");
 
-        setupSocket("{\"channel\":\"private\",\"from\":\"testTeamB\",\"message\":\"Hello World! Private\"}", chat);
-        chat.sendPrivateMessage("Hello World! Private", "testTeamB2");
+        setupSocket("{\"channel\":\"private\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World! Private\"}", chat);
+        chat.sendPrivateMessage("Hello World! Private", "TeamBTestUser2");
 
 
-        Assert.assertTrue(msg.contains("Hello World!|testTeamB|false"));
-        Assert.assertTrue(msg.contains("Hello World! Private|testTeamB|true"));
+        Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser|false"));
+        Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true"));
     }
 
 }

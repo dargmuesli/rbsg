@@ -11,6 +11,7 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -30,7 +31,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -50,11 +50,12 @@ public class MainController {
 
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static Chat chat;
-    private static SingleSelectionModel<Tab> selectionModel;
+    public static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
-    private static String sendTo = null;
+    public static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
+    private static boolean inGameChat = false;
 
     @FXML
     private AnchorPane errorContainer;
@@ -100,60 +101,61 @@ public class MainController {
     private VBox chatBox;
     @FXML
     private VBox chatWindow;
+    private double chatWindowWidth;
+    private double chatWindowHeight;
     @FXML
     private VBox textArea;
 
     public void initialize() {
-        UserInterfaceUtils.makeFadeInTransition(mainScreen);
-
-        Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
-
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+        UserInterfaceUtils.initialize(mainScreen, mainScreen1, MainController.class, btnFullscreen, errorContainer);
 
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
             SystemSocket.instance = new SystemSocket(userKey);
-
-            SystemSocket.instance.registerUserJoinHandler(
-                (name) -> {
-                    updatePlayerView();
-                    addElement(name, " joined.", textArea, false);
-                });
-
-            SystemSocket.instance.registerUserLeftHandler(
-                (name) -> {
-                    addElement(name, " left.", textArea, false);
-                    updatePlayerView();
-                });
-
-            SystemSocket.instance.registerGameCreateHandler(
-                (gameName, id, neededPlayers) -> {
-                    updateGameView();
-                    addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
-                        textArea, false);
-                });
-
-            SystemSocket.instance.registerGameDeleteHandler(
-                (id) -> {
-                    addElement(null, "Game \"" + existingGames.get(id).getName() + "\" was deleted.",
-                        textArea, false);
-                    updateGameView();
-                });
         }
+
+        SystemSocket.instance.registerUserJoinHandler(
+            (name) -> {
+                updatePlayerView();
+                addElement(name, " joined.", textArea, false);
+            });
+
+        SystemSocket.instance.registerUserLeftHandler(
+            (name) -> {
+                addElement(name, " left.", textArea, false);
+                updatePlayerView();
+            });
+
+        SystemSocket.instance.registerGameCreateHandler(
+            (gameName, id, neededPlayers) -> {
+                updateGameView();
+                addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
+                    textArea, false);
+            });
+
+        SystemSocket.instance.registerGameDeleteHandler(
+            (id) -> {
+                String deletedGameName = existingGames.get(id).getName();
+                Platform.runLater(() -> {
+                    addElement(null, "Game \"" + deletedGameName + "\" was deleted.",
+                        textArea, false);
+                    updateGameView();
+                });
+            });
 
         SystemSocket.instance.connect();
 
         if (ChatSocket.instance == null) {
             ChatSocket.instance = new ChatSocket(userName, userKey);
-
-            ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
-                if (isPrivate) {
-                    addNewPane(from, message, false, chatPane);
-                } else {
-                    addElement(from, message, textArea, false);
-                }
-            });
         }
+
+        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
+            if (isPrivate) {
+                addNewPane(from, message, false, chatPane);
+            } else {
+                addElement(from, message, textArea, false);
+            }
+        });
 
         MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
 
@@ -167,20 +169,6 @@ public class MainController {
             Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
             Theming.hamburgerMenuTransition(hamburgerMenu, btnColorMode);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-            try {
-                Parent parent = fxmlLoader.load();
-                // controller not used yet, but it's good to have it for later purposes.
-                PopupController controller = fxmlLoader.getController();
-                NotificationHandler.getInstance().setPopupController(controller);
-                Platform.runLater(() -> errorContainer.getChildren().add(parent));
-            } catch (IOException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
-            }
-
             // ChatTabController
             chatPane.getSelectionModel().selectedItemProperty().addListener(
                 (ov, t, t1) -> {
@@ -189,6 +177,7 @@ public class MainController {
                     } else {
                         setPrivate(t1.getText(), -1);
                     }
+                    t1.setGraphic(null);
                 }
             );
 
@@ -218,6 +207,8 @@ public class MainController {
         textArea.heightProperty().addListener(observable -> allPane.setVvalue(1D));
 
         chatWindow.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> this.message.requestFocus());
+
+        btnMinimize.setDisable(true);
     }
 
     @FXML
@@ -225,6 +216,15 @@ public class MainController {
         if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         }
+    }
+
+    public static void setGameChat(GameSocket gameSocket) {
+        MainController.chat = new Chat(gameSocket, chatLogPath);
+        gameSocket.connect();
+    }
+
+    public static void setInGameChat(boolean state) {
+        inGameChat = state;
     }
 
     public void setOnAction(ActionEvent event) {
@@ -246,15 +246,16 @@ public class MainController {
             logout.sendRequest();
 
             if (logout.getSuccessful()) {
-                chatWindow.setId("none"); // renaming id so it will not be give to login
                 LoginController.setUserKey(null);
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
             }
         } else if (event.getSource().equals(btnArmyManager)) {
             ArmyManagerController.joiningGame = false;
+            btnMinimize.setDisable(false);
+            btnMinimize.fire();
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen, chatWindow);
         } else if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
                 if (checkInput(message.getText())) {
@@ -264,13 +265,25 @@ public class MainController {
                 if (sendTo != null) {
                     if (sendTo.trim().equals("")) {
                         sendTo = null;
-                        chat.sendMessage(message.getText());
+                        if (!inGameChat) {
+                            chat.sendMessage(message.getText());
+                        } else {
+                            chat.gameSendMessage(message.getText());
+                        }
                     } else {
-                        chat.sendMessage(message.getText(), sendTo);
+                        if (!inGameChat) {
+                            chat.sendMessage(message.getText(), sendTo);
+                        } else {
+                            chat.gameSendMessage(message.getText(), sendTo);
+                        }
                         addNewPane(sendTo, message.getText(), true, chatPane);
                     }
                 } else {
-                    chat.sendMessage(message.getText());
+                    if (!inGameChat) {
+                        chat.sendMessage(message.getText());
+                    } else {
+                        chat.gameSendMessage(message.getText());
+                    }
                 }
 
                 message.setText("");
@@ -284,22 +297,20 @@ public class MainController {
         } else if (event.getSource().equals(btnMinimize)) {
             if (chatBox.isVisible()) {
                 chatBox.setVisible(false);
-                chatBox.setMaxHeight(0);
-                chatBox.setMaxWidth(0);
-                chatWindow.setAlignment(Pos.BOTTOM_LEFT);
-                chatWindow.setPadding(new Insets(0, 0, 0, 15));
+                chatWindowWidth = chatWindow.getWidth();
+                chatWindowHeight = chatWindow.getHeight();
+                chatWindow.setPrefWidth(0);
+                chatWindow.setPrefHeight(0);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
             } else {
                 chatBox.setVisible(true);
-                chatBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
-                chatBox.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                chatWindow.setAlignment(Pos.CENTER);
-                chatWindow.setPadding(new Insets(0));
+                chatWindow.setPrefWidth(chatWindowWidth);
+                chatWindow.setPrefHeight(chatWindowHeight);
                 btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
             }
         }
 
-        hamburgerMenu.requestFocus();
+        message.requestFocus();
     }
 
     private static HashMap<String, GameMeta> getExistingGames() {
@@ -325,7 +336,7 @@ public class MainController {
 
                 try {
                     Parent parent = fxmlLoader.load();
-                    GameFieldController controller = fxmlLoader.getController();
+                    GameSelectionController controller = fxmlLoader.getController();
                     controller.setUpGameLabel(gameMeta);
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
@@ -387,7 +398,6 @@ public class MainController {
     private void addElement(String player, String message, VBox box, boolean whisper) {
 
         VBox container = new VBox();
-        container.maxWidthProperty().bind(chatPane.widthProperty().multiply(0.98));
 
         if (player != null) {
             Label name = new Label(player + ":");
@@ -427,6 +437,15 @@ public class MainController {
         }
 
         Platform.runLater(() -> box.getChildren().add(container));
+        if (!chatPane.getTabs().get(0).isSelected() && !whisper) {
+            Platform.runLater(() ->
+                chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+        }
+
+        if (!chatBox.isVisible()) {
+            Platform.runLater(() ->
+                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+        }
     }
 
     private void setChatStyle(Label label) {
@@ -442,6 +461,9 @@ public class MainController {
         boolean createTab = true;
         for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
+                if (!t.isSelected()) {
+                    Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
+                }
                 if (mymessage) {
                     getPrivate(userName, message, t);
                     createTab = false;
@@ -464,6 +486,7 @@ public class MainController {
                         } else {
                             getPrivate(from, message, newTab);
                         }
+                        selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
                             .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -479,11 +502,12 @@ public class MainController {
         if (message != null) {
             addElement(from, message, area, true);
         }
-        selectionModel.select(tab);
     }
 
     private boolean checkInput(String input) {
-        if (input.length() < 4) {
+        if (input.length() < 2) {
+            return false;
+        } else if (input.length() < 4) {
             if (input.substring(0, 2).equals("//")) {
                 Window window = btnFullscreen.getScene().getWindow();
                 Image image = new Image(getClass()

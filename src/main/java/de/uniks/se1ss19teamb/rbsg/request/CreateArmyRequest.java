@@ -2,19 +2,19 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.List;
 
 public class CreateArmyRequest extends AbstractRestRequest {
 
     private String userToken;
     private String armyName;
-    private ArrayList<String> unitIDs;
+    private List<Unit> units;
 
-    public CreateArmyRequest(String armyName, ArrayList<String> unitIDs, String userToken) {
+    public CreateArmyRequest(String armyName, List<Unit> units, String userToken) {
         this.userToken = userToken;
-        this.unitIDs = unitIDs;
+        this.units = units;
         this.armyName = armyName;
     }
 
@@ -23,8 +23,8 @@ public class CreateArmyRequest extends AbstractRestRequest {
         JsonObject json = new JsonObject();
         json.addProperty("name", armyName);
         JsonArray unitArray = new JsonArray();
-        for (String id : unitIDs) {
-            unitArray.add(id);
+        for (Unit unit : units) {
+            unitArray.add(unit.getId());
         }
         json.add("units", unitArray);
         return json;
