@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
 
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +12,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -257,6 +260,45 @@ class UiTests extends ApplicationTest {
         push(KeyCode.UP);
         push(KeyCode.RIGHT);
         push(KeyCode.DOWN);
+    }
+
+    @Test
+    void notificationPopupTest() {
+
+        Logger logger = LogManager.getLogger();
+
+        int[] test = new int[1];
+
+        Label eL = (Label) lookup("#popup").queryAs(AnchorPane.class).lookup("Label");
+
+        try {
+            System.out.println(test[2]);
+        } catch (Exception e) {
+            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException", logger, e);
+            sleep(200);
+            Assert.assertEquals(eL.getText(), "Test ERROR NullPointerException");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException Without e Exception", logger);
+            sleep(200);
+            Assert.assertEquals(eL.getText(), "Test ERROR NullPointerException Without e Exception");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendWarning("Test WARNING", logger);
+            sleep(200);
+            Assert.assertEquals(eL.getText(), "Test WARNING");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendInfo("Test INFO", logger);
+            sleep(200);
+            Assert.assertEquals(eL.getText(), "Test INFO");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendSuccess("Test SUCCESS", logger);
+            sleep(200);
+            Assert.assertEquals(eL.getText(), "Test SUCCESS");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+        }
     }
 
 }
