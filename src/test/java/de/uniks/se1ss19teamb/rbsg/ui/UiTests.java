@@ -8,10 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import org.junit.Assert;
@@ -67,7 +64,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnRegistration");
         sleep(2000); // sleep to finisch transition
         clickOn("#username");
-        write("testTeamB").push(KeyCode.ENTER);
+        write("TeamBTestUser").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#password");
         write("qwertz").push(KeyCode.ENTER);
@@ -85,7 +82,7 @@ class UiTests extends ApplicationTest {
     @Test
     void saveArmyTest() {
         clickOn("#userName");
-        write("testTeamB");
+        write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
@@ -117,7 +114,7 @@ class UiTests extends ApplicationTest {
     @Test
     void loginMainTest() {
         clickOn("#userName");
-        write("testTeamB2");
+        write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
@@ -156,15 +153,15 @@ class UiTests extends ApplicationTest {
     @Test
     void testInGame() {
         clickOn("#userName");
-        write("junit");
+        write("TeamBTestUser2");
         clickOn("#password");
-        write("junit");
+        write("qwertz");
         clickOn("#btnLogin");
-        sleep(5000); // sleep to finisch action
+        sleep(2000); // sleep to finish action
         clickOn("#gameName");
         write("junitTestGameB");
         clickOn("#btnCreate");
-        sleep(2000); // sleep to finisch action
+        sleep(2000); // sleep to finish action
         ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
         HBox box = null;
         for (HBox gameField : list.getItems()) {
@@ -175,12 +172,15 @@ class UiTests extends ApplicationTest {
             }
         }
         clickOn(box.getChildren().get(1));
-        sleep(2000); // sleep to finisch action
+        sleep(2000); // sleep to finish action
         clickOn("#btnLoadServer");
-        sleep(1000); // sleep to finisch action
+        for (int i = 0; i < 10; i++) {
+            clickOn("+");
+        }
+        // sleep(1000); // sleep to finish action // not working at hte moment replaced with loop
         HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
         clickOn(btnBox.getChildren().get(2));
-        sleep(7000); // sleep to finisch action
+        sleep(7000); // sleep to finish action
         GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
         StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
         Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
@@ -188,12 +188,16 @@ class UiTests extends ApplicationTest {
         sleep(1000); // sleep to finisch action
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
+        clickOn("#btnMiniMap");
+        clickOn("#btnMiniMap");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
             .drop();
-        clickOn("#btnBack");
-        sleep(3000); // sleep to finisch action
+        //leaves game
+        leaveGameTest();
+
+        sleep(3000); // sleep to finish action
         ListView list2 = lookup("#gameListView").queryAs(ListView.class);
         HBox box2;
         for (int i = 0; i < list2.getItems().size(); i++) {
@@ -202,7 +206,7 @@ class UiTests extends ApplicationTest {
             if (label.getText().equals("junitTestGameB")) {
                 Button button = (Button) box2.lookup("#delete");
                 clickOn(button);
-                sleep(500); // sleep to finisch action
+                sleep(500); // sleep to finish action
             }
         }
         sleep(500); // needed to avoid sception
@@ -210,7 +214,21 @@ class UiTests extends ApplicationTest {
         clickOn("#hamburgerMenu");
         WaitForAsyncUtils.waitForFxEvents();
         clickOn("#btnLogout");
-        sleep(2000); // sleep to finisch transition
+        sleep(2000); // sleep to finish transition
+    }
+
+    private void leaveGameTest() {
+        clickOn("#btnBack");
+        sleep(500); // sleep to finish action
+        AnchorPane ap = lookup("#leaveGame").queryAs(AnchorPane.class);
+        Assert.assertTrue(ap.isVisible());
+        clickOn("#btnNo");
+        sleep(500); // sleep to finish action
+        ap = lookup("#leaveGame").queryAs(AnchorPane.class);
+        Assert.assertFalse(ap.isVisible());
+        clickOn("#btnBack");
+        sleep(500); // sleep to finish action
+        clickOn("#btnYes");
     }
 
 }
