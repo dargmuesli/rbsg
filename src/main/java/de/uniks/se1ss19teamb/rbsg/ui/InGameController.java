@@ -76,6 +76,7 @@ public class InGameController {
     @FXML
     private JFXButton btnNo;
 
+    private final Pane selectionOverlay = new Pane();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private JFXTabPane chatPane;
@@ -180,8 +181,7 @@ public class InGameController {
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
 
-                final Pane selectionOverlay = new Pane();
-                selectionOverlay.getStyleClass().add("selected");
+                selectionOverlay.setId("selected");
 
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventSource = (StackPane) event.getSource();

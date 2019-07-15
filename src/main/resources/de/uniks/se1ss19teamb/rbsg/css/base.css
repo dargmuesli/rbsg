@@ -29,6 +29,6 @@ ScrollPane {
     -fx-text-fill: black;
 }
 
-.selected {
+#selected {
     -fx-background-color: rgba(0, 0, 0, 0.2);
 }
