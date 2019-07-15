@@ -229,6 +229,13 @@ public class GameSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    public void nextPhase() {
+        JsonObject json = new JsonObject();
+        json.addProperty("messageType", "command");
+        json.addProperty("action", "nextPhase");
+        sendToWebsocket(json);
+    }
+
     public void sendMessage(String message) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "chat");

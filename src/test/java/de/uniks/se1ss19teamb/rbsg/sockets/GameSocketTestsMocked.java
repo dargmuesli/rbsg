@@ -90,6 +90,15 @@ public class GameSocketTestsMocked {
     }
 
     @Test
+    public void nextPhaseTest() {
+        gameSocket.nextPhase();
+        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
+        Assert.assertEquals(
+            "{\"messageType\":\"command\",\"action\":\"nextPhase\"}",
+            argumentCaptor.getValue().toString());
+    }
+
+    @Test
     public void sendMessageTest() {
         gameSocket.sendMessage("hello");
         verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
