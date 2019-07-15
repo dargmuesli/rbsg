@@ -110,7 +110,7 @@ public class InGameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
             LoginController.getUserKey(),

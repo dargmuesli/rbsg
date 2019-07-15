@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
@@ -22,6 +23,8 @@ public class TurnUIController {
     private Label labelThree;
     @FXML
     private Label labelFour;
+    @FXML
+    private JFXButton phaseBtn;
 
     public void initialize() {
         underLining(labelOne, linePlayerOne);

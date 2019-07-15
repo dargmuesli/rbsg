@@ -4,7 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 
 public class ChuckNorrisJokeTicker {
-    private String[] jokes = {"Chuck Norris hat bis zur Unendlichkeit gezählt ... 2-mal.", "Chuck Norris kann schwarze"
+    private static String[] jokes = {"Chuck Norris hat bis zur Unendlichkeit gezählt ... 2-mal.", "Chuck Norris kann schwarze"
           + "Filzstifte nach Farbe sortieren.", "Chuck Norris hat alle Farben erfunden. Außer Rosa! Tom Cruise hat Rosa"
           + "erfunden.", "Einige Leute tragen Superman Schlafanzüge. Superman trägt Chuck Norris Schlafanzüge.", "Chuck"
           + "Norris kann ein Feuer entfachen, indem er zwei Eiswürfel aneinander reibt.", "Chuck Norris kann Drehtüren "
@@ -16,10 +16,10 @@ public class ChuckNorrisJokeTicker {
           + "Fallschirm hat sich nicht geöffnet. Er ist den Fallschirm danach umtauschen gegangen.", "Arnold "
           + "Schwarzenegger musste wegen schweren Verletzungen ins Krankenhaus eingeliefert werden. Chuck Norris hatte "
           + "ihn auf Facebook angestupst."};
-    private int random;
+    private static int random;
     private static AnimationTimer animationTimer;
 
-    public void moveLabel(Label label) {
+    public static void moveLabel(Label label) {
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -36,14 +36,14 @@ public class ChuckNorrisJokeTicker {
         animationTimer.start();
     }
 
-    public void setLabelPosition(Label label) {
+    public static void setLabelPosition(Label label) {
         random = (int) (Math.random() * jokes.length);
         label.setText(jokes[random]);
         label.setLayoutX(2200);
         label.setTranslateY(label.getLayoutY() + 75);
     }
 
-    public void stopAnimation() {
+    public static void stopAnimation() {
         animationTimer.stop();
     }
 }

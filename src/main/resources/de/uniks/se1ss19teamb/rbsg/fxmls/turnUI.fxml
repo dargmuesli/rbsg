@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Line?>
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUIController">
@@ -24,5 +25,6 @@
             <Label fx:id="labelFour" text="Team4"></Label>
             <Line fx:id="linePlayerFour"></Line>
         </VBox>
+        <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#setOnAction"></JFXButton>
     </HBox>
 </AnchorPane>
