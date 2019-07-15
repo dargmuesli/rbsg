@@ -105,8 +105,8 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUIController controller = loader.getController();
-                turnUI.getChildren().add(parent);
+            TurnUiController controller = loader.getController();
+            turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
         }

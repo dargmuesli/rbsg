@@ -4,7 +4,9 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 
 public class ChuckNorrisJokeTicker {
-    private static String[] jokes = {"Chuck Norris hat bis zur Unendlichkeit gezählt ... 2-mal.", "Chuck Norris kann schwarze"
+
+    private static String[] jokes = {
+        "Chuck Norris hat bis zur Unendlichkeit gezählt ... 2-mal.", "Chuck Norris kann schwarze "
           + "Filzstifte nach Farbe sortieren.", "Chuck Norris hat alle Farben erfunden. Außer Rosa! Tom Cruise hat Rosa"
           + "erfunden.", "Einige Leute tragen Superman Schlafanzüge. Superman trägt Chuck Norris Schlafanzüge.", "Chuck"
           + "Norris kann ein Feuer entfachen, indem er zwei Eiswürfel aneinander reibt.", "Chuck Norris kann Drehtüren "
