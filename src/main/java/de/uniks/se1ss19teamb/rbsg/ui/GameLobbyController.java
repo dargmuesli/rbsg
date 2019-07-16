@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
+import de.uniks.se1ss19teamb.rbsg.request.QueryUnitsRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
@@ -79,6 +80,8 @@ public class GameLobbyController {
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
+    private Army currentArmy;
+
 
 
     public void initialize() {
@@ -90,29 +93,48 @@ public class GameLobbyController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
 
+        QueryUnitsRequest queryUnitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
+        queryUnitsRequest.sendRequest();
+
+        for (Unit unit : queryUnitsRequest.getUnits()) {
+            ArmyManagerController.availableUnits.put(unit.getId(),unit);
+        }
+
+        showArmyConfig();
 
     }
 
 
     private void showArmyConfig() {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitConfig.fxml"));
-        try {
-            Parent parent = fxmlLoader.load();
-            UnitConfigController configController = fxmlLoader.getController();
-            configControllers.add(configController);
-            armyList.getItems().add(parent);
-            armyList.setOrientation(Orientation.HORIZONTAL);
-        } catch (IOException e) {
-            e.printStackTrace();
+        ArmyManagerController.availableUnits.forEach((s,unit)->{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitConfig.fxml"));
+            try {
+                Parent parent = fxmlLoader.load();
+                UnitConfigController configController = fxmlLoader.getController();
+                configController.loadConfig(unit);
+                configControllers.add(configController);
+                armyList.getItems().add(parent);
+                armyList.setOrientation(Orientation.HORIZONTAL);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        for (int i = 1; i <= 3; i++) {
+            currentArmy = loadArmyConfig(i);
+            for (int j = 0; j < configControllers.size(); j++) {
+                configControllers.get(j).loadNumberOfUnit(currentArmy,i);
+            }
         }
+
     }
 
 
 
-    private Army loadArmyConfig() {
-        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString())), Army.class);
+    private Army loadArmyConfig(int number) {
+        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(),number)), Army.class);
     }
 
 

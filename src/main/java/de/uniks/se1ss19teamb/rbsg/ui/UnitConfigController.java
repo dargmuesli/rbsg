@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
@@ -26,20 +27,41 @@ public class UnitConfigController {
     @FXML
     private Label labelUnitSave3;
 
-    private GameLobbyController gameLobbyController;
-
+    private Unit unit;
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{unitConfig}));
 
     }
 
-    void loadConfig(Unit unit, GameLobbyController gameLobbyController) {
-        this.gameLobbyController = gameLobbyController;
+    void loadConfig(Unit unit) {
+        this.unit = unit;
         imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
     }
 
+    void loadNumberOfUnit(Army currentArmy, int numberArmy) {
+        int counter = 0;
+        for (int i = 0; i < currentArmy.getUnits().size(); i++) {
+            if (unit.getType().equals(currentArmy.getUnits().get(i).getType())) {
+                counter++;
+            }
+        }
 
+        switch (numberArmy) {
+            case 1:
+                labelUnitSave1.setText(String.valueOf(counter));
+                break;
+            case 2:
+                labelUnitSave2.setText(String.valueOf(counter));
+                break;
+            case 3:
+                labelUnitSave3.setText(String.valueOf(counter));
+                break;
+            default:
+                break;
+        }
+
+    }
 
 }
 
