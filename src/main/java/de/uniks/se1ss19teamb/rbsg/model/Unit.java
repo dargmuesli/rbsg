@@ -12,6 +12,22 @@ public class Unit {
     private int hp;
     private ArrayList<String> canAttack;
 
+    public Unit() {
+
+    }
+
+    public Unit(String id) {
+        this.id = id;
+    }
+
+    public Unit(String id, String type, int mp, int hp, ArrayList<String> canAttack) {
+        this.id = id;
+        this.type = type;
+        this.mp = mp;
+        this.hp = hp;
+        this.canAttack = canAttack;
+    }
+
     public String getId() {
         return id;
     }
@@ -55,8 +71,8 @@ public class Unit {
     @Override
     public String toString() {
         return "Unit{"
-            + "id='" + id + '\''
-            + ", type='" + type + '\''
+            + "id='" + id + "'"
+            + ", type='" + type + "'"
             + ", mp=" + mp
             + ", hp=" + hp
             + ", canAttack=" + canAttack

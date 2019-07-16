@@ -3,28 +3,29 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateArmyRequest extends AbstractRestRequest {
 
     private String userToken;
     private String armyId;
     private String armyName;
-    private ArrayList<String> unitIDs;
+    private List<Unit> units;
 
-    public UpdateArmyRequest(String armyId, String armyName, ArrayList<String> unitIDs, String userToken) {
+    public UpdateArmyRequest(String armyId, String armyName, List<Unit> units, String userToken) {
         this.userToken = userToken;
         this.armyId = armyId;
         this.armyName = armyName;
-        this.unitIDs = unitIDs;
+        this.units = units;
     }
 
     public UpdateArmyRequest(Army army, String userToken) {
         this.userToken = userToken;
         armyId = army.getId();
         armyName = army.getName();
-        unitIDs = army.getUnits();
+        units = army.getUnits();
     }
 
     @Override
@@ -32,10 +33,13 @@ public class UpdateArmyRequest extends AbstractRestRequest {
         JsonObject json = new JsonObject();
         json.addProperty("name", armyName);
         JsonArray unitIdArray = new JsonArray();
-        for (String unit : unitIDs) {
-            unitIdArray.add(unit);
+
+        for (Unit unit : units) {
+            unitIdArray.add(unit.getId());
         }
+
         json.add("units", unitIdArray);
+
         return json;
     }
 

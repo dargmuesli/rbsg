@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import de.uniks.se1ss19teamb.rbsg.features.ChuckNorrisJokeTicker;
 import de.uniks.se1ss19teamb.rbsg.features.ZuendorfMeme;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
@@ -35,21 +36,6 @@ public class LoginController {
     private static String user;
     private static String userKey;
     private static UserData userData;
-    private String[] jokes = {"Chuck Norris hat bis zur Unendlichkeit gezählt ... 2-mal.", "Chuck Norris kann schwarze"
-          + "Filzstifte nach Farbe sortieren.", "Chuck Norris hat alle Farben erfunden. Außer Rosa! Tom Cruise hat Rosa"
-          + "erfunden.", "Einige Leute tragen Superman Schlafanzüge. Superman trägt Chuck Norris Schlafanzüge.", "Chuck"
-          + "Norris kann ein Feuer entfachen, indem er zwei Eiswürfel aneinander reibt.", "Chuck Norris kann Drehtüren "
-          + "zuschlagen!", "Manche Menschen können viele Liegestützen — Chuck Norris kann alle.", "Chuck Norris wurde "
-          + "gestern geblitzt — beim Einparken", "Chuck Norris verzichtet auf seine Rechte — seine Linke ist sowieso "
-          + "schneller ...", "Chuck Norris kennt die letzte Ziffer von Pi.", "Chuck Norris trinkt seinen Kaffee am "
-          + "liebsten schwarz. Ohne Wasser.", "Chuck Norris wurde letztens von der Polizei angehalten ... — Die "
-          + "Polizisten sind mit einer Verwarnung davon gekommen.", "Chuck Norris ist Fallschirmspringen gegangen. Sein"
-          + "Fallschirm hat sich nicht geöffnet. Er ist den Fallschirm danach umtauschen gegangen.", "Arnold "
-          + "Schwarzenegger musste wegen schweren Verletzungen ins Krankenhaus eingeliefert werden. Chuck Norris hatte "
-          + "ihn auf Facebook angestupst."};
-    private int random;
-    private static AnimationTimer animationTimer;
-
 
     @FXML
     private AnchorPane loginScreen;
@@ -89,27 +75,14 @@ public class LoginController {
     }
 
     public void initialize() {
-        random = (int) (Math.random() * jokes.length);
-        jokeLabel.setText(jokes[random]);
-        jokeLabel.setLayoutX(2200);
-        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
+
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
-
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-        animationTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
 
-                if (jokeLabel.getLayoutX() != -1000) {
-                    jokeLabel.setLayoutX(jokeLabel.getLayoutX() - 2);
-                } else if (jokeLabel.getLayoutX() == -1000) {
-                    random = (int) (Math.random() * jokes.length);
-                    jokeLabel.setText(jokes[random]);
-                    jokeLabel.setLayoutX(2200);
-                }
-            }
-        };
-        animationTimer.start();
+        new ChuckNorrisJokeTicker().setLabelPosition(jokeLabel);
+        new ChuckNorrisJokeTicker().moveLabel(jokeLabel);
+      
+        UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
@@ -135,22 +108,6 @@ public class LoginController {
         UserData.deleteUserData(NotificationHandler.getInstance());
 
         loginScreen.setOpacity(0);
-        UserInterfaceUtils.makeFadeInTransition(loginScreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            errorContainer.getChildren().add(parent);
-            errorContainer.toFront();
-
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-
-        } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Laden der FXML-Datei für den Login!", logger, e);
-        }
 
         // 1% meme chance
         if (new Random().nextFloat() < 0.01) {
@@ -167,7 +124,7 @@ public class LoginController {
             login();
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
-            animationTimer.stop();
+            new ChuckNorrisJokeTicker().stopAnimation();
         }
     }
 
@@ -186,7 +143,7 @@ public class LoginController {
         login.sendRequest();
 
         if (!login.getSuccessful()) {
-            NotificationHandler.getInstance().sendWarning("Login fehlgeschlagen!", logger);
+            NotificationHandler.getInstance().sendError("Login fehlgeschlagen!", logger);
             return;
         }
 
@@ -198,7 +155,7 @@ public class LoginController {
 
         setUserKey(login.getUserKey());
         setUser(userName.getText());
-        animationTimer.stop();
+        new ChuckNorrisJokeTicker().stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
     }
