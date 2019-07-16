@@ -19,7 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,12 +79,14 @@ public class GameLobbyController {
     private Infantry infantry = new Infantry();
     private Jeep jeep = new Jeep();
     private LightTank lightTank = new LightTank();
-    private ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper,chopper,
-        heavyTank,infantry,jeep,lightTank));
+    private ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
+        heavyTank, infantry, jeep, lightTank));
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
     private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
-    private Army army;
+    Army army = loadArmyConfig();
+    private ArrayList<Army> armies = new ArrayList<>();
     private ArmyManagerController armyManagerController = new ArmyManagerController();
+    ArrayList<Integer> counts = new ArrayList<>();
 
 
     public void initialize() {
@@ -99,21 +100,23 @@ public class GameLobbyController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
 
         showArmyConfig();
+        for (Unit unit : units) {
+            configControllers.get(0).showNumber(unit);
+            configControllers.get(1).showNumber(unit);
+        }
+
 
     }
 
 
-    private void showArmyConfig(){
-        for (Unit unit : units){
+    private void showArmyConfig() {
+        for (Unit unit : units) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitConfig.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 UnitConfigController configController = fxmlLoader.getController();
-                configController.loadConfig(unit,this);
-                if (unit.equals(bazookaTrooper)) {
-                    configController.showNumber(myArmy());
-                }
+                configController.loadConfig(unit, this);
                 configControllers.add(configController);
                 armyList.getItems().add(parent);
                 armyList.setOrientation(Orientation.HORIZONTAL);
@@ -123,27 +126,64 @@ public class GameLobbyController {
         }
     }
 
+/*
+    ArrayList<Integer> numberOfUnits(Army army) {
+        int count1 = 0;
+        int count2 = 0;
+        int count3 = 0;
+        int count4 = 0;
+        int count5 = 0;
+        int count6 = 0;
 
-    int myArmy() {
-        army = loadArmyConfig();
-        int count = 0;
         for (int i = 0; i < army.getUnits().size(); i++) {
-            if (bazookaTrooper.getId().equals(army.getUnits().get(i))) {
-                count++;
-            }
-        }
-        return count;
 
+            if (bazookaTrooper.getId().equals(army.getUnits().get(i))) {
+                count1++;
+            }
+
+
+            if (chopper.getId().equals(army.getUnits().get(i))) {
+                count2++;
+            }
+
+            if (heavyTank.getId().equals(army.getUnits().get(i))) {
+                count3++;
+
+            }
+
+            if (infantry.getId().equals(army.getUnits().get(i))) {
+                count4++;
+
+            }
+
+            if (jeep.getId().equals(army.getUnits().get(i))) {
+                count5++;
+
+            }
+
+            if (lightTank.getId().equals(army.getUnits().get(i))) {
+                count6++;
+
+            }
+
+
+        }
+
+        counts.add(count1);
+        counts.add(count2);
+        counts.add(count3);
+        counts.add(count4);
+        counts.add(count5);
+        counts.add(count6);
+
+        return counts;
     }
+
+ */
 
 
     private Army loadArmyConfig() {
-        Army testArmy = null;
-        for (int i = 1; i <= 3; i++) {
-            testArmy = SerializeUtils.deserialize(new File(String.format(armysavePath, i)), Army.class);
-
-        }
-        return testArmy;
+        return SerializeUtils.deserialize(new File(String.format(armysavePath, 1)), Army.class);
     }
 
 
