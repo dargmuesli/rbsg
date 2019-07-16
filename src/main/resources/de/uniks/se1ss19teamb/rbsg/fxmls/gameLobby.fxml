@@ -120,7 +120,7 @@
                                              <Insets bottom="5.0" />
                                           </VBox.margin>
                                        </Label>
-                                       <Label text="Army 1" VBox.vgrow="ALWAYS">
+                                       <Label fx:id="army1" text="Army 1" VBox.vgrow="ALWAYS">
                                           <VBox.margin>
                                              <Insets bottom="15.0" />
                                           </VBox.margin>
@@ -128,7 +128,7 @@
                                              <Font size="15.0" />
                                           </font>
                                        </Label>
-                                       <Label text="Army 2" VBox.vgrow="ALWAYS">
+                                       <Label fx:id="army2" text="Army 2" VBox.vgrow="ALWAYS">
                                           <font>
                                              <Font size="15.0" />
                                           </font>
@@ -136,7 +136,7 @@
                                              <Insets bottom="15.0" />
                                           </VBox.margin>
                                        </Label>
-                                       <Label text="Army 3" VBox.vgrow="ALWAYS">
+                                       <Label fx:id="army3" text="Army 3" VBox.vgrow="ALWAYS">
                                           <font>
                                              <Font size="15.0" />
                                           </font>

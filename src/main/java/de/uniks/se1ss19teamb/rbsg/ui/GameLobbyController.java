@@ -54,6 +54,15 @@ public class GameLobbyController {
     private JFXHamburger hamburgerMenu;
 
     @FXML
+    private Label army1;
+
+    @FXML
+    private Label army2;
+
+    @FXML
+    private Label army3;
+
+    @FXML
     private Label gameName;
 
     @FXML
@@ -81,8 +90,11 @@ public class GameLobbyController {
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
     private Army currentArmy;
+    private Army armyBuffer1 = new Army(null,null,new ArrayList<>());
+    private Army armyBuffer2 = new Army(null,null,new ArrayList<>());
+    private Army armyBuffer3 = new Army(null,null,new ArrayList<>());
 
-
+    
 
     public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(gameLobby);
@@ -100,6 +112,7 @@ public class GameLobbyController {
             ArmyManagerController.availableUnits.put(unit.getId(),unit);
         }
 
+        setArmyName();
         showArmyConfig();
 
     }
@@ -131,7 +144,15 @@ public class GameLobbyController {
 
     }
 
+    private void setArmyName() {
+        armyBuffer1 = loadArmyConfig(1);
+        armyBuffer2 = loadArmyConfig(2);
+        armyBuffer3 = loadArmyConfig(3);
 
+        army1.setText(armyBuffer1.getName());
+        army2.setText(armyBuffer2.getName());
+        army3.setText(armyBuffer3.getName());
+    }
 
     private Army loadArmyConfig(int number) {
         return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(),number)), Army.class);
