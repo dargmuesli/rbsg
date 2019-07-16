@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox fx:id="unitConfig" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets>
-      <URL value="@../css/darkDesign.css" />
-      <URL value="@../css/base.css" />
-   </stylesheets>
+<VBox fx:id="unitConfig" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.UnitConfigController">
    <children>
       <Pane fx:id="imageUnitType" />
       <Label fx:id="labelUnitSave1" text="#" />
       <Label fx:id="labelUnitSave2" text="#" />
       <Label fx:id="labelUnitSave3" text="#" />
    </children>
+   <stylesheets>
+      <URL value="@../css/base.css" />
+      <URL value="@../css/darkDesign.css" />
+   </stylesheets>
 </VBox>

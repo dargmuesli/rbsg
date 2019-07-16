@@ -392,5 +392,6 @@ public class ArmyManagerController {
         NotificationHandler.getInstance()
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
+
 }
 

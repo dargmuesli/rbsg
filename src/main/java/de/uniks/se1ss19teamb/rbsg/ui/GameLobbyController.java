@@ -13,6 +13,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -79,10 +80,13 @@ public class GameLobbyController {
     private Infantry infantry = new Infantry();
     private Jeep jeep = new Jeep();
     private LightTank lightTank = new LightTank();
-    private ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper, chopper,
-        heavyTank, infantry, jeep, lightTank));
+    private ArrayList<Unit> units = new ArrayList<>(Arrays.asList(bazookaTrooper,chopper,
+        heavyTank,infantry,jeep,lightTank));
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
     private String armysavePath = "./src/main/resources/de/uniks/se1ss19teamb/rbsg/armySaves/armySave%d.json";
+    private Army army;
+    private ArmyManagerController armyManagerController = new ArmyManagerController();
+
 
     public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(gameLobby);
@@ -93,35 +97,53 @@ public class GameLobbyController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
-        showArmyConfig();
 
+        showArmyConfig();
 
     }
 
 
     private void showArmyConfig(){
-        for (Unit unit: units){
+        for (Unit unit : units){
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitConfig.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 UnitConfigController configController = fxmlLoader.getController();
-                configController.showUnitConfig(loadArmyConfig());
-                configController.showUnitImage(unit,this);
+                configController.loadConfig(unit,this);
+                if (unit.equals(bazookaTrooper)) {
+                    configController.showNumber(myArmy());
+                }
                 configControllers.add(configController);
                 armyList.getItems().add(parent);
+                armyList.setOrientation(Orientation.HORIZONTAL);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private Army loadArmyConfig() {
-        Army army = null;
-        for (int i = 1; i <= 3; i++) {
-            army = SerializeUtils.deserialize(new File(String.format(armysavePath, i)), Army.class);
+
+    int myArmy() {
+        army = loadArmyConfig();
+        int count = 0;
+        for (int i = 0; i < army.getUnits().size(); i++) {
+            if (bazookaTrooper.getId().equals(army.getUnits().get(i))) {
+                count++;
+            }
         }
-        return army;
+        return count;
+
+    }
+
+
+    private Army loadArmyConfig() {
+        Army testArmy = null;
+        for (int i = 1; i <= 3; i++) {
+            testArmy = SerializeUtils.deserialize(new File(String.format(armysavePath, i)), Army.class);
+
+        }
+        return testArmy;
     }
 
 
