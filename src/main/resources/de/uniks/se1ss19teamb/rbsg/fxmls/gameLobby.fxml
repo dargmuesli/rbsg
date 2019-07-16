@@ -20,7 +20,7 @@
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <HBox alignment="TOP_RIGHT" spacing="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                   <children>
-                     <JFXButton fx:id="btnBack" onAction="#setOnAction" visible="false">
+                     <JFXButton fx:id="btnBack" onAction="#eventHandler" visible="false">
                         <graphic>
                            <FontAwesomeIconView glyphName="REPLY" size="15" />
                         </graphic>
