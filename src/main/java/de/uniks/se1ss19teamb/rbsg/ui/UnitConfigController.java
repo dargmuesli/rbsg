@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import javafx.fxml.FXML;
+import javafx.geometry.Dimension2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -36,7 +37,8 @@ public class UnitConfigController {
 
     void loadConfig(Unit unit) {
         this.unit = unit;
-        imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
+        Pane textureInstance = TextureManager.getTextureInstance(unit.getType());
+        imageUnitType.getChildren().add(textureInstance);
     }
 
     void loadNumberOfUnit(Army currentArmy, int numberArmy) {
