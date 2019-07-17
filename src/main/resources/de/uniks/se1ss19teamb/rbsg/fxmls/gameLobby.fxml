@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
+<AnchorPane fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
    <children>
       <AnchorPane fx:id="gameLobby" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -96,12 +96,12 @@
                                     <children>
                                        <JFXButton fx:id="select1" onAction="#setOnAction" text="Select" VBox.vgrow="ALWAYS">
                                           <VBox.margin>
-                                             <Insets right="5.0" top="25.0" />
+                                             <Insets right="5.0" top="65.0" />
                                           </VBox.margin>
                                        </JFXButton>
                                        <JFXButton fx:id="select2" onAction="#setOnAction" text="Select" VBox.vgrow="ALWAYS">
                                           <VBox.margin>
-                                             <Insets bottom="5.0" top="5.0" />
+                                             <Insets top="5.0" />
                                           </VBox.margin>
                                        </JFXButton>
                                        <JFXButton fx:id="select3" onAction="#setOnAction" text="Select" VBox.vgrow="ALWAYS">
@@ -113,43 +113,43 @@
                                  </VBox>
                                  <VBox>
                                     <children>
-                                       <Label text="Name" VBox.vgrow="ALWAYS">
+                                       <Label text="Name">
                                           <font>
                                              <Font size="15.0" />
                                           </font>
                                           <VBox.margin>
-                                             <Insets bottom="5.0" />
+                                             <Insets bottom="5.0" left="5.0" right="5.0" top="25.0" />
                                           </VBox.margin>
                                        </Label>
-                                       <Label fx:id="army1" text="Army 1" VBox.vgrow="ALWAYS">
+                                       <Label fx:id="army1" text="Army 1">
                                           <VBox.margin>
-                                             <Insets bottom="15.0" />
+                                             <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
                                           </VBox.margin>
                                           <font>
                                              <Font size="15.0" />
                                           </font>
                                        </Label>
-                                       <Label fx:id="army2" text="Army 2" VBox.vgrow="ALWAYS">
+                                       <Label fx:id="army2" text="Army 2">
                                           <font>
                                              <Font size="15.0" />
                                           </font>
                                           <VBox.margin>
-                                             <Insets bottom="15.0" />
+                                             <Insets bottom="10.0" left="5.0" right="5.0" />
                                           </VBox.margin>
                                        </Label>
-                                       <Label fx:id="army3" text="Army 3" VBox.vgrow="ALWAYS">
+                                       <Label fx:id="army3" text="Army 3">
                                           <font>
                                              <Font size="15.0" />
                                           </font>
                                           <VBox.margin>
-                                             <Insets />
+                                             <Insets left="5.0" right="5.0" />
                                           </VBox.margin>
                                        </Label>
                                     </children>
                                  </VBox>
-                                 <VBox>
+                                 <VBox HBox.hgrow="ALWAYS">
                                     <children>
-                                       <ListView fx:id="armyList" />
+                                       <ListView fx:id="armyList" VBox.vgrow="ALWAYS" />
                                     </children>
                                  </VBox>
                               </children>

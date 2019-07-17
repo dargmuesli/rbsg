@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<VBox fx:id="unitConfig" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.UnitConfigController">
+<VBox fx:id="unitConfig" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.UnitConfigController">
    <children>
       <Pane fx:id="imageUnitType" />
-      <Label fx:id="labelUnitSave1" text="#" />
-      <Label fx:id="labelUnitSave2" text="#" />
-      <Label fx:id="labelUnitSave3" text="#" />
+      <Label fx:id="labelUnitSave1" alignment="CENTER" contentDisplay="CENTER" text="#" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></Label>
+      <Label fx:id="labelUnitSave2" alignment="CENTER" contentDisplay="CENTER" text="#" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="7.0" />
+         </VBox.margin></Label>
+      <Label fx:id="labelUnitSave3" alignment="CENTER" contentDisplay="CENTER" text="#" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin></Label>
    </children>
    <stylesheets>
       <URL value="@../css/base.css" />
