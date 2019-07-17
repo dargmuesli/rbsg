@@ -51,9 +51,12 @@ public class GameSelectionController {
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
         // damit gehts:
+        /*
         btnMinimize.setDisable(false);
         btnMinimize.fire();
         btnMinimize.setDisable(true);
+
+         */
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);

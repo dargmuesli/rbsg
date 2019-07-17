@@ -77,6 +77,7 @@
                                  </VBox>
                               </children>
                            </HBox>
+                           <VBox fx:id="chatBox1" VBox.vgrow="ALWAYS" />
                         </children>
                         <HBox.margin>
                            <Insets bottom="5.0" />
