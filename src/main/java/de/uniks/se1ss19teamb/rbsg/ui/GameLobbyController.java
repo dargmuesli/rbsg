@@ -260,6 +260,9 @@ public class GameLobbyController {
                 GameSocket.instance.readyToPlay();
                 System.out.println("Hatt funktioniert");
                 btnMyReady.setDisable(true);
+                select1.setDisable(true);
+                select2.setDisable(true);
+                select3.setDisable(true);
             });
 
         } else if (event.getSource().equals(btnMyReady)) {

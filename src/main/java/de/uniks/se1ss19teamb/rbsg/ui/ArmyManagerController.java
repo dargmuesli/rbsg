@@ -269,5 +269,9 @@ public class ArmyManagerController {
             .sendSuccess("Configuration saved to slot " + configNum + ".", logger);
     }
 
+    public void saveToServer() {
+        ArmyUtil.saveToServer(currentArmy);
+    }
+
 }
 
