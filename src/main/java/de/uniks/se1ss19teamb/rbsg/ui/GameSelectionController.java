@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -64,4 +65,8 @@ public class GameSelectionController {
         deleteGameRequest.sendRequest();
     }
 
+    public void spectate() {
+        ArmyManagerController.spectator = true;
+        joinGame();
+    }
 }
