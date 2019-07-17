@@ -39,7 +39,7 @@ import org.apache.logging.log4j.Logger;
 public class InGameController {
 
     @FXML
-    public static AnchorPane inGameScreen;
+    public  AnchorPane inGameScreen;
     @FXML
     private AnchorPane errorContainer;
     @FXML

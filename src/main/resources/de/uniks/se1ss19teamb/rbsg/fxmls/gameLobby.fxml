@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
+<AnchorPane fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
    <children>
       <AnchorPane fx:id="gameLobby" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -170,6 +170,7 @@
             </VBox>
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="errorContainer" />
    </children>
    <stylesheets>
       <URL value="@../css/darkDesign.css" />

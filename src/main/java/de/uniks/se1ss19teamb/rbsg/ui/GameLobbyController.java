@@ -95,6 +95,9 @@ public class GameLobbyController {
     private JFXButton btnStart;
 
     @FXML
+    private AnchorPane errorContainer;
+
+    @FXML
     private VBox chatBox1;
 
     private static final Path ARMY_SAVE_PATH =
@@ -112,8 +115,8 @@ public class GameLobbyController {
     private JFXButton btnMinimize;
 
     public void initialize() {
-        UserInterfaceUtils.makeFadeInTransition(gameLobby);
-        UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
+        UserInterfaceUtils.initialize(
+            gameLobby, gameLobby1, GameLobbyController.class, btnFullscreen, errorContainer);
 
         Theming.setTheme(Arrays.asList(new Pane[]{gameLobby, gameLobby1}));
         Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
