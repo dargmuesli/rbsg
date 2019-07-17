@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.util.ArmyUtil;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
@@ -158,7 +159,7 @@ public class ArmyManagerController {
                 NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
                 return;
             }
-            saveToServer();
+            ArmyUtil.saveToServer(currentArmy);
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
@@ -218,41 +219,7 @@ public class ArmyManagerController {
         labelArmyName.setText(currentArmy.getName());
     }
 
-    public void saveToServer() {
-        String currentArmyName = currentArmy.getName();
-        String currentArmyId = currentArmy.getId();
-        List<Unit> currentArmyUnits = currentArmy.getUnits();
-
-        if (currentArmyName == null) {
-            NotificationHandler.getInstance().sendError("You have to give the army a name!",
-                logger);
-            return;
-        }
-
-        if (currentArmyUnits.size() < 10) {
-            NotificationHandler.getInstance().sendError("You need at least ten units!", logger);
-            return;
-        }
-
-        if (currentArmyId == null) {
-            CreateArmyRequest req = new CreateArmyRequest(currentArmyName, currentArmyUnits,
-                LoginController.getUserKey());
-            req.sendRequest();
-
-            if (req.getSuccessful()) {
-                NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
-                currentArmy.setId(req.getArmyID());
-            }
-        } else {
-            UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
-                LoginController.getUserKey());
-            req.sendRequest();
-
-            if (req.getSuccessful()) {
-                NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
-            }
-        }
-    }
+    
 
     public void setArmyName() {
         if (txtfldArmyName.getText().equals("")) {

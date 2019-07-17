@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.util.ArmyUtil;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
@@ -234,27 +235,21 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(select1)) {
-            CreateArmyRequest req = new CreateArmyRequest(armyBuffer1.getName(), armyBuffer1.getUnits(),
-                LoginController.getUserKey());
-            req.sendRequest();
+            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
             select1.setDisable(true);
             select2.setDisable(false);
             select3.setDisable(false);
             isSelected = true;
 
         } else if (event.getSource().equals(select2)) {
-            CreateArmyRequest req = new CreateArmyRequest(armyBuffer2.getName(), armyBuffer2.getUnits(),
-                LoginController.getUserKey());
-            req.sendRequest();
+            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
             select2.setDisable(true);
             select1.setDisable(false);
             select3.setDisable(false);
             isSelected = true;
 
         } else if (event.getSource().equals(select3)) {
-            CreateArmyRequest req = new CreateArmyRequest(armyBuffer3.getName(), armyBuffer3.getUnits(),
-                LoginController.getUserKey());
-            req.sendRequest();
+            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
             select3.setDisable(true);
             select1.setDisable(false);
             select2.setDisable(false);
