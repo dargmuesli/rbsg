@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
 
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +12,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,10 +26,8 @@ import org.testfx.util.WaitForAsyncUtils;
 
 class UiTests extends ApplicationTest {
 
-    private Main main;
-
     @BeforeAll
-    public static void setupHeadlessMode() {
+    static void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
@@ -35,7 +36,7 @@ class UiTests extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        main = new Main();
+        Main main = new Main();
         main.start(stage);
         stage.setOnCloseRequest(e -> {
             Platform.exit();
@@ -86,7 +87,7 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000); // sleep to finisch transition
+        sleep(3000); // sleep to finisch transition
         clickOn("#btnArmyManager");
         sleep(2000); // sleep to finisch transition
         clickOn("#txtfldArmyName");
@@ -171,12 +172,15 @@ class UiTests extends ApplicationTest {
                 break;
             }
         }
+        assert box != null;
         clickOn(box.getChildren().get(1));
         sleep(2000); // sleep to finish action
         clickOn("#btnLoadServer");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             clickOn("+");
         }
+        clickOn("-");
+        clickOn("+");
         // sleep(1000); // sleep to finish action // not working at hte moment replaced with loop
         HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
         clickOn(btnBox.getChildren().get(2));
@@ -190,6 +194,10 @@ class UiTests extends ApplicationTest {
         clickOn("#btnFullscreen");
         clickOn("#btnMiniMap");
         clickOn("#btnMiniMap");
+        clickOn("#btnMinimize");
+        clickOn("#message").write("Hello").clickOn("#btnSend");
+        clickOn("#message").write("/w TeamBTestUser2 asd").clickOn("#btnSend");
+        clickOn("#btnMinimize");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
@@ -229,6 +237,67 @@ class UiTests extends ApplicationTest {
         clickOn("#btnBack");
         sleep(500); // sleep to finish action
         clickOn("#btnYes");
+    }
+
+    @Test
+    void ticTacToeTest() {
+        push(KeyCode.SHIFT).push(KeyCode.F1);
+        sleep(500); // given some time to open window
+        String[] buttons = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        for (String s : buttons) {
+            clickOn(String.format("#%s", s));
+        }
+        clickOn("#btnReplay");
+        for (int i = buttons.length - 1; i >= 0; i--) {
+            clickOn(String.format("#%s", buttons[i]));
+        }
+    }
+
+    @Test
+    void snakeTest() {
+        press(KeyCode.SHIFT).press(KeyCode.F2);
+        sleep(500); // given some time to open window
+        push(KeyCode.LEFT);
+        push(KeyCode.UP);
+        push(KeyCode.RIGHT);
+        push(KeyCode.DOWN);
+    }
+
+    @Test
+    void notificationPopupTest() {
+
+        Logger logger = LogManager.getLogger();
+
+        Label el = (Label) lookup("#popup").queryAs(AnchorPane.class).lookup("Label");
+
+        try {
+            throw new Exception("Test Exception");
+        } catch (Exception e) {
+            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException", logger, e);
+            sleep(200);
+            Assert.assertEquals(el.getText(), "Test ERROR NullPointerException");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException Without e Exception", logger);
+            sleep(200);
+            Assert.assertEquals(el.getText(), "Test ERROR NullPointerException Without e Exception");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendWarning("Test WARNING", logger);
+            sleep(200);
+            Assert.assertEquals(el.getText(), "Test WARNING");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendInfo("Test INFO", logger);
+            sleep(200);
+            Assert.assertEquals(el.getText(), "Test INFO");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+
+            NotificationHandler.getInstance().sendSuccess("Test SUCCESS", logger);
+            sleep(200);
+            Assert.assertEquals(el.getText(), "Test SUCCESS");
+            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+        }
     }
 
 }
