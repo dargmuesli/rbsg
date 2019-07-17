@@ -48,7 +48,7 @@
                   </Label>
                   <Label fx:id="gameName" alignment="CENTER" text="GAME_NAME" textAlignment="CENTER">
                      <font>
-                        <Font size="15.0" />
+                        <Font name="System Bold Italic" size="15.0" />
                      </font>
                      <VBox.margin>
                         <Insets bottom="10.0" top="5.0" />

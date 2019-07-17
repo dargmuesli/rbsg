@@ -58,6 +58,9 @@ public class GameSelectionController {
 
          */
 
+        chatWindow.setPrefHeight(300);
+        chatWindow.setPrefWidth(400);
+
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
     }

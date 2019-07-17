@@ -89,12 +89,11 @@ public class InGameController {
 
 
         fillGameGrid();
-        /*
+
         miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
 
-         */
     }
 
     public void setOnAction(ActionEvent event) {

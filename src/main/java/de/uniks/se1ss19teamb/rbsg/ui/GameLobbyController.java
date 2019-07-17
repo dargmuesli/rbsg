@@ -113,6 +113,7 @@ public class GameLobbyController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
+    private boolean isSelected = false;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
@@ -122,6 +123,9 @@ public class GameLobbyController {
         Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
         Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+
+        gameName.setText(GameSelectionController.joinedGame.getName());
+
 
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
@@ -226,6 +230,7 @@ public class GameLobbyController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
             }
+
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(select1)) {
@@ -235,6 +240,8 @@ public class GameLobbyController {
             select1.setDisable(true);
             select2.setDisable(false);
             select3.setDisable(false);
+            isSelected = true;
+
         } else if (event.getSource().equals(select2)) {
             CreateArmyRequest req = new CreateArmyRequest(armyBuffer2.getName(), armyBuffer2.getUnits(),
                 LoginController.getUserKey());
@@ -242,6 +249,7 @@ public class GameLobbyController {
             select2.setDisable(true);
             select1.setDisable(false);
             select3.setDisable(false);
+            isSelected = true;
 
         } else if (event.getSource().equals(select3)) {
             CreateArmyRequest req = new CreateArmyRequest(armyBuffer3.getName(), armyBuffer3.getUnits(),
@@ -250,14 +258,17 @@ public class GameLobbyController {
             select3.setDisable(true);
             select1.setDisable(false);
             select2.setDisable(false);
+            isSelected = true;
 
-        } else if (event.getSource().equals(btnMyReady)) {
+        } else if (event.getSource().equals(btnMyReady) && isSelected) {
             Platform.runLater(()->{
                 GameSocket.instance.readyToPlay();
                 System.out.println("Hatt funktioniert");
                 btnMyReady.setDisable(true);
             });
 
+        } else if (event.getSource().equals(btnMyReady)) {
+            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !",logger);
         } else if (event.getSource().equals(btnStart)) {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
@@ -270,6 +281,7 @@ public class GameLobbyController {
             if (serverArmies.size() != 0) {
                 UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
                     gameLobby.getScene().lookup("#chatWindow"));
+                btnMinimize.fire();
                 GameSocket.instance.startGame();
             }
 
