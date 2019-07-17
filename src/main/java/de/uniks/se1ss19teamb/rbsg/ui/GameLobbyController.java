@@ -4,13 +4,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryArmiesRequest;
-import de.uniks.se1ss19teamb.rbsg.request.QueryUnitsRequest;
+import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import generated.fulib.testmodel.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,15 +86,17 @@ public class GameLobbyController {
     @FXML
     private JFXButton btnMyReady;
 
+    @FXML
+    private JFXButton btnStart;
+
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
     private Army currentArmy;
-    private Army armyBuffer1 = new Army(null,null,new ArrayList<>());
-    private Army armyBuffer2 = new Army(null,null,new ArrayList<>());
-    private Army armyBuffer3 = new Army(null,null,new ArrayList<>());
+    private Army armyBuffer1 = new Army(null, null, new ArrayList<>());
+    private Army armyBuffer2 = new Army(null, null, new ArrayList<>());
+    private Army armyBuffer3 = new Army(null, null, new ArrayList<>());
 
-    
 
     public void initialize() {
         UserInterfaceUtils.makeFadeInTransition(gameLobby);
@@ -109,7 +111,7 @@ public class GameLobbyController {
         queryUnitsRequest.sendRequest();
 
         for (Unit unit : queryUnitsRequest.getUnits()) {
-            ArmyManagerController.availableUnits.put(unit.getId(),unit);
+            ArmyManagerController.availableUnits.put(unit.getId(), unit);
         }
 
         setArmyName();
@@ -120,7 +122,7 @@ public class GameLobbyController {
 
     private void showArmyConfig() {
 
-        ArmyManagerController.availableUnits.forEach((s,unit)->{
+        ArmyManagerController.availableUnits.forEach((s, unit) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitConfig.fxml"));
             try {
@@ -138,7 +140,7 @@ public class GameLobbyController {
         for (int i = 1; i <= 3; i++) {
             currentArmy = loadArmyConfig(i);
             for (int j = 0; j < configControllers.size(); j++) {
-                configControllers.get(j).loadNumberOfUnit(currentArmy,i);
+                configControllers.get(j).loadNumberOfUnit(currentArmy, i);
             }
         }
 
@@ -155,7 +157,7 @@ public class GameLobbyController {
     }
 
     private Army loadArmyConfig(int number) {
-        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(),number)), Army.class);
+        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(), number)), Army.class);
     }
 
 
@@ -178,19 +180,59 @@ public class GameLobbyController {
                 UserInterfaceUtils.makeFadeOutTransition(
                     "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
             }
-        }else if (event.getSource().equals(btnFullscreen)) {
+        } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        }else if (event.getSource().equals(btnMyReady)) {
+        } else if (event.getSource().equals(select1)) {
+            CreateArmyRequest req = new CreateArmyRequest(armyBuffer1.getName(), armyBuffer1.getUnits(),
+                LoginController.getUserKey());
+            req.sendRequest();
+            select1.setDisable(true);
+            select2.setDisable(false);
+            select3.setDisable(false);
+        } else if (event.getSource().equals(select2)) {
+            CreateArmyRequest req = new CreateArmyRequest(armyBuffer2.getName(), armyBuffer2.getUnits(),
+                LoginController.getUserKey());
+            req.sendRequest();
+            select2.setDisable(true);
+            select1.setDisable(false);
+            select3.setDisable(false);
+
+        } else if (event.getSource().equals(select3)) {
+            CreateArmyRequest req = new CreateArmyRequest(armyBuffer3.getName(), armyBuffer3.getUnits(),
+                LoginController.getUserKey());
+            req.sendRequest();
+            select3.setDisable(true);
+            select1.setDisable(false);
+            select2.setDisable(false);
+
+        } else if (event.getSource().equals(btnMyReady)) {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
+            ArrayList<Army> serverArmies = req.getArmies();
+            loadFromServer();
+            GameSocket.instance.readyToPlay();
+        } else if (event.getSource().equals(btnStart)) {
             VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
             JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
             btnMinimize.setDisable(false);
 
-            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml",gameLobby);
-            gameLobby.getScene().lookup("#chatWindow");
+            UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
+                gameLobby.getScene().lookup("#chatWindow"));
+            GameSocket.instance.startGame();
+
+        }
     }
-}
+
+    private void loadFromServer() {
+        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
+        req.sendRequest();
+        ArrayList<Army> serverArmies = req.getArmies();
+
+        if (serverArmies.size() == 0) {
+            NotificationHandler.getInstance()
+                .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
+        }
+    }
 
 
 }
