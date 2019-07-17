@@ -26,10 +26,8 @@ import org.testfx.util.WaitForAsyncUtils;
 
 class UiTests extends ApplicationTest {
 
-    private Main main;
-
     @BeforeAll
-    public static void setupHeadlessMode() {
+    static void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
@@ -38,7 +36,7 @@ class UiTests extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        main = new Main();
+        Main main = new Main();
         main.start(stage);
         stage.setOnCloseRequest(e -> {
             Platform.exit();
@@ -174,12 +172,15 @@ class UiTests extends ApplicationTest {
                 break;
             }
         }
+        assert box != null;
         clickOn(box.getChildren().get(1));
         sleep(2000); // sleep to finish action
         clickOn("#btnLoadServer");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             clickOn("+");
         }
+        clickOn("-");
+        clickOn("+");
         // sleep(1000); // sleep to finish action // not working at hte moment replaced with loop
         HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
         clickOn(btnBox.getChildren().get(2));
@@ -195,7 +196,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnMiniMap");
         clickOn("#btnMinimize");
         clickOn("#message").write("Hello").clickOn("#btnSend");
-        clickOn("#message").write("/w me asd").clickOn("#btnSend");
+        clickOn("#message").write("/w TeamBTestUser2 asd").clickOn("#btnSend");
         clickOn("#btnMinimize");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
@@ -267,36 +268,34 @@ class UiTests extends ApplicationTest {
 
         Logger logger = LogManager.getLogger();
 
-        int[] test = new int[1];
-
-        Label eL = (Label) lookup("#popup").queryAs(AnchorPane.class).lookup("Label");
+        Label el = (Label) lookup("#popup").queryAs(AnchorPane.class).lookup("Label");
 
         try {
-            System.out.println(test[2]);
+            throw new Exception("Test Exception");
         } catch (Exception e) {
             NotificationHandler.getInstance().sendError("Test ERROR NullPointerException", logger, e);
             sleep(200);
-            Assert.assertEquals(eL.getText(), "Test ERROR NullPointerException");
+            Assert.assertEquals(el.getText(), "Test ERROR NullPointerException");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.getInstance().sendError("Test ERROR NullPointerException Without e Exception", logger);
             sleep(200);
-            Assert.assertEquals(eL.getText(), "Test ERROR NullPointerException Without e Exception");
+            Assert.assertEquals(el.getText(), "Test ERROR NullPointerException Without e Exception");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.getInstance().sendWarning("Test WARNING", logger);
             sleep(200);
-            Assert.assertEquals(eL.getText(), "Test WARNING");
+            Assert.assertEquals(el.getText(), "Test WARNING");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.getInstance().sendInfo("Test INFO", logger);
             sleep(200);
-            Assert.assertEquals(eL.getText(), "Test INFO");
+            Assert.assertEquals(el.getText(), "Test INFO");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.getInstance().sendSuccess("Test SUCCESS", logger);
             sleep(200);
-            Assert.assertEquals(eL.getText(), "Test SUCCESS");
+            Assert.assertEquals(el.getText(), "Test SUCCESS");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
         }
     }
