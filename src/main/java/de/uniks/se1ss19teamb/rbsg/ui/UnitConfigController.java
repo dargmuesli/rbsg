@@ -1,16 +1,15 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
+import java.util.Arrays;
 import javafx.fxml.FXML;
-import javafx.geometry.Dimension2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import java.util.Arrays;
+
 
 public class UnitConfigController {
     @FXML

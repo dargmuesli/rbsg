@@ -14,6 +14,12 @@ import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,12 +36,6 @@ import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameLobbyController {
 
@@ -72,7 +72,7 @@ public class GameLobbyController {
     private Label gameName;
 
     @FXML
-    private ListView<?> playerList;
+    private ListView<Label> playerList;
 
     @FXML
     private JFXButton btnReady;
@@ -97,9 +97,6 @@ public class GameLobbyController {
 
     @FXML
     private AnchorPane errorContainer;
-
-    @FXML
-    private VBox chatBox1;
 
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
@@ -167,7 +164,10 @@ public class GameLobbyController {
 
         setArmyName();
         showArmyConfig();
-
+        //Testing playerList with someValues
+        playerList.getItems().add(new Label("Test"));
+        playerList.getItems().add(new Label("Test2"));
+        playerList.getItems().add(new Label("Test3"));
     }
 
 
@@ -256,7 +256,7 @@ public class GameLobbyController {
             isSelected = true;
 
         } else if (event.getSource().equals(btnMyReady) && isSelected) {
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 GameSocket.instance.readyToPlay();
                 System.out.println("Hatt funktioniert");
                 btnMyReady.setDisable(true);
@@ -266,7 +266,7 @@ public class GameLobbyController {
             });
 
         } else if (event.getSource().equals(btnMyReady)) {
-            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !",logger);
+            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !", logger);
         } else if (event.getSource().equals(btnStart)) {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
@@ -336,7 +336,6 @@ public class GameLobbyController {
             );
         }
     }
-
 
 
     private void addElement(String player, String message, VBox box, boolean whisper) {

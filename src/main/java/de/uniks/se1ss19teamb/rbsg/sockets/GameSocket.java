@@ -159,12 +159,12 @@ public class GameSocket extends AbstractWebSocket {
             .append(gameId);
 
         // assumption: an armyId is only optional in spectator mode
-        if (!spectator) {
+        if (!spectator && armyId == null) {
             stringBuilder
-            .append("&armyId=")
-            .append(armyId)
+                .append("&armyId=")
+                .append(armyId)
                 .append("&spectator=false");
-        }else{
+        } else {
             stringBuilder.append("&spectator=true");
         }
 
@@ -227,7 +227,7 @@ public class GameSocket extends AbstractWebSocket {
         json.addProperty("messageType", "command");
         json.addProperty("action", "attackUnit");
         json.addProperty("unitId", unitId);
-        json.addProperty("toAttackId",  toAttackId);
+        json.addProperty("toAttackId", toAttackId);
         sendToWebsocket(json);
     }
 
