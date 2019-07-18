@@ -61,7 +61,7 @@ public class GameLobbyController {
     @FXML
     private Label gameName;
     @FXML
-    private ListView<?> playerList;
+    private ListView<Label> playerList;
     @FXML
     private JFXButton btnReady;
     @FXML
@@ -78,8 +78,6 @@ public class GameLobbyController {
     private JFXButton btnStart;
     @FXML
     private AnchorPane errorContainer;
-    @FXML
-    private VBox chatBox1;
 
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
@@ -147,7 +145,10 @@ public class GameLobbyController {
 
         setArmyName();
         showArmyConfig();
-
+        //Testing playerList with someValues
+        playerList.getItems().add(new Label("Test"));
+        playerList.getItems().add(new Label("Test2"));
+        playerList.getItems().add(new Label("Test3"));
     }
 
 
@@ -255,7 +256,7 @@ public class GameLobbyController {
             });
 
         } else if (event.getSource().equals(btnMyReady)) {
-            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !",logger);
+            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !", logger);
         } else if (event.getSource().equals(btnStart)) {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
@@ -325,7 +326,6 @@ public class GameLobbyController {
             );
         }
     }
-
 
 
     private void addElement(String player, String message, VBox box, boolean whisper) {

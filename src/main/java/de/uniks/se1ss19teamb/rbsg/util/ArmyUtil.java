@@ -5,6 +5,10 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.CreateArmyRequest;
 import de.uniks.se1ss19teamb.rbsg.request.UpdateArmyRequest;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.util.List;
 

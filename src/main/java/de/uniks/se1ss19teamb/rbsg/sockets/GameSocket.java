@@ -227,7 +227,7 @@ public class GameSocket extends AbstractWebSocket {
         json.addProperty("messageType", "command");
         json.addProperty("action", "attackUnit");
         json.addProperty("unitId", unitId);
-        json.addProperty("toAttackId",  toAttackId);
+        json.addProperty("toAttackId", toAttackId);
         sendToWebsocket(json);
     }
 
