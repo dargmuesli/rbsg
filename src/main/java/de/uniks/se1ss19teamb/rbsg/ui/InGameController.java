@@ -75,6 +75,8 @@ public class InGameController {
     @FXML
     private JFXButton btnSmaller;
     @FXML
+    private StackPane stackPane;
+    @FXML
     private ScrollPane mapScrollPane;
 
     public static Logger logger = LogManager.getLogger();
@@ -102,7 +104,6 @@ public class InGameController {
                 Theming.hamburgerMenuTransition(hamburgerMenu,(JFXButton) node);
             }
         }
-        
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
@@ -155,19 +156,21 @@ public class InGameController {
             } else {
                 miniMap.setVisible(true);
             }
-        } else if (event.getSource().equals(btnBigger) || event.getSource().equals(btnSmaller)) {
-            int factor;
-            if(event.getSource().equals(btnBigger)) {
-                factor = 1;
-                zoomCounter++;
-            } else {
-                factor = -1;
-                zoomCounter--;
-            }
+        } else if (event.getSource().equals(btnBigger)) {
+            zoomCounter++;
+
             if (zoomCounter < 4 && zoomCounter > -4) {
-                mapScrollPane.setScaleX(1 + factor * zoomCounter * 0.2);
-                mapScrollPane.setScaleY(1 + factor * zoomCounter * 0.2);
-                mapScrollPane.layout();
+                gameGrid.setScaleX(1 + zoomCounter * 0.2);
+                gameGrid.setScaleY(1 + zoomCounter * 0.2);
+                gameGrid.layout();
+            }
+        } else if (event.getSource().equals(btnSmaller)) {
+            zoomCounter--;
+
+            if (zoomCounter < 4 && zoomCounter > -4) {
+                gameGrid.setScaleX(1 + zoomCounter * 0.2);
+                gameGrid.setScaleY(1 + zoomCounter * 0.2);
+                stackPane.layout();
             }
         }
     }
