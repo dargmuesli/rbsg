@@ -119,7 +119,8 @@ public class GameSocket extends AbstractWebSocket {
                         if (response.has("data")) {
                             JsonObject data = response.getAsJsonObject("data");
                             if (data.get("msg") != null) {
-                                //TODO Handle error in MSG
+                                NotificationHandler.getInstance()
+                                    .sendError("MSG in response is empty!", logger);
                                 return;
                             }
 
