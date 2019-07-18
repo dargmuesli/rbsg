@@ -7,6 +7,10 @@ ScrollPane {
     -fx-padding: 0px;
 }
 
+#tile-selected {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
 .button {
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
@@ -29,6 +33,10 @@ ScrollPane {
     -fx-text-fill: black;
 }
 
-#selected {
-    -fx-background-color: rgba(0, 0, 0, 0.2);
+#tile-selected {
+    -fx-background-color: rgba(1, 0, 0, 0.2);
+}
+
+#tile-path {
+    -fx-background-color: rgba(0, 0, 1, 0.2);
 }

@@ -128,9 +128,9 @@ public class InGameController {
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
 
-        selectionOverlay.setId("selected");
-        pathOverlay.getStyleClass().add("path");
-        attackOverlay.getStyleClass().add("attack");
+        selectionOverlay.setId("tile-selected");
+        pathOverlay.getStyleClass().add("tile-path");
+        attackOverlay.getStyleClass().add("tile-attack");
     }
 
     public void setOnAction(ActionEvent event) {
@@ -217,7 +217,6 @@ public class InGameController {
                 .computeTerrainTextureInstance(environmentTiles, posX, posY));
             newStackPane.getChildren().addAll(TextureManager.getTextureInstance(unitTile.getType()));
             gameGrid.add(newStackPane, posX, posY);
-
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
