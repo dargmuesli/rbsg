@@ -45,42 +45,42 @@ public class InGameController {
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
 
-    private static StackPane lastSelectedPane;
-
-    @FXML
-    private AnchorPane inGameScreen;
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private JFXHamburger hamburgerMenu;
-    @FXML
-    private JFXButton btnBack;
-    @FXML
-    private JFXButton btnLogout;
-    @FXML
-    private JFXButton btnFullscreen;
-    @FXML
     private AnchorPane inGameScreen1;
     @FXML
-    private GridPane gameGrid;
-    @FXML
-    private Pane miniMap;
-    @FXML
-    private JFXButton btnMiniMap;
+    private AnchorPane inGameScreen;
     @FXML
     private AnchorPane leaveGame;
     @FXML
+    private GridPane gameGrid;
+    @FXML
     private HBox head;
+    @FXML
+    private JFXButton btnBack;
+    @FXML
+    private JFXButton btnFullscreen;
+    @FXML
+    private JFXButton btnLogout;
+    @FXML
+    private JFXButton btnMiniMap;
+    @FXML
+    private JFXButton btnNo;
     @FXML
     private JFXButton btnYes;
     @FXML
-    private JFXButton btnNo;
+    private JFXHamburger hamburgerMenu;
+    @FXML
+    private Pane miniMap;
 
     private final Pane selectionOverlay = new Pane();
-    private final Pane pathOverlay = new Pane();
-    private final Pane attackOverlay = new Pane();
+    private StackPane lastSelectedPane;
+    private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
+    private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
+    private Map<String, String> previousTileMapById = new HashMap<>();
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
@@ -129,8 +129,6 @@ public class InGameController {
         inGameScreen.getChildren().add(miniMap);
 
         selectionOverlay.setId("tile-selected");
-        pathOverlay.getStyleClass().add("tile-path");
-        attackOverlay.getStyleClass().add("tile-attack");
     }
 
     public void setOnAction(ActionEvent event) {
@@ -187,18 +185,31 @@ public class InGameController {
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    StackPane eventSource = (StackPane) event.getSource();
+                    StackPane eventStack = (StackPane) event.getSource();
 
                     if (lastSelectedPane == null) {
-                        eventSource.getChildren().add(selectionOverlay);
-                        lastSelectedPane = eventSource;
-                    } else if (eventSource != lastSelectedPane) {
+                        eventStack.getChildren().add(selectionOverlay);
+                        lastSelectedPane = eventStack;
+                    } else if (eventStack != lastSelectedPane) {
                         lastSelectedPane.getChildren().remove(selectionOverlay);
-                        eventSource.getChildren().add(selectionOverlay);
-                        lastSelectedPane = eventSource;
+                        eventStack.getChildren().add(selectionOverlay);
+                        lastSelectedPane = eventStack;
                     } else {
-                        eventSource.getChildren().remove(selectionOverlay);
+                        eventStack.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
+                    }
+
+                    overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
+                    overlayedStacks.clear();
+                    previousTileMapById.clear();
+
+                    if (lastSelectedPane != null) {
+                        for (UnitTile unitTile : unitTiles) {
+                            if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
+                                drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
+                                break;
+                            }
+                        }
                     }
                 });
                 gameGrid.add(stack, j, i);
@@ -209,11 +220,70 @@ public class InGameController {
         }
 
         for (UnitTile unitTile : unitTiles) {
+            unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(TextureManager.getTextureInstance(unitTile.getType()));
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
+    }
+
+    private void drawOverlay(EnvironmentTile startTile, int mp) {
+        if (mp == 0) {
+            return;
+        }
+
+        UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+
+        Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
+        queue.add(new Pair<>(startTile, mp));
+
+        while (!queue.isEmpty()) {
+            Pair<EnvironmentTile, Integer> currentElement = queue.remove();
+            EnvironmentTile currentTile = currentElement.getKey();
+            Integer currentMp = currentElement.getValue();
+
+            if (currentMp == 0) {
+                return;
+            }
+
+            Arrays.asList(
+                currentTile.getTop(),
+                currentTile.getRight(),
+                currentTile.getBottom(),
+                currentTile.getLeft()).forEach((neighborId) -> {
+                    if (neighborId == null || neighborId.equals(startTile.getId())) {
+                        return;
+                    }
+
+                    EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
+                    StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
+
+                    if (neighborTile.isPassable()
+                        && !overlayedStacks.containsKey(neighborStack)) {
+
+                        Pane overlay = new Pane();
+                        UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
+
+                        if (neighborUnitTile != null
+                            && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
+
+                            overlay.getStyleClass().add("tile-attack");
+                        } else {
+                            //TODO: for when the gamelobby exists
+                            // is it possible to have two units on the same field?
+                            // is it possible to walk across a field on which a unit is already present?
+                            overlay.getStyleClass().add("tile-path");
+                        }
+
+                        neighborStack.getChildren().add(overlay);
+                        overlayedStacks.put(neighborStack, overlay);
+                        previousTileMapById.put(neighborId, currentTile.getId());
+
+                        queue.add(new Pair<>(neighborTile, currentMp - 1));
+                    }
+                });
+        }
     }
 
     private void addElement(String player, String message, VBox box, boolean whisper) {
