@@ -28,6 +28,8 @@ public class GameSelectionController {
     private GameMeta gameMeta;
     static GameMeta joinedGame;
 
+    private VBox chatWindow;
+
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{root}));
     }
@@ -38,6 +40,12 @@ public class GameSelectionController {
     }
 
     public void joinGame() {
+        join();
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
+    }
+
+    public void join() {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
@@ -47,7 +55,7 @@ public class GameSelectionController {
 
         ArmyManagerController.joiningGame = true;
 
-        VBox chatWindow = (VBox) root.getScene().lookup("#chatWindow");
+        chatWindow = (VBox) root.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
@@ -55,9 +63,6 @@ public class GameSelectionController {
         btnMinimize.setDisable(false);
         btnMinimize.fire();
         btnMinimize.setDisable(true);
-
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
     }
 
     public void deleteGame() {
@@ -67,6 +72,9 @@ public class GameSelectionController {
 
     public void spectate() {
         ArmyManagerController.spectator = true;
-        joinGame();
+        join();
+        chatWindow.setVisible(false);
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
     }
 }
