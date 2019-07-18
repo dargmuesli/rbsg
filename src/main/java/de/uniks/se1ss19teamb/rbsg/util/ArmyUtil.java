@@ -12,9 +12,9 @@ import de.uniks.se1ss19teamb.rbsg.request.UpdateArmyRequest;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 
 public class ArmyUtil {
-	private static final Logger logger = LogManager.getLogger();
-	
-	public static String saveToServer(Army currentArmy) {
+    private static final Logger logger = LogManager.getLogger();
+
+    public static String saveToServer(Army currentArmy) {
         String currentArmyName = currentArmy.getName();
         String currentArmyId = currentArmy.getId();
         List<Unit> currentArmyUnits = currentArmy.getUnits();
