@@ -12,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
+import de.uniks.se1ss19teamb.rbsg.util.EasterEggKeyEventHandler;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
@@ -30,6 +31,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
@@ -66,6 +70,12 @@ public class InGameController {
     private JFXButton btnYes;
     @FXML
     private JFXButton btnNo;
+    @FXML
+    private JFXButton btnBigger;
+    @FXML
+    private JFXButton btnSmaller;
+    @FXML
+    private ScrollPane mapScrollPane;
 
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
@@ -75,6 +85,7 @@ public class InGameController {
     public static List<PlayerTile> playerTiles = new ArrayList<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
+    private int zoomCounter = 0;
 
     private JFXTabPane chatPane;
     private VBox textArea;
@@ -122,6 +133,7 @@ public class InGameController {
         miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
+
     }
 
     public void setOnAction(ActionEvent event) {
@@ -141,8 +153,23 @@ public class InGameController {
             } else {
                 miniMap.setVisible(true);
             }
+        } else if (event.getSource().equals(btnBigger) || event.getSource().equals(btnSmaller)) {
+            int factor;
+            if(event.getSource().equals(btnBigger)) {
+                factor = 1;
+                zoomCounter++;
+            } else {
+                factor = -1;
+                zoomCounter--;
+            }
+            if (zoomCounter < 4 && zoomCounter > -4) {
+                mapScrollPane.setScaleX(1 + factor * zoomCounter * 0.2);
+                mapScrollPane.setScaleY(1 + factor * zoomCounter * 0.2);
+                mapScrollPane.layout();
+            }
         }
     }
+
 
     private void fillGameGrid() {
         int maxX = 0;

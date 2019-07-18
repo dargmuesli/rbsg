@@ -22,6 +22,8 @@
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <children>
                 <HBox fx:id="head" alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <JFXButton fx:id="btnBigger" mnemonicParsing="false" onAction="#setOnAction" text="+" visible="false" />
+               <JFXButton fx:id="btnSmaller" mnemonicParsing="false" onAction="#setOnAction" prefHeight="27.0" prefWidth="27.0" text="-" visible="false" />
                     <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#leaveGame" visible="false">
                         <graphic>
                             <FontAwesomeIconView glyphName="REPLY" />
