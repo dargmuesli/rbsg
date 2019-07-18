@@ -14,6 +14,12 @@ import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,74 +36,48 @@ import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class GameLobbyController {
 
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
     private AnchorPane gameLobby1;
-
     @FXML
     private AnchorPane gameLobby;
-
     @FXML
     private JFXButton btnBack;
-
     @FXML
     private JFXButton btnLogout;
-
     @FXML
     private JFXButton btnFullscreen;
-
     @FXML
     private JFXHamburger hamburgerMenu;
-
     @FXML
     private Label army1;
-
     @FXML
     private Label army2;
-
     @FXML
     private Label army3;
-
     @FXML
     private Label gameName;
-
     @FXML
     private ListView<?> playerList;
-
     @FXML
     private JFXButton btnReady;
-
     @FXML
     private JFXButton select1;
-
     @FXML
     private JFXButton select2;
-
     @FXML
     private JFXButton select3;
-
     @FXML
     private ListView<Parent> armyList;
-
     @FXML
     private JFXButton btnMyReady;
-
     @FXML
     private JFXButton btnStart;
-
     @FXML
     private AnchorPane errorContainer;
-
     @FXML
     private VBox chatBox1;
 
@@ -265,7 +245,7 @@ public class GameLobbyController {
             isSelected = true;
 
         } else if (event.getSource().equals(btnMyReady) && isSelected) {
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 GameSocket.instance.readyToPlay();
                 System.out.println("Hatt funktioniert");
                 btnMyReady.setDisable(true);

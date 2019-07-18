@@ -164,7 +164,7 @@ public class GameSocket extends AbstractWebSocket {
             .append("&armyId=")
             .append(armyId)
                 .append("&spectator=false");
-        }else{
+        } else {
             stringBuilder.append("&spectator=true");
         }
 
