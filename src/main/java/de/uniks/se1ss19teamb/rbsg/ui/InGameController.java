@@ -182,31 +182,45 @@ public class InGameController {
 
         for (int i = 0; i < maxY; i++) {
             for (int j = 0; j < maxX; j++) {
+
+                // Create stack panes with an environment texture for every game field.
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventStack = (StackPane) event.getSource();
 
                     if (lastSelectedPane == null) {
+                        // Nothing was selected.
+                        // The new field is selected.
                         eventStack.getChildren().add(selectionOverlay);
                         lastSelectedPane = eventStack;
                     } else if (eventStack != lastSelectedPane) {
+                        // A new field was selected.
+                        // The old field is deselected and the new field is selected.
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         eventStack.getChildren().add(selectionOverlay);
                         lastSelectedPane = eventStack;
                     } else {
+                        // The old field was selected.
+                        // The old field is deselected.
                         eventStack.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
                     }
 
+                    // All overlays and saved path parts are cleared.
                     overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
                     overlayedStacks.clear();
                     previousTileMapById.clear();
 
+                    // Draw new path and attack overlays if a unit was selected.
+                    // TODO: for when the gamelobby exists
+                    //  Only allow this for own units.
                     if (lastSelectedPane != null) {
                         for (UnitTile unitTile : unitTiles) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
                                 drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
+
+                                // Do this only for the first (and hopefully only) unitTile.
                                 break;
                             }
                         }
@@ -219,6 +233,7 @@ public class InGameController {
             }
         }
 
+        // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
@@ -229,29 +244,32 @@ public class InGameController {
     }
 
     private void drawOverlay(EnvironmentTile startTile, int mp) {
-        if (mp == 0) {
-            return;
-        }
-
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
 
+        // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
         queue.add(new Pair<>(startTile, mp));
 
         while (!queue.isEmpty()) {
+
+            // Take the first element from the queue.
             Pair<EnvironmentTile, Integer> currentElement = queue.remove();
             EnvironmentTile currentTile = currentElement.getKey();
             Integer currentMp = currentElement.getValue();
 
+            // Limit moving distance.
             if (currentMp == 0) {
                 return;
             }
 
+            // Calculate overlays for all four neighbors.
             Arrays.asList(
                 currentTile.getTop(),
                 currentTile.getRight(),
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
+
+                    // Limit to existing fields and exclude the selected tile.
                     if (neighborId == null || neighborId.equals(startTile.getId())) {
                         return;
                     }
@@ -259,6 +277,7 @@ public class InGameController {
                     EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
                     StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
 
+                    // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
                     if (neighborTile.isPassable()
                         && !overlayedStacks.containsKey(neighborStack)) {
 
@@ -268,18 +287,26 @@ public class InGameController {
                         if (neighborUnitTile != null
                             && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
 
+                            // The tile that is going to receive an overlay contains a unit that can be attacked.
+                            // TODO: for when the gamelobby exists
+                            //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
                         } else {
-                            //TODO: for when the gamelobby exists
-                            // is it possible to have two units on the same field?
-                            // is it possible to walk across a field on which a unit is already present?
+                            // TODO: for when the gamelobby exists
+                            //  Is it possible to have two units on the same field?
+                            //  Is it possible to walk across a field on which a unit is already present?
                             overlay.getStyleClass().add("tile-path");
                         }
 
+                        // Add the overlay to the tile and a map so that it can easily be removed in the future.
                         neighborStack.getChildren().add(overlay);
                         overlayedStacks.put(neighborStack, overlay);
+
+                        // Save the tile from which the tile that received an overlay was reached so that a path can
+                        // be reconstructed for server requests.
                         previousTileMapById.put(neighborId, currentTile.getId());
 
+                        // Add the tile that received an overlay to the quere so that its neighbors are checked too.
                         queue.add(new Pair<>(neighborTile, currentMp - 1));
                     }
                 });
