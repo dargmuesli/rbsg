@@ -9,12 +9,25 @@ public class InGameMetadata {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Id: ").append(id).append("\nallPlayer: ");
         for (String player : allPlayer) {
-            stringBuilder.append(player);
+            stringBuilder.append("\"").append(player).append("\" ");
         }
         stringBuilder.append("\nAllUnits: ");
         for (String unit : allUnits) {
-            stringBuilder.append(unit);
+            stringBuilder.append("\"").append(unit).append("\" ");
         }
         return stringBuilder.toString();
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    public void setAllPlayer(String[] allPlayer) {
+        this.allPlayer = allPlayer;
+    }
+
+    public void setAllUnits(String[] allUnits) {
+        this.allUnits = allUnits;
     }
 }
