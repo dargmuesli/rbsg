@@ -97,10 +97,12 @@ public class InGameController {
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnMiniMap);
+        for(Node node: head.getChildren()) {
+            if(node.getClass().equals(new JFXButton().getClass())) {
+                Theming.hamburgerMenuTransition(hamburgerMenu,(JFXButton) node);
+            }
+        }
+        
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
