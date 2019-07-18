@@ -112,8 +112,15 @@ public class GameSocket extends AbstractWebSocket {
                     case "gameInitFinished":
                         InGameController.gameInitFinished = true;
                         break;
-                    case "gameRemoveObject":
-                        // TODO
+                    case "gameRemoveObject"://
+                        // TODO "data" has no name for player, (only: id, from, fieldName)
+                        if (response.has("data")) {
+                            // TODO maybe handler to chat window
+                            JsonObject data = response.getAsJsonObject("data");
+                            NotificationHandler.getInstance().sendInfo("Player \""
+                                + data.get("id").getAsString() + "(" + data.get("fieldName").getAsString()
+                                + ")" + "\" has left the game!", logger);
+                        }
                         break;
                     case "gameChat":
                         if (response.has("data")) {
