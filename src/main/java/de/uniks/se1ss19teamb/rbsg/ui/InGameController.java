@@ -157,24 +157,24 @@ public class InGameController {
                 Thread.sleep(1000);
                 tryCounter++;
                 if (tryCounter == 10) {
-                    NotificationHandler.getInstance().sendError("The tiles couldn't be load.",
+                    NotificationHandler.getInstance().sendError("The matchfield tiles couldn't be loaded.",
                         logger);
                     break;
                 }
 
             } catch (InterruptedException e) {
                 NotificationHandler.getInstance()
-                    .sendError("Fehler beim initialisieren vom Spiel!", logger, e);
+                    .sendError("Game couldn't be initialized!", logger, e);
             }
         }
 
         while (environmentTiles.get(new Pair<>(0, maxX)) != null) {
             maxX++;
         }
+
         while (environmentTiles.get(new Pair<>(maxY, 0)) != null) {
             maxY++;
         }
-
 
         for (int i = 0; i < maxY; i++) {
             for (int j = 0; j < maxX; j++) {
@@ -216,7 +216,8 @@ public class InGameController {
             gameGrid.add(newStackPane, posX, posY);
 
         }
-        NotificationHandler.getInstance().sendSuccess("Spiel wurde initialisiert!", logger);
+
+        NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
     }
 
     private void addElement(String player, String message, VBox box, boolean whisper) {
