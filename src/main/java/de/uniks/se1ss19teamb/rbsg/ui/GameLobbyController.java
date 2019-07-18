@@ -211,7 +211,13 @@ public class GameLobbyController {
     }
 
     private Army loadArmyConfig(int number) {
-        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(), number)), Army.class);
+        File save = new File(String.format(ARMY_SAVE_PATH.toString(), number));
+
+        if (save.exists()) {
+            return SerializeUtils.deserialize(save, Army.class);
+        } else {
+            return null;
+        }
     }
 
 
