@@ -77,6 +77,8 @@ public class InGameController {
     private JFXButton btnNo;
 
     private final Pane selectionOverlay = new Pane();
+    private final Pane pathOverlay = new Pane();
+    private final Pane attackOverlay = new Pane();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private JFXTabPane chatPane;
@@ -125,6 +127,10 @@ public class InGameController {
         miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
+
+        selectionOverlay.setId("selected");
+        pathOverlay.getStyleClass().add("path");
+        attackOverlay.getStyleClass().add("attack");
     }
 
     public void setOnAction(ActionEvent event) {
@@ -180,22 +186,19 @@ public class InGameController {
             for (int j = 0; j < maxX; j++) {
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
-
-                selectionOverlay.setId("selected");
-
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventSource = (StackPane) event.getSource();
 
                     if (lastSelectedPane == null) {
                         eventSource.getChildren().add(selectionOverlay);
                         lastSelectedPane = eventSource;
-                    } else if (eventSource == lastSelectedPane) {
-                        eventSource.getChildren().remove(selectionOverlay);
-                        lastSelectedPane = null;
-                    } else {
+                    } else if (eventSource != lastSelectedPane) {
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         eventSource.getChildren().add(selectionOverlay);
                         lastSelectedPane = eventSource;
+                    } else {
+                        eventSource.getChildren().remove(selectionOverlay);
+                        lastSelectedPane = null;
                     }
                 });
                 gameGrid.add(stack, j, i);
