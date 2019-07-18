@@ -2,10 +2,11 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
 
 public class ChatSocket extends AbstractWebSocket {
 
