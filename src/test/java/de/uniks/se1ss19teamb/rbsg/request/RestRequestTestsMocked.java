@@ -191,15 +191,19 @@ public class RestRequestTestsMocked {
             e.printStackTrace();
         }
 
-        CreateGameRequest req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111");
-        try {
-            req.sendRequest();
+        CreateGameRequest req;
 
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals(24, req.getGameId().length());
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
+        req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111");
+        req.sendRequest();
+
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals(24, req.getGameId().length());
+
+        req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111", 123);
+        req.sendRequest();
+
+        Assert.assertTrue(req.getSuccessful());
+        Assert.assertEquals(24, req.getGameId().length());
     }
 
     @Test
