@@ -15,6 +15,11 @@
             <FontAwesomeIconView glyphName="PLAY"/>
         </graphic>
     </Button>
+    <Button fx:id="spectate" onMouseClicked="#spectate">
+        <graphic>
+            <FontAwesomeIconView glyphName="TWITCH"/>
+        </graphic>
+    </Button>
     <Button fx:id="delete" onMouseClicked="#deleteGame">
         <graphic>
             <FontAwesomeIconView glyphName="TRASH"/>
