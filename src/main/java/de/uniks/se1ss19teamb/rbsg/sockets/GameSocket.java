@@ -160,10 +160,12 @@ public class GameSocket extends AbstractWebSocket {
 
         // assumption: an armyId is only optional in spectator mode
         if (spectator) {
+            stringBuilder.append("&spectator=true");
+        } else {
             stringBuilder
-            .append("&armyId=")
-            .append(armyId)
-                .append("&spectator=true");
+                .append("&armyId=")
+                .append(armyId)
+                .append("&spectator=false");
         }
 
         return stringBuilder.toString();

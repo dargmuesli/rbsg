@@ -26,11 +26,11 @@ public class GameSocketTestsMocked {
 
     @Test
     public void getEndpointTest() {
-        Assert.assertEquals("/game?gameId=myGameId", gameSocket.getEndpoint());
+        Assert.assertEquals("/game?gameId=myGameId&armyId=myArmyId&spectator=false", gameSocket.getEndpoint());
 
         GameSocket gameSocketSpectator = spy(new GameSocket(userName, userKey, gameId, armyId, true));
 
-        Assert.assertEquals("/game?gameId=myGameId&armyId=myArmyId&spectator=true", gameSocketSpectator.getEndpoint());
+        Assert.assertEquals("/game?gameId=myGameId&spectator=true", gameSocketSpectator.getEndpoint());
     }
 
     @Test
