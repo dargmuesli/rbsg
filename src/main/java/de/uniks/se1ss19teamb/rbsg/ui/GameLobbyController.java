@@ -190,8 +190,11 @@ public class GameLobbyController {
 
         for (int i = 1; i <= 3; i++) {
             currentArmy = loadArmyConfig(i);
-            for (int j = 0; j < configControllers.size(); j++) {
-                configControllers.get(j).loadNumberOfUnit(currentArmy, i);
+
+            if (currentArmy != null) {
+                for (UnitConfigController configController : configControllers) {
+                    configController.loadNumberOfUnit(currentArmy, i);
+                }
             }
         }
 
@@ -202,9 +205,9 @@ public class GameLobbyController {
         armyBuffer2 = loadArmyConfig(2);
         armyBuffer3 = loadArmyConfig(3);
 
-        army1.setText(armyBuffer1.getName());
-        army2.setText(armyBuffer2.getName());
-        army3.setText(armyBuffer3.getName());
+        army1.setText(armyBuffer1 != null ? armyBuffer1.getName() : "");
+        army2.setText(armyBuffer2 != null ? armyBuffer2.getName() : "");
+        army3.setText(armyBuffer3 != null ? armyBuffer3.getName() : "");
     }
 
     private Army loadArmyConfig(int number) {
