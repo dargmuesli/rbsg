@@ -86,6 +86,7 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
+    private UnitTile lastSelectedUnit;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
@@ -191,23 +192,29 @@ public class InGameController {
 
                     if(!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
                         // move lastSelectedPane to eventStack
-                        
-                    } else if (lastSelectedPane == null) {
-                        // Nothing was selected.
-                        // The new field is selected.
-                        eventStack.getChildren().add(selectionOverlay);
-                        lastSelectedPane = eventStack;
-                    } else if (eventStack != lastSelectedPane) {
-                        // A new field was selected.
-                        // The old field is deselected and the new field is selected.
-                        lastSelectedPane.getChildren().remove(selectionOverlay);
-                        eventStack.getChildren().add(selectionOverlay);
-                        lastSelectedPane = eventStack;
-                    } else {
-                        // The old field was selected.
-                        // The old field is deselected.
-                        eventStack.getChildren().remove(selectionOverlay);
+                        lastSelectedPane.getChildren().remove(lastSelectedUnit);
+                        //eventStack.getChildren().add(unit));
+                        lastSelectedUnit = null;
                         lastSelectedPane = null;
+                    } else {
+
+                        if (lastSelectedPane == null) {
+                            // Nothing was selected.
+                            // The new field is selected.
+                            eventStack.getChildren().add(selectionOverlay);
+                            lastSelectedPane = eventStack;
+                        } else if (eventStack != lastSelectedPane) {
+                            // A new field was selected.
+                            // The old field is deselected and the new field is selected.
+                            lastSelectedPane.getChildren().remove(selectionOverlay);
+                            eventStack.getChildren().add(selectionOverlay);
+                            lastSelectedPane = eventStack;
+                        } else {
+                            // The old field was selected.
+                            // The old field is deselected.
+                            eventStack.getChildren().remove(selectionOverlay);
+                            lastSelectedPane = null;
+                        }
                     }
 
                     // All overlays and saved path parts are cleared.
@@ -222,13 +229,14 @@ public class InGameController {
                         for (UnitTile unitTile : unitTiles) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
                                 drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
-
+                                lastSelectedUnit = unitTile;
                                 // Do this only for the first (and hopefully only) unitTile.
                                 break;
                             }
                         }
                     }
                 });
+
                 gameGrid.add(stack, j, i);
                 stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
                 environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),
