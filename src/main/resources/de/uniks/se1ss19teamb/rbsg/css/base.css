@@ -7,6 +7,10 @@ ScrollPane {
     -fx-padding: 0px;
 }
 
+#tile-selected {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
 .button {
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
@@ -27,4 +31,12 @@ ScrollPane {
 
 .jfx-tab-pane .tab .tab-label {
     -fx-text-fill: black;
+}
+
+.tile-attack {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+}
+
+.tile-path {
+    -fx-background-color: rgba(0, 0, 255, 0.2);
 }
