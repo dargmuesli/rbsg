@@ -209,14 +209,8 @@ public class InGameController {
         }
 
         for (UnitTile unitTile : unitTiles) {
-            gameGrid.getChildren().remove(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()));
-            StackPane newStackPane = new StackPane();
-            int posX = environmentTileMapById.get(unitTile.getPosition()).getX();
-            int posY = environmentTileMapById.get(unitTile.getPosition()).getY();
-            newStackPane.getChildren().addAll(TextureManager
-                .computeTerrainTextureInstance(environmentTiles, posX, posY));
-            newStackPane.getChildren().addAll(TextureManager.getTextureInstance(unitTile.getType()));
-            gameGrid.add(newStackPane, posX, posY);
+            stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
+                .add(TextureManager.getTextureInstance(unitTile.getType()));
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
