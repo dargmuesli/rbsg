@@ -33,10 +33,10 @@ ScrollPane {
     -fx-text-fill: black;
 }
 
-#tile-selected {
-    -fx-background-color: rgba(1, 0, 0, 0.2);
+.tile-attack {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
 }
 
-#tile-path {
-    -fx-background-color: rgba(0, 0, 1, 0.2);
+.tile-path {
+    -fx-background-color: rgba(0, 0, 255, 0.2);
 }
