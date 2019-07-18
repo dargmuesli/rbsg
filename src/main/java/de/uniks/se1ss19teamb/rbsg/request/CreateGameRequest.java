@@ -7,11 +7,17 @@ public class CreateGameRequest extends AbstractRestRequest {
     private String userToken;
     private String gameName;
     private int neededPlayers;
+    private long seed;
 
     public CreateGameRequest(String gameName, int neededPlayers, String userToken) {
+        this(gameName, neededPlayers, userToken, -1);
+    }
+
+    public CreateGameRequest(String gameName, int neededPlayers, String userToken, long seed) {
         this.userToken = userToken;
         this.neededPlayers = neededPlayers;
         this.gameName = gameName;
+        this.seed = seed;
     }
 
     @Override
@@ -19,6 +25,11 @@ public class CreateGameRequest extends AbstractRestRequest {
         JsonObject json = new JsonObject();
         json.addProperty("name", gameName);
         json.addProperty("neededPlayer", neededPlayers);
+
+        if (seed != -1) {
+            json.addProperty("seed", seed);
+        }
+
         return json;
     }
 
