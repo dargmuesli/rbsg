@@ -5,6 +5,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
@@ -121,7 +122,6 @@ public class GameSocket extends AbstractWebSocket {
                     }
                     break;
                 case "gameInitFinished":
-                    InGameController.gameInitFinished = true;
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
                     break;
                 case "gameNewObject":
@@ -140,6 +140,10 @@ public class GameSocket extends AbstractWebSocket {
                                 + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
                                 + "\"", logger);
                             break;
+                        case "Unit":
+                        	InGameController.unitTiles.add(
+                                    SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                        	break;
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown new game object id: " + data.get("id").getAsString(), logger);
@@ -186,6 +190,12 @@ public class GameSocket extends AbstractWebSocket {
 
                             NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
                             break;
+                        case "Game":
+                        	if(!InGameController.gameInitFinished && data.get("fieldName").getAsString().equals("phase")) {
+                        		InGameController.gameInitFinished = true;
+                        		GameLobbyController.instance.startGameTransition();
+                        	}
+                        	break;
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown changed game object id: " + data.get("id").getAsString(), logger);

@@ -93,6 +93,8 @@ public class GameLobbyController {
     private VBox chatBox;
     private JFXButton btnMinimize;
     private boolean isSelected = false;
+    
+    public static GameLobbyController instance;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
@@ -105,6 +107,7 @@ public class GameLobbyController {
 
         gameName.setText(GameSelectionController.joinedGame.getName());
 
+        instance = this;
 
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
@@ -270,18 +273,21 @@ public class GameLobbyController {
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
             loadFromServer();
-
-            VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
-            JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
-            btnMinimize.setDisable(false);
+            
             if (serverArmies.size() != 0) {
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
-                    gameLobby.getScene().lookup("#chatWindow"));
-                btnMinimize.fire();
-                GameSocket.instance.startGame();
+            	GameSocket.instance.startGame();
             }
-
         }
+    }
+    
+    public void startGameTransition() {
+    	VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
+        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+        btnMinimize.setDisable(false);
+     
+        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
+                gameLobby.getScene().lookup("#chatWindow"));
+        btnMinimize.fire();
     }
 
     private void loadFromServer() {
