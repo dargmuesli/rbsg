@@ -1,16 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
-import de.uniks.se1ss19teamb.rbsg.model.tiles.PlayerTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 
 public class TilesTest {
     private EnvironmentTile eT = new EnvironmentTile();
-    private PlayerTile pT = new PlayerTile();
     private UnitTile uT = new UnitTile();
 
     // EnvironmentTile parameters
@@ -60,21 +57,6 @@ public class TilesTest {
 
         eT.setTop(top);
         Assert.assertEquals(eT.getTop(), top);
-    }
-
-    @Test
-    public void playerTileTest() {
-        pT.setName(name);
-        Assert.assertEquals(pT.getName(), name);
-
-        pT.setColor(color);
-        Assert.assertEquals(pT.getColor(), color);
-
-        pT.setCurrentGame(game);
-        Assert.assertEquals(pT.getCurrentGame(), game);
-
-        pT.setArmy(army);
-        Assert.assertArrayEquals(pT.getArmy(), army);
     }
 
     @Test
