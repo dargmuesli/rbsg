@@ -275,13 +275,13 @@ public class GameLobbyController {
             loadFromServer();
             
             if (serverArmies.size() != 0) {
-            	GameSocket.instance.startGame();
+                GameSocket.instance.startGame();
             }
         }
     }
     
     public void startGameTransition() {
-    	VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
+        VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         btnMinimize.setDisable(false);
      

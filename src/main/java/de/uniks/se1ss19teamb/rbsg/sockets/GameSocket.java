@@ -141,9 +141,9 @@ public class GameSocket extends AbstractWebSocket {
                                 + "\"", logger);
                             break;
                         case "Unit":
-                        	InGameController.unitTiles.add(
+                            InGameController.unitTiles.add(
                                     SerializeUtils.deserialize(data.toString(), UnitTile.class));
-                        	break;
+                            break;
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown new game object id: " + data.get("id").getAsString(), logger);
@@ -191,11 +191,12 @@ public class GameSocket extends AbstractWebSocket {
                             NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
                             break;
                         case "Game":
-                        	if(!InGameController.gameInitFinished && data.get("fieldName").getAsString().equals("phase")) {
-                        		InGameController.gameInitFinished = true;
-                        		GameLobbyController.instance.startGameTransition();
-                        	}
-                        	break;
+                            if (!InGameController.gameInitFinished
+                                    && data.get("fieldName").getAsString().equals("phase")) {
+                                InGameController.gameInitFinished = true;
+                                GameLobbyController.instance.startGameTransition();
+                            }
+                            break;
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown changed game object id: " + data.get("id").getAsString(), logger);
