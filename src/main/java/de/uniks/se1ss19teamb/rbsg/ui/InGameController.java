@@ -191,11 +191,30 @@ public class InGameController {
                     StackPane eventStack = (StackPane) event.getSource();
 
                     if(!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
+                        //TODO players turn? Unit already moved?
+
                         // move lastSelectedPane to eventStack
+                        //nut sure if this has to be done
                         lastSelectedPane.getChildren().remove(lastSelectedUnit);
                         //eventStack.getChildren().add(unit));
+
+                        //client map
+                        stackPaneMapByEnvironmentTileId.get(lastSelectedUnit.getPosition()).getChildren()
+                            .remove(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+                        stackPaneMapByEnvironmentTileId.get(eventStack).getChildren()
+                            .add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+
+                        //TODO find path
+                        String[] path = new String[1];
+
+                        //server
+
+                        GameSocket.instance.moveUnit(lastSelectedUnit.getId(), path);
+
+                        //reset
                         lastSelectedUnit = null;
                         lastSelectedPane = null;
+
                     } else {
 
                         if (lastSelectedPane == null) {
