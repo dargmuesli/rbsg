@@ -159,13 +159,13 @@ public class GameSocket extends AbstractWebSocket {
             .append(gameId);
 
         // assumption: an armyId is only optional in spectator mode
-        if (!spectator && armyId == null) {
+        if (spectator) {
+            stringBuilder.append("&spectator=true");
+        } else {
             stringBuilder
                 .append("&armyId=")
                 .append(armyId)
                 .append("&spectator=false");
-        } else {
-            stringBuilder.append("&spectator=true");
         }
 
         return stringBuilder.toString();
