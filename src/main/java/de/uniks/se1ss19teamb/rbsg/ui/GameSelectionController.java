@@ -42,10 +42,6 @@ public class GameSelectionController {
 
     public void joinGame() {
         join();
-        
-        chatWindow.setPrefHeight(300);
-        chatWindow.setPrefWidth(400);
-
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
 
@@ -67,9 +63,15 @@ public class GameSelectionController {
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
         // damit gehts:
 
+        /*
         btnMinimize.setDisable(false);
         btnMinimize.fire();
         btnMinimize.setDisable(true);
+
+         */
+
+        chatWindow.setPrefHeight(300);
+        chatWindow.setPrefWidth(400);
 
 
     }
