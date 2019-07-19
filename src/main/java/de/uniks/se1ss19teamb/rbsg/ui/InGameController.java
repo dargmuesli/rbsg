@@ -190,13 +190,8 @@ public class InGameController {
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventStack = (StackPane) event.getSource();
 
-                    if(!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
+                    if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
                         //TODO players turn? Unit already moved?
-
-                        // move lastSelectedPane to eventStack
-                        //nut sure if this has to be done
-                        lastSelectedPane.getChildren().remove(lastSelectedUnit);
-                        //eventStack.getChildren().add(unit));
 
                         //client map
                         stackPaneMapByEnvironmentTileId.get(lastSelectedUnit.getPosition()).getChildren()
@@ -204,12 +199,17 @@ public class InGameController {
                         stackPaneMapByEnvironmentTileId.get(eventStack).getChildren()
                             .add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
 
-                        //TODO find path
-                        String[] path = new String[1];
+                        //TODO does the expected path need to include the start and goal? does in this solution
+                        LinkedList<String> path = new LinkedList<>();
+                        path.addFirst(eventStack.getId());
+                        String next = previousTileMapById.get(eventStack.getId());
+                        do {
+                            path.addFirst(next);
+                            next = previousTileMapById.get(next);
+                        } while (!next.equals(lastSelectedPane.getId()));
 
                         //server
-
-                        GameSocket.instance.moveUnit(lastSelectedUnit.getId(), path);
+                        GameSocket.instance.moveUnit(lastSelectedUnit.getId(), (String[]) path.toArray());
 
                         //reset
                         lastSelectedUnit = null;
