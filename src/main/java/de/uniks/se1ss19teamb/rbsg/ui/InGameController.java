@@ -37,7 +37,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class InGameController {
-
     public static Logger logger = LogManager.getLogger();
     public static InGameMetadata inGameMetadata;
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
@@ -86,7 +85,6 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
-
 
     public void initialize() {
         UserInterfaceUtils.initialize(

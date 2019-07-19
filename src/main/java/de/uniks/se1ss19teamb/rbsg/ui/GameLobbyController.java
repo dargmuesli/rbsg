@@ -36,65 +36,46 @@ import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 public class GameLobbyController {
 
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
     private AnchorPane gameLobby1;
-
     @FXML
     private AnchorPane gameLobby;
-
     @FXML
     private JFXButton btnBack;
-
     @FXML
     private JFXButton btnLogout;
-
     @FXML
     private JFXButton btnFullscreen;
-
     @FXML
     private JFXHamburger hamburgerMenu;
-
     @FXML
     private Label army1;
-
     @FXML
     private Label army2;
-
     @FXML
     private Label army3;
-
     @FXML
     private Label gameName;
-
     @FXML
     private ListView<Label> playerList;
-
     @FXML
     private JFXButton btnReady;
-
     @FXML
     private JFXButton select1;
-
     @FXML
     private JFXButton select2;
-
     @FXML
     private JFXButton select3;
-
     @FXML
     private ListView<Parent> armyList;
-
     @FXML
     private JFXButton btnMyReady;
-
     @FXML
     private JFXButton btnStart;
-
     @FXML
     private AnchorPane errorContainer;
 
@@ -190,8 +171,11 @@ public class GameLobbyController {
 
         for (int i = 1; i <= 3; i++) {
             currentArmy = loadArmyConfig(i);
-            for (int j = 0; j < configControllers.size(); j++) {
-                configControllers.get(j).loadNumberOfUnit(currentArmy, i);
+
+            if (currentArmy != null) {
+                for (UnitConfigController configController : configControllers) {
+                    configController.loadNumberOfUnit(currentArmy, i);
+                }
             }
         }
 
@@ -202,13 +186,19 @@ public class GameLobbyController {
         armyBuffer2 = loadArmyConfig(2);
         armyBuffer3 = loadArmyConfig(3);
 
-        army1.setText(armyBuffer1.getName());
-        army2.setText(armyBuffer2.getName());
-        army3.setText(armyBuffer3.getName());
+        army1.setText(armyBuffer1 != null ? armyBuffer1.getName() : "");
+        army2.setText(armyBuffer2 != null ? armyBuffer2.getName() : "");
+        army3.setText(armyBuffer3 != null ? armyBuffer3.getName() : "");
     }
 
     private Army loadArmyConfig(int number) {
-        return SerializeUtils.deserialize(new File(String.format(ARMY_SAVE_PATH.toString(), number)), Army.class);
+        File save = new File(String.format(ARMY_SAVE_PATH.toString(), number));
+
+        if (save.exists()) {
+            return SerializeUtils.deserialize(save, Army.class);
+        } else {
+            return null;
+        }
     }
 
 
