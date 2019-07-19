@@ -225,30 +225,38 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(select1)) {
-            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
-            select1.setDisable(true);
-            select2.setDisable(false);
-            select3.setDisable(false);
-            isSelected = true;
-
+            if (armyBuffer1 != null) {
+                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
+                select1.setDisable(true);
+                select2.setDisable(false);
+                select3.setDisable(false);
+                isSelected = true;
+            } else {
+                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
+            }
         } else if (event.getSource().equals(select2)) {
-            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
-            select2.setDisable(true);
-            select1.setDisable(false);
-            select3.setDisable(false);
-            isSelected = true;
-
+            if (armyBuffer2 != null) {
+                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
+                select1.setDisable(false);
+                select2.setDisable(true);
+                select3.setDisable(false);
+                isSelected = true;
+            } else {
+                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
+            }
         } else if (event.getSource().equals(select3)) {
-            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
-            select3.setDisable(true);
-            select1.setDisable(false);
-            select2.setDisable(false);
-            isSelected = true;
-
+            if (armyBuffer3 != null) {
+                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
+                select1.setDisable(false);
+                select2.setDisable(false);
+                select3.setDisable(true);
+                isSelected = true;
+            } else {
+                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
+            }
         } else if (event.getSource().equals(btnMyReady) && isSelected) {
             Platform.runLater(() -> {
                 GameSocket.instance.readyToPlay();
-                System.out.println("Hatt funktioniert");
                 btnMyReady.setDisable(true);
                 select1.setDisable(true);
                 select2.setDisable(true);
