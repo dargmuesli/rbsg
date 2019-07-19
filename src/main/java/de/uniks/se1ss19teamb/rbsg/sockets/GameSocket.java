@@ -1,19 +1,17 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
-import de.uniks.se1ss19teamb.rbsg.model.InGameMetadata;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
-import de.uniks.se1ss19teamb.rbsg.model.tiles.PlayerTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
-
+import de.uniks.se1ss19teamb.rbsg.util.Strings;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.util.Pair;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,114 +37,188 @@ public class GameSocket extends AbstractWebSocket {
         GameSocket.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
-            if (response.has("action")) {
-                String action = response.get("action").getAsString();
+            if (!Strings.checkHas(response, "action", logger)) {
+                return;
+            }
 
-                switch (action) {
-                    case "info":
-                        if (response.has("data")) {
-                            JsonObject data = response.getAsJsonObject("data");
+            String action = response.get("action").getAsString();
+            JsonObject data = null;
 
-                            if (data.has("message")) {
-                                String message = data.get("message").getAsString();
-
-                                switch (message) {
-                                    case "You have no army with the given id.":
-                                        NotificationHandler.getInstance().sendError(message, logger);
-                                        break;
-                                    case "Initialize game, sending start situation...":
-                                        firstGameInitObjectReceived = false;
-                                        break;
-                                    case "You already joined a game.":
-                                        NotificationHandler.getInstance().sendWarning(message, logger);
-                                        break;
-                                    default:
-                                        System.out.println();
-                                        NotificationHandler.getInstance()
-                                            .sendWarning("Unknown message \"" + message + "\"", logger);
-                                }
-                            }
-                        }
-
-                        break;
-                    case "gameInitObject":
-                        if (response.has("data")) {
-                            JsonObject data = response.getAsJsonObject("data");
-
-                            if (!firstGameInitObjectReceived) {
-                                firstGameInitObjectReceived = true;
-
-                                InGameController.inGameMetadata =
-                                    SerializeUtils.deserialize(data.toString(), InGameMetadata.class);
-                            } else {
-                                if (data.has("id")) {
-                                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
-
-                                    switch (type) {
-                                        case "Forest":
-                                        case "Sand":
-                                        case "Grass":
-                                        case "Water":
-                                        case "Mountain":
-                                            EnvironmentTile environmentTile =
-                                                SerializeUtils.deserialize(data.toString(), EnvironmentTile.class);
-                                            InGameController.environmentTiles.put(new Pair<>(
-                                                environmentTile.getX(), environmentTile.getY()), environmentTile);
-                                            break;
-                                        case "Player":
-                                            InGameController.playerTiles.add(
-                                                SerializeUtils.deserialize(data.toString(), PlayerTile.class));
-                                            break;
-                                        case "Unit":
-                                            InGameController.unitTiles.add(
-                                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
-                                            break;
-                                        default:
-                                            NotificationHandler.getInstance().sendWarning(
-                                                "Unknown tile type: " + type, logger);
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case "gameInitFinished":
-                        InGameController.gameInitFinished = true;
-                        break;
-                    case "gameRemoveObject":
-                        // TODO
-                        break;
-                    case "gameChat":
-                        if (response.has("data")) {
-                            JsonObject data = response.getAsJsonObject("data");
-                            if (data.get("msg") != null) {
-                                //TODO Handle error in MSG
-                                return;
-                            }
-
-                            String from = data.get("from").getAsString();
-                            if (this.ignoreOwn && from.equals(userName)) {
-                                return;
-                            }
-
-                            String msg = data.get("message").getAsString();
-                            boolean isPrivate = data.get("channel").getAsString().equals("private");
-                            for (ChatMessageHandler handler : handlersChat) {
-                                handler.handle(msg, from, isPrivate);
-                            }
-                        }
-                        break;
-                    case "gameNewObject":
-                        if (response.has("data")) {
-                            // TODO maybe handler to chat window
-                            JsonObject data = response.getAsJsonObject("data");
-                            NotificationHandler.getInstance().sendInfo("New Player joined! \""
-                                + data.get("name").getAsString() + "(" + data.get("color").getAsString() + ")"
-                                + "\"", logger);
-                        }
-                        break;
-                    default:
-                        NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);
+            if (!action.equals("gameInitFinished")) {
+                if (!Strings.checkHas(response, "data", logger)) {
+                    return;
                 }
+
+                if (!response.get("data").isJsonPrimitive()) {
+                    data = response.getAsJsonObject("data");
+                }
+            }
+
+            switch (action) {
+                case "info":
+                    if (!Strings.checkHas(data, "message", logger)) {
+                        return;
+                    }
+
+                    String message = data.get("message").getAsString();
+
+                    switch (message) {
+                        case "You have no army with the given id.":
+                            NotificationHandler.getInstance().sendError(message, logger);
+                            break;
+                        case "Initialize game, sending start situation...":
+                            firstGameInitObjectReceived = false;
+                            NotificationHandler.getInstance().sendInfo("Game initializes.", logger);
+                            break;
+                        case "You already joined a game.":
+                            NotificationHandler.getInstance().sendWarning(message, logger);
+                            break;
+                        default:
+                            NotificationHandler.getInstance()
+                                .sendWarning("Unknown message \"" + message + "\"", logger);
+                    }
+
+                    break;
+                case "gameInitObject":
+                    if (!firstGameInitObjectReceived) {
+                        firstGameInitObjectReceived = true;
+
+                        InGameGame inGameGame = SerializeUtils.deserialize(data.toString(), InGameGame.class);
+
+                        InGameController.inGameObjects.clear();
+                        InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
+                    } else {
+                        if (!Strings.checkHas(data, "id", logger)) {
+                            return;
+                        }
+
+                        String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                        switch (type) {
+                            case "Forest":
+                            case "Sand":
+                            case "Grass":
+                            case "Water":
+                            case "Mountain":
+                                EnvironmentTile environmentTile =
+                                    SerializeUtils.deserialize(data.toString(), EnvironmentTile.class);
+                                InGameController.environmentTiles.put(new Pair<>(
+                                    environmentTile.getX(), environmentTile.getY()), environmentTile);
+                                break;
+                            case "Player":
+                                InGamePlayer inGamePlayer =
+                                    SerializeUtils.deserialize(data.toString(), InGamePlayer.class);
+                                InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+                                break;
+                            case "Unit":
+                                InGameController.unitTiles.add(
+                                    SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                break;
+                            default:
+                                NotificationHandler.getInstance().sendWarning(
+                                    "Unknown tile type: " + type, logger);
+                        }
+                    }
+                    break;
+                case "gameInitFinished":
+                    InGameController.gameInitFinished = true;
+                    NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
+                    break;
+                case "gameNewObject":
+                    if (!Strings.checkHas(data, "id", logger)) {
+                        return;
+                    }
+
+                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                        case "Player":
+                            InGamePlayer inGamePlayer = SerializeUtils.deserialize(data.toString(), InGamePlayer.class);
+
+                            InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+
+                            // TODO handle in chat window
+                            NotificationHandler.getInstance().sendInfo("New Player joined! \""
+                                + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
+                                + "\"", logger);
+                            break;
+                        default:
+                            NotificationHandler.getInstance().sendError(
+                                "Unknown new game object id: " + data.get("id").getAsString(), logger);
+                    }
+                    break;
+                case "gameChangeObject":
+                    if (!Strings.checkHas(data, "id", logger)) {
+                        return;
+                    }
+
+                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                        case "Player":
+                            InGamePlayer inGamePlayer =
+                                (InGamePlayer) InGameController.inGameObjects.get(data.get("id").getAsString());
+
+                            if (!Strings.checkHas(data, "fieldName", logger)) {
+                                return;
+                            }
+
+                            String fieldName = data.get("fieldName").getAsString();
+
+                            if (!Strings.checkHas(data, "newValue", logger)) {
+                                return;
+                            }
+
+                            String newValue = data.get("newValue").getAsString();
+
+                            if (fieldName.equals("isReady")) {
+                                inGamePlayer.setReady(Boolean.valueOf(newValue));
+                            }
+
+                            StringBuilder readyMessage = new StringBuilder("Player \"")
+                                .append(inGamePlayer.getName())
+                                .append(" (")
+                                .append(inGamePlayer.getColor())
+                                .append(") is ");
+
+                            if (inGamePlayer.isReady()) {
+                                // TODO maybe handler to chat window
+                                readyMessage.append("now ready.");
+                            } else {
+                                readyMessage.append("not ready.");
+                            }
+
+                            NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
+                            break;
+                        default:
+                            NotificationHandler.getInstance().sendError(
+                                "Unknown changed game object id: " + data.get("id").getAsString(), logger);
+                    }
+                    break;
+                case "gameRemoveObject":
+                    InGameController.inGameObjects.remove(data.get("id").getAsString());
+                    break;
+                case "gameChat":
+                    if (data.get("msg") != null) {
+                        //TODO Handle error in MSG
+                        return;
+                    }
+
+                    String from = data.get("from").getAsString();
+
+                    if (this.ignoreOwn && from.equals(userName)) {
+                        return;
+                    }
+
+                    String msg = data.get("message").getAsString();
+                    boolean isPrivate = data.get("channel").getAsString().equals("private");
+
+                    for (ChatMessageHandler handler : handlersChat) {
+                        handler.handle(msg, from, isPrivate);
+                    }
+                    break;
+                case "inGameError":
+                    NotificationHandler.getInstance().sendError("InGameError: "
+                        + response.get("data").getAsString(), logger);
+                    break;
+                default:
+                    NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);
             }
 
             // TODO: receive chat messages
