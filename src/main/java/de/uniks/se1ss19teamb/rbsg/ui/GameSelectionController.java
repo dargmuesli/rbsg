@@ -42,8 +42,13 @@ public class GameSelectionController {
 
     public void joinGame() {
         join();
+        
+        chatWindow.setPrefHeight(300);
+        chatWindow.setPrefWidth(400);
+
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
+
     }
 
     public void join() {
@@ -61,18 +66,12 @@ public class GameSelectionController {
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
         // damit gehts:
-        /*
+
         btnMinimize.setDisable(false);
         btnMinimize.fire();
         btnMinimize.setDisable(true);
 
-         */
 
-        chatWindow.setPrefHeight(300);
-        chatWindow.setPrefWidth(400);
-
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
     }
 
     public void deleteGame() {
