@@ -93,6 +93,8 @@ public class GameLobbyController {
     private VBox chatBox;
     private JFXButton btnMinimize;
     private boolean isSelected = false;
+    
+    public static GameLobbyController instance;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
@@ -105,6 +107,7 @@ public class GameLobbyController {
 
         gameName.setText(GameSelectionController.joinedGame.getName());
 
+        instance = this;
 
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
@@ -225,30 +228,38 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(select1)) {
-            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
-            select1.setDisable(true);
-            select2.setDisable(false);
-            select3.setDisable(false);
-            isSelected = true;
-
+            if (armyBuffer1 != null) {
+                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
+                select1.setDisable(true);
+                select2.setDisable(false);
+                select3.setDisable(false);
+                isSelected = true;
+            } else {
+                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
+            }
         } else if (event.getSource().equals(select2)) {
-            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
-            select2.setDisable(true);
-            select1.setDisable(false);
-            select3.setDisable(false);
-            isSelected = true;
-
+            if (armyBuffer2 != null) {
+                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
+                select1.setDisable(false);
+                select2.setDisable(true);
+                select3.setDisable(false);
+                isSelected = true;
+            } else {
+                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
+            }
         } else if (event.getSource().equals(select3)) {
-            GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
-            select3.setDisable(true);
-            select1.setDisable(false);
-            select2.setDisable(false);
-            isSelected = true;
-
+            if (armyBuffer3 != null) {
+                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
+                select1.setDisable(false);
+                select2.setDisable(false);
+                select3.setDisable(true);
+                isSelected = true;
+            } else {
+                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
+            }
         } else if (event.getSource().equals(btnMyReady) && isSelected) {
             Platform.runLater(() -> {
                 GameSocket.instance.readyToPlay();
-                System.out.println("Hatt funktioniert");
                 btnMyReady.setDisable(true);
                 select1.setDisable(true);
                 select2.setDisable(true);
@@ -262,18 +273,21 @@ public class GameLobbyController {
             req.sendRequest();
             ArrayList<Army> serverArmies = req.getArmies();
             loadFromServer();
-
-            VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
-            JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
-            btnMinimize.setDisable(false);
+            
             if (serverArmies.size() != 0) {
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
-                    gameLobby.getScene().lookup("#chatWindow"));
-                btnMinimize.fire();
                 GameSocket.instance.startGame();
             }
-
         }
+    }
+    
+    public void startGameTransition() {
+        VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
+        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+        btnMinimize.setDisable(false);
+     
+        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
+                gameLobby.getScene().lookup("#chatWindow"));
+        btnMinimize.fire();
     }
 
     private void loadFromServer() {

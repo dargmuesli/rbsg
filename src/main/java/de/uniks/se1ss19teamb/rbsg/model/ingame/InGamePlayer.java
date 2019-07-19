@@ -1,10 +1,10 @@
-package de.uniks.se1ss19teamb.rbsg.model.tiles;
+package de.uniks.se1ss19teamb.rbsg.model.ingame;
 
-public class PlayerTile extends AbstractTile {
+public class InGamePlayer extends InGameObject {
     private String name;
+    private boolean isReady;
     private String color;
     private String currentGame;
-    private String[] army;
 
     public String getName() {
         return name;
@@ -12,6 +12,14 @@ public class PlayerTile extends AbstractTile {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 
     public String getColor() {
@@ -28,13 +36,5 @@ public class PlayerTile extends AbstractTile {
 
     public void setCurrentGame(String currentGame) {
         this.currentGame = currentGame;
-    }
-
-    public String[] getArmy() {
-        return army;
-    }
-
-    public void setArmy(String[] army) {
-        this.army = army;
     }
 }
