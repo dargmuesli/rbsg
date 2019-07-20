@@ -318,8 +318,10 @@ public class GameSocket extends AbstractWebSocket {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
         json.addProperty("action", "attackUnit");
-        json.addProperty("unitId", unitId);
-        json.addProperty("toAttackId", toAttackId);
+        JsonObject data = new JsonObject();
+        data.addProperty("unitId", unitId);
+        data.addProperty("toAttackId", toAttackId);
+        json.add("data", data);
         sendToWebsocket(json);
     }
 

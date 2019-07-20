@@ -66,6 +66,7 @@ public class InGameController {
     @FXML
     private AnchorPane turnUI;
 
+    public static InGameController instance;
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
@@ -82,6 +83,7 @@ public class InGameController {
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
 
     public void initialize() {
+        instance = this;
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
