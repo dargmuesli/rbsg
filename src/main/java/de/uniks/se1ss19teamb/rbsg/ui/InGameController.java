@@ -87,12 +87,20 @@ public class InGameController {
         return instance;
     }
 
-    public void moveUnit(UnitTile unit, String newPos) {
-        Pane texture = unitPaneMapbyUnitTile.get(unit);
-        stackPaneMapByEnvironmentTileId.get(unit.getPosition()).getChildren()
+    public void moveUnit(String unitId, String newPos) {
+        UnitTile currentUnit = null;
+        for (UnitTile unit : unitTiles) {
+            if (unitId.equals(unit.getId())) {
+                currentUnit = unit;
+                break;
+            }
+        }
+        assert (currentUnit != null);
+        Pane texture = unitPaneMapbyUnitTile.get(currentUnit);
+        stackPaneMapByEnvironmentTileId.get(currentUnit.getPosition()).getChildren()
             .remove(texture);
         stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
-        unit.setPosition(newPos);
+        currentUnit.setPosition(newPos);
     }
 
     public void initialize() {

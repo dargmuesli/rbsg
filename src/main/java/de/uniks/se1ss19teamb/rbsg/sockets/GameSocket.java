@@ -205,8 +205,6 @@ public class GameSocket extends AbstractWebSocket {
                         case "Unit":
                             System.out.println(data.toString());
 
-                            String id = data.get("id").getAsString();
-
                             if (!Strings.checkHas(data, "fieldName", logger)) {
                                 return;
                             }
@@ -216,18 +214,8 @@ public class GameSocket extends AbstractWebSocket {
                                 return;
                             }
                             newValue = data.get("newValue").getAsString();
-
-                            UnitTile clientUnit = null;
-                            for (UnitTile unit : InGameController.unitTiles) {
-                                if (id.equals(unit.getId())) {
-                                    clientUnit = unit;
-                                    break;
-                                }
-                            }
-                            assert (clientUnit != null);
-
-                            InGameController.getInstance().moveUnit(clientUnit, newValue);
-
+                            String id = data.get("id").getAsString();
+                            InGameController.getInstance().moveUnit(id, newValue);
 
                             break;
                         default:
