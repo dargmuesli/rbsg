@@ -38,7 +38,11 @@ public class GameSocket extends AbstractWebSocket {
         GameSocket.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
-            if (!Strings.checkHas(response, "action", logger)) {
+            if (response.get("msg") != null) {
+                NotificationHandler.getInstance()
+                    .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+                return;
+            } else if (!Strings.checkHas(response, "action", logger)) {
                 return;
             }
 
@@ -209,11 +213,6 @@ public class GameSocket extends AbstractWebSocket {
                     InGameController.inGameObjects.remove(data.get("id").getAsString());
                     break;
                 case "gameChat":
-                    if (data.get("msg") != null) {
-                        //TODO Handle error in MSG
-                        return;
-                    }
-
                     String from = data.get("from").getAsString();
 
                     if (this.ignoreOwn && from.equals(userName)) {
