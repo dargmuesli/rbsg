@@ -48,7 +48,10 @@ public class GameSocket extends AbstractWebSocket {
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
-            if (!action.equals("gameInitFinished")) {
+            if (action.equals("gameStarts")) {
+                logger.info("The game is starting!");
+                return;
+            } else if (!action.equals("gameInitFinished")) {
                 if (!Strings.checkHas(response, "data", logger)) {
                     return;
                 }

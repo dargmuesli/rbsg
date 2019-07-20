@@ -86,6 +86,6 @@ public class GameSelectionController {
         join();
         chatWindow.setVisible(false);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
     }
 }
