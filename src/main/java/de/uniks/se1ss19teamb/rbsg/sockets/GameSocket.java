@@ -11,8 +11,10 @@ import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,7 +145,7 @@ public class GameSocket extends AbstractWebSocket {
                             break;
                         case "Unit":
                             InGameController.unitTiles.add(
-                                    SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -154,6 +156,8 @@ public class GameSocket extends AbstractWebSocket {
                     if (!Strings.checkHas(data, "id", logger)) {
                         return;
                     }
+                    String newValue;
+                    String fieldName;
 
                     switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
                         case "Player":
@@ -164,13 +168,13 @@ public class GameSocket extends AbstractWebSocket {
                                 return;
                             }
 
-                            String fieldName = data.get("fieldName").getAsString();
+                            fieldName = data.get("fieldName").getAsString();
 
                             if (!Strings.checkHas(data, "newValue", logger)) {
                                 return;
                             }
 
-                            String newValue = data.get("newValue").getAsString();
+                            newValue = data.get("newValue").getAsString();
 
                             if (fieldName.equals("isReady")) {
                                 inGamePlayer.setReady(Boolean.valueOf(newValue));
@@ -193,13 +197,39 @@ public class GameSocket extends AbstractWebSocket {
                             break;
                         case "Game":
                             if (!InGameController.gameInitFinished
-                                    && data.get("fieldName").getAsString().equals("phase")) {
+                                && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
                                 GameLobbyController.instance.startGameTransition();
                             }
                             break;
                         case "Unit":
                             System.out.println(data.toString());
+
+                            String id = data.get("id").getAsString();
+
+                            if (!Strings.checkHas(data, "position", logger)) {
+                                return;
+                            }
+                            fieldName = data.get("fieldName").getAsString();
+
+                            if (!Strings.checkHas(data, "newValue", logger)) {
+                                return;
+                            }
+                            newValue = data.get("newValue").getAsString();
+
+                            UnitTile clientUnit = null;
+                            for (UnitTile unit : InGameController.unitTiles) {
+                                if (id.equals(unit.getId())) {
+                                    clientUnit = unit;
+                                    break;
+                                }
+                            }
+                            assert (clientUnit != null);
+
+                            InGameController.getInstance().moveUnit(clientUnit, newValue);
+
+
+                            break;
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown changed game object id: " + data.get("id").getAsString(), logger);
@@ -306,7 +336,7 @@ public class GameSocket extends AbstractWebSocket {
         JsonObject data = new JsonObject();
         data.addProperty("unitId", unitId);
         JsonArray jpath = new JsonArray();
-        for(String p: path) {
+        for (String p : path) {
             jpath.add(p);
         }
         data.add("path", jpath);

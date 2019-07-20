@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
-public class TurnUIController {
+public class TurnUiController {
 
     @FXML
     private Line linePlayerOne;
@@ -43,7 +43,7 @@ public class TurnUIController {
     private FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 
     public void initialize() {
-       // players();
+        // players();
         underLining(labelOne, linePlayerOne);
         underLining(labelTwo, linePlayerTwo);
         underLining(labelThree, linePlayerThree);
@@ -63,21 +63,5 @@ public class TurnUIController {
     }
 
     private void players() {
-//        if () {
-//            vBoxOne.setVisible(true);
-//            vBoxTwo.setVisible(true);
-//            labelOne.setText(InGameController.playerTiles.get(0).getName());
-//            labelTwo.setText(InGameController.playerTiles.get(1).getName());
-//        } else if (InGameController.playerTiles.size() == 4) {
-//            labelOne.setText(InGameController.playerTiles.get(0).getName());
-//            labelTwo.setText(InGameController.playerTiles.get(1).getName());
-//            labelThree.setText(InGameController.playerTiles.get(2).getName());
-//            labelFour.setText(InGameController.playerTiles.get(3).getName());
-//            vBoxOne.setVisible(true);
-//            vBoxTwo.setVisible(true);
-//            vBoxThree.setVisible(true);
-//            vBoxFour.setVisible(true);
-//        }
-//    }
     }
 }

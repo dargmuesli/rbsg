@@ -29,6 +29,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class InGameController {
+
+    public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
@@ -66,7 +68,6 @@ public class InGameController {
     @FXML
     private AnchorPane turnUI;
 
-    public static InGameController instance;
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
@@ -74,13 +75,25 @@ public class InGameController {
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
+    private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
-    private UnitTile lastSelectedUnit;
-    private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
+
+
+    public static InGameController getInstance() {
+        return instance;
+    }
+
+    public void moveUnit(UnitTile unit, String newPos) {
+        Pane texture = unitPaneMapbyUnitTile.get(unit);
+        stackPaneMapByEnvironmentTileId.get(unit.getPosition()).getChildren()
+            .remove(texture);
+        stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
+        unit.setPosition(newPos);
+    }
 
     public void initialize() {
         instance = this;
@@ -103,7 +116,7 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUIController controller = loader.getController();
+            TurnUiController controller = loader.getController();
             turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -171,7 +184,7 @@ public class InGameController {
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventStack = (StackPane) event.getSource();
 
-                    if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack) ) {
+                    if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
                         //TODO players turn? Unit already moved?
 
                         EnvironmentTile source = null;
@@ -190,12 +203,6 @@ public class InGameController {
                             }
                         }
 
-                        //client map
-//                        lastSelectedPane.getChildren().remove(unitPaneMapbyUnitTile.get(lastSelectedUnit));
-//                        eventStack.getChildren().add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
-//                        lastSelectedUnit.setPosition(eventStack.getId());
-
-                        //TODO does the expected path need to include the start and goal? does in this solution
                         LinkedList<String> path = new LinkedList<>();
                         path.addFirst(source.getId());
                         String next = previousTileMapById.get(source.getId());
@@ -209,12 +216,7 @@ public class InGameController {
                         GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
 
                         //reset
-                        lastSelectedUnit = null;
                         lastSelectedPane = null;
-                        overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
-                        overlayedStacks.clear();
-                        previousTileMapById.clear();
-
                     } else {
 
                         if (lastSelectedPane == null) {
@@ -248,7 +250,6 @@ public class InGameController {
                         for (UnitTile unitTile : unitTiles) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
                                 drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
-                                lastSelectedUnit = unitTile;
                                 // Do this only for the first (and hopefully only) unitTile.
                                 break;
                             }
@@ -301,47 +302,47 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                // Limit to existing fields and exclude the selected tile.
-                if (neighborId == null || neighborId.equals(startTile.getId())) {
-                    return;
-                }
-
-                EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
-                StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
-
-                // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
-                if (neighborTile.isPassable()
-                    && !overlayedStacks.containsKey(neighborStack)) {
-
-                    Pane overlay = new Pane();
-                    UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
-
-                    if (neighborUnitTile != null
-                        && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
-
-                        // The tile that is going to receive an overlay contains a unit that can be attacked.
-                        // TODO: for when the gamelobby exists
-                        //  Only allow this for own units.
-                        overlay.getStyleClass().add("tile-attack");
-                    } else {
-                        // TODO: for when the gamelobby exists
-                        //  Is it possible to have two units on the same field?
-                        //  Is it possible to walk across a field on which a unit is already present?
-                        overlay.getStyleClass().add("tile-path");
+                    // Limit to existing fields and exclude the selected tile.
+                    if (neighborId == null || neighborId.equals(startTile.getId())) {
+                        return;
                     }
 
-                    // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                    neighborStack.getChildren().add(overlay);
-                    overlayedStacks.put(neighborStack, overlay);
+                    EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
+                    StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
 
-                    // Save the tile from which the tile that received an overlay was reached so that a path can
-                    // be reconstructed for server requests.
-                    previousTileMapById.put(neighborId, currentTile.getId());
+                    // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
+                    if (neighborTile.isPassable()
+                        && !overlayedStacks.containsKey(neighborStack)) {
 
-                    // Add the tile that received an overlay to the quere so that its neighbors are checked too.
-                    queue.add(new Pair<>(neighborTile, currentMp - 1));
-                }
-            });
+                        Pane overlay = new Pane();
+                        UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
+
+                        if (neighborUnitTile != null
+                            && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
+
+                            // The tile that is going to receive an overlay contains a unit that can be attacked.
+                            // TODO: for when the gamelobby exists
+                            //  Only allow this for own units.
+                            overlay.getStyleClass().add("tile-attack");
+                        } else {
+                            // TODO: for when the gamelobby exists
+                            //  Is it possible to have two units on the same field?
+                            //  Is it possible to walk across a field on which a unit is already present?
+                            overlay.getStyleClass().add("tile-path");
+                        }
+
+                        // Add the overlay to the tile and a map so that it can easily be removed in the future.
+                        neighborStack.getChildren().add(overlay);
+                        overlayedStacks.put(neighborStack, overlay);
+
+                        // Save the tile from which the tile that received an overlay was reached so that a path can
+                        // be reconstructed for server requests.
+                        previousTileMapById.put(neighborId, currentTile.getId());
+
+                        // Add the tile that received an overlay to the quere so that its neighbors are checked too.
+                        queue.add(new Pair<>(neighborTile, currentMp - 1));
+                    }
+                });
         }
     }
 
