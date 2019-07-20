@@ -7,7 +7,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUIController">
     <HBox AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" spacing="40">
         <VBox fx:id="vBoxOne" visible="false">
             <Label fx:id="labelOne" text="Team1"></Label>

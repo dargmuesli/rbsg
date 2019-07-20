@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
-public class TurnUiController {
+public class TurnUIController {
 
     @FXML
     private Line linePlayerOne;

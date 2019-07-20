@@ -100,7 +100,7 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUiController controller = loader.getController();
+            TurnUIController controller = loader.getController();
             turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,33 +164,42 @@ public class InGameController {
                 // Create stack panes with an environment texture for every game field.
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
+
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventStack = (StackPane) event.getSource();
 
-                    if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
+                    if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack) ) {
                         //TODO players turn? Unit already moved?
 
                         //client map
-                        stackPaneMapByEnvironmentTileId.get(lastSelectedUnit.getPosition()).getChildren()
-                            .remove(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
-                        stackPaneMapByEnvironmentTileId.get(eventStack).getChildren()
-                            .add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+//                        stackPaneMapByEnvironmentTileId.get(environmentTileMapById.get(lastSelectedPane.getId()).getId()).getChildren().remove(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+                        lastSelectedPane.getChildren().remove(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+//                        stackPaneMapByEnvironmentTileId.get(eventStack.getId()).getChildren()
+//                            .add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+                        eventStack.getChildren().add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+
+                        lastSelectedUnit.setPosition(eventStack.getId());
+
 
                         //TODO does the expected path need to include the start and goal? does in this solution
                         LinkedList<String> path = new LinkedList<>();
                         path.addFirst(eventStack.getId());
-                        String next = previousTileMapById.get(eventStack.getId());
-                        do {
+                        String next = previousTileMapById.get(environmentTileMapById.get(eventStack.getId()).getId());
+                        while (!next.equals(environmentTileMapById.get(lastSelectedPane.getId()).getId())) {
                             path.addFirst(next);
                             next = previousTileMapById.get(next);
-                        } while (!next.equals(lastSelectedPane.getId()));
+                        }
 
+                        System.out.println("path found");
                         //server
                         GameSocket.instance.moveUnit(lastSelectedUnit.getId(), (String[]) path.toArray());
 
                         //reset
                         lastSelectedUnit = null;
                         lastSelectedPane = null;
+                        overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
+                        overlayedStacks.clear();
+                        previousTileMapById.clear();
 
                     } else {
 
