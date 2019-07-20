@@ -206,7 +206,30 @@ public class GameSocket extends AbstractWebSocket {
                     }
                     break;
                 case "gameRemoveObject":
-                    InGameController.inGameObjects.remove(data.get("id").getAsString());
+                    if (!Strings.checkHas(data, "id", logger)) {
+                        return;
+                    }
+
+                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                        case "Player":
+                            InGameController.inGameObjects.remove(data.get("id"));
+
+                            // TODO handle in chat window
+                            NotificationHandler.getInstance()
+                                .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
+                                    + " has left the game!", logger);
+                            break;
+                        case "Unit":
+                            for (int i = 0; i < InGameController.unitTiles.size(); i++) {
+                                if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                    InGameController.unitTiles.remove(i);
+                                }
+                            }
+                            break;
+                        default:
+                            NotificationHandler.getInstance().sendError(
+                                "Unknown game object id: " + data.get("id").getAsString(), logger);
+                    }
                     break;
                 case "gameChat":
                     if (data.get("msg") != null) {
