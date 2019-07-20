@@ -208,6 +208,8 @@ public class GameLobbyController {
     @FXML
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
+            GameSocket.instance.disconnect();
+            MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
         }

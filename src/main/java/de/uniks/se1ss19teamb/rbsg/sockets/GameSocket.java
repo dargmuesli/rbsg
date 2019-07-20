@@ -38,7 +38,11 @@ public class GameSocket extends AbstractWebSocket {
         GameSocket.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
-            if (!Strings.checkHas(response, "action", logger)) {
+            if (response.get("msg") != null) {
+                NotificationHandler.getInstance()
+                    .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+                return;
+            } else if (!Strings.checkHas(response, "action", logger)) {
                 return;
             }
 
@@ -145,7 +149,7 @@ public class GameSocket extends AbstractWebSocket {
                             break;
                         case "Unit":
                             InGameController.unitTiles.add(
-                                    SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -195,7 +199,7 @@ public class GameSocket extends AbstractWebSocket {
                             break;
                         case "Game":
                             if (!InGameController.gameInitFinished
-                                    && data.get("fieldName").getAsString().equals("phase")) {
+                                && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
                                 GameLobbyController.instance.startGameTransition();
                             }
@@ -209,11 +213,6 @@ public class GameSocket extends AbstractWebSocket {
                     InGameController.inGameObjects.remove(data.get("id").getAsString());
                     break;
                 case "gameChat":
-                    if (data.get("msg") != null) {
-                        //TODO Handle error in MSG
-                        return;
-                    }
-
                     String from = data.get("from").getAsString();
 
                     if (this.ignoreOwn && from.equals(userName)) {
