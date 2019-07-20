@@ -79,6 +79,7 @@ public class InGameController {
     private VBox chatBox;
     private JFXButton btnMinimize;
     private UnitTile lastSelectedUnit;
+    private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
 
     public void initialize() {
         UserInterfaceUtils.initialize(
@@ -171,28 +172,39 @@ public class InGameController {
                     if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack) ) {
                         //TODO players turn? Unit already moved?
 
+                        EnvironmentTile source = null;
+                        for (EnvironmentTile tile : environmentTiles.values()) {
+                            if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(tile.getId()))) {
+                                source = tile;
+                                break;
+                            }
+                        }
+
+                        UnitTile previous = null;
+                        for (UnitTile unitTile : unitTiles) {
+                            if (lastSelectedPane.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
+                                previous = unitTile;
+                                break;
+                            }
+                        }
+
                         //client map
-//                        stackPaneMapByEnvironmentTileId.get(environmentTileMapById.get(lastSelectedPane.getId()).getId()).getChildren().remove(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
-                        lastSelectedPane.getChildren().remove(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
-//                        stackPaneMapByEnvironmentTileId.get(eventStack.getId()).getChildren()
-//                            .add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
-                        eventStack.getChildren().add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
-
-                        lastSelectedUnit.setPosition(eventStack.getId());
-
+//                        lastSelectedPane.getChildren().remove(unitPaneMapbyUnitTile.get(lastSelectedUnit));
+//                        eventStack.getChildren().add(TextureManager.getTextureInstance(lastSelectedUnit.getType()));
+//                        lastSelectedUnit.setPosition(eventStack.getId());
 
                         //TODO does the expected path need to include the start and goal? does in this solution
                         LinkedList<String> path = new LinkedList<>();
-                        path.addFirst(eventStack.getId());
-                        String next = previousTileMapById.get(environmentTileMapById.get(eventStack.getId()).getId());
-                        while (!next.equals(environmentTileMapById.get(lastSelectedPane.getId()).getId())) {
+                        path.addFirst(source.getId());
+                        String next = previousTileMapById.get(source.getId());
+                        assert previous != null;
+                        while (!next.equals(previous.getPosition())) {
                             path.addFirst(next);
-                            next = previousTileMapById.get(next);
+                            next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
                         }
 
-                        System.out.println("path found");
                         //server
-                        GameSocket.instance.moveUnit(lastSelectedUnit.getId(), (String[]) path.toArray());
+                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
 
                         //reset
                         lastSelectedUnit = null;
@@ -252,8 +264,10 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
+            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
-                .add(TextureManager.getTextureInstance(unitTile.getType()));
+                .add(pane);
+            unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);

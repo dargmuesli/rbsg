@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
@@ -197,6 +198,8 @@ public class GameSocket extends AbstractWebSocket {
                                 GameLobbyController.instance.startGameTransition();
                             }
                             break;
+                        case "Unit":
+                            System.out.println(data.toString());
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown changed game object id: " + data.get("id").getAsString(), logger);
@@ -300,8 +303,14 @@ public class GameSocket extends AbstractWebSocket {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
         json.addProperty("action", "moveUnit");
-        json.addProperty("unitId", unitId);
-        json.addProperty("path", SerializeUtils.serialize(path));
+        JsonObject data = new JsonObject();
+        data.addProperty("unitId", unitId);
+        JsonArray jpath = new JsonArray();
+        for(String p: path) {
+            jpath.add(p);
+        }
+        data.add("path", jpath);
+        json.add("data", data);
         sendToWebsocket(json);
     }
 
