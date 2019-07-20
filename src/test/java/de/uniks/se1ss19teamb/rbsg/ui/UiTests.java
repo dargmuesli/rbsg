@@ -63,7 +63,7 @@ class UiTests extends ApplicationTest {
     @Test
     void registerTest() {
         clickOn("#btnRegistration");
-        sleep(2000); // sleep to finisch transition
+        sleep(2000); // sleep to finish transition
         clickOn("#username");
         write("TeamBTestUser").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
@@ -77,7 +77,7 @@ class UiTests extends ApplicationTest {
         write("z").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#btnCancel");
-        sleep(2000); // sleep to finisch transition
+        sleep(2000); // sleep to finish transition
     }
 
     @Test
@@ -87,9 +87,9 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(3000); // sleep to finisch transition
+        sleep(3000); // sleep to finish transition
         clickOn("#btnArmyManager");
-        sleep(2000); // sleep to finisch transition
+        sleep(2000); // sleep to finish transition
         clickOn("#txtfldArmyName");
         write("testArmy");
         clickOn("#btnSetArmyName");
@@ -109,7 +109,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnLoadServer");
         clickOn("#btnSaveServer");
         clickOn("#btnLogout");
-        sleep(2000); // sleep to finisch transition
+        sleep(2000); // sleep to finish transition
     }
 
     @Test
@@ -119,7 +119,7 @@ class UiTests extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000); // sleep to finisch action
+        sleep(2000); // sleep to finish action
         // chat
         clickOn("#message");
         write("/all ");
@@ -129,7 +129,7 @@ class UiTests extends ApplicationTest {
         clickOn("#gameName");
         write("ayGame");
         clickOn("#btnCreate");
-        sleep(500); // sleep to finisch action
+        sleep(500); // sleep to finish action
         ListView list = lookup("#gameListView").queryAs(ListView.class);
         HBox box;
         for (int i = 0; i < list.getItems().size(); i++) {
@@ -138,7 +138,7 @@ class UiTests extends ApplicationTest {
             if (label.getText().equals("ayGame")) {
                 Button button = (Button) box.lookup("#delete");
                 clickOn(button);
-                sleep(500); // sleep to finisch action
+                sleep(500); // sleep to finish action
             }
         }
         // logout
@@ -147,7 +147,7 @@ class UiTests extends ApplicationTest {
         clickOn("#btnColorMode");
         clickOn("#btnColorMode");
         clickOn("#btnLogout");
-        sleep(2000); // sleep to finisch transition
+        sleep(2000); // sleep to finish transition
     }
 
     // username and password: junit
@@ -189,7 +189,7 @@ class UiTests extends ApplicationTest {
         StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
         Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
         clickOn("#hamburgerMenu");
-        sleep(1000); // sleep to finisch action
+        sleep(1000); // sleep to finish action
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
         clickOn("#btnMiniMap");
