@@ -71,7 +71,8 @@ public class WebSocketClient {
             }
 
         };
-        this.noopTimer.schedule(task, 0, 1000 * 60 * 4);
+        // send NoOp every 30 seconds
+        this.noopTimer.schedule(task, 0, 1000 * 30);
     }
 
     @OnMessage
