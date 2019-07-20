@@ -207,7 +207,7 @@ public class GameSocket extends AbstractWebSocket {
 
                             String id = data.get("id").getAsString();
 
-                            if (!Strings.checkHas(data, "position", logger)) {
+                            if (!Strings.checkHas(data, "fieldName", logger)) {
                                 return;
                             }
                             fieldName = data.get("fieldName").getAsString();

@@ -19,10 +19,10 @@ public class SoundManager {
         instance.sounds.put("BazookaV1", new Sound("bazooka1.wav",true));
         instance.sounds.put("BazookaV1.1", new Sound("bazooka2.wav",true));
         instance.sounds.put("HelicopterV1", new Sound("chooper.wav",true));
-        instance.sounds.put("JeepV1", new Sound("jeep",true));
-        instance.sounds.put("lightTankV1", new Sound("lightTank",true));
-        instance.sounds.put("InfantryV1_Fire", new Sound("infantry_fire",true));
-        instance.sounds.put("InfantryV1_Move", new Sound("infantry_move",true));
+        instance.sounds.put("JeepV1", new Sound("jeep.wav",true));
+        instance.sounds.put("lightTankV1", new Sound("lightTank.wav",true));
+        instance.sounds.put("InfantryV1_Fire", new Sound("infantry_fire.wav",true));
+        instance.sounds.put("InfantryV1_Move", new Sound("infantry_move.wav",true));
         instance.sounds.put("panzer",new Sound("panzer.wav", true));
 
         //https://www.youtube.com/watch?v=VZec_PqXXzo
