@@ -16,6 +16,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.io.IOException;
 import java.util.*;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -96,11 +97,14 @@ public class InGameController {
             }
         }
         assert (currentUnit != null);
-        Pane texture = unitPaneMapbyUnitTile.get(currentUnit);
-        stackPaneMapByEnvironmentTileId.get(currentUnit.getPosition()).getChildren()
-            .remove(texture);
-        stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
-        currentUnit.setPosition(newPos);
+        UnitTile finalCurrentUnit = currentUnit;
+        Platform.runLater(() -> {
+            Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
+            stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
+                .remove(texture);
+            stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
+            finalCurrentUnit.setPosition(newPos);
+        });
     }
 
     public void initialize() {
@@ -193,7 +197,6 @@ public class InGameController {
                     StackPane eventStack = (StackPane) event.getSource();
 
                     if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
-                        //TODO players turn? Unit already moved?
 
                         EnvironmentTile source = null;
                         for (EnvironmentTile tile : environmentTiles.values()) {

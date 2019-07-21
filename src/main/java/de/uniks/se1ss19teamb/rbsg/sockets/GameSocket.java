@@ -206,7 +206,6 @@ public class GameSocket extends AbstractWebSocket {
                             }
                             break;
                         case "Unit":
-                            System.out.println(data.toString());
 
                             if (!Strings.checkHas(data, "fieldName", logger)) {
                                 return;
@@ -219,7 +218,6 @@ public class GameSocket extends AbstractWebSocket {
                             newValue = data.get("newValue").getAsString();
                             String id = data.get("id").getAsString();
                             InGameController.getInstance().moveUnit(id, newValue);
-
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
