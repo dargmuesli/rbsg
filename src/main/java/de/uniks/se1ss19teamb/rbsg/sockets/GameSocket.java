@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
@@ -10,8 +11,10 @@ import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,14 +41,21 @@ public class GameSocket extends AbstractWebSocket {
         GameSocket.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
-            if (!Strings.checkHas(response, "action", logger)) {
+            if (response.get("msg") != null) {
+                NotificationHandler.getInstance()
+                    .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+                return;
+            } else if (!Strings.checkHas(response, "action", logger)) {
                 return;
             }
 
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
-            if (!action.equals("gameInitFinished")) {
+            if (action.equals("gameStarts")) {
+                logger.info("The game is starting!");
+                return;
+            } else if (!action.equals("gameInitFinished")) {
                 if (!Strings.checkHas(response, "data", logger)) {
                     return;
                 }
@@ -142,7 +152,7 @@ public class GameSocket extends AbstractWebSocket {
                             break;
                         case "Unit":
                             InGameController.unitTiles.add(
-                                    SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -153,6 +163,8 @@ public class GameSocket extends AbstractWebSocket {
                     if (!Strings.checkHas(data, "id", logger)) {
                         return;
                     }
+                    String newValue;
+                    String fieldName;
 
                     switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
                         case "Player":
@@ -163,13 +175,13 @@ public class GameSocket extends AbstractWebSocket {
                                 return;
                             }
 
-                            String fieldName = data.get("fieldName").getAsString();
+                            fieldName = data.get("fieldName").getAsString();
 
                             if (!Strings.checkHas(data, "newValue", logger)) {
                                 return;
                             }
 
-                            String newValue = data.get("newValue").getAsString();
+                            newValue = data.get("newValue").getAsString();
 
                             if (fieldName.equals("isReady")) {
                                 inGamePlayer.setReady(Boolean.valueOf(newValue));
@@ -192,10 +204,24 @@ public class GameSocket extends AbstractWebSocket {
                             break;
                         case "Game":
                             if (!InGameController.gameInitFinished
-                                    && data.get("fieldName").getAsString().equals("phase")) {
+                                && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
                                 GameLobbyController.instance.startGameTransition();
                             }
+                            break;
+                        case "Unit":
+
+                            if (!Strings.checkHas(data, "fieldName", logger)) {
+                                return;
+                            }
+                            fieldName = data.get("fieldName").getAsString();
+
+                            if (!Strings.checkHas(data, "newValue", logger)) {
+                                return;
+                            }
+                            newValue = data.get("newValue").getAsString();
+                            String id = data.get("id").getAsString();
+                            InGameController.getInstance().moveUnit(id, newValue);
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -206,11 +232,6 @@ public class GameSocket extends AbstractWebSocket {
                     InGameController.inGameObjects.remove(data.get("id").getAsString());
                     break;
                 case "gameChat":
-                    if (data.get("msg") != null) {
-                        //TODO Handle error in MSG
-                        return;
-                    }
-
                     String from = data.get("from").getAsString();
 
                     if (this.ignoreOwn && from.equals(userName)) {
@@ -300,8 +321,14 @@ public class GameSocket extends AbstractWebSocket {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
         json.addProperty("action", "moveUnit");
-        json.addProperty("unitId", unitId);
-        json.addProperty("path", SerializeUtils.serialize(path));
+        JsonObject data = new JsonObject();
+        data.addProperty("unitId", unitId);
+        JsonArray jpath = new JsonArray();
+        for (String p : path) {
+            jpath.add(p);
+        }
+        data.add("path", jpath);
+        json.add("data", data);
         sendToWebsocket(json);
     }
 
@@ -309,8 +336,10 @@ public class GameSocket extends AbstractWebSocket {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
         json.addProperty("action", "attackUnit");
-        json.addProperty("unitId", unitId);
-        json.addProperty("toAttackId", toAttackId);
+        JsonObject data = new JsonObject();
+        data.addProperty("unitId", unitId);
+        data.addProperty("toAttackId", toAttackId);
+        json.add("data", data);
         sendToWebsocket(json);
     }
 

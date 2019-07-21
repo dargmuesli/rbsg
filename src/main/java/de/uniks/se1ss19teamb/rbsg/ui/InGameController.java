@@ -16,6 +16,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.io.IOException;
 import java.util.*;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +30,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class InGameController {
+
+    public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
@@ -73,13 +76,39 @@ public class InGameController {
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
+    private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
 
+
+    public static InGameController getInstance() {
+        return instance;
+    }
+
+    public void moveUnit(String unitId, String newPos) {
+        UnitTile currentUnit = null;
+        for (UnitTile unit : unitTiles) {
+            if (unitId.equals(unit.getId())) {
+                currentUnit = unit;
+                break;
+            }
+        }
+        assert (currentUnit != null);
+        UnitTile finalCurrentUnit = currentUnit;
+        Platform.runLater(() -> {
+            Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
+            stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
+                .remove(texture);
+            stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
+            finalCurrentUnit.setPosition(newPos);
+        });
+    }
+
     public void initialize() {
+        instance = this;
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
@@ -162,25 +191,62 @@ public class InGameController {
                 // Create stack panes with an environment texture for every game field.
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(TextureManager.computeTerrainTextureInstance(environmentTiles, j, i));
+
                 stack.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     StackPane eventStack = (StackPane) event.getSource();
 
-                    if (lastSelectedPane == null) {
-                        // Nothing was selected.
-                        // The new field is selected.
-                        eventStack.getChildren().add(selectionOverlay);
-                        lastSelectedPane = eventStack;
-                    } else if (eventStack != lastSelectedPane) {
-                        // A new field was selected.
-                        // The old field is deselected and the new field is selected.
+                    if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
+                        //find eviromenttile where you last klicked
+                        EnvironmentTile source = null;
+                        for (EnvironmentTile tile : environmentTiles.values()) {
+                            if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(tile.getId()))) {
+                                source = tile;
+                                break;
+                            }
+                        }
+                        //find unittile where you clicked before
+                        UnitTile previous = null;
+                        for (UnitTile unitTile : unitTiles) {
+                            if (lastSelectedPane.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
+                                previous = unitTile;
+                                break;
+                            }
+                        }
+
+                        LinkedList<String> path = new LinkedList<>();
+                        path.addFirst(source.getId());
+                        String next = previousTileMapById.get(source.getId());
+                        assert previous != null;
+                        while (!next.equals(previous.getPosition())) {
+                            path.addFirst(next);
+                            next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
+                        }
+
+                        //server
+                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+
+                        //reset
                         lastSelectedPane.getChildren().remove(selectionOverlay);
-                        eventStack.getChildren().add(selectionOverlay);
-                        lastSelectedPane = eventStack;
-                    } else {
-                        // The old field was selected.
-                        // The old field is deselected.
-                        eventStack.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
+                    } else {
+
+                        if (lastSelectedPane == null) {
+                            // Nothing was selected.
+                            // The new field is selected.
+                            eventStack.getChildren().add(selectionOverlay);
+                            lastSelectedPane = eventStack;
+                        } else if (eventStack != lastSelectedPane) {
+                            // A new field was selected.
+                            // The old field is deselected and the new field is selected.
+                            lastSelectedPane.getChildren().remove(selectionOverlay);
+                            eventStack.getChildren().add(selectionOverlay);
+                            lastSelectedPane = eventStack;
+                        } else {
+                            // The old field was selected.
+                            // The old field is deselected.
+                            eventStack.getChildren().remove(selectionOverlay);
+                            lastSelectedPane = null;
+                        }
                     }
 
                     // All overlays and saved path parts are cleared.
@@ -195,13 +261,13 @@ public class InGameController {
                         for (UnitTile unitTile : unitTiles) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
                                 drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
-
                                 // Do this only for the first (and hopefully only) unitTile.
                                 break;
                             }
                         }
                     }
                 });
+
                 gameGrid.add(stack, j, i);
                 stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
                 environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),
@@ -212,8 +278,10 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
+            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
-                .add(TextureManager.getTextureInstance(unitTile.getType()));
+                .add(pane);
+            unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
@@ -255,8 +323,9 @@ public class InGameController {
 
                     // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
                     if (neighborTile.isPassable()
-                         && !overlayedStacks.containsKey(neighborStack)) {
 
+                        && !overlayedStacks.containsKey(neighborStack)) {
+                        
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
