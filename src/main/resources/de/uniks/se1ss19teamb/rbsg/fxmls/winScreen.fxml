@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.WinScreenController">
-   <ImageView fitHeight="600.0" fitWidth="400.0" layoutX="202.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="trophyPic" visible="false" fitHeight="600.0" fitWidth="400.0" layoutX="202.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
        <image>
            <Image url="/de/uniks/se1ss19teamb/rbsg/winScreen/kisspng-trophy-medal-clip-art-golden-cup-5ab5a5777b2d43.png" />
        </image>
    </ImageView>
-    <Label layoutX="383.0" layoutY="489.0" text="Winner" />
+    <Label fx:id="winnerLabel" layoutX="383.0"  visible="false" layoutY="489.0" text="Winner" />
 </AnchorPane>
