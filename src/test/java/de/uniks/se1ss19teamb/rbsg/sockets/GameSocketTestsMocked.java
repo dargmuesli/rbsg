@@ -26,11 +26,11 @@ public class GameSocketTestsMocked {
 
     @Test
     public void getEndpointTest() {
-        Assert.assertEquals("/game?gameId=myGameId&armyId=myArmyId&spectator=true", gameSocket.getEndpoint());
+        Assert.assertEquals("/game?gameId=myGameId&armyId=myArmyId&spectator=false", gameSocket.getEndpoint());
 
         GameSocket gameSocketSpectator = spy(new GameSocket(userName, userKey, gameId, armyId, true));
 
-        Assert.assertEquals("/game?gameId=myGameId", gameSocketSpectator.getEndpoint());
+        Assert.assertEquals("/game?gameId=myGameId&spectator=true", gameSocketSpectator.getEndpoint());
     }
 
     @Test
@@ -75,19 +75,19 @@ public class GameSocketTestsMocked {
         verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
         Assert.assertEquals(
             "{\"messageType\":\"command\",\"action\":\"moveUnit\","
-                + "\"unitId\":\"123456789\",\"path\":\"[\\\"987\\\",\\\"654\\\",\\\"321\\\"]\"}",
+                + "\"data\":{\"unitId\":\"123456789\",\"path\":[\"987\",\"654\",\"321\"]}}",
             argumentCaptor.getValue().toString());
     }
 
-    @Test
-    public void attackUnitTest() {
-        gameSocket.attackUnit("123456789", "987654321");
-        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
-        Assert.assertEquals(
-            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
-                + "\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}",
-            argumentCaptor.getValue().toString());
-    }
+    //    @Test
+    //    public void attackUnitTest() {
+    //        gameSocket.attackUnit("123456789", "987654321");
+    //        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
+    //        Assert.assertEquals(
+    //            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
+    //                + "\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}",
+    //            argumentCaptor.getValue().toString());
+    //    }
 
     @Test
     public void nextPhaseTest() {
