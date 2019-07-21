@@ -197,7 +197,7 @@ public class InGameController {
                     StackPane eventStack = (StackPane) event.getSource();
 
                     if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
-
+                        //find eviromenttile where you last klicked
                         EnvironmentTile source = null;
                         for (EnvironmentTile tile : environmentTiles.values()) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(tile.getId()))) {
@@ -205,7 +205,7 @@ public class InGameController {
                                 break;
                             }
                         }
-
+                        //find unittile where you clicked before
                         UnitTile previous = null;
                         for (UnitTile unitTile : unitTiles) {
                             if (lastSelectedPane.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
@@ -227,6 +227,7 @@ public class InGameController {
                         GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
 
                         //reset
+                        lastSelectedPane.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
                     } else {
 
