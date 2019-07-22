@@ -221,7 +221,7 @@ public class GameSocket extends AbstractWebSocket {
                             }
                             newValue = data.get("newValue").getAsString();
                             String id = data.get("id").getAsString();
-                            InGameController.getInstance().moveUnit(id, newValue);
+                            InGameController.getInstance().changeUnitPos(id, newValue);
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -245,6 +245,7 @@ public class GameSocket extends AbstractWebSocket {
                         case "Unit":
                             for (int i = 0; i < InGameController.unitTiles.size(); i++) {
                                 if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                    InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
                                     InGameController.unitTiles.remove(i);
                                 }
                             }

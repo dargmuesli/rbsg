@@ -301,12 +301,14 @@ public class MainController {
                 chatWindowHeight = chatWindow.getHeight();
                 chatWindow.setPrefWidth(0);
                 chatWindow.setPrefHeight(0);
-                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE));
+                Platform.runLater(() ->
+                    btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE)));
             } else {
                 chatBox.setVisible(true);
                 chatWindow.setPrefWidth(chatWindowWidth);
                 chatWindow.setPrefHeight(chatWindowHeight);
-                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE));
+                Platform.runLater(() ->
+                    btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE)));
             }
         }
 
