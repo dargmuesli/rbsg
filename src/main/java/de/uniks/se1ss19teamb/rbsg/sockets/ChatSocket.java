@@ -1,9 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
 
 public class ChatSocket extends AbstractWebSocket {
 
@@ -24,7 +27,8 @@ public class ChatSocket extends AbstractWebSocket {
         this.ignoreOwn = ignoreOwn;
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
-                //TODO Handle error in MSG
+                NotificationHandler.getInstance()
+                    .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
                 return;
             }
 
