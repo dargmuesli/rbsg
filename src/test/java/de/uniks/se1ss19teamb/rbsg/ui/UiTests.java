@@ -2,7 +2,11 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
+import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -81,38 +85,6 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void saveArmyTest() {
-        clickOn("#userName");
-        write("TeamBTestUser");
-        clickOn("#password");
-        write("qwertz");
-        clickOn("#btnLogin");
-        sleep(3000); // sleep to finish transition
-        clickOn("#btnArmyManager");
-        sleep(2000); // sleep to finish transition
-        clickOn("#txtfldArmyName");
-        write("testArmy");
-        clickOn("#btnSetArmyName");
-        for (int i = 0; i < 10; i++) {
-            clickOn("+");
-        }
-        clickOn("#btnMinimize");
-        clickOn("#btnMinimize");
-        clickOn("#btnSave1");
-        clickOn("#btnSave2");
-        clickOn("#btnSave3");
-        sleep(2600); // wating for notification do disappear
-        clickOn("Save/Load");
-        clickOn("#btnSave1");
-        clickOn("#btnSave2");
-        clickOn("#btnSave3");
-        clickOn("#btnLoadServer");
-        clickOn("#btnSaveServer");
-        clickOn("#btnLogout");
-        sleep(2000); // sleep to finish transition
-    }
-
-    @Test
     void loginMainTest() {
         clickOn("#userName");
         write("TeamBTestUser");
@@ -153,16 +125,65 @@ class UiTests extends ApplicationTest {
     // username and password: junit
     @Test
     void testInGame() {
+        // player without UI
+        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
+        login.sendRequest();
+        Assert.assertTrue(login.getSuccessful());
+
+        CreateGameRequest createGame = new CreateGameRequest("junitTestGameB", 2, login.getUserKey());
+        createGame.sendRequest();
+        Assert.assertTrue(createGame.getSuccessful());
+
+        JoinGameRequest joinGame = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
+        joinGame.sendRequest();
+        Assert.assertTrue(joinGame.getSuccessful());
+
+        QueryArmiesRequest req = new QueryArmiesRequest(login.getUserKey());
+        req.sendRequest();
+        Assert.assertTrue(req.getSuccessful());
+        ArrayList<Army> serverArmies = req.getArmies();
+
+        GameSocket gameSocket = new GameSocket(
+            "TeamBTestUser",
+            login.getUserKey(),
+            createGame.getGameId(),
+            null,
+            false);
+
+        gameSocket.connect();
+        gameSocket.changeArmy(serverArmies.get(0).getId());
+        gameSocket.readyToPlay();
+
+        // player with UI
         clickOn("#userName");
         write("TeamBTestUser2");
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000); // sleep to finish action
-        clickOn("#gameName");
-        write("junitTestGameB");
-        clickOn("#btnCreate");
-        sleep(2000); // sleep to finish action
+        sleep(3000); // sleep to finish action
+        clickOn("#btnArmyManager");
+        sleep(2000); // sleep to finish transition
+        clickOn("#txtfldArmyName");
+        write("testArmy");
+        clickOn("#btnSetArmyName");
+        for (int i = 0; i < 10; i++) {
+            clickOn("+");
+        }
+        clickOn("#btnMinimize");
+        clickOn("#btnMinimize");
+        clickOn("#btnLoadServer");
+        clickOn("#btnSave1");
+        clickOn("#btnSave2");
+        clickOn("#btnSave3");
+        sleep(2600); // wating for notification do disappear
+        clickOn("Save/Load");
+        clickOn("#btnSave1");
+        clickOn("#btnSave2");
+        clickOn("#btnSave3");
+        clickOn("#btnSaveServer");
+        sleep(2600); // wating for notification do disappear
+        clickOn("#btnBack");
+        sleep(2000); // sleep to finish transition
         ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
         HBox box = null;
         for (HBox gameField : list.getItems()) {
@@ -175,15 +196,9 @@ class UiTests extends ApplicationTest {
         assert box != null;
         clickOn(box.getChildren().get(1));
         sleep(2000); // sleep to finish action
-        clickOn("#btnLoadServer");
-        for (int i = 0; i < 9; i++) {
-            clickOn("+");
-        }
-        clickOn("-");
-        clickOn("+");
-        // sleep(1000); // sleep to finish action // not working at hte moment replaced with loop
-        HBox btnBox = lookup("#hboxLowerButtons").queryAs(HBox.class);
-        clickOn(btnBox.getChildren().get(2));
+        clickOn("#select1");
+        clickOn("#btnMyReady");
+        clickOn("#btnStart");
         sleep(7000); // sleep to finish action
         GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
         StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
@@ -196,7 +211,9 @@ class UiTests extends ApplicationTest {
         clickOn("#btnMiniMap");
         clickOn("#btnMinimize");
         clickOn("#message").write("Hello").clickOn("#btnSend");
-        clickOn("#message").write("/w TeamBTestUser2 asd").clickOn("#btnSend");
+        clickOn("#message").write("/w TeamBTestUser asd").clickOn("#btnSend");
+        gameSocket.leaveGame();
+        gameSocket.disconnect();
         clickOn("#btnMinimize");
         clickOn("#chatWindow")
             .press(MouseButton.PRIMARY)
