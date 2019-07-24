@@ -12,6 +12,6 @@ public abstract class AbstractTile {
     }
 
     public String getName() {
-        return id.replaceFirst("@.+", "");
+        return id.replaceFirst("\u00E4.+", "");
     }
 }
