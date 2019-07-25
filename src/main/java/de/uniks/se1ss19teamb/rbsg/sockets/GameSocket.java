@@ -23,6 +23,9 @@ public class GameSocket extends AbstractWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private List<GameSocketMessageHandler.GameSocketGameRemoveObject> handlersRemoveObject =
+        new ArrayList<>();
+
     public static GameSocket instance;
     private static String userKey;
     private static String gameId;
@@ -233,7 +236,9 @@ public class GameSocket extends AbstractWebSocket {
                         return;
                     }
 
-                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                    switch (type) {
                         case "Player":
                             InGameController.inGameObjects.remove(data.get("id"));
 
@@ -253,6 +258,10 @@ public class GameSocket extends AbstractWebSocket {
                         default:
                             NotificationHandler.getInstance().sendError(
                                 "Unknown game object id: " + data.get("id").getAsString(), logger);
+                    }
+
+                    for (GameSocketMessageHandler.GameSocketGameRemoveObject handler : handlersRemoveObject) {
+                        handler.handle(type);
                     }
                     break;
                 case "gameChat":
@@ -389,6 +398,13 @@ public class GameSocket extends AbstractWebSocket {
         json.addProperty("to", target);
         json.addProperty("message", message);
         sendToWebsocket(json);
+    }
+
+    //Custom Helpers
+
+    public void registerGameRemoveObject(GameSocketMessageHandler
+                                            .GameSocketGameRemoveObject handler) {
+        handlersRemoveObject.add(handler);
     }
 
 }
