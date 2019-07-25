@@ -6,7 +6,8 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.List;
 
-public class CreateArmyRequest extends AbstractRestRequest {
+public class
+CreateArmyRequest extends AbstractRestRequest {
 
     private String userToken;
     private String armyName;
