@@ -101,4 +101,26 @@ public class WebSocketTestsMocked {
         Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true"));
     }
 
+    @Test
+    public void gameChatSocketTest() {
+
+        GameSocket gameChat = new GameSocket("TeamBTestUser", "12345", "54321", "12543", false);
+
+        List<String> gameMsg = new ArrayList<>();
+
+        gameChat.registerGameMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|' + isPrivate));
+
+        setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"all\",\"message\":\"Hello World!\",\""
+            + "from\":\"TeamBTestUser2\"}}", gameChat);
+        gameChat.sendMessage("Hello World!");
+
+        setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"private\",\"to\":\"TeamBTestUser2\",\""
+            + "message\":\"Hello World! Private\",\"from\":\"TeamBTestUser2\"}}", gameChat);
+        gameChat.sendPrivateMessage("Hello World! Private", "TeamBTestUser");
+
+
+        Assert.assertTrue(gameMsg.contains("Hello World!|TeamBTestUser2|false"));
+        Assert.assertTrue(gameMsg.contains("Hello World! Private|TeamBTestUser2|true"));
+    }
+
 }
