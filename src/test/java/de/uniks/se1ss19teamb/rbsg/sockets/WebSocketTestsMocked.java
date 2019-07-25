@@ -89,16 +89,16 @@ public class WebSocketTestsMocked {
 
         gameSocket.registerGameRemoveObject((type -> gameMsg.add("removed|" + type)));
 
-        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\"Game@37392bfa\",\""
-            + "fieldName\":\"allUnits\"}}", gameSocket);
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
+            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
         setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"from\":\"Game@37392bfa\",\""
             + "fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\",\"from\":\"Game@37392bfa\",\""
-            + "fieldName\":\"allUnits\"}}", gameSocket);
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\",\"from\":\""
+            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
         Assert.assertTrue(gameMsg.contains("removed|Player"));
@@ -132,7 +132,8 @@ public class WebSocketTestsMocked {
 
         List<String> gameMsg = new ArrayList<>();
 
-        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|' + isPrivate));
+        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
+            + isPrivate));
 
         setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"all\",\"message\":\"Hello World!\",\""
             + "from\":\"TeamBTestUser2\"}}", gameSocket);
