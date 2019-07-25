@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
+import com.sun.xml.internal.bind.v2.TODO;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,10 +39,14 @@ public class TurnUiController {
     private VBox vBoxThree;
     @FXML
     private VBox vBoxFour;
+    @FXML
+    private Label turnLabel;
 
     private FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+    private static int count = 0;
 
     public void initialize() {
+        getTurn();
         players();
         underLining(labelOne, linePlayerOne);
         underLining(labelTwo, linePlayerTwo);
@@ -58,6 +63,8 @@ public class TurnUiController {
     private void setOnAction(ActionEvent event) {
         if (event.getSource().equals(phaseBtn)) {
             GameSocket.instance.nextPhase();
+            count++;
+            getTurn();
         }
     }
 
@@ -66,5 +73,16 @@ public class TurnUiController {
         vBoxTwo.setVisible(true);
         vBoxThree.setVisible(true);
         vBoxFour.setVisible(true);
+        //implementation of playernames needed.
+    }
+
+    private void getTurn() {
+        if (count % 3 == 0) {
+            turnLabel.setText("Move Phase 1");
+        } else if (count % 3 == 1) {
+            turnLabel.setText("Attack Phase");
+        } else if (count % 3 == 2) {
+            turnLabel.setText("Move Phase 2");
+        }
     }
 }

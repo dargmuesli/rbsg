@@ -25,6 +25,9 @@
             <Label fx:id="labelFour" text="Team4"></Label>
             <Line fx:id="linePlayerFour"></Line>
         </VBox>
+        <HBox spacing="10">
         <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#setOnAction"></JFXButton>
+        <Label fx:id="turnLabel" text="test"></Label>
+        </HBox>
     </HBox>
 </AnchorPane>
