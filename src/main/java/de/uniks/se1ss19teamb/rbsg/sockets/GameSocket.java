@@ -230,7 +230,7 @@ public class GameSocket extends AbstractWebSocket {
                                     InGameController.getInstance().changeUnitPos(id, newValue);
                                     break;
                                 case "hp":
-                                    
+                                    InGameController.getInstance().changeUnitHp(id, newValue);
                             }
 
                             break;

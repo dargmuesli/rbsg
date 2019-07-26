@@ -99,18 +99,18 @@ public class InGameController {
         assert (currentUnit != null);
 
         UnitTile finalCurrentUnit = currentUnit;
+        unitTileMapByTileId.remove(currentUnit.getPosition());
+
         Platform.runLater(() -> {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
             stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
                 .remove(texture);
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
+                finalCurrentUnit.setPosition(newPos);
             }
         });
-        unitTileMapByTileId.remove(currentUnit.getPosition());
-        currentUnit.setPosition(newPos);
         unitTileMapByTileId.put(newPos, currentUnit);
-
     }
 
     public void initialize() {
@@ -233,7 +233,7 @@ public class InGameController {
                             || lastSelected.getTop().equals(source.getId()))
                         ) {
                             //yes: attack
-                            GameSocket.instance.attackUnit(toAttack.getId(), previous.getId());
+                            GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
 
                         } else {
                             //no: move
@@ -406,5 +406,17 @@ public class InGameController {
             }
         }
 
+    }
+
+    public void changeUnitHp(String unitId, String newHp) {
+        UnitTile unit = null;
+        for (UnitTile unitTile : unitTiles) {
+            if (unitTile.getId().equals(unitId)) {
+                unit = unitTile;
+                break;
+            }
+        }
+        assert unit != null;
+        unit.setHp(Integer.parseInt(newHp));
     }
 }
