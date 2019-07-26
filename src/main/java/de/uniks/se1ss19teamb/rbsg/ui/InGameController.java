@@ -159,19 +159,19 @@ public class InGameController {
         } else if (event.getSource().equals(btnBigger)) {
             zoomCounter++;
 
-            if (zoomCounter < 4 && zoomCounter > -4) {
-                gameGrid.setScaleX(1 + zoomCounter * 0.2);
-                gameGrid.setScaleY(1 + zoomCounter * 0.2);
-                gameGrid.layout();
-            }
+            zoom();
         } else if (event.getSource().equals(btnSmaller)) {
             zoomCounter--;
 
-            if (zoomCounter < 4 && zoomCounter > -4) {
-                gameGrid.setScaleX(1 + zoomCounter * 0.2);
-                gameGrid.setScaleY(1 + zoomCounter * 0.2);
-                stackPane.layout();
-            }
+            zoom();
+        }
+    }
+
+    private void zoom() {
+        if (zoomCounter < 4 && zoomCounter > -4) {
+            gameGrid.setScaleX(1 + zoomCounter * 0.2);
+            gameGrid.setScaleY(1 + zoomCounter * 0.2);
+            gameGrid.layout();
         }
     }
 
