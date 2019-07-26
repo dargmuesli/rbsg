@@ -104,9 +104,9 @@ public class InGameController {
                 .remove(texture);
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
-                finalCurrentUnit.setPosition(newPos);
             }
         });
+        currentUnit.setPosition(newPos);
     }
 
     public void initialize() {
