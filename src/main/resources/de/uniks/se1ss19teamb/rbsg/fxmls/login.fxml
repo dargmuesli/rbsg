@@ -49,7 +49,7 @@
         </JFXButton>
     </AnchorPane>
     <stylesheets>
-        <URL value="@../css/base.css" />
+        <URL value="@../css/whiteDesign.css" />
         <URL value="@../css/darkDesign.css" />
     </stylesheets>
 </AnchorPane>

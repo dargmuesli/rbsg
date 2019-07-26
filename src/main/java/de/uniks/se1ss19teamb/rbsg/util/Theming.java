@@ -21,6 +21,8 @@ public class Theming {
     public static void setTheme(List<Pane> panes) {
         String darkDesignCssPath = Theming.class.getResource("/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css")
             .toExternalForm();
+        String whiteDesignCssPath = Theming.class.getResource("/de/uniks/se1ss19teamb/rbsg/css/whiteDesign.css")
+            .toExternalForm();
 
         if (darkModeActive()) {
             panes.forEach(pane -> {
@@ -29,7 +31,10 @@ public class Theming {
                 }
             });
         } else {
-            panes.forEach(pane -> pane.getStylesheets().remove(darkDesignCssPath));
+            panes.forEach(pane -> {
+                pane.getStylesheets().remove(darkDesignCssPath);
+                pane.getStylesheets().add(whiteDesignCssPath);
+            });
         }
     }
 

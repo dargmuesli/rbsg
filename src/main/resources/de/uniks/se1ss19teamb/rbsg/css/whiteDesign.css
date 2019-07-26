@@ -1,0 +1,64 @@
+.root {
+    -fx-background-color: #c3c4c4,
+    linear-gradient(#d6d6d6 50%, white 100%),
+    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+}
+
+
+.button {
+    -fx-background-color: #c3c4c4,
+    linear-gradient(#d6d6d6 50%, white 100%),
+    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0, 1, 1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
+    -fx-font-family: "Balloon";
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold italic;
+}
+
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #dedede;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #dedede;
+}
+
+.jfx-tab-pane .tab .tab-label {
+    -fx-text-fill: black;
+}
+
+.list-view {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-text-fill: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+
+#tile-selected {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.tile-attack {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+}
+
+.tile-path {
+    -fx-background-color: rgba(0, 0, 255, 0.2);
+}
