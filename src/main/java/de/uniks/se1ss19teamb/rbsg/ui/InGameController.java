@@ -21,11 +21,14 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,6 +67,14 @@ public class InGameController {
     @FXML
     private JFXButton btnYes;
     @FXML
+    private JFXButton btnBigger;
+    @FXML
+    private JFXButton btnSmaller;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private ScrollPane mapScrollPane;
+    @FXML
     private JFXHamburger hamburgerMenu;
     @FXML
     private Pane miniMap;
@@ -75,6 +86,8 @@ public class InGameController {
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
+    private int zoomCounter = 0;
+
     private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
@@ -84,6 +97,7 @@ public class InGameController {
     private VBox chatBox;
     private JFXButton btnMinimize;
 
+    private static final double ZOOM_FACTOR = 0.07;
 
     public static InGameController getInstance() {
         return instance;
@@ -115,10 +129,11 @@ public class InGameController {
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnMiniMap);
+        for (Node node: head.getChildren()) {
+            if (node.getClass().equals(JFXButton.class)) {
+                Theming.hamburgerMenuTransition(hamburgerMenu,(JFXButton) node);
+            }
+        }
 
 
         fillGameGrid();
@@ -157,8 +172,33 @@ public class InGameController {
             } else {
                 miniMap.setVisible(true);
             }
+        } else if (event.getSource().equals(btnBigger)) {
+            zoomCounter++;
+
+            zoom();
+        } else if (event.getSource().equals(btnSmaller)) {
+            zoomCounter--;
+
+            zoom();
         }
     }
+
+    private void zoom() {
+
+        Scale scale = new Scale(1 + zoomCounter * ZOOM_FACTOR, 1 + zoomCounter * ZOOM_FACTOR, 0, 0);
+
+        if (mapScrollPane.getHeight() < gameGrid.getHeight() * (scale.getY() + ZOOM_FACTOR)) {
+            Group zoomGroup = new Group();
+            zoomGroup.getChildren().add(gameGrid);
+            Group contentGroup = new Group();
+            zoomGroup.getTransforms().add(scale);
+            contentGroup.getChildren().add(zoomGroup);
+            mapScrollPane.setContent(contentGroup);
+        } else {
+            zoomCounter++;
+        }
+    }
+
 
     private void fillGameGrid() {
         int maxX = 0;
