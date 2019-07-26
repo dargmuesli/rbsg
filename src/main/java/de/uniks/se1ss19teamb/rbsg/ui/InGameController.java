@@ -48,6 +48,7 @@ import org.apache.logging.log4j.Logger;
 
 public class InGameController {
 
+
     @FXML
     private AnchorPane inGameScreen;
     @FXML
@@ -100,6 +101,8 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
+
+    private static final double ZOOM_FACTOR = 0.07;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
@@ -174,14 +177,18 @@ public class InGameController {
     }
 
     private void zoom() {
-        Group zoomGroup = new Group();
-        zoomGroup.getChildren().add(gameGrid);
-        Group contentGroup = new Group();
-        Scale scale = new Scale(1 + zoomCounter * 0.07, 1 + zoomCounter * 0.07, 0, 0);
-        zoomGroup.getTransforms().add(scale);
-        contentGroup.getChildren().add(zoomGroup);
-        if (mapScrollPane.getHeight() < zoomGroup.getLayoutBounds().getHeight()) {
+
+        Scale scale = new Scale(1 + zoomCounter * ZOOM_FACTOR, 1 + zoomCounter * ZOOM_FACTOR, 0, 0);
+
+        if (mapScrollPane.getHeight() < gameGrid.getHeight() * (scale.getY() + ZOOM_FACTOR)) {
+            Group zoomGroup = new Group();
+            zoomGroup.getChildren().add(gameGrid);
+            Group contentGroup = new Group();
+            zoomGroup.getTransforms().add(scale);
+            contentGroup.getChildren().add(zoomGroup);
             mapScrollPane.setContent(contentGroup);
+        } else {
+            zoomCounter++;
         }
     }
 
