@@ -15,11 +15,11 @@ import org.junit.Test;
 
 
 public class RestRequestTestsReal {
+    public static String userToken;
+    public static String gameId;
 
     private List<Unit> unitList;
     private String armyId;
-    private String gameId;
-    private String userToken;
 
     // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +39,7 @@ public class RestRequestTestsReal {
         }
     }
 
-    private void createGame() {
+    public static void createGame() {
         Optional<String> optional = RequestUtil.request(new CreateGameRequest("TeamBTestUserGame", 2, userToken));
 
         if (optional.isPresent()) {
@@ -50,12 +50,17 @@ public class RestRequestTestsReal {
     }
 
     private void deleteArmy(String armyID) {
-        DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(armyID, userToken);
-        deleteArmyRequest.sendRequest();
+        if (!RequestUtil.request(new DeleteArmyRequest(armyID, userToken))) {
+            Assert.fail();
+        }
     }
 
-    private void loginUser() {
-        Optional<String> optional = RequestUtil.request(new LoginUserRequest("TeamBTestUser", "qwertz"));
+    public static void loginUser() {
+        loginUser("TeamBTestUser");
+    }
+
+    public static void loginUser(String username) {
+        Optional<String> optional = RequestUtil.request(new LoginUserRequest(username, "qwertz"));
 
         if (optional.isPresent()) {
             userToken = optional.get();
@@ -188,14 +193,17 @@ public class RestRequestTestsReal {
                 + "Please connect to /ws/game?gameId=GAME_ID(&armyId=ARMY_ID)", request.getMessage());
 
             //Check if we actually joined the game
-            QueryGamesRequest query = new QueryGamesRequest(userToken);
-            query.sendRequest();
+            Optional<HashMap<String, GameMeta>> optional = RequestUtil.request(new QueryGamesRequest(userToken));
 
-            Optional<Map.Entry<String, GameMeta>> optionalStringGameMetaEntry =  query.getData().entrySet().stream()
-                .filter(stringGameMetaEntry -> stringGameMetaEntry.getKey()
-                    .equals(gameId)).findFirst();
-            Assert.assertEquals(1L, (long) optionalStringGameMetaEntry.map(stringGameMetaEntry
-                -> stringGameMetaEntry.getValue().getJoinedPlayers()).orElse(0L));
+            if (optional.isPresent()) {
+                Optional<Map.Entry<String, GameMeta>> optionalEntry = optional.get().entrySet().stream()
+                    .filter(stringGameMetaEntry -> stringGameMetaEntry.getKey()
+                        .equals(gameId)).findFirst();
+                Assert.assertEquals(1L, (long) optionalEntry.map(stringGameMetaEntry
+                    -> stringGameMetaEntry.getValue().getJoinedPlayers()).orElse(0L));
+            } else {
+                Assert.fail();
+            }
         } else {
             Assert.fail();
         }
@@ -323,11 +331,7 @@ public class RestRequestTestsReal {
             units.add(unitList.get(1));
         }
 
-        Army testArmy = new Army(armyId, "changedName", units);
-
-        UpdateArmyRequest request = new UpdateArmyRequest(testArmy, userToken);
-
-        if (RequestUtil.request(request)) {
+        if (RequestUtil.request(new UpdateArmyRequest(new Army(armyId, "changedName", units), userToken))) {
             // TODO what does this endpoint return?!
         } else {
             Assert.fail();

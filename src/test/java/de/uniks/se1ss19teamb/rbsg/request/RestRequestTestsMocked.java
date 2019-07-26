@@ -448,11 +448,7 @@ public class RestRequestTestsMocked {
             units.add(new Unit("5cc051bd62083600017db3b7"));
         }
 
-        Army testArmy = new Army(fakeArmyId, "changedName", units);
-
-        UpdateArmyRequest request = new UpdateArmyRequest(testArmy, fakeUserKey);
-
-        if (RequestUtil.request(request)) {
+        if (RequestUtil.request(new UpdateArmyRequest(new Army(fakeArmyId, "changedName", units), fakeUserKey))) {
             // TODO what does this endpoint return?!
         } else {
             Assert.fail();
