@@ -28,6 +28,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -39,6 +40,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import jdk.nashorn.internal.objects.NativeArray;
 import org.apache.logging.log4j.LogManager;
@@ -104,7 +106,7 @@ public class InGameController {
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
         for(Node node: head.getChildren()) {
-            if(node.getClass().equals(new JFXButton().getClass())) {
+            if(node.getClass().equals(JFXButton.class)) {
                 Theming.hamburgerMenuTransition(hamburgerMenu,(JFXButton) node);
             }
         }
@@ -172,72 +174,14 @@ public class InGameController {
     }
 
     private void zoom() {
-        if (zoomCounter < 4 && zoomCounter > -4) {
-            gameGrid.setScaleX(1 + zoomCounter * 0.2);
-            gameGrid.setScaleY(1 + zoomCounter * 0.2);
-            gameGrid.layout();
-            Bounds bound = new Bounds(0,0, 0,
-                gameGrid.getWidth() * gameGrid.getScaleX(),
-                gameGrid.getHeight() * gameGrid.getScaleY(), 1)
-            {
-
-                @Override
-                public boolean isEmpty() {
-                    return false;
-                }
-
-                @Override
-                public boolean contains(Point2D p) {
-                    return false;
-                }
-
-                @Override
-                public boolean contains(Point3D p) {
-                    return false;
-                }
-
-                @Override
-                public boolean contains(double x, double y) {
-                    return true;
-                }
-
-                @Override
-                public boolean contains(double x, double y, double z) {
-                    return false;
-                }
-
-                @Override
-                public boolean contains(Bounds b) {
-                    return true;
-                }
-
-                @Override
-                public boolean contains(double x, double y, double w, double h) {
-                    return false;
-                }
-
-                @Override
-                public boolean contains(double x, double y, double z, double w, double h, double d) {
-                    return false;
-                }
-
-                @Override
-                public boolean intersects(Bounds b) {
-                    return false;
-                }
-
-                @Override
-                public boolean intersects(double x, double y, double w, double h) {
-                    return false;
-                }
-
-                @Override
-                public boolean intersects(double x, double y, double z, double w, double h, double d) {
-                    return false;
-                }
-            };
-            mapScrollPane.setViewportBounds(bound);
-            mapScrollPane.layout();
+        Group zoomGroup = new Group();
+        zoomGroup.getChildren().add(gameGrid);
+        Group contentGroup = new Group();
+        Scale scale = new Scale(1 + zoomCounter * 0.07, 1 + zoomCounter * 0.07, 0, 0);
+        zoomGroup.getTransforms().add(scale);
+        contentGroup.getChildren().add(zoomGroup);
+        if (mapScrollPane.getHeight() < zoomGroup.getLayoutBounds().getHeight()) {
+            mapScrollPane.setContent(contentGroup);
         }
     }
 
