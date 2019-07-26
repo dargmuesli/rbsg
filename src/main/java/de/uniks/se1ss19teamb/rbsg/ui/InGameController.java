@@ -74,7 +74,7 @@ public class InGameController {
     private StackPane stackPane;
     @FXML
     private ScrollPane mapScrollPane;
-
+    @FXML
     private JFXHamburger hamburgerMenu;
     @FXML
     private Pane miniMap;
