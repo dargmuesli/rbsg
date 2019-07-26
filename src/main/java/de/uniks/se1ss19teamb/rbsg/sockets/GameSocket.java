@@ -103,7 +103,7 @@ public class GameSocket extends AbstractWebSocket {
                             return;
                         }
 
-                        String type = data.get("id").getAsString().replaceFirst("@.+", "");
+                        String type = data.get("id").getAsString().replaceFirst("\u0040.+", "");
 
                         switch (type) {
                             case "Forest":
@@ -139,7 +139,7 @@ public class GameSocket extends AbstractWebSocket {
                         return;
                     }
 
-                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                    switch (data.get("id").getAsString().replaceFirst("\u0040.+", "")) {
                         case "Player":
                             InGamePlayer inGamePlayer = SerializeUtils.deserialize(data.toString(), InGamePlayer.class);
 
@@ -166,7 +166,7 @@ public class GameSocket extends AbstractWebSocket {
                     String newValue;
                     String fieldName;
 
-                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                    switch (data.get("id").getAsString().replaceFirst("\u0040.+", "")) {
                         case "Player":
                             InGamePlayer inGamePlayer =
                                 (InGamePlayer) InGameController.inGameObjects.get(data.get("id").getAsString());
