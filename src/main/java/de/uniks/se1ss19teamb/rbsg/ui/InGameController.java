@@ -215,22 +215,40 @@ public class InGameController {
                                 break;
                             }
                         }
-
-                        LinkedList<String> path = new LinkedList<>();
-                        path.addFirst(source.getId());
-                        String next = previousTileMapById.get(source.getId());
                         assert previous != null;
-                        while (!next.equals(previous.getPosition())) {
-                            path.addFirst(next);
-                            next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
-                        }
+                        assert source != null;
 
-                        //server
-                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                        UnitTile toAttack = unitTileMapByTileId.get(source.getId());
+                        EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
+
+                        //is there a unit on the selected and is selected a neighbor?
+                        if(toAttack != null &&
+                            (lastSelected.getBottom().equals(source.getId())
+                            || lastSelected.getLeft().equals(source.getId())
+                            || lastSelected.getRight().equals(source.getId())
+                            || lastSelected.getTop().equals(source.getId()))
+                        ) {
+                            //yes: attack
+                            GameSocket.instance.attackUnit(toAttack.getId(), previous.getId());
+
+                        } else {
+                            //no: move
+                            LinkedList<String> path = new LinkedList<>();
+                            path.addFirst(source.getId());
+                            String next = previousTileMapById.get(source.getId());
+                            while (!next.equals(previous.getPosition())) {
+                                path.addFirst(next);
+                                next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
+                            }
+
+                            //server
+                            GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                        }
 
                         //reset
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
+
                     } else {
 
                         if (lastSelectedPane == null) {
