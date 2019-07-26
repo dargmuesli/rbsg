@@ -226,11 +226,11 @@ public class InGameController {
                         EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
                         assert lastSelected != null;
                         //is there a unit on the selected and is selected a neighbor?
-                        if(toAttack != null &&
-                            (lastSelected.getBottom().equals(source.getId())
-                            || lastSelected.getLeft().equals(source.getId())
-                            || lastSelected.getRight().equals(source.getId())
-                            || lastSelected.getTop().equals(source.getId()))
+                        if (toAttack != null
+                            && ((lastSelected.getBottom() != null && lastSelected.getBottom().equals(source.getId()))
+                            || (lastSelected.getLeft() != null && lastSelected.getLeft().equals(source.getId()))
+                            || (lastSelected.getRight() != null && lastSelected.getRight().equals(source.getId()))
+                            || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             //yes: attack
                             GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());

@@ -231,8 +231,11 @@ public class GameSocket extends AbstractWebSocket {
                                     break;
                                 case "hp":
                                     InGameController.getInstance().changeUnitHp(id, newValue);
+                                    break;
+                                default:
+                                    NotificationHandler.getInstance().sendError(
+                                        "Unknown fieldName object: " + fieldName, logger);
                             }
-
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
