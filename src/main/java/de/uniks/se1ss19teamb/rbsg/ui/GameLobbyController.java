@@ -9,11 +9,8 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.util.ArmyUtil;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
-import de.uniks.se1ss19teamb.rbsg.util.Theming;
-import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import de.uniks.se1ss19teamb.rbsg.util.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -134,17 +131,14 @@ public class GameLobbyController {
             }
         });
 
-
         MainController.setGameChat(GameSocket.instance);
         MainController.setInGameChat(true);
 
-
-        QueryUnitsRequest queryUnitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
-        queryUnitsRequest.sendRequest();
-
-        for (Unit unit : queryUnitsRequest.getUnits()) {
-            ArmyManagerController.availableUnits.put(unit.getId(), unit);
-        }
+        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserKey())).ifPresent(units -> {
+            for (Unit unit : units) {
+                ArmyManagerController.availableUnits.put(unit.getId(), unit);
+            }
+        });
 
         setArmyName();
         showArmyConfig();
@@ -218,15 +212,13 @@ public class GameLobbyController {
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
-            LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
-            logout.sendRequest();
-
-            if (logout.getSuccessful()) {
-                LoginController.setUserKey(null);
-                UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+                return;
             }
 
+            LoginController.setUserKey(null);
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(select1)) {
@@ -271,14 +263,13 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnMyReady)) {
             NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !", logger);
         } else if (event.getSource().equals(btnStart)) {
-            QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
-            req.sendRequest();
-            ArrayList<Army> serverArmies = req.getArmies();
-            loadFromServer();
-            
-            if (serverArmies.size() != 0) {
-                GameSocket.instance.startGame();
-            }
+            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+                loadFromServer();
+
+                if (armies.size() != 0) {
+                    GameSocket.instance.startGame();
+                }
+            });
         }
     }
     
@@ -293,14 +284,12 @@ public class GameLobbyController {
     }
 
     private void loadFromServer() {
-        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
-        req.sendRequest();
-        ArrayList<Army> serverArmies = req.getArmies();
-
-        if (serverArmies.size() == 0) {
-            NotificationHandler.getInstance()
-                .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
-        }
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+            if (armies.size() == 0) {
+                NotificationHandler.getInstance()
+                    .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
+            }
+        });
     }
 
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-public class QueryUsersInLobbyRequest extends AbstractRestRequest {
+public class QueryUsersInLobbyRequest extends AbstractDataRestRequest<ArrayList<String>> {
 
     private String userToken;
 
@@ -33,14 +33,23 @@ public class QueryUsersInLobbyRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    //Custom Request Helper
-
-    public ArrayList<String> getUsersInLobby() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The lobby's users.
+     */
+    @Override
+    public ArrayList<String> getData() {
         ArrayList<String> usersInLobby = new ArrayList<>();
         for (JsonElement lobby : getResponse().get("data").getAsJsonArray()) {
             usersInLobby.add(lobby.getAsString());
         }
         return usersInLobby;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not query users in lobby!";
     }
 
 }

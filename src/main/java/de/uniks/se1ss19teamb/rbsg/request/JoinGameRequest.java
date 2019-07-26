@@ -32,4 +32,9 @@ public class JoinGameRequest extends AbstractRestRequest {
         return userToken;
     }
 
+    @Override
+    public String getErrorMessage() {
+        return "Could not join game!";
+    }
+
 }

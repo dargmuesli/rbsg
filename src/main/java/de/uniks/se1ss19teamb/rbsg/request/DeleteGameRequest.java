@@ -32,4 +32,9 @@ public class DeleteGameRequest extends AbstractRestRequest {
         return userToken;
     }
 
+    @Override
+    public String getErrorMessage() {
+        return "Could not delete game!";
+    }
+
 }

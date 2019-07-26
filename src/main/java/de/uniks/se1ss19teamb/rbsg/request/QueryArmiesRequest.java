@@ -10,7 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryArmiesRequest extends AbstractRestRequest {
+public class QueryArmiesRequest extends AbstractDataRestRequest<ArrayList<Army>> {
 
     private String userToken;
 
@@ -38,9 +38,13 @@ public class QueryArmiesRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    //Custom Request Helper
-
-    public ArrayList<Army> getArmies() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The armies.
+     */
+    @Override
+    public ArrayList<Army> getData() {
         ArrayList<Army> armies = new ArrayList<>();
 
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
@@ -59,5 +63,10 @@ public class QueryArmiesRequest extends AbstractRestRequest {
         }
 
         return armies;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not query armies!";
     }
 }
