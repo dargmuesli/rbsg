@@ -142,7 +142,7 @@ public class GameLobbyController {
         QueryUnitsRequest queryUnitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
         queryUnitsRequest.sendRequest();
 
-        for (Unit unit : queryUnitsRequest.getUnits()) {
+        for (Unit unit : queryUnitsRequest.getData()) {
             ArmyManagerController.availableUnits.put(unit.getId(), unit);
         }
 
@@ -273,7 +273,7 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnStart)) {
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
-            ArrayList<Army> serverArmies = req.getArmies();
+            ArrayList<Army> serverArmies = req.getData();
             loadFromServer();
             
             if (serverArmies.size() != 0) {
@@ -295,7 +295,7 @@ public class GameLobbyController {
     private void loadFromServer() {
         QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
         req.sendRequest();
-        ArrayList<Army> serverArmies = req.getArmies();
+        ArrayList<Army> serverArmies = req.getData();
 
         if (serverArmies.size() == 0) {
             NotificationHandler.getInstance()

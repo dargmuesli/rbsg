@@ -35,7 +35,7 @@ public class ArmyUtil {
 
             if (req.getSuccessful()) {
                 NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
-                currentArmy.setId(req.getArmyID());
+                currentArmy.setId(req.getData());
             }
         } else {
             UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,

@@ -20,7 +20,7 @@ public class WebSocketTestsReal {
         login.sendRequest();
 
 
-        SystemSocket system = new SystemSocket(login.getUserKey());
+        SystemSocket system = new SystemSocket(login.getData());
 
         List<String> msg = new ArrayList<>();
 
@@ -38,13 +38,13 @@ public class WebSocketTestsReal {
         LoginUserRequest login2 = new LoginUserRequest("TeamBTestUser2", "qwertz");
         login2.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getData());
         createGame.sendRequest();
 
-        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getGameId(), login2.getUserKey());
+        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getData(), login2.getData());
         deleteGame.sendRequest();
 
-        LogoutUserRequest logout = new LogoutUserRequest(login2.getUserKey());
+        LogoutUserRequest logout = new LogoutUserRequest(login2.getData());
         logout.sendRequest();
 
         Thread.sleep(2000); //Wait for Msg
@@ -55,8 +55,8 @@ public class WebSocketTestsReal {
 
         Assert.assertTrue(msg.contains("userJoin|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
-        Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + createGame.getGameId() + "|2"));
-        Assert.assertTrue(msg.contains("gameDelete|" + createGame.getGameId()));
+        Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + createGame.getData() + "|2"));
+        Assert.assertTrue(msg.contains("gameDelete|" + createGame.getData()));
 
     }
 
@@ -65,12 +65,12 @@ public class WebSocketTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        ChatSocket chat = new ChatSocket("TeamBTestUser", login.getUserKey());
+        ChatSocket chat = new ChatSocket("TeamBTestUser", login.getData());
 
         LoginUserRequest login2 = new LoginUserRequest("TeamBTestUser2", "qwertz");
         login2.sendRequest();
 
-        ChatSocket chat2 = new ChatSocket("TeamBTestUser2", login2.getUserKey());
+        ChatSocket chat2 = new ChatSocket("TeamBTestUser2", login2.getData());
 
         List<String> msg = new ArrayList<>();
 
@@ -87,10 +87,10 @@ public class WebSocketTestsReal {
         chat.disconnect();
         chat2.disconnect();
 
-        LogoutUserRequest logout = new LogoutUserRequest(login.getUserKey());
+        LogoutUserRequest logout = new LogoutUserRequest(login.getData());
         logout.sendRequest();
 
-        LogoutUserRequest logout2 = new LogoutUserRequest(login2.getUserKey());
+        LogoutUserRequest logout2 = new LogoutUserRequest(login2.getData());
         logout2.sendRequest();
 
         System.out.println(msg);

@@ -7,7 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class QueryGamesRequest extends AbstractRestRequest {
+public class QueryGamesRequest extends AbstractDataRestRequest<HashMap<String, GameMeta>> {
 
     private String userToken;
 
@@ -35,9 +35,13 @@ public class QueryGamesRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    //Custom Request Helper
-
-    public HashMap<String, GameMeta> getGames() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The games.
+     */
+    @Override
+    public HashMap<String, GameMeta> getData() {
         HashMap<String, GameMeta> gameMetas = new HashMap<>();
 
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
@@ -51,6 +55,11 @@ public class QueryGamesRequest extends AbstractRestRequest {
         }
 
         return gameMetas;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not query games!";
     }
 
 }

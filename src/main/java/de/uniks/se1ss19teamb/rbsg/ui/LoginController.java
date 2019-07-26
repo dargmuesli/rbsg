@@ -149,7 +149,7 @@ public class LoginController {
             UserData.deleteUserData(NotificationHandler.getInstance());
         }
 
-        setUserKey(login.getUserKey());
+        setUserKey(login.getData());
         setUser(userName.getText());
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(

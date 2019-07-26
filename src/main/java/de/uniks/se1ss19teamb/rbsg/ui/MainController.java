@@ -317,7 +317,7 @@ public class MainController {
         String userKey = LoginController.getUserKey();
         QueryGamesRequest queryGamesRequest = new QueryGamesRequest(userKey);
         queryGamesRequest.sendRequest();
-        return queryGamesRequest.getGames();
+        return queryGamesRequest.getData();
     }
 
     private void updateGameView() {
@@ -365,7 +365,7 @@ public class MainController {
         String userKey = LoginController.getUserKey();
         QueryUsersInLobbyRequest usersInLobbyRequest = new QueryUsersInLobbyRequest(userKey);
         usersInLobbyRequest.sendRequest();
-        return usersInLobbyRequest.getUsersInLobby();
+        return usersInLobbyRequest.getData();
     }
 
     private Label addPlayerlabel(String player) {

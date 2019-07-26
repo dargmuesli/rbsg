@@ -58,20 +58,9 @@ public class UpdateArmyRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    /*
-    public Army getNewArmy() {
-        JsonObject response = getResponse().get("data").getAsJsonObject();
-        Army responseArmy = new Army();
-        responseArmy.setName(response.get("name").getAsString());
-        responseArmy.setId(response.get("id").getAsString());
-        JsonArray unitJArray = response.get("units").getAsJsonArray();
-        ArrayList<String> unitArray = new ArrayList<>();
-        for (JsonElement e : unitJArray) {
-            unitArray.add(e.getAsString());
-        }
-        responseArmy.setUnits(unitArray);
-        return responseArmy;
-
+    @Override
+    public String getErrorMessage() {
+        return "Could not update army!";
     }
-     */
+
 }

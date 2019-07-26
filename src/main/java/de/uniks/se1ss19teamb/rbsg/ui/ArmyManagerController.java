@@ -97,7 +97,7 @@ public class ArmyManagerController {
             return;
         }
 
-        for (Unit unit : queryUnitsRequest.getUnits()) {
+        for (Unit unit : queryUnitsRequest.getData()) {
             availableUnits.put(unit.getId(), unit);
         }
 
@@ -155,7 +155,7 @@ public class ArmyManagerController {
             ArmyUtil.saveToServer(currentArmy);
             QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
             req.sendRequest();
-            ArrayList<Army> serverArmies = req.getArmies();
+            ArrayList<Army> serverArmies = req.getData();
             loadFromServer();
             VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
             JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
@@ -189,7 +189,7 @@ public class ArmyManagerController {
     public void loadFromServer() {
         QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
         req.sendRequest();
-        ArrayList<Army> serverArmies = req.getArmies();
+        ArrayList<Army> serverArmies = req.getData();
 
         if (serverArmies.size() == 0) {
             NotificationHandler.getInstance()

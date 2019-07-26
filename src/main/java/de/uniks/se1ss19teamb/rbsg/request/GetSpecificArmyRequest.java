@@ -10,7 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetSpecificArmyRequest extends AbstractRestRequest {
+public class GetSpecificArmyRequest extends AbstractDataRestRequest<Army> {
 
     private String userToken;
     private String armyId;
@@ -40,7 +40,13 @@ public class GetSpecificArmyRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    public Army getRequestedArmy() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The requested army.
+     */
+    @Override
+    public Army getData() {
         JsonObject data = getResponse().get("data").getAsJsonObject();
         String armyID = data.get("id").getAsString();
         String name = data.get("name").getAsString();
@@ -52,5 +58,10 @@ public class GetSpecificArmyRequest extends AbstractRestRequest {
         }
 
         return new Army(armyID, name, unitList);
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not get specific army!";
     }
 }

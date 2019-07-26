@@ -53,7 +53,7 @@ public class RestRequestTestsReal {
 
             //Test Request Helpers
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals(36, req.getUserKey().length());
+            Assert.assertEquals(36, req.getData().length());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -64,12 +64,12 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getUserKey());
+        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest(login.getData());
         try {
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertTrue(req.getUsersInLobby().contains("TeamBTestUser"));
+            Assert.assertTrue(req.getData().contains("TeamBTestUser"));
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -80,7 +80,7 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        LogoutUserRequest req = new LogoutUserRequest(login.getUserKey());
+        LogoutUserRequest req = new LogoutUserRequest(login.getData());
         try {
             req.sendRequest();
 
@@ -96,13 +96,13 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest req = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
+        CreateGameRequest req = new CreateGameRequest("TeamBTestUserGame", 2, login.getData());
         try {
             //Query Request
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals(24, req.getGameId().length());
+            Assert.assertEquals(24, req.getData().length());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -113,17 +113,17 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getData());
         createGame.sendRequest();
 
-        QueryGamesRequest req = new QueryGamesRequest(login.getUserKey());
+        QueryGamesRequest req = new QueryGamesRequest(login.getData());
         try {
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
 
             final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta) ->
+            req.getData().forEach((s, gameMeta) ->
                 hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
@@ -136,10 +136,10 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getData());
         createGame.sendRequest();
 
-        DeleteGameRequest req = new DeleteGameRequest(createGame.getGameId(), login.getUserKey());
+        DeleteGameRequest req = new DeleteGameRequest(createGame.getData(), login.getData());
         try {
             req.sendRequest();
 
@@ -155,10 +155,10 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
+        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getData());
         createGame.sendRequest();
 
-        JoinGameRequest req = new JoinGameRequest(createGame.getGameId(), login.getUserKey());
+        JoinGameRequest req = new JoinGameRequest(createGame.getData(), login.getData());
         try {
             req.sendRequest();
 
@@ -168,12 +168,12 @@ public class RestRequestTestsReal {
                 + "/ws/game?gameId=GAME_ID&armyId=ARMY_ID", req.getMessage());
 
             //Check if we actually joined the game
-            QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
+            QueryGamesRequest query = new QueryGamesRequest(login.getData());
             query.sendRequest();
 
-            Optional<Map.Entry<String, GameMeta>> optionalStringGameMetaEntry =  query.getGames().entrySet().stream()
+            Optional<Map.Entry<String, GameMeta>> optionalStringGameMetaEntry =  query.getData().entrySet().stream()
                 .filter(stringGameMetaEntry -> stringGameMetaEntry.getKey()
-                .equals(createGame.getGameId())).findFirst();
+                .equals(createGame.getData())).findFirst();
             Assert.assertEquals(1L, (long) optionalStringGameMetaEntry.map(stringGameMetaEntry
                 -> stringGameMetaEntry.getValue().getJoinedPlayers()).orElse(0L));
         } catch (Exception e) {
@@ -184,7 +184,7 @@ public class RestRequestTestsReal {
     private LoginUserRequest loginUser() {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
-        userKey = login.getUserKey();
+        userKey = login.getData();
         return login;
     }
 
@@ -208,7 +208,7 @@ public class RestRequestTestsReal {
         loginUser();
         QueryArmiesRequest queryArmiesRequest = new QueryArmiesRequest(userKey);
         queryArmiesRequest.sendRequest();
-        for (Army a : queryArmiesRequest.getArmies()) {
+        for (Army a : queryArmiesRequest.getData()) {
             DeleteArmyRequest deleteArmyRequest = new DeleteArmyRequest(a.getId(), userKey);
             deleteArmyRequest.sendRequest();
         }
@@ -223,11 +223,11 @@ public class RestRequestTestsReal {
         for (int i = 0; i < 10; i++) {
             units.add(new Unit("5cc051bd62083600017db3b6"));
         }
-        CreateArmyRequest req = new CreateArmyRequest(name, units, login.getUserKey());
+        CreateArmyRequest req = new CreateArmyRequest(name, units, login.getData());
 
         req.sendRequest();
         Assert.assertTrue(req.getSuccessful());
-        deleteArmy(req.getArmyID());
+        deleteArmy(req.getData());
     }
 
     @Test
@@ -235,7 +235,7 @@ public class RestRequestTestsReal {
         String armyId;
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
-        armyId = createArmyRequest.getArmyID();
+        armyId = createArmyRequest.getData();
         DeleteArmyRequest req = new DeleteArmyRequest(armyId, userKey);
         req.sendRequest();
         try {
@@ -252,9 +252,9 @@ public class RestRequestTestsReal {
     public void getSpecificArmyRequestTest() {
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
-        GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getArmyID(), userKey);
+        GetSpecificArmyRequest req = new GetSpecificArmyRequest(createArmyRequest.getData(), userKey);
         req.sendRequest();
-        Army reqArmy = req.getRequestedArmy();
+        Army reqArmy = req.getData();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals("testArmy001", reqArmy.getName());
         deleteArmy(reqArmy.getId());
@@ -267,16 +267,16 @@ public class RestRequestTestsReal {
         CreateArmyRequest createArmyRequest = createArmy();
         QueryArmiesRequest req = new QueryArmiesRequest(userKey);
         req.sendRequest();
-        ArrayList<Army> armies = req.getArmies();
+        ArrayList<Army> armies = req.getData();
         Assert.assertTrue(req.getSuccessful());
         boolean containsArmyID = false;
         for (Army army : armies) {
-            if (army.getId().equals(createArmyRequest.getArmyID())) {
+            if (army.getId().equals(createArmyRequest.getData())) {
                 containsArmyID = true;
             }
         }
         Assert.assertTrue(containsArmyID);
-        deleteArmy(createArmyRequest.getArmyID());
+        deleteArmy(createArmyRequest.getData());
 
     }
 
@@ -285,7 +285,7 @@ public class RestRequestTestsReal {
         loginUser();
         QueryUnitsRequest req = new QueryUnitsRequest(userKey);
         req.sendRequest();
-        ArrayList<Unit> unitList = req.getUnits();
+        ArrayList<Unit> unitList = req.getData();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals(6, unitList.size());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
@@ -296,7 +296,7 @@ public class RestRequestTestsReal {
         loginUser();
         CreateArmyRequest createArmyRequest = createArmy();
         Army testArmy = new Army(null, null, null);
-        testArmy.setId(createArmyRequest.getArmyID());
+        testArmy.setId(createArmyRequest.getData());
         List<Unit> units = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -317,16 +317,16 @@ public class RestRequestTestsReal {
         LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
         login.sendRequest();
 
-        QueryGamesRequest query = new QueryGamesRequest(login.getUserKey());
+        QueryGamesRequest query = new QueryGamesRequest(login.getData());
         query.sendRequest();
 
-        query.getGames().entrySet().stream().filter(stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
+        query.getData().entrySet().stream().filter(stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
             .equals("TeamBTestUserGame"))
             .forEach(stringGameMetaEntry -> {
                 System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
                     + " with id " + stringGameMetaEntry.getValue().getId() + "...");
                 DeleteGameRequest req =
-                    new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), login.getUserKey());
+                    new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), login.getData());
 
                 try {
                     req.sendRequest();

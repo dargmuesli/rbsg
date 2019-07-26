@@ -132,7 +132,7 @@ public class RestRequestTestsMocked {
 
             //Test Request Helpers
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals(36, req.getUserKey().length());
+            Assert.assertEquals(36, req.getData().length());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -154,7 +154,7 @@ public class RestRequestTestsMocked {
             req.sendRequest();
 
             Assert.assertTrue(req.getSuccessful());
-            Assert.assertTrue(req.getUsersInLobby().contains("TeamBTestUser"));
+            Assert.assertTrue(req.getData().contains("TeamBTestUser"));
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -197,13 +197,13 @@ public class RestRequestTestsMocked {
         req.sendRequest();
 
         Assert.assertTrue(req.getSuccessful());
-        Assert.assertEquals(24, req.getGameId().length());
+        Assert.assertEquals(24, req.getData().length());
 
         req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111", 123);
         req.sendRequest();
 
         Assert.assertTrue(req.getSuccessful());
-        Assert.assertEquals(24, req.getGameId().length());
+        Assert.assertEquals(24, req.getData().length());
     }
 
     @Test
@@ -223,7 +223,7 @@ public class RestRequestTestsMocked {
             Assert.assertTrue(req.getSuccessful());
 
             final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta)
+            req.getData().forEach((s, gameMeta)
                 -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
             Assert.assertTrue(hasTeamBTestGame[0]);
         } catch (Exception e) {
@@ -407,7 +407,7 @@ public class RestRequestTestsMocked {
         }
         GetSpecificArmyRequest req = new GetSpecificArmyRequest(fakeArmyId, fakeUserKey);
         req.sendRequest();
-        Army reqArmy = req.getRequestedArmy();
+        Army reqArmy = req.getData();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals("testArmy001", reqArmy.getName());
         Assert.assertNotNull(reqArmy.getUnits().get(0));
@@ -423,7 +423,7 @@ public class RestRequestTestsMocked {
         }
         QueryArmiesRequest req = new QueryArmiesRequest(fakeUserKey);
         req.sendRequest();
-        ArrayList<Army> armies = req.getArmies();
+        ArrayList<Army> armies = req.getData();
         Assert.assertTrue(req.getSuccessful());
         boolean containsArmyID = false;
         for (Army army : armies) {
@@ -445,7 +445,7 @@ public class RestRequestTestsMocked {
         }
         QueryUnitsRequest req = new QueryUnitsRequest(fakeUserKey);
         req.sendRequest();
-        ArrayList<Unit> unitList = req.getUnits();
+        ArrayList<Unit> unitList = req.getData();
         Assert.assertTrue(req.getSuccessful());
         Assert.assertEquals(6, unitList.size());
         Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
