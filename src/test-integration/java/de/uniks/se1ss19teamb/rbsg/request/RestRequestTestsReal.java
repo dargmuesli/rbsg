@@ -15,10 +15,10 @@ import org.junit.Test;
 
 
 public class RestRequestTestsReal {
-    public static String userToken;
+    public static List<Unit> unitList;
     public static String gameId;
+    public static String userToken;
 
-    private List<Unit> unitList;
     private String armyId;
 
     // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ public class RestRequestTestsReal {
         }
     }
 
-    private void queryUnits() {
+    public static void queryUnits() {
         Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(userToken));
 
         if (optional.isPresent()) {
