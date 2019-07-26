@@ -224,9 +224,9 @@ public class GameSocket extends AbstractWebSocket {
                                 return;
                             }
                             newValue = data.get("newValue").getAsString();
+                            String id = data.get("id").getAsString();
                             switch (fieldName) {
                                 case "position":
-                                    String id = data.get("id").getAsString();
                                     InGameController.getInstance().changeUnitPos(id, newValue);
                                     break;
                                 case "hp":
