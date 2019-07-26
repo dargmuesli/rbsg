@@ -18,4 +18,6 @@ public interface RestRequest {
         return getResponse() == null
             ? "Request not yet sent to Server" : getResponse().get("message").getAsString();
     }
+
+    String getErrorMessage();
 }

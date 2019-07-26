@@ -10,6 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -143,13 +144,13 @@ public class InGameController {
         if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogout)) {
-            LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
-            logout.sendRequest();
-            if (logout.getSuccessful()) {
-                LoginController.setUserKey(null);
-                UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+                return;
             }
+
+            LoginController.setUserKey(null);
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
         } else if (event.getSource().equals(btnMiniMap)) {
             if (miniMap.isVisible()) {
                 miniMap.setVisible(false);

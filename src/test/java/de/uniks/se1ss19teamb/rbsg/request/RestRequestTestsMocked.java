@@ -3,10 +3,15 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Army;
+import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
+import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.http.ParseException;
 import org.junit.Assert;
@@ -20,261 +25,12 @@ public class RestRequestTestsMocked {
     private String fakeUserKey = "dca2a697-ecfb-4987-ae95-2fdfe9f4a731";
     private String fakeArmyId = "5d11fad12c945100017660ee";
 
-    private HttpRequestResponse getHttpCreateGameResponse() {
-        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":{\"gameId\":"
-            + "\"123456789012345678901234\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
-    }
-
-    private HttpRequestResponse getHttpRegisterUserResponse() {
-        String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
-        int status = 400;
-        String errorMsg = "Bad Request";
-        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-    }
-
-    private HttpRequestResponse getHttpLoginUserResponse() {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"userKey\":"
-            + "\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "Bad Request";
-        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-    }
-
-    private HttpRequestResponse getHttpQueryUsersResponse() {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"TeamBTestUser\"]}";
-        int status = 200;
-        String errorMsg = "test";
-        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-    }
-
-    private HttpRequestResponse getHttpLogoutUserResponse() {
-        String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":{}}";
-        int statusLogout = 200;
-        String errorMsgLogout = "test";
-        return new HttpRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
-    }
-
-    private HttpRequestResponse getHttpQueryGamesResponse() {
-        String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":"
-            + "[{\"id\":\"123456789012345678901234\",\"name\":\"TeamBTestUserGame\",\"neededPlayer\":2,"
-            + "\"joinedPlayer\":0}]}";
-        int statusLogout = 200;
-        String errorMsgLogout = "test";
-        return new HttpRequestResponse(httpReqRepBodyQueryGames, statusLogout, errorMsgLogout);
-    }
-
-    private HttpRequestResponse getHttpDeleteGameResponse() {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":{\"userKey\":"
-            + "\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-    }
-
-    private HttpRequestResponse getHttpJoinGameResponse() {
-        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected "
-            + "from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":"
-            + "{\"userKey\":\"111111111111111111111111111111111111\"}}";
-        int status = 200;
-        String errorMsg = "test";
-        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
-    }
-
     @Before
     public void setupTests() {
         httpManager = mock(HttpManager.class);
         AbstractRestRequest.httpManager = httpManager;
         ArmyManagerController.availableUnits.put("5cc051bd62083600017db3b6",
             new Unit("5cc051bd62083600017db3b6", "Infantry", 3, 3, new ArrayList<>()));
-    }
-
-    @Test
-    public void registerUserTest() {
-        HttpRequestResponse httpRequestResponse = getHttpRegisterUserResponse();
-
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        RegisterUserRequest req = new RegisterUserRequest("TeamBTestUser", "qwertz");
-
-        try {
-            req.sendRequest();
-
-            Assert.assertFalse(req.getSuccessful());
-            Assert.assertEquals("Name already taken", req.getMessage());
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
-
-    }
-
-    @Test
-    public void loginUserTest() {
-
-        HttpRequestResponse httpRequestResponse = getHttpLoginUserResponse();
-
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        LoginUserRequest req = new LoginUserRequest("TeamBTestUser", "qwertz");
-
-        try {
-            //Query Request
-            req.sendRequest();
-
-            //Test Request Helpers
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals(36, req.getUserKey().length());
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
-    }
-
-    @Test
-    public void queryUsersInLobbyTest() throws ParseException {
-
-        HttpRequestResponse httpRequestResponseGet = getHttpQueryUsersResponse();
-
-        try {
-            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseGet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        QueryUsersInLobbyRequest req = new QueryUsersInLobbyRequest("111111111111111111111111111111111111");
-        try {
-            req.sendRequest();
-
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertTrue(req.getUsersInLobby().contains("TeamBTestUser"));
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
-    }
-
-    @Test
-    public void logoutUserTest() throws ParseException {
-        HttpRequestResponse httpRequestResponseLogout = getHttpLogoutUserResponse();
-
-        try {
-            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseLogout);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        LogoutUserRequest req = new LogoutUserRequest("111111111111111111111111111111111111");
-        try {
-            req.sendRequest();
-
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals("Logged out", req.getMessage());
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
-    }
-
-    @Test
-    public void createGameTest() throws ParseException {
-        HttpRequestResponse httpRequestResponseCreateGame = getHttpCreateGameResponse();
-
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(httpRequestResponseCreateGame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        CreateGameRequest req;
-
-        req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111");
-        req.sendRequest();
-
-        Assert.assertTrue(req.getSuccessful());
-        Assert.assertEquals(24, req.getGameId().length());
-
-        req = new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111", 123);
-        req.sendRequest();
-
-        Assert.assertTrue(req.getSuccessful());
-        Assert.assertEquals(24, req.getGameId().length());
-    }
-
-    @Test
-    public void queryGamesTest() throws ParseException {
-        HttpRequestResponse httpRequestResponseQueryGames = getHttpQueryGamesResponse();
-
-        QueryGamesRequest req = new QueryGamesRequest("111111111111111111111111111111111111");
-        try {
-            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseQueryGames);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            req.sendRequest();
-
-            Assert.assertTrue(req.getSuccessful());
-
-            final boolean[] hasTeamBTestGame = {false};
-            req.getGames().forEach((s, gameMeta)
-                -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
-            Assert.assertTrue(hasTeamBTestGame[0]);
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
-    }
-
-    @Test
-    public void deleteGameTest() throws ParseException {
-        DeleteGameRequest req = new DeleteGameRequest("123456789012345678901234",
-            "111111111111111111111111111111111111");
-
-        HttpRequestResponse httpRequestResponseDelete = getHttpDeleteGameResponse();
-
-        try {
-            when(httpManager.delete(any(), any(), any())).thenReturn(httpRequestResponseDelete);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            req.sendRequest();
-
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals("Game deleted", req.getMessage());
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
-    }
-
-    @Test
-    public void joinGameTest() throws ParseException {
-        JoinGameRequest req = new JoinGameRequest("123456789012345678901234", "111111111111111111111111111111111111");
-
-        HttpRequestResponse httpRequestResponseJoinGame = getHttpJoinGameResponse();
-
-        try {
-            when(httpManager.get(any(), any())).thenReturn(httpRequestResponseJoinGame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            req.sendRequest();
-
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. "
-                + "Please connect to /ws/game?gameId=GAME_ID", req.getMessage());
-        } catch (Exception e) {
-            Assert.fail(e.toString());
-        }
     }
 
     private HttpRequestResponse getCreateArmyRequestResponse() {
@@ -296,11 +52,108 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodyCreateArmy, status, errorMsg);
     }
 
+    @Test
+    public void createArmyRequestTest() {
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<String> optional = RequestUtil.request(new CreateArmyRequest("", new ArrayList<>(), fakeUserKey));
+
+        if (optional.isPresent()) {
+            Assert.assertEquals("5d11fad12c945100017660ee", optional.get());
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getCreateGameResponse() {
+        String httpReqRepBodyCreateGame = "{\"status\":\"success\",\"message\":\"test\",\"data\":{\"gameId\":"
+            + "\"123456789012345678901234\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HttpRequestResponse(httpReqRepBodyCreateGame, status, errorMsg);
+    }
+
+    @Test
+    public void createGameTest() throws ParseException {
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(getCreateGameResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<String> optional;
+
+        optional = RequestUtil.request(
+            new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111"));
+
+        if (optional.isPresent()) {
+            Assert.assertEquals(24, optional.get().length());
+        } else {
+            Assert.fail();
+        }
+
+        optional = RequestUtil.request(
+            new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111", 123));
+
+        if (optional.isPresent()) {
+            Assert.assertEquals(24, optional.get().length());
+        } else {
+            Assert.fail();
+        }
+    }
+
     private HttpRequestResponse getDeleteArmyRequestResponse() {
         String httpReqRepBodyDeleteArmy = "{\"status\":\"success\",\"message\":\"Army deleted\",\"data\":{}}";
         int status = 200;
         String errorMsg = "";
         return new HttpRequestResponse(httpReqRepBodyDeleteArmy, status, errorMsg);
+    }
+
+    @Test
+    public void deleteArmyRequestTest() {
+        try {
+            when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteArmyRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        DeleteArmyRequest request = new DeleteArmyRequest(fakeArmyId, fakeUserKey);
+
+        if (RequestUtil.request(request)) {
+            Assert.assertEquals("Army deleted", request.getMessage());
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getDeleteGameResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game deleted\",\"data\":{\"userKey\":"
+            + "\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+
+    @Test
+    public void deleteGameTest() throws ParseException {
+        try {
+            when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteGameResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        DeleteGameRequest request = new DeleteGameRequest("123456789012345678901234",
+            "111111111111111111111111111111111111");
+
+        if (RequestUtil.request(request)) {
+            Assert.assertEquals("Game deleted", request.getMessage());
+        } else {
+            Assert.fail();
+        }
     }
 
     private HttpRequestResponse getGetSpecificArmyResponse() {
@@ -312,6 +165,102 @@ public class RestRequestTestsMocked {
         int status = 200;
         String errorMsg = "";
         return new HttpRequestResponse(httpReqRepBodySpecificArmy, status, errorMsg);
+    }
+
+    @Test
+    public void getSpecificArmyRequestTest() {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getGetSpecificArmyResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<Army> optional = RequestUtil.request(new GetSpecificArmyRequest(fakeArmyId, fakeUserKey));
+
+        if (optional.isPresent()) {
+            Assert.assertEquals("testArmy001", optional.get().getName());
+            Assert.assertNotNull(optional.get().getUnits().get(0));
+            Assert.assertEquals("Infantry", optional.get().getUnits().get(0).getType());
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getJoinGameResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"Game joined, you will be disconnected "
+            + "from the chat and the system socket. Please connect to /ws/game?gameId=GAME_ID\",\"data\":"
+            + "{\"userKey\":\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+
+    @Test
+    public void joinGameTest() throws ParseException {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getJoinGameResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JoinGameRequest request =
+            new JoinGameRequest("123456789012345678901234", "111111111111111111111111111111111111");
+
+        if (RequestUtil.request(request)) {
+            Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. "
+                + "Please connect to /ws/game?gameId=GAME_ID", request.getMessage());
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getLoginUserResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":{\"userKey\":"
+            + "\"111111111111111111111111111111111111\"}}";
+        int status = 200;
+        String errorMsg = "Bad Request";
+        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+
+    @Test
+    public void loginUserTest() {
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(getLoginUserResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<String> optional = RequestUtil.request(new LoginUserRequest("TeamBTestUser", "qwertz"));
+
+        if (optional.isPresent()) {
+            Assert.assertEquals(36, optional.get().length());
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getLogoutUserResponse() {
+        String httpReqRepBodyLogout = "{\"status\":\"success\",\"message\":\"Logged out\",\"data\":{}}";
+        int statusLogout = 200;
+        String errorMsgLogout = "test";
+        return new HttpRequestResponse(httpReqRepBodyLogout, statusLogout, errorMsgLogout);
+    }
+
+    @Test
+    public void logoutUserTest() throws ParseException {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getLogoutUserResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LogoutUserRequest request = new LogoutUserRequest("111111111111111111111111111111111111");
+
+        if (RequestUtil.request(request)) {
+            Assert.assertEquals("Logged out", request.getMessage());
+        } else {
+            Assert.fail();
+        }
     }
 
     private HttpRequestResponse getQueryArmiesRequestResponse() {
@@ -327,6 +276,64 @@ public class RestRequestTestsMocked {
         int status = 200;
         String errorMsg = "";
         return new HttpRequestResponse(httpReqRepBodyQueryArimes, status, errorMsg);
+    }
+
+    @Test
+    public void queryArmiesRequestTest() {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryArmiesRequestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<ArrayList<Army>> optional = RequestUtil.request(new QueryArmiesRequest(fakeUserKey));
+
+        if (optional.isPresent()) {
+            ArrayList<Army> armies = optional.get();
+            boolean containsArmyID = false;
+
+            for (Army army : armies) {
+                if (army.getId().equals(fakeArmyId)) {
+                    containsArmyID = true;
+                    Assert.assertNotNull(army.getUnits().get(0));
+                    Assert.assertEquals("Infantry", army.getUnits().get(0).getType());
+                }
+            }
+
+            Assert.assertTrue(containsArmyID);
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getQueryGamesResponse() {
+        String httpReqRepBodyQueryGames = "{\"status\":\"success\",\"message\":\"test\",\"data\":"
+            + "[{\"id\":\"123456789012345678901234\",\"name\":\"TeamBTestUserGame\",\"neededPlayer\":2,"
+            + "\"joinedPlayer\":0}]}";
+        int statusLogout = 200;
+        String errorMsgLogout = "test";
+        return new HttpRequestResponse(httpReqRepBodyQueryGames, statusLogout, errorMsgLogout);
+    }
+
+    @Test
+    public void queryGamesTest() throws ParseException {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryGamesResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<HashMap<String, GameMeta>> optional =
+            RequestUtil.request(new QueryGamesRequest("111111111111111111111111111111111111"));
+
+        if (optional.isPresent()) {
+            final boolean[] hasTeamBTestGame = {false};
+            optional.get().forEach((s, gameMeta)
+                -> hasTeamBTestGame[0] |= gameMeta.getName().equals("TeamBTestUserGame"));
+            Assert.assertTrue(hasTeamBTestGame[0]);
+        } else {
+            Assert.fail();
+        }
     }
 
     private HttpRequestResponse getQueryUnitsRequestTestResponse() {
@@ -347,6 +354,74 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodyQueryUnits, status, errorMsg);
     }
 
+    @Test
+    public void queryUnitsRequestTest() {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryUnitsRequestTestResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(fakeUserKey));
+
+        if (optional.isPresent()) {
+            ArrayList<Unit> unitList = optional.get();
+            Assert.assertEquals(6, unitList.size());
+            Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getQueryUsersResponse() {
+        String httpReqRepBody = "{\"status\":\"success\",\"message\":\"\",\"data\":[\"TeamBTestUser\"]}";
+        int status = 200;
+        String errorMsg = "test";
+        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+
+    @Test
+    public void queryUsersInLobbyTest() throws ParseException {
+        try {
+            when(httpManager.get(any(), any())).thenReturn(getQueryUsersResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Optional<ArrayList<String>> optional = RequestUtil.request(
+            new QueryUsersInLobbyRequest("111111111111111111111111111111111111"));
+
+        if (optional.isPresent()) {
+            Assert.assertTrue(optional.get().contains("TeamBTestUser"));
+        } else {
+            Assert.fail();
+        }
+    }
+
+    private HttpRequestResponse getRegisterUserResponse() {
+        String httpReqRepBody = "{\"status\":\"failure\",\"message\":\"Name already taken\",\"data\":{}}";
+        int status = 400;
+        String errorMsg = "Bad Request";
+        return new HttpRequestResponse(httpReqRepBody, status, errorMsg);
+    }
+
+    @Test
+    public void registerUserTest() {
+        try {
+            when(httpManager.post(any(), any(), any())).thenReturn(getRegisterUserResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        RegisterUserRequest request = new RegisterUserRequest("TeamBTestUser", "qwertz");
+
+        if (!RequestUtil.request(request)) {
+            Assert.assertEquals("Name already taken", request.getMessage());
+        } else {
+            Assert.fail();
+        }
+    }
+
     private HttpRequestResponse getUpdateArmyRequestResponse() {
         String httpReqRepBodyUpdateArmy = "{\"status\":\"success\",\"message\":\"{\\\"id\\\":"
             + "\\\"5d11fad12c945100017660ee\\\",\\\"name\\\":\\\"hello\\\",\\\"units\\\":["
@@ -359,99 +434,6 @@ public class RestRequestTestsMocked {
         return new HttpRequestResponse(httpReqRepBodyUpdateArmy, status, errorMsg);
     }
 
-
-    @Test
-    public void createArmyRequestTest() {
-        String name = "TestBArmy";
-
-        List<Unit> units = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            units.add(new Unit("5cc051bd62083600017db3b6"));
-        }
-        try {
-            when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        CreateArmyRequest req = new CreateArmyRequest(name, units, fakeUserKey);
-
-        req.sendRequest();
-        Assert.assertTrue(req.getSuccessful());
-    }
-
-    @Test
-    public void deleteArmyRequestTest() {
-        try {
-            when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteArmyRequestResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        DeleteArmyRequest req = new DeleteArmyRequest(fakeArmyId, fakeUserKey);
-        req.sendRequest();
-        try {
-            Assert.assertTrue(req.getSuccessful());
-            Assert.assertEquals("Army deleted", req.getMessage());
-        } catch (AssertionError e) {
-            System.out.println("Check if there aren't too many armies for this player.");
-            throw e;
-        }
-
-    }
-
-    @Test
-    public void getSpecificArmyRequestTest() {
-        try {
-            when(httpManager.get(any(), any())).thenReturn(getGetSpecificArmyResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        GetSpecificArmyRequest req = new GetSpecificArmyRequest(fakeArmyId, fakeUserKey);
-        req.sendRequest();
-        Army reqArmy = req.getRequestedArmy();
-        Assert.assertTrue(req.getSuccessful());
-        Assert.assertEquals("testArmy001", reqArmy.getName());
-        Assert.assertNotNull(reqArmy.getUnits().get(0));
-        Assert.assertEquals("Infantry", reqArmy.getUnits().get(0).getType());
-    }
-
-    @Test
-    public void queryArmiesRequestTest() {
-        try {
-            when(httpManager.get(any(), any())).thenReturn(getQueryArmiesRequestResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        QueryArmiesRequest req = new QueryArmiesRequest(fakeUserKey);
-        req.sendRequest();
-        ArrayList<Army> armies = req.getArmies();
-        Assert.assertTrue(req.getSuccessful());
-        boolean containsArmyID = false;
-        for (Army army : armies) {
-            if (army.getId().equals(fakeArmyId)) {
-                containsArmyID = true;
-                Assert.assertNotNull(army.getUnits().get(0));
-                Assert.assertEquals("Infantry", army.getUnits().get(0).getType());
-            }
-        }
-        Assert.assertTrue(containsArmyID);
-    }
-
-    @Test
-    public void queryUnitsRequestTest() {
-        try {
-            when(httpManager.get(any(), any())).thenReturn(getQueryUnitsRequestTestResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        QueryUnitsRequest req = new QueryUnitsRequest(fakeUserKey);
-        req.sendRequest();
-        ArrayList<Unit> unitList = req.getUnits();
-        Assert.assertTrue(req.getSuccessful());
-        Assert.assertEquals(6, unitList.size());
-        Assert.assertEquals("Infantry", unitList.get(5).getCanAttack().get(0));
-    }
-
-
     @Test
     public void updateArmyRequestTest() {
         try {
@@ -460,23 +442,16 @@ public class RestRequestTestsMocked {
             e.printStackTrace();
         }
 
-        Army testArmy = new Army(null, null, null);
-        testArmy.setId(fakeArmyId);
         List<Unit> units = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             units.add(new Unit("5cc051bd62083600017db3b7"));
         }
 
-        testArmy.setUnits(units);
-        testArmy.setName("changedName");
-        UpdateArmyRequest req = new UpdateArmyRequest(testArmy, fakeUserKey);
-        req.sendRequest();
-        Assert.assertTrue(req.getSuccessful());
-        UpdateArmyRequest req2 = new UpdateArmyRequest(testArmy.getId(), testArmy.getName(),
-            testArmy.getUnits(), fakeUserKey);
-        req2.sendRequest();
-        Assert.assertTrue(req2.getSuccessful());
-
+        if (RequestUtil.request(new UpdateArmyRequest(new Army(fakeArmyId, "changedName", units), fakeUserKey))) {
+            // TODO what does this endpoint return?!
+        } else {
+            Assert.fail();
+        }
     }
 }

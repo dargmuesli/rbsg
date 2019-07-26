@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class LoginUserRequest extends AbstractRestRequest {
+public class LoginUserRequest extends AbstractDataRestRequest<String> {
 
     private String username;
     private String password;
@@ -42,9 +42,19 @@ public class LoginUserRequest extends AbstractRestRequest {
         return null;
     }
 
-    //Custom Request Helpers
-    public String getUserKey() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The user's key.
+     */
+    @Override
+    public String getData() {
         return (((JsonObject) getResponse().get("data")).get("userKey").getAsString());
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not log user in!";
     }
 
 }

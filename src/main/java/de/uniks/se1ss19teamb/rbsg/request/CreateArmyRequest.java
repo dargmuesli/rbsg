@@ -6,7 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.List;
 
-public class CreateArmyRequest extends AbstractRestRequest {
+public class CreateArmyRequest extends AbstractDataRestRequest<String> {
 
     private String userToken;
     private String armyName;
@@ -45,8 +45,19 @@ public class CreateArmyRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    public String getArmyID() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The new army's id.
+     */
+    @Override
+    public String getData() {
         JsonObject responseData = getResponse().get("data").getAsJsonObject();
         return responseData.get("id").getAsString();
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not create army!";
     }
 }
