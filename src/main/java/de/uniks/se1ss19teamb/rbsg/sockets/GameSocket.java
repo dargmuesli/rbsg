@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
@@ -230,6 +231,7 @@ public class GameSocket extends AbstractWebSocket {
                                     InGameController.getInstance().changeUnitPos(id, newValue);
                                     break;
                                 case "hp":
+                                    SoundManager.playSound("Omae", 0);
                                     InGameController.getInstance().changeUnitHp(id, newValue);
                                     break;
                                 default:
@@ -257,6 +259,7 @@ public class GameSocket extends AbstractWebSocket {
                             NotificationHandler.getInstance()
                                 .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
                                     + " has left the game!", logger);
+                            SoundManager.playSound("nani", 0);
                             break;
                         case "Unit":
                             for (int i = 0; i < InGameController.unitTiles.size(); i++) {
@@ -265,6 +268,7 @@ public class GameSocket extends AbstractWebSocket {
                                     InGameController.unitTiles.remove(i);
                                 }
                             }
+                            SoundManager.playSound("nani", 0);
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(

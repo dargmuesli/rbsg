@@ -24,6 +24,9 @@ public class SoundManager {
         instance.sounds.put("InfantryV1_Fire", new Sound("infantry_fire.wav",true));
         instance.sounds.put("InfantryV1_Move", new Sound("infantry_move.wav",true));
         instance.sounds.put("panzer",new Sound("panzer.wav", true));
+        instance.sounds.put("nani", new Sound("nani.wav", true));
+        instance.sounds.put("Omae", new Sound("Omae_wa_mou_shindeiru.wav", true));
+        instance.sounds.put("Omae_nani", new Sound("Omae_wa_mou_shindeiru_nani.wav", true));
 
         //https://www.youtube.com/watch?v=VZec_PqXXzo
         //If anyone feels offended: Fight me
