@@ -97,6 +97,7 @@ public class InGameController {
             }
         }
         assert (currentUnit != null);
+
         UnitTile finalCurrentUnit = currentUnit;
         Platform.runLater(() -> {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
@@ -106,7 +107,10 @@ public class InGameController {
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
             }
         });
+        unitTileMapByTileId.remove(currentUnit.getPosition());
         currentUnit.setPosition(newPos);
+        unitTileMapByTileId.put(newPos, currentUnit);
+
     }
 
     public void initialize() {
@@ -220,7 +224,7 @@ public class InGameController {
 
                         UnitTile toAttack = unitTileMapByTileId.get(source.getId());
                         EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
-
+                        assert lastSelected != null;
                         //is there a unit on the selected and is selected a neighbor?
                         if(toAttack != null &&
                             (lastSelected.getBottom().equals(source.getId())
