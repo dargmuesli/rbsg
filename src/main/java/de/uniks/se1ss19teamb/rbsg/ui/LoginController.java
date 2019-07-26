@@ -11,16 +11,12 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
-import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -79,8 +75,8 @@ public class LoginController {
         Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
-        new ChuckNorrisJokeTicker().setLabelPosition(jokeLabel);
-        new ChuckNorrisJokeTicker().moveLabel(jokeLabel);
+        ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
+        ChuckNorrisJokeTicker.moveLabel(jokeLabel);
       
         UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
 
@@ -124,7 +120,7 @@ public class LoginController {
             login();
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
-            new ChuckNorrisJokeTicker().stopAnimation();
+            ChuckNorrisJokeTicker.stopAnimation();
         }
     }
 
@@ -139,23 +135,17 @@ public class LoginController {
             return;
         }
 
-        LoginUserRequest login = new LoginUserRequest(userName.getText(), password.getText());
-        login.sendRequest();
-
-        if (!login.getSuccessful()) {
-            NotificationHandler.getInstance().sendError("Login fehlgeschlagen!", logger);
-            return;
-        }
-
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
             UserData.deleteUserData(NotificationHandler.getInstance());
         }
 
-        setUserKey(login.getUserKey());
+        RequestUtil.request(new LoginUserRequest(userName.getText(), password.getText()))
+            .ifPresent(LoginController::setUserKey);
+
         setUser(userName.getText());
-        new ChuckNorrisJokeTicker().stopAnimation();
+        ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
     }

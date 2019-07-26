@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Line?>
+<?import com.jfoenix.controls.JFXButton?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
+    <HBox AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" spacing="40">
+        <VBox fx:id="vBoxOne" visible="false">
+            <Label fx:id="labelOne" text="Team1"></Label>
+            <Line fx:id="linePlayerOne"></Line>
+        </VBox>
+        <VBox fx:id="vBoxTwo" visible="false">
+            <Label fx:id="labelTwo" text="Team2"></Label>
+            <Line fx:id="linePlayerTwo"></Line>
+        </VBox>
+        <VBox fx:id="vBoxThree" visible="false">
+            <Label fx:id="labelThree" text="Team3"></Label>
+            <Line fx:id="linePlayerThree"></Line>
+        </VBox>
+        <VBox fx:id="vBoxFour" visible="false">
+            <Label fx:id="labelFour" text="Team4"></Label>
+            <Line fx:id="linePlayerFour"></Line>
+        </VBox>
+        <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#setOnAction"></JFXButton>
+    </HBox>
+</AnchorPane>
