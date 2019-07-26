@@ -29,23 +29,19 @@ public class ArmyUtil {
         }
 
         if (currentArmyId == null) {
-            CreateArmyRequest req = new CreateArmyRequest(currentArmyName, currentArmyUnits,
-                LoginController.getUserKey());
-            req.sendRequest();
-
-            if (req.getSuccessful()) {
-                NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
-                currentArmy.setId(req.getData());
-            }
+            RequestUtil.request(new CreateArmyRequest(currentArmyName, currentArmyUnits, LoginController.getUserKey()))
+                .ifPresent(s -> {
+                    NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
+                    currentArmy.setId(s);
+                });
         } else {
-            UpdateArmyRequest req = new UpdateArmyRequest(currentArmyId, currentArmyName, currentArmyUnits,
-                LoginController.getUserKey());
-            req.sendRequest();
-
-            if (req.getSuccessful()) {
-                NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
+            if (!RequestUtil.request(new UpdateArmyRequest(currentArmy, LoginController.getUserKey()))) {
+                return null;
             }
+
+            NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
         }
+
         return currentArmy.getId();
     }
 }
