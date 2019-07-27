@@ -261,7 +261,7 @@ public class GameLobbyController {
             });
 
         } else if (event.getSource().equals(btnMyReady)) {
-            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !", logger);
+            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgew\u00E4hlt !", logger);
         } else if (event.getSource().equals(btnStart)) {
             RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
                 loadFromServer();
