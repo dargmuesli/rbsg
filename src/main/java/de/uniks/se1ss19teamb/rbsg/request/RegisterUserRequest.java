@@ -41,4 +41,9 @@ public class RegisterUserRequest extends AbstractRestRequest {
     protected String getUserToken() {
         return null;
     }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not register user!";
+    }
 }

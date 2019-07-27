@@ -2,7 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import com.google.gson.JsonObject;
 
-public class CreateGameRequest extends AbstractRestRequest {
+public class CreateGameRequest extends AbstractDataRestRequest<String> {
 
     private String userToken;
     private String gameName;
@@ -48,10 +48,19 @@ public class CreateGameRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    //Custom Request Helper
-
-    public String getGameId() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The new game's id.
+     */
+    @Override
+    public String getData() {
         return (((JsonObject) getResponse().get("data")).get("gameId").getAsString());
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not create game!";
     }
 
 }

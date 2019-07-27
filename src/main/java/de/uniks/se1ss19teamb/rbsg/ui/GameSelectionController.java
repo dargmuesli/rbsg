@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
+import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -51,8 +52,10 @@ public class GameSelectionController {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
-        JoinGameRequest joinGameRequest = new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey());
-        joinGameRequest.sendRequest();
+        if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey()))) {
+            return;
+        }
+
         joinedGame = gameMeta;
 
         ArmyManagerController.joiningGame = true;
@@ -77,8 +80,9 @@ public class GameSelectionController {
     }
 
     public void deleteGame() {
-        DeleteGameRequest deleteGameRequest = new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey());
-        deleteGameRequest.sendRequest();
+        if (!RequestUtil.request(new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey()))) {
+            return;
+        }
     }
 
     public void spectate() {
