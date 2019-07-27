@@ -8,6 +8,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
@@ -112,7 +113,10 @@ public class InGameController {
             }
         }
         assert (currentUnit != null);
+
         UnitTile finalCurrentUnit = currentUnit;
+        unitTileMapByTileId.remove(currentUnit.getPosition());
+
         Platform.runLater(() -> {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
             stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
@@ -120,8 +124,11 @@ public class InGameController {
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
                 finalCurrentUnit.setPosition(newPos);
+                SoundManager.playSound(
+                    finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
             }
         });
+        unitTileMapByTileId.put(newPos, currentUnit);
     }
 
     public void initialize() {
@@ -129,9 +136,9 @@ public class InGameController {
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
-        for (Node node: head.getChildren()) {
+        for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {
-                Theming.hamburgerMenuTransition(hamburgerMenu,(JFXButton) node);
+                Theming.hamburgerMenuTransition(hamburgerMenu, (JFXButton) node);
             }
         }
 
@@ -256,22 +263,40 @@ public class InGameController {
                                 break;
                             }
                         }
-
-                        LinkedList<String> path = new LinkedList<>();
-                        path.addFirst(source.getId());
-                        String next = previousTileMapById.get(source.getId());
                         assert previous != null;
-                        while (!next.equals(previous.getPosition())) {
-                            path.addFirst(next);
-                            next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
-                        }
+                        assert source != null;
 
-                        //server
-                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                        UnitTile toAttack = unitTileMapByTileId.get(source.getId());
+                        EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
+                        assert lastSelected != null;
+                        //is there a unit on the selected and is selected a neighbor?
+                        if (toAttack != null
+                            && ((lastSelected.getBottom() != null && lastSelected.getBottom().equals(source.getId()))
+                            || (lastSelected.getLeft() != null && lastSelected.getLeft().equals(source.getId()))
+                            || (lastSelected.getRight() != null && lastSelected.getRight().equals(source.getId()))
+                            || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
+                        ) {
+                            //yes: attack
+                            GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
+
+                        } else {
+                            //no: move
+                            LinkedList<String> path = new LinkedList<>();
+                            path.addFirst(source.getId());
+                            String next = previousTileMapById.get(source.getId());
+                            while (!next.equals(previous.getPosition())) {
+                                path.addFirst(next);
+                                next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
+                            }
+
+                            //server
+                            GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                        }
 
                         //reset
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
+
                     } else {
 
                         if (lastSelectedPane == null) {
@@ -425,5 +450,39 @@ public class InGameController {
             }
         }
 
+    }
+
+    public void changeUnitHp(String unitId, String newHp) {
+        UnitTile unit = null;
+        for (UnitTile unitTile : unitTiles) {
+            if (unitTile.getId().equals(unitId)) {
+                unit = unitTile;
+                break;
+            }
+        }
+        assert unit != null;
+        unit.setHp(Integer.parseInt(newHp));
+
+        //for sounds find the attacking unit
+        UnitTile attacker = findAttackingUnit(unit);
+        if (attacker != null) {
+            SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+        }
+
+    }
+
+    public UnitTile findAttackingUnit(UnitTile unit) {
+        UnitTile neighbor = null;
+        EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());
+        for (UnitTile unitTile : unitTiles) {
+            if ((unitPos.getBottom() != null && unitPos.getBottom().equals(unitTile.getPosition()))
+                || (unitPos.getLeft() != null && unitPos.getLeft().equals(unitTile.getPosition()))
+                || (unitPos.getRight() != null && unitPos.getRight().equals(unitTile.getPosition()))
+                || (unitPos.getTop() != null && unitPos.getTop().equals(unitTile.getPosition()))) {
+                neighbor = unitTile;
+                break;
+            }
+        }
+        return neighbor;
     }
 }

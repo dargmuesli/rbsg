@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
@@ -213,6 +214,7 @@ public class GameSocket extends AbstractWebSocket {
                             }
                             break;
                         case "Unit":
+                            System.out.println(data);
 
                             if (!Strings.checkHas(data, "fieldName", logger)) {
                                 return;
@@ -224,7 +226,18 @@ public class GameSocket extends AbstractWebSocket {
                             }
                             newValue = data.get("newValue").getAsString();
                             String id = data.get("id").getAsString();
-                            InGameController.getInstance().changeUnitPos(id, newValue);
+                            switch (fieldName) {
+                                case "position":
+                                    InGameController.getInstance().changeUnitPos(id, newValue);
+                                    break;
+                                case "hp":
+                                    SoundManager.playSound("Omae", 0);
+                                    InGameController.getInstance().changeUnitHp(id, newValue);
+                                    break;
+                                default:
+                                    NotificationHandler.getInstance().sendError(
+                                        "Unknown fieldName object: " + fieldName, logger);
+                            }
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -246,14 +259,21 @@ public class GameSocket extends AbstractWebSocket {
                             NotificationHandler.getInstance()
                                 .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
                                     + " has left the game!", logger);
+                            SoundManager.playSound("Omae_nani", 0);
                             break;
                         case "Unit":
                             for (int i = 0; i < InGameController.unitTiles.size(); i++) {
                                 if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                    UnitTile attacker = InGameController.getInstance()
+                                        .findAttackingUnit(InGameController.unitTiles.get(i));
+                                    if (attacker != null) {
+                                        SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                    }
                                     InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
                                     InGameController.unitTiles.remove(i);
                                 }
                             }
+                            SoundManager.playSound("nani", 0);
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
