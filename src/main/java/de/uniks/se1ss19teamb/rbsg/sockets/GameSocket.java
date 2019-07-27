@@ -259,11 +259,16 @@ public class GameSocket extends AbstractWebSocket {
                             NotificationHandler.getInstance()
                                 .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
                                     + " has left the game!", logger);
-                            SoundManager.playSound("nani", 0);
+                            SoundManager.playSound("Omae_nani", 0);
                             break;
                         case "Unit":
                             for (int i = 0; i < InGameController.unitTiles.size(); i++) {
                                 if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                    UnitTile attacker = InGameController.getInstance()
+                                        .findAttackingUnit(InGameController.unitTiles.get(i));
+                                    if (attacker != null) {
+                                        SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                    }
                                     InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
                                     InGameController.unitTiles.remove(i);
                                 }

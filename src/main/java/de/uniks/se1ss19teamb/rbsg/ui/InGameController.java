@@ -8,6 +8,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
@@ -123,6 +124,8 @@ public class InGameController {
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
                 finalCurrentUnit.setPosition(newPos);
+                SoundManager.playSound(
+                    finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
             }
         });
         unitTileMapByTileId.put(newPos, currentUnit);
@@ -133,9 +136,9 @@ public class InGameController {
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
-        for (Node node: head.getChildren()) {
+        for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {
-                Theming.hamburgerMenuTransition(hamburgerMenu,(JFXButton) node);
+                Theming.hamburgerMenuTransition(hamburgerMenu, (JFXButton) node);
             }
         }
 
@@ -459,5 +462,27 @@ public class InGameController {
         }
         assert unit != null;
         unit.setHp(Integer.parseInt(newHp));
+
+        //for sounds find the attacking unit
+        UnitTile attacker = findAttackingUnit(unit);
+        if (attacker != null) {
+            SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+        }
+
+    }
+
+    public UnitTile findAttackingUnit(UnitTile unit) {
+        UnitTile neighbor = null;
+        EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());
+        for (UnitTile unitTile : unitTiles) {
+            if ((unitPos.getBottom() != null && unitPos.getBottom().equals(unitTile.getPosition()))
+                || (unitPos.getLeft() != null && unitPos.getLeft().equals(unitTile.getPosition()))
+                || (unitPos.getRight() != null && unitPos.getRight().equals(unitTile.getPosition()))
+                || (unitPos.getTop() != null && unitPos.getTop().equals(unitTile.getPosition()))) {
+                neighbor = unitTile;
+                break;
+            }
+        }
+        return neighbor;
     }
 }
