@@ -119,7 +119,9 @@ public class MainController {
         SystemSocket.instance.registerUserLeftHandler(
             (name) -> {
                 addElement(name, " left.", textArea, false);
-                updatePlayerView();
+                if (!name.equals(LoginController.getUser())) {
+                    updatePlayerView();
+                }
             });
 
         SystemSocket.instance.registerGameCreateHandler(
