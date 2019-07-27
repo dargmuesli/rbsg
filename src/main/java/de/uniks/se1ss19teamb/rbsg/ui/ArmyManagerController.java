@@ -121,6 +121,7 @@ public class ArmyManagerController {
     @FXML
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
+            btnBack.setDisable(true);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
         }
@@ -131,7 +132,7 @@ public class ArmyManagerController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
                 return;
             }
-
+            btnLogout.setDisable(true);
             LoginController.setUserKey(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
@@ -146,6 +147,7 @@ public class ArmyManagerController {
 
             RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
                 if (armies.size() != 0) {
+                    btnJoinGame.setDisable(true);
                     UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
                         mainPane.getScene().lookup("#chatWindow"));
                 }

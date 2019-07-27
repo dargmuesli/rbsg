@@ -118,8 +118,10 @@ public class LoginController {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogin)) {
             login();
+            btnLogin.setDisable(true);
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
+            btnRegistration.setDisable(true);
             ChuckNorrisJokeTicker.stopAnimation();
         }
     }

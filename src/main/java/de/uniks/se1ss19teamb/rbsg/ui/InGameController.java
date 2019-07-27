@@ -169,7 +169,7 @@ public class InGameController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
                 return;
             }
-
+            btnLogout.setDisable(true);
             LoginController.setUserKey(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);

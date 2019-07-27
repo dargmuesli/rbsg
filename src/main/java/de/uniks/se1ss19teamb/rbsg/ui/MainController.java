@@ -241,11 +241,12 @@ public class MainController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
                 return;
             }
-
+            btnLogout.setDisable(true);
             LoginController.setUserKey(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
         } else if (event.getSource().equals(btnArmyManager)) {
+            btnArmyManager.setDisable(true);
             ArmyManagerController.joiningGame = false;
             btnMinimize.setDisable(false);
             btnMinimize.fire();

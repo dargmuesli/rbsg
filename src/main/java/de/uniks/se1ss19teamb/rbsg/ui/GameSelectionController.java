@@ -14,6 +14,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.Arrays;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,12 @@ public class GameSelectionController {
 
     @FXML
     private Label gameNameLabel;
+
+    @FXML
+    private Button join;
+
+    @FXML
+    private Button spectate;
 
     private GameMeta gameMeta;
     static GameMeta joinedGame;
@@ -43,6 +50,7 @@ public class GameSelectionController {
 
     public void joinGame() {
         join();
+        join.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
 
@@ -89,6 +97,7 @@ public class GameSelectionController {
         ArmyManagerController.spectator = true;
         join();
         chatWindow.setVisible(false);
+        spectate.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
     }
