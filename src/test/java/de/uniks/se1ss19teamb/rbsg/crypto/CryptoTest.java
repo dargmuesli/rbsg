@@ -20,7 +20,7 @@ public class CryptoTest {
         File file = new File(dataPath);
 
         String encryptedMessage;
-        String msg = "gå til helvete!!!";
+        String msg = "g\u00E5 til helvete!!!";
         CipherController cip = new CipherController();
         cip.encryptMessage(msg, dataPath);
 
@@ -59,7 +59,7 @@ public class CryptoTest {
         FileWriter fileR = new FileWriter(dataPath);
         File file = new File(dataPath);
 
-        String msg = "gå til helvete!!!";
+        String msg = "g\u00E5 til helvete!!!";
         CipherController cip = new CipherController();
         cip.encryptMessage(msg, dataPath);
         String decryptedMessage = cip.decryptMessage(dataPath);
