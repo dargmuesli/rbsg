@@ -202,6 +202,7 @@ public class GameLobbyController {
     @FXML
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
+            btnBack.setDisable(true);
             GameSocket.instance.disconnect();
             MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
@@ -215,7 +216,7 @@ public class GameLobbyController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
                 return;
             }
-
+            btnLogout.setDisable(true);
             LoginController.setUserKey(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
@@ -265,7 +266,6 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnStart)) {
             RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
                 loadFromServer();
-
                 if (armies.size() != 0) {
                     GameSocket.instance.startGame();
                 }
