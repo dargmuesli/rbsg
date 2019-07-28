@@ -33,6 +33,10 @@ public class GameSocket extends AbstractWebSocket {
     private static String userName;
     private boolean ignoreOwn = false;
 
+    public GameSocket(String userName, String userKey, String gameId) {
+        this(userName, userKey, gameId, null, false);
+    }
+
     public GameSocket(String userName, String userKey, String gameId, String armyId, boolean spectator) {
         GameSocket.userName = userName;
         GameSocket.userKey = userKey;

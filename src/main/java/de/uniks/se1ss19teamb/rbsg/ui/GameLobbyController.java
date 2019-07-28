@@ -35,93 +35,49 @@ import org.apache.logging.log4j.Logger;
 
 public class GameLobbyController {
 
+    public static GameLobbyController instance;
+
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
-    private AnchorPane gameLobby1;
+    private AnchorPane errorContainer;
     @FXML
     private AnchorPane gameLobby;
     @FXML
-    private JFXButton btnBack;
+    private AnchorPane gameLobby1;
     @FXML
-    private JFXButton btnLogout;
+    private JFXButton btnBack;
     @FXML
     private JFXButton btnFullscreen;
     @FXML
+    private JFXButton btnLogout;
+    @FXML
+    private JFXButton btnStart;
+    @FXML
     private JFXHamburger hamburgerMenu;
-    @FXML
-    private Label army1;
-    @FXML
-    private Label army2;
-    @FXML
-    private Label army3;
     @FXML
     private Label gameName;
     @FXML
     private ListView<Label> playerList;
-    @FXML
-    private JFXButton btnReady;
-    @FXML
-    private JFXButton select1;
-    @FXML
-    private JFXButton select2;
-    @FXML
-    private JFXButton select3;
-    @FXML
-    private ListView<Parent> armyList;
-    @FXML
-    private JFXButton btnMyReady;
-    @FXML
-    private JFXButton btnStart;
-    @FXML
-    private AnchorPane errorContainer;
-
-    private static final Path ARMY_SAVE_PATH =
-        Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
-    private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
-    private Army currentArmy;
-    private Army armyBuffer1 = new Army(null, null, new ArrayList<>());
-    private Army armyBuffer2 = new Army(null, null, new ArrayList<>());
-    private Army armyBuffer3 = new Army(null, null, new ArrayList<>());
 
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
-    private boolean isSelected = false;
-    
-    public static GameLobbyController instance;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
             gameLobby, gameLobby1, GameLobbyController.class, btnFullscreen, errorContainer);
 
-        Theming.setTheme(Arrays.asList(new Pane[]{gameLobby, gameLobby1}));
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
+        instance = this;
 
         gameName.setText(GameSelectionController.joinedGame.getName());
-
-        instance = this;
 
         GameSocket.instance = new GameSocket(
             LoginController.getUser(),
             LoginController.getUserKey(),
-            GameSelectionController.joinedGame.getId(),
-            ArmyManagerController.army.getId(),
-            ArmyManagerController.spectator);
-
-
-        Platform.runLater(() -> {
-            chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
-            textArea = (VBox) btnLogout.getScene().lookup("#textArea");
-            message = (TextField) btnLogout.getScene().lookup("#message");
-            chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
-            btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
-        });
-
+            GameSelectionController.joinedGame.getId());
 
         GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
@@ -131,73 +87,36 @@ public class GameLobbyController {
             }
         });
 
+        Platform.runLater(() -> {
+            chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
+            textArea = (VBox) btnLogout.getScene().lookup("#textArea");
+            message = (TextField) btnLogout.getScene().lookup("#message");
+            chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
+            btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
+        });
+
         MainController.setGameChat(GameSocket.instance);
         MainController.setInGameChat(true);
 
-        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserKey())).ifPresent(units -> {
-            for (Unit unit : units) {
-                ArmyManagerController.availableUnits.put(unit.getId(), unit);
+        /*if (currentArmy.getUnits().size() < 10) {
+            NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
+            return;
+        }
+
+        saveToServer();
+
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+            if (armies.size() != 0) {
+                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
+                    mainPane.getScene().lookup("#chatWindow"));
             }
         });
 
-        setArmyName();
-        showArmyConfig();
-        //Testing playerList with someValues
-        playerList.getItems().add(new Label("Test"));
-        playerList.getItems().add(new Label("Test2"));
-        playerList.getItems().add(new Label("Test3"));
+        loadFromServer();
+        VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
+        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
+        btnMinimize.setDisable(false);*/
     }
-
-
-    private void showArmyConfig() {
-
-        ArmyManagerController.availableUnits.forEach((s, unit) -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitConfig.fxml"));
-            try {
-                Parent parent = fxmlLoader.load();
-                UnitConfigController configController = fxmlLoader.getController();
-                configController.loadConfig(unit);
-                configControllers.add(configController);
-                armyList.getItems().add(parent);
-                armyList.setOrientation(Orientation.HORIZONTAL);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        for (int i = 1; i <= 3; i++) {
-            currentArmy = loadArmyConfig(i);
-
-            if (currentArmy != null) {
-                for (UnitConfigController configController : configControllers) {
-                    configController.loadNumberOfUnit(currentArmy, i);
-                }
-            }
-        }
-
-    }
-
-    private void setArmyName() {
-        armyBuffer1 = loadArmyConfig(1);
-        armyBuffer2 = loadArmyConfig(2);
-        armyBuffer3 = loadArmyConfig(3);
-
-        army1.setText(armyBuffer1 != null ? armyBuffer1.getName() : "");
-        army2.setText(armyBuffer2 != null ? armyBuffer2.getName() : "");
-        army3.setText(armyBuffer3 != null ? armyBuffer3.getName() : "");
-    }
-
-    private Army loadArmyConfig(int number) {
-        File save = new File(String.format(ARMY_SAVE_PATH.toString(), number));
-
-        if (save.exists()) {
-            return SerializeUtils.deserialize(save, Army.class);
-        } else {
-            return null;
-        }
-    }
-
 
     @FXML
     private void eventHandler(ActionEvent event) {
@@ -221,57 +140,24 @@ public class GameLobbyController {
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(select1)) {
-            if (armyBuffer1 != null) {
-                //GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
-                select1.setDisable(true);
-                select2.setDisable(false);
-                select3.setDisable(false);
-                isSelected = true;
-            } else {
-                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
-            }
-        } else if (event.getSource().equals(select2)) {
-            if (armyBuffer2 != null) {
-                //GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
-                select1.setDisable(false);
-                select2.setDisable(true);
-                select3.setDisable(false);
-                isSelected = true;
-            } else {
-                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
-            }
-        } else if (event.getSource().equals(select3)) {
-            if (armyBuffer3 != null) {
-                //GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
-                select1.setDisable(false);
-                select2.setDisable(false);
-                select3.setDisable(true);
-                isSelected = true;
-            } else {
-                NotificationHandler.getInstance().sendError("Army Buffer is null!", logger);
-            }
-        } else if (event.getSource().equals(btnMyReady) && isSelected) {
+        } else if (event.getSource().equals(btnStart)) {
             Platform.runLater(() -> {
                 GameSocket.instance.readyToPlay();
-                btnMyReady.setDisable(true);
-                select1.setDisable(true);
-                select2.setDisable(true);
-                select3.setDisable(true);
+                btnStart.setDisable(true);
             });
-
-        } else if (event.getSource().equals(btnMyReady)) {
+        } else if (event.getSource().equals(btnStart)) {
             NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !", logger);
         } else if (event.getSource().equals(btnStart)) {
             RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
-                loadFromServer();
-
                 if (armies.size() != 0) {
                     GameSocket.instance.startGame();
                 }
             });
         }
     }
+
+
+
     
     public void startGameTransition() {
         VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
@@ -282,16 +168,6 @@ public class GameLobbyController {
                 gameLobby.getScene().lookup("#chatWindow"));
         btnMinimize.fire();
     }
-
-    private void loadFromServer() {
-        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
-            if (armies.size() == 0) {
-                NotificationHandler.getInstance()
-                    .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
-            }
-        });
-    }
-
 
     private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
         boolean createTab = true;
@@ -420,7 +296,5 @@ public class GameLobbyController {
         }
         MainController.selectionModel.select(tab);
     }
-
-
 }
 
