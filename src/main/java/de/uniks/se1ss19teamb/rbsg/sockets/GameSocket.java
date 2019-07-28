@@ -214,8 +214,6 @@ public class GameSocket extends AbstractWebSocket {
                             }
                             break;
                         case "Unit":
-                            System.out.println(data);
-
                             if (Strings.checkHasNot(data, "fieldName", logger)) {
                                 return;
                             }
