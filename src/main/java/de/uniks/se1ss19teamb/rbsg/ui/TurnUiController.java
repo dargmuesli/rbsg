@@ -51,7 +51,7 @@ public class TurnUiController {
 
     public void initialize() {
         instance = this;
-        getTurn("movePhase");
+        setTurn("movePhase");
         players();
         underLining(labelOne, linePlayerOne);
         underLining(labelTwo, linePlayerTwo);
@@ -79,7 +79,7 @@ public class TurnUiController {
         //implementation of playernames needed.
     }
 
-    public void getTurn(String phase) {
+    public void setTurn(String phase) {
         Platform.runLater(() -> {
             turnLabel.setText(phase);
         });
