@@ -1,17 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import animatefx.animation.Bounce;
 import com.jfoenix.controls.JFXButton;
-import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
-
-import java.util.ArrayList;
 
 public class TurnUiController {
     @FXML
