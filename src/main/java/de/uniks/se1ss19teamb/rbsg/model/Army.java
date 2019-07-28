@@ -11,7 +11,8 @@ public class Army {
     private String name = "";
     private List<Unit> units = new ArrayList<>();
 
-    public Army() {}
+    public Army() {
+    }
 
     public Army(String id, String name, List<Unit> units) {
         this.id = id;

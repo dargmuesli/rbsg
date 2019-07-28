@@ -1,3 +1,7 @@
+JFXTextField {
+    -fx-font-size: 15px;
+}
+
 ListView {
     -fx-background-insets: 0px;
     -fx-padding: 0px;
