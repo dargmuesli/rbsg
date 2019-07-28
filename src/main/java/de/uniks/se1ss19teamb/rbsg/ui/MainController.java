@@ -141,7 +141,9 @@ public class MainController {
                 });
             });
 
-        SystemSocket.instance.connect();
+        if (SystemSocket.instance.websocket == null || SystemSocket.instance.websocket.mySession == null) {
+            SystemSocket.instance.connect();
+        }
 
         if (ChatSocket.instance == null) {
             ChatSocket.instance = new ChatSocket(LoginController.getUser(), LoginController.getUserKey());
@@ -157,7 +159,9 @@ public class MainController {
 
         MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
 
-        ChatSocket.instance.connect();
+        if (ChatSocket.instance.websocket == null || ChatSocket.instance.websocket.mySession == null) {
+            ChatSocket.instance.connect();
+        }
 
         updateGameView();
         updatePlayerView();

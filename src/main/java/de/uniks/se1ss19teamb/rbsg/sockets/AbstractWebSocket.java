@@ -13,12 +13,12 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractWebSocket implements WebSocket {
 
-    private static final Logger logger = LogManager.getLogger();
-
-    private static final String url = "wss://rbsg.uniks.de/ws";
+    public WebSocketClient websocket;
 
     List<WebSocketMessageHandler> handlers = new ArrayList<>();
-    WebSocketClient websocket;
+
+    private static final Logger logger = LogManager.getLogger();
+    private static final String url = "wss://rbsg.uniks.de/ws";
 
     protected abstract String getEndpoint();
 
