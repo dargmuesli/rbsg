@@ -33,7 +33,7 @@ public class UserInterfaceUtils {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
+                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
             }
         });
         fadeTransition.play();
@@ -49,7 +49,7 @@ public class UserInterfaceUtils {
                 node.getScene().setRoot(pane);
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
+                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
             }
         });
         fadeTransition.play();

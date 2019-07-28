@@ -5,11 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.util.ArmyUtil;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
-import de.uniks.se1ss19teamb.rbsg.util.Theming;
-import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,35 +85,23 @@ public class ArmyManagerController {
 
         ArmyManagerController.instance = this;
 
-        QueryUnitsRequest queryUnitsRequest = new QueryUnitsRequest(LoginController.getUserKey());
-        queryUnitsRequest.sendRequest();
-
-        if (!queryUnitsRequest.getSuccessful()) {
-            LogManager.getLogger().error("Could not query units!");
-            return;
-        }
-
-        for (Unit unit : queryUnitsRequest.getUnits()) {
-            availableUnits.put(unit.getId(), unit);
-        }
+        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserKey())).ifPresent(units -> {
+            for (Unit unit : units) {
+                availableUnits.put(unit.getId(), unit);
+            }
+        });
 
         if (joiningGame) {
             btnJoinGame.setOnAction(this::setOnAction);
             hboxLowerButtons.getChildren().add(btnJoinGame);
         }
+
         setLabelLeftUnits(10);
         setUpUnitObjects();
     }
 
     private void setUpUnitObjects() {
-        // TODO: Tipp für @Chris: CSS Properties setzt man über Dateien, nicht über einzelne flags :)
-        String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
-            + "-fx-padding: 0px;";
-        String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
-            + "-fx-padding: 0px;";
-
-        unitList.setStyle("-fx-background-color:transparent;");
-        unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
+        unitList.getStyleClass().add(Theming.darkModeActive() ? "darkMode_UnitObject.css" : "whiteMode_UnitObject.css");
 
         availableUnits.forEach((s, unit) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -137,6 +121,7 @@ public class ArmyManagerController {
     @FXML
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
+            btnBack.setDisable(true);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
         }
@@ -144,14 +129,13 @@ public class ArmyManagerController {
 
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
-            LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
-            logout.sendRequest();
-
-            if (logout.getSuccessful()) {
-                LoginController.setUserKey(null);
-                UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+                return;
             }
+            btnLogout.setDisable(true);
+            LoginController.setUserKey(null);
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnJoinGame)) {
@@ -160,18 +144,19 @@ public class ArmyManagerController {
                 return;
             }
             ArmyUtil.saveToServer(currentArmy);
-            QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
-            req.sendRequest();
-            ArrayList<Army> serverArmies = req.getArmies();
+
+            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+                if (armies.size() != 0) {
+                    btnJoinGame.setDisable(true);
+                    UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
+                        mainPane.getScene().lookup("#chatWindow"));
+                }
+            });
+
             loadFromServer();
             VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
             JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
             btnMinimize.setDisable(false);
-
-            if (serverArmies.size() != 0) {
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
-                    mainPane.getScene().lookup("#chatWindow"));
-            }
         }
     }
 
@@ -194,17 +179,15 @@ public class ArmyManagerController {
     }
 
     public void loadFromServer() {
-        QueryArmiesRequest req = new QueryArmiesRequest(LoginController.getUserKey());
-        req.sendRequest();
-        ArrayList<Army> serverArmies = req.getArmies();
-
-        if (serverArmies.size() == 0) {
-            NotificationHandler.getInstance()
-                .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
-        } else {
-            currentArmy = serverArmies.get(0);
-            updateConfigurationView();
-        }
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+            if (armies.size() == 0) {
+                NotificationHandler.getInstance()
+                    .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
+            } else {
+                currentArmy = armies.get(0);
+                updateConfigurationView();
+            }
+        });
     }
 
     void updateConfigurationView() {

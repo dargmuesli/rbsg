@@ -79,15 +79,15 @@ public class GameSocketTestsMocked {
             argumentCaptor.getValue().toString());
     }
 
-    //    @Test
-    //    public void attackUnitTest() {
-    //        gameSocket.attackUnit("123456789", "987654321");
-    //        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
-    //        Assert.assertEquals(
-    //            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
-    //                + "\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}",
-    //            argumentCaptor.getValue().toString());
-    //    }
+    @Test
+    public void attackUnitTest() {
+        gameSocket.attackUnit("123456789", "987654321");
+        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
+        Assert.assertEquals(
+            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
+                + "\"data\":{\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}}",
+            argumentCaptor.getValue().toString());
+    }
 
     @Test
     public void nextPhaseTest() {
