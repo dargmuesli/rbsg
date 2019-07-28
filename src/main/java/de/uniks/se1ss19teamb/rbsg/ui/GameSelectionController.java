@@ -58,8 +58,6 @@ public class GameSelectionController {
 
         joinedGame = gameMeta;
 
-        ArmyManagerController.joiningGame = true;
-
         chatWindow = (VBox) root.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht

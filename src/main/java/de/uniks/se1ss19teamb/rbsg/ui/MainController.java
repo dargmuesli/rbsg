@@ -250,7 +250,6 @@ public class MainController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
         } else if (event.getSource().equals(btnArmyManager)) {
-            ArmyManagerController.joiningGame = false;
             btnMinimize.setDisable(false);
             btnMinimize.fire();
             UserInterfaceUtils.makeFadeOutTransition(
