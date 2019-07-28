@@ -44,9 +44,15 @@ public class TurnUiController {
 
     private FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
     private static int count = 0;
+    public static TurnUiController instance;
+
+    public static TurnUiController getInstance() {
+        return instance;
+    }
 
     public void initialize() {
-        getTurn();
+        instance = this;
+        getTurn("movePhase");
         players();
         underLining(labelOne, linePlayerOne);
         underLining(labelTwo, linePlayerTwo);
@@ -63,8 +69,6 @@ public class TurnUiController {
     private void setOnAction(ActionEvent event) {
         if (event.getSource().equals(phaseBtn)) {
             GameSocket.instance.nextPhase();
-            count++;
-            getTurn();
         }
     }
 
@@ -76,13 +80,13 @@ public class TurnUiController {
         //implementation of playernames needed.
     }
 
-    private void getTurn() {
-        if (count % 3 == 0) {
-            turnLabel.setText("Move Phase 1");
-        } else if (count % 3 == 1) {
-            turnLabel.setText("Attack Phase");
-        } else if (count % 3 == 2) {
-            turnLabel.setText("Move Phase 2");
+    public void getTurn(String phase) {
+        if (phase == "attackPhase") {
+            turnLabel.setText("attack phase");
+        } else if (phase == "movePhase") {
+            turnLabel.setText("move phase 1");
+        } else if (phase == "lastMovePhase") {
+            turnLabel.setText("move phase 2");
         }
     }
 }
