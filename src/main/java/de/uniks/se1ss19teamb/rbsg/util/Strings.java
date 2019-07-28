@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import org.apache.logging.log4j.Logger;
 
 public class Strings {
-    public static boolean checkHas(JsonObject jsonObject, String key, Logger logger) {
     public static boolean checkHasNot(JsonObject jsonObject, String key, Logger logger) {
         if (!jsonObject.has(key)) {
             if (jsonObject.has("status") && jsonObject.has("message")) {
