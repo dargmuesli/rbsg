@@ -215,7 +215,7 @@ public class GameSocket extends AbstractWebSocket {
                                 GameLobbyController.instance.startGameTransition();
                             }
 
-                            if (data.get("fieldName").getAsString() == "winner") {
+                            if (data.get("fieldName").getAsString().equals("winner")) {
                                 WinScreenController.instance.checkWinner(data.get("newValue").getAsString());
                             }
                             break;
