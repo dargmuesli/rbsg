@@ -3,8 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
-import com.sun.xml.internal.bind.v2.TODO;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -80,12 +80,8 @@ public class TurnUiController {
     }
 
     public void getTurn(String phase) {
-        if (phase == "attackPhase") {
-            turnLabel.setText("attack phase");
-        } else if (phase == "movePhase") {
-            turnLabel.setText("move phase 1");
-        } else if (phase == "lastMovePhase") {
-            turnLabel.setText("move phase 2");
-        }
+        Platform.runLater(() -> {
+            turnLabel.setText(phase);
+        });
     }
 }
