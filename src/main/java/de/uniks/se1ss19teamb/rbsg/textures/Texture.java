@@ -8,9 +8,9 @@ import javafx.scene.layout.Pane;
 
 public class Texture {
 
-    protected Image image;
+    Image image;
 
-    protected Texture(String classPath) {
+    Texture(String classPath) {
         InputStream stream = this.getClass().getResourceAsStream(classPath);
         image = new Image(stream);
     }
@@ -19,8 +19,7 @@ public class Texture {
         ImageView iv = new ImageView();
         iv.setImage(image);
 
-        Pane textured = new Pane(iv);
-        return textured;
+        return new Pane(iv);
     }
 
 }
