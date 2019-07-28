@@ -1,8 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import animatefx.animation.Bounce;
 import com.jfoenix.controls.JFXButton;
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.Toolkit;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,15 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
 public class TurnUiController {
-
-    @FXML
-    private Line linePlayerOne;
-    @FXML
-    private Line linePlayerTwo;
-    @FXML
-    private Line linePlayerThree;
-    @FXML
-    private Line linePlayerFour;
     @FXML
     private Label labelOne;
     @FXML
@@ -42,7 +32,6 @@ public class TurnUiController {
     @FXML
     private Label turnLabel;
 
-    private FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
     public static TurnUiController instance;
 
     public static TurnUiController getInstance() {
@@ -53,15 +42,7 @@ public class TurnUiController {
         instance = this;
         setTurn("movePhase");
         players();
-        underLining(labelOne, linePlayerOne);
-        underLining(labelTwo, linePlayerTwo);
-        underLining(labelThree, linePlayerThree);
-        underLining(labelFour, linePlayerFour);
         phaseBtn.setTranslateY(-4);
-    }
-
-    private void underLining(Label label, Line line) {
-        line.setEndX(fontLoader.computeStringWidth(label.getText(), label.getFont()));
     }
 
     @FXML
