@@ -10,27 +10,21 @@ public class WinScreenController {
     private ImageView trophyPic;
     @FXML
     private Label winnerLabel;
+    
+    public static WinScreenController instance;
 
-    private Boolean winnerFound = false;
-    private String winner;
-
-    public void initialize () {
-
+    public static WinScreenController getInstance() {
+        return instance;
     }
 
-    public void checkWinner () {
-        if (winnerFound) {
+    public void initialize () {
+        instance = this;
+    }
+
+    public void checkWinner (String winner) {
             trophyPic.setVisible(true);
             winnerLabel.setText(winner);
             winnerLabel.setVisible(true);
-        }
     }
 
-    private void setWinnerToLabel () {
-        // winner = nameofWinner;
-    }
-
-    private void calculateWinner () {
-        winnerFound = true;
-    }
 }

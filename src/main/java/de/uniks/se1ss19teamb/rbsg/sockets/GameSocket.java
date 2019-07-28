@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.ui.WinScreenController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Strings;
@@ -211,6 +212,10 @@ public class GameSocket extends AbstractWebSocket {
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
                                 GameLobbyController.instance.startGameTransition();
+                            }
+
+                            if (data.get("fieldName").getAsString() == "winner") {
+                                WinScreenController.instance.checkWinner(data.get("newValue").getAsString());
                             }
                             break;
                         case "Unit":
