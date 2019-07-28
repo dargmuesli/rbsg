@@ -110,7 +110,7 @@ public class GameLobbyController {
             LoginController.getUser(),
             LoginController.getUserKey(),
             GameSelectionController.joinedGame.getId(),
-            ArmyManagerController.currentArmy.getId(),
+            ArmyManagerController.army.getId(),
             ArmyManagerController.spectator);
 
 
@@ -223,7 +223,7 @@ public class GameLobbyController {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(select1)) {
             if (armyBuffer1 != null) {
-                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
+                //GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer1));
                 select1.setDisable(true);
                 select2.setDisable(false);
                 select3.setDisable(false);
@@ -233,7 +233,7 @@ public class GameLobbyController {
             }
         } else if (event.getSource().equals(select2)) {
             if (armyBuffer2 != null) {
-                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
+                //GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer2));
                 select1.setDisable(false);
                 select2.setDisable(true);
                 select3.setDisable(false);
@@ -243,7 +243,7 @@ public class GameLobbyController {
             }
         } else if (event.getSource().equals(select3)) {
             if (armyBuffer3 != null) {
-                GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
+                //GameSocket.instance.changeArmy(ArmyUtil.saveToServer(armyBuffer3));
                 select1.setDisable(false);
                 select2.setDisable(false);
                 select3.setDisable(true);
