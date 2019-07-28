@@ -43,7 +43,6 @@ public class TurnUiController {
     private Label turnLabel;
 
     private FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-    private static int count = 0;
     public static TurnUiController instance;
 
     public static TurnUiController getInstance() {
