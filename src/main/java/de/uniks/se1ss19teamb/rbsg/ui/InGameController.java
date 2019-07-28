@@ -217,7 +217,7 @@ public class InGameController {
                         }
 
                         //server
-                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[0]));
 
                         //reset
                         lastSelectedPane.getChildren().remove(selectionOverlay);

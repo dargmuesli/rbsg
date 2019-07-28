@@ -50,10 +50,10 @@ public class MainController {
 
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static Chat chat;
-    public static SingleSelectionModel<Tab> selectionModel;
+    static SingleSelectionModel<Tab> selectionModel;
     private static String userKey = LoginController.getUserKey();
     private static String userName = LoginController.getUser();
-    public static String sendTo = null;
+    static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
     private static boolean inGameChat = false;
 
@@ -218,12 +218,12 @@ public class MainController {
         }
     }
 
-    public static void setGameChat(GameSocket gameSocket) {
+    static void setGameChat(GameSocket gameSocket) {
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
     }
 
-    public static void setInGameChat(boolean state) {
+    static void setInGameChat(boolean state) {
         inGameChat = state;
     }
 
