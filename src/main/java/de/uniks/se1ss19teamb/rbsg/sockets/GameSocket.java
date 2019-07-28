@@ -245,7 +245,7 @@ public class GameSocket extends AbstractWebSocket {
                     }
                     break;
                 case "gameRemoveObject":
-                    if (!Strings.checkHas(data, "id", logger)) {
+                    if (Strings.checkHasNot(data, "id", logger)) {
                         return;
                     }
 
