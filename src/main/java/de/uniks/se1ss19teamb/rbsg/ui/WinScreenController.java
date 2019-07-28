@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -22,9 +24,12 @@ public class WinScreenController {
     }
 
     public void checkWinner(String winner) {
-        trophyPic.setVisible(true);
-        winnerLabel.setText(winner);
-        winnerLabel.setVisible(true);
+        Platform.runLater(() -> {
+            InGameController.instance.winScreenPane.setVisible(true);
+            trophyPic.setVisible(true);
+            winnerLabel.setText(winner);
+            winnerLabel.setVisible(true);
+        });
     }
 
 }

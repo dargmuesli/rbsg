@@ -81,6 +81,8 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private AnchorPane turnUI;
+    @FXML
+    public AnchorPane winScreenPane;
 
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
@@ -162,6 +164,15 @@ public class InGameController {
         }
 
         selectionOverlay.setId("tile-selected");
+
+        FXMLLoader loader1 = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/winScreen.fxml"));
+        try {
+            Parent parent = loader1.load();
+            winScreenPane.getChildren().add(parent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setOnAction(ActionEvent event) {

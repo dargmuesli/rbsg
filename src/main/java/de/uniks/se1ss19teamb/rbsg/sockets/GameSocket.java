@@ -208,6 +208,7 @@ public class GameSocket extends AbstractWebSocket {
                             NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
                             break;
                         case "Game":
+                            System.out.print(data);
                             if (!InGameController.gameInitFinished
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
