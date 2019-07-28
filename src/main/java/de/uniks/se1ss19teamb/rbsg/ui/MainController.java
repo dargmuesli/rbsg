@@ -139,7 +139,7 @@ public class MainController {
                 });
             });
 
-        if (SystemSocket.instance.websocket != null && SystemSocket.instance.websocket.mySession != null) {
+        if (SystemSocket.instance.websocket == null || SystemSocket.instance.websocket.mySession == null) {
             SystemSocket.instance.connect();
         }
 
@@ -157,7 +157,7 @@ public class MainController {
 
         MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
 
-        if (ChatSocket.instance.websocket != null && ChatSocket.instance.websocket.mySession != null) {
+        if (ChatSocket.instance.websocket == null || ChatSocket.instance.websocket.mySession == null) {
             ChatSocket.instance.connect();
         }
 
