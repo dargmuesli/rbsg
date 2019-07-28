@@ -31,7 +31,7 @@ public class Chat {
     /**
      * Defines that and how received messages are added to the chat history.
      */
-    private ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
+    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
         -> addToHistory(message, from, isPrivate ? chatSocket.getUserName() : "All");
     private ChatMessageHandler gameChatMessageHandler = (message, from, isPrivate)
         -> addToHistory(message, from, isPrivate ? gameSocket.getUserName() : "All");

@@ -8,8 +8,8 @@ public class ChuckNorrisJokeTicker {
     private static String[] jokes = {
         "Chuck Norris hat bis zur Unendlichkeit gezählt ... 2-mal.", "Chuck Norris kann schwarze "
           + "Filzstifte nach Farbe sortieren.", "Chuck Norris hat alle Farben erfunden. Außer Rosa! Tom Cruise hat Rosa"
-          + " erfunden.", "Einige Leute tragen Superman Schlafanzüge. Superman trägt Chuck Norris Schlafanzüge.", "Chuck"
-          + " Norris kann ein Feuer entfachen, indem er zwei Eiswürfel aneinander reibt.", "Chuck Norris kann Drehtüren "
+          + " erfunden.","Einige Leute tragen Superman Schlafanzüge. Superman trägt Chuck Norris Schlafanzüge.", "Chuck"
+          + " Norris kann ein Feuer entfachen, indem er zwei Eiswürfel aneinander reibt.","Chuck Norris kann Drehtüren "
           + "zuschlagen!", "Manche Menschen können viele Liegestützen — Chuck Norris kann alle.", "Chuck Norris wurde "
           + "gestern geblitzt — beim Einparken", "Chuck Norris verzichtet auf seine Rechte — seine Linke ist sowieso "
           + "schneller ...", "Chuck Norris kennt die letzte Ziffer von Pi.", "Chuck Norris trinkt seinen Kaffee am "

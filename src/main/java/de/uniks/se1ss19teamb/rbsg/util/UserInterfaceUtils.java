@@ -64,7 +64,7 @@ public class UserInterfaceUtils {
         return fadeTransition;
     }
 
-    public static void makeFadeInTransition(Node node) {
+    private static void makeFadeInTransition(Node node) {
         node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));

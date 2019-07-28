@@ -20,7 +20,7 @@ public class NotificationHandler {
         return notificationHandler;
     }
 
-    public void setPopupController(PopupController epc) {
+    void setPopupController(PopupController epc) {
         popupController = epc;
     }
 
