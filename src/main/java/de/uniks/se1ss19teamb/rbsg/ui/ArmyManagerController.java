@@ -110,14 +110,7 @@ public class ArmyManagerController {
     }
 
     private void setUpUnitObjects() {
-        // TODO: Tipp für @Chris: CSS Properties setzt man über Dateien, nicht über einzelne flags :)
-        String whiteMode = "-fx-control-inner-background: white;" + "-fx-background-insets: 0;"
-            + "-fx-padding: 0px;";
-        String darkMode = "-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0;"
-            + "-fx-padding: 0px;";
-
-        unitList.setStyle("-fx-background-color:transparent;");
-        unitList.setStyle(Theming.darkModeActive() ? darkMode : whiteMode);
+        unitList.getStyleClass().add(Theming.darkModeActive() ? "darkMode_UnitObject.css" : "whiteMode_UnitObject.css");
 
         availableUnits.forEach((s, unit) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
