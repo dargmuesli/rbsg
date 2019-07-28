@@ -123,12 +123,14 @@ public class InGameController {
                 .remove(texture);
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
-                finalCurrentUnit.setPosition(newPos);
-                SoundManager.playSound(
-                    finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
             }
         });
-        unitTileMapByTileId.put(newPos, currentUnit);
+        if (newPos != null) {
+            unitTileMapByTileId.put(newPos, currentUnit);
+            SoundManager.playSound(
+                finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
+            currentUnit.setPosition(newPos);
+        }
     }
 
     public void initialize() {
@@ -183,11 +185,9 @@ public class InGameController {
             }
         } else if (event.getSource().equals(btnBigger)) {
             zoomCounter++;
-
             zoom();
         } else if (event.getSource().equals(btnSmaller)) {
             zoomCounter--;
-
             zoom();
         }
     }
