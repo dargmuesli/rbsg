@@ -34,6 +34,11 @@ ListView {
     -jfx-checked-color: -fx-secondary;
 }
 
+.combo-box .list-cell {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-secondary;
+}
+
 .glyph-icon {
     -fx-fill: -fx-primarytext;
 }

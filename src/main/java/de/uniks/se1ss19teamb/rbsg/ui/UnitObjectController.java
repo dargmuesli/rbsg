@@ -10,19 +10,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-
 public class UnitObjectController {
 
     @FXML
-    private HBox root;
-    @FXML
-    private Label labelUnitType;
-    @FXML
-    private Label labelUnitCount;
+    private Button btnDecrease;
     @FXML
     private Button btnIncrease;
     @FXML
-    private Button btnDecrease;
+    private HBox root;
+    @FXML
+    private Label labelUnitCount;
+    @FXML
+    private Label labelUnitType;
     @FXML
     private Pane imageUnitType;
 
@@ -35,49 +34,38 @@ public class UnitObjectController {
 
     void setUpUnitObject(Unit unit) {
         this.unit = unit;
+
         labelUnitType.setText(unit.getType());
-        ArmyManagerController.getInstance().updateConfigurationView();
-        btnDecrease.setDisable(true);
         imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType()));
+
+        update(0);
     }
 
     Unit getUnit() {
         return this.unit;
     }
 
-    void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
     public void increaseCount() {
-        count++;
-        ArmyManagerController.currentArmy.getUnits().add(0, unit);
-        btnDecrease.setDisable(false);
-
-        if (ArmyManagerController.currentArmy.getUnits().size() == ArmyManagerController.MAXIMUM_UNIT_COUNT) {
-            btnIncrease.setDisable(true);
-        }
-
-        ArmyManagerController.getInstance().updateConfigurationView();
+        ArmyManagerController.getInstance().discardConfirmation = false;
+        ArmyManagerController.army.getUnits().add(0, unit);
+        ArmyManagerController.getInstance().updateUnits();
     }
 
     public void decreaseCount() {
-        count--;
-        ArmyManagerController.currentArmy.getUnits().remove(unit);
-        btnIncrease.setDisable(false);
-
-        if (count == 0) {
-            btnDecrease.setDisable(true);
-        }
-
-        ArmyManagerController.getInstance().updateConfigurationView();
+        ArmyManagerController.getInstance().discardConfirmation = false;
+        ArmyManagerController.army.getUnits().remove(unit);
+        ArmyManagerController.getInstance().updateUnits();
     }
 
     void update(int count) {
         this.count = count;
         labelUnitCount.setText(Integer.toString(count));
 
-        if (ArmyManagerController.currentArmy.getUnits().size() == 10) {
+        if (ArmyManagerController.army == null || ArmyManagerController.army.getUnits() == null) {
+            return;
+        }
+
+        if (ArmyManagerController.army.getUnits().size() == 10) {
             btnIncrease.setDisable(true);
 
             if (this.count > 0) {
@@ -85,7 +73,7 @@ public class UnitObjectController {
             } else {
                 btnDecrease.setDisable(true);
             }
-        } else if (ArmyManagerController.currentArmy.getUnits().size() == 0) {
+        } else if (ArmyManagerController.army.getUnits().size() == 0) {
             btnDecrease.setDisable(true);
 
             if (this.count == 0) {
@@ -98,6 +86,8 @@ public class UnitObjectController {
 
             if (this.count > 0) {
                 btnDecrease.setDisable(false);
+            } else {
+                btnDecrease.setDisable(true);
             }
         }
     }
