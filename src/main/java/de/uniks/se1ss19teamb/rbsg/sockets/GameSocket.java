@@ -213,6 +213,9 @@ public class GameSocket extends AbstractWebSocket {
                                 InGameController.gameInitFinished = true;
                                 GameLobbyController.instance.startGameTransition();
                             }
+                            if (data.get("fieldName").getAsString().equals("currentPlayer")) {
+                                TurnUiController.instance.showTurn();
+                            }
                             String phase = data.get("newValue").getAsString();
                             TurnUiController.getInstance().setTurn(phase);
                             break;

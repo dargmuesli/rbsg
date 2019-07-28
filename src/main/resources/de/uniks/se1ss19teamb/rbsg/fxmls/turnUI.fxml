@@ -9,18 +9,10 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
     <HBox AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" spacing="40">
-        <VBox fx:id="vBoxOne" visible="false">
             <Label fx:id="labelOne" text="Team1"></Label>
-        </VBox>
-        <VBox fx:id="vBoxTwo" visible="false">
             <Label fx:id="labelTwo" text="Team2"></Label>
-        </VBox>
-        <VBox fx:id="vBoxThree" visible="false">
             <Label fx:id="labelThree" text="Team3"></Label>
-        </VBox>
-        <VBox fx:id="vBoxFour" visible="false">
             <Label fx:id="labelFour" text="Team4"></Label>
-        </VBox>
         <HBox spacing="10">
         <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#setOnAction"></JFXButton>
         <Label fx:id="turnLabel" text="test"></Label>

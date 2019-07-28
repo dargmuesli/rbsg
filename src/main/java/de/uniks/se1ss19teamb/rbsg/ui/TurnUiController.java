@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import animatefx.animation.Bounce;
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -9,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+
+import java.util.ArrayList;
 
 public class TurnUiController {
     @FXML
@@ -22,14 +25,6 @@ public class TurnUiController {
     @FXML
     private JFXButton phaseBtn;
     @FXML
-    private VBox vBoxOne;
-    @FXML
-    private VBox vBoxTwo;
-    @FXML
-    private VBox vBoxThree;
-    @FXML
-    private VBox vBoxFour;
-    @FXML
     private Label turnLabel;
 
     public static TurnUiController instance;
@@ -39,6 +34,7 @@ public class TurnUiController {
     }
 
     public void initialize() {
+        labelOne.setStyle("-fx-text-fill: Red");
         instance = this;
         setTurn("movePhase");
         players();
@@ -53,16 +49,24 @@ public class TurnUiController {
     }
 
     private void players() {
-        vBoxOne.setVisible(true);
-        vBoxTwo.setVisible(true);
-        vBoxThree.setVisible(true);
-        vBoxFour.setVisible(true);
         //implementation of playernames needed.
     }
 
     public void setTurn(String phase) {
         Platform.runLater(() -> {
             turnLabel.setText(phase);
+        });
+    }
+
+    public void showTurn() {
+        Platform.runLater(() -> {
+            if (labelOne.getStyle() == "-fx-text-fill: Red") {
+                labelTwo.setStyle("-fx-text-fill: Red");
+                labelOne.setStyle("-fx-text-fill: #FFFF8d");
+            } else if (labelTwo.getStyle() == "-fx-text-fill: Red") {
+                labelOne.setStyle("-fx-text-fill: Red");
+                labelTwo.setStyle("-fx-text-fill: #FFFF8d");
+            }
         });
     }
 }
