@@ -63,8 +63,6 @@ public class GameLobbyController {
     @FXML
     private ListView<Label> playerList;
     @FXML
-    private JFXButton btnReady;
-    @FXML
     private JFXButton select1;
     @FXML
     private JFXButton select2;
@@ -82,7 +80,6 @@ public class GameLobbyController {
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
-    private Army currentArmy;
     private Army armyBuffer1 = new Army(null, null, new ArrayList<>());
     private Army armyBuffer2 = new Army(null, null, new ArrayList<>());
     private Army armyBuffer3 = new Army(null, null, new ArrayList<>());
@@ -173,7 +170,7 @@ public class GameLobbyController {
         });
 
         for (int i = 1; i <= 3; i++) {
-            currentArmy = loadArmyConfig(i);
+            Army currentArmy = loadArmyConfig(i);
 
             if (currentArmy != null) {
                 for (UnitConfigController configController : configControllers) {

@@ -2,7 +2,6 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXTabPane;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
@@ -22,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
@@ -77,11 +75,6 @@ public class InGameController {
     private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
-    private JFXTabPane chatPane;
-    private VBox textArea;
-    private TextField message;
-    private VBox chatBox;
-    private JFXButton btnMinimize;
 
 
     public static InGameController getInstance() {
@@ -128,7 +121,6 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUiController controller = loader.getController();
             turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -215,6 +207,7 @@ public class InGameController {
                         }
 
                         LinkedList<String> path = new LinkedList<>();
+                        assert source != null;
                         path.addFirst(source.getId());
                         String next = previousTileMapById.get(source.getId());
                         assert previous != null;

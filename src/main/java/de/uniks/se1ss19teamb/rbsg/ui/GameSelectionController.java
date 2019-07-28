@@ -1,7 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -58,7 +56,6 @@ public class GameSelectionController {
         ArmyManagerController.joiningGame = true;
 
         chatWindow = (VBox) root.getScene().lookup("#chatWindow");
-        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
         // damit gehts:

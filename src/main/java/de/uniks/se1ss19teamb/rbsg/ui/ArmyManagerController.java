@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javafx.event.ActionEvent;
@@ -105,7 +104,7 @@ public class ArmyManagerController {
             btnJoinGame.setOnAction(this::setOnAction);
             hboxLowerButtons.getChildren().add(btnJoinGame);
         }
-        setLabelLeftUnits(10);
+        setLabelLeftUnits();
         setUpUnitObjects();
     }
 
@@ -168,8 +167,8 @@ public class ArmyManagerController {
         }
     }
 
-    private void setLabelLeftUnits(int count) {
-        labelLeftUnits.setText(Integer.toString(count));
+    private void setLabelLeftUnits() {
+        labelLeftUnits.setText(Integer.toString(10));
     }
 
     public void changeSaveMode() {
