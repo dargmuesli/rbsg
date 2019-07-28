@@ -16,14 +16,30 @@ public class SoundManager {
 
         instance.sounds.put("meme_bad_bitch", new Sound("bad_bitch.wav", true));
         instance.sounds.put("meme_beer", new Sound("beer.wav", true));
-        instance.sounds.put("BazookaV1", new Sound("bazooka1.wav",true));
-        instance.sounds.put("BazookaV1.1", new Sound("bazooka2.wav",true));
-        instance.sounds.put("HelicopterV1", new Sound("chooper.wav",true));
-        instance.sounds.put("JeepV1", new Sound("jeep.wav",true));
-        instance.sounds.put("lightTankV1", new Sound("lightTank.wav",true));
-        instance.sounds.put("InfantryV1_Fire", new Sound("infantry_fire.wav",true));
-        instance.sounds.put("InfantryV1_Move", new Sound("infantry_move.wav",true));
-        instance.sounds.put("panzer",new Sound("panzer.wav", true));
+
+        instance.sounds.put("BazookaTrooper", new Sound("bazooka1.wav",true));
+        instance.sounds.put("BazookaTrooper2", new Sound("bazooka2.wav",true));
+        instance.sounds.put("BazookaTrooper_Move", new Sound("beer.wav",true));
+
+        instance.sounds.put("Chopper", new Sound("chooper.wav",true));
+        instance.sounds.put("Chopper_Move", new Sound("beer.wav",true));
+
+
+        instance.sounds.put("Jeep", new Sound("jeep.wav",true));
+        instance.sounds.put("Jeep_Move", new Sound("beer.wav",true));
+
+        instance.sounds.put("LightTank", new Sound("lightTank.wav",true));
+        instance.sounds.put("LightTank_Move", new Sound("beer.wav",true));
+
+        instance.sounds.put("Infantry", new Sound("infantry_fire.wav",true));
+        instance.sounds.put("Infantry_Move", new Sound("infantry_move.wav",true));
+
+        instance.sounds.put("HeavyTank",new Sound("panzer.wav", true));
+        instance.sounds.put("HeavyTank_Move",new Sound("beer.wav", true));
+
+        instance.sounds.put("nani", new Sound("nani.wav", true));
+        instance.sounds.put("Omae", new Sound("Omae_wa_mou_shindeiru.wav", true));
+        instance.sounds.put("Omae_nani", new Sound("Omae_wa_mou_shindeiru_nani.wav", true));
 
         //https://www.youtube.com/watch?v=VZec_PqXXzo
         //If anyone feels offended: Fight me

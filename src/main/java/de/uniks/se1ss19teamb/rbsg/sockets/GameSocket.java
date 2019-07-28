@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
@@ -23,6 +24,9 @@ import org.apache.logging.log4j.Logger;
 public class GameSocket extends AbstractWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
+
+    private List<GameSocketMessageHandler.GameSocketGameRemoveObject> handlersRemoveObject =
+        new ArrayList<>();
 
     public static GameSocket instance;
     private static String userKey;
@@ -46,7 +50,7 @@ public class GameSocket extends AbstractWebSocket {
                 NotificationHandler.getInstance()
                     .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
                 return;
-            } else if (!Strings.checkHas(response, "action", logger)) {
+            } else if (Strings.checkHasNot(response, "action", logger)) {
                 return;
             }
 
@@ -57,7 +61,7 @@ public class GameSocket extends AbstractWebSocket {
                 logger.info("The game is starting!");
                 return;
             } else if (!action.equals("gameInitFinished")) {
-                if (!Strings.checkHas(response, "data", logger)) {
+                if (Strings.checkHasNot(response, "data", logger)) {
                     return;
                 }
 
@@ -68,7 +72,7 @@ public class GameSocket extends AbstractWebSocket {
 
             switch (action) {
                 case "info":
-                    if (!Strings.checkHas(data, "message", logger)) {
+                    if (Strings.checkHasNot(data, "message", logger)) {
                         return;
                     }
 
@@ -100,7 +104,7 @@ public class GameSocket extends AbstractWebSocket {
                         InGameController.inGameObjects.clear();
                         InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
                     } else {
-                        if (!Strings.checkHas(data, "id", logger)) {
+                        if (Strings.checkHasNot(data, "id", logger)) {
                             return;
                         }
 
@@ -136,7 +140,7 @@ public class GameSocket extends AbstractWebSocket {
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
                     break;
                 case "gameNewObject":
-                    if (!Strings.checkHas(data, "id", logger)) {
+                    if (Strings.checkHasNot(data, "id", logger)) {
                         return;
                     }
 
@@ -161,7 +165,7 @@ public class GameSocket extends AbstractWebSocket {
                     }
                     break;
                 case "gameChangeObject":
-                    if (!Strings.checkHas(data, "id", logger)) {
+                    if (Strings.checkHasNot(data, "id", logger)) {
                         return;
                     }
                     String newValue;
@@ -172,13 +176,13 @@ public class GameSocket extends AbstractWebSocket {
                             InGamePlayer inGamePlayer =
                                 (InGamePlayer) InGameController.inGameObjects.get(data.get("id").getAsString());
 
-                            if (!Strings.checkHas(data, "fieldName", logger)) {
+                            if (Strings.checkHasNot(data, "fieldName", logger)) {
                                 return;
                             }
 
                             fieldName = data.get("fieldName").getAsString();
 
-                            if (!Strings.checkHas(data, "newValue", logger)) {
+                            if (Strings.checkHasNot(data, "newValue", logger)) {
                                 return;
                             }
 
@@ -213,18 +217,30 @@ public class GameSocket extends AbstractWebSocket {
                             TurnUiController.getInstance().getTurn(newValue);
                             break;
                         case "Unit":
+                            System.out.println(data);
 
-                            if (!Strings.checkHas(data, "fieldName", logger)) {
+                            if (Strings.checkHasNot(data, "fieldName", logger)) {
                                 return;
                             }
                             fieldName = data.get("fieldName").getAsString();
 
-                            if (!Strings.checkHas(data, "newValue", logger)) {
+                            if (Strings.checkHasNot(data, "newValue", logger)) {
                                 return;
                             }
                             newValue = data.get("newValue").getAsString();
                             String id = data.get("id").getAsString();
-                            InGameController.getInstance().moveUnit(id, newValue);
+                            switch (fieldName) {
+                                case "position":
+                                    InGameController.getInstance().changeUnitPos(id, newValue);
+                                    break;
+                                case "hp":
+                                    SoundManager.playSound("Omae", 0);
+                                    InGameController.getInstance().changeUnitHp(id, newValue);
+                                    break;
+                                default:
+                                    NotificationHandler.getInstance().sendError(
+                                        "Unknown fieldName object: " + fieldName, logger);
+                            }
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(
@@ -232,7 +248,44 @@ public class GameSocket extends AbstractWebSocket {
                     }
                     break;
                 case "gameRemoveObject":
-                    InGameController.inGameObjects.remove(data.get("id").getAsString());
+                    if (Strings.checkHasNot(data, "id", logger)) {
+                        return;
+                    }
+
+                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                    switch (type) {
+                        case "Player":
+                            InGameController.inGameObjects.remove(data.get("id"));
+
+                            // TODO handle in chat window
+                            NotificationHandler.getInstance()
+                                .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
+                                    + " has left the game!", logger);
+                            SoundManager.playSound("Omae_nani", 0);
+                            break;
+                        case "Unit":
+                            for (int i = 0; i < InGameController.unitTiles.size(); i++) {
+                                if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                    UnitTile attacker = InGameController.getInstance()
+                                        .findAttackingUnit(InGameController.unitTiles.get(i));
+                                    if (attacker != null) {
+                                        SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                    }
+                                    InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
+                                    InGameController.unitTiles.remove(i);
+                                }
+                            }
+                            SoundManager.playSound("nani", 0);
+                            break;
+                        default:
+                            NotificationHandler.getInstance().sendError(
+                                "Unknown game object id: " + data.get("id").getAsString(), logger);
+                    }
+
+                    for (GameSocketMessageHandler.GameSocketGameRemoveObject handler : handlersRemoveObject) {
+                        handler.handle(type);
+                    }
                     break;
                 case "gameChat":
                     String from = data.get("from").getAsString();
@@ -368,6 +421,13 @@ public class GameSocket extends AbstractWebSocket {
         json.addProperty("to", target);
         json.addProperty("message", message);
         sendToWebsocket(json);
+    }
+
+    //Custom Helpers
+
+    public void registerGameRemoveObject(GameSocketMessageHandler
+                                            .GameSocketGameRemoveObject handler) {
+        handlersRemoveObject.add(handler);
     }
 
 }

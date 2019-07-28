@@ -7,7 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 
 import java.util.ArrayList;
 
-public class QueryUnitsRequest extends AbstractRestRequest {
+public class QueryUnitsRequest extends AbstractDataRestRequest<ArrayList<Unit>> {
 
     private String userToken;
 
@@ -35,9 +35,13 @@ public class QueryUnitsRequest extends AbstractRestRequest {
         return userToken;
     }
 
-    //Custom Request Helper
-
-    public ArrayList<Unit> getUnits() {
+    /**
+     * Standard provider for the request's response.
+     *
+     * @return The units.
+     */
+    @Override
+    public ArrayList<Unit> getData() {
         ArrayList<Unit> units = new ArrayList<>();
         for (JsonElement g : getResponse().get("data").getAsJsonArray()) {
             Unit current = new Unit();
@@ -56,5 +60,10 @@ public class QueryUnitsRequest extends AbstractRestRequest {
         }
 
         return units;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not query units!";
     }
 }

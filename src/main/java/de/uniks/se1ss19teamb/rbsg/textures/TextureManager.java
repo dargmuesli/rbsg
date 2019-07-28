@@ -79,11 +79,19 @@ public class TextureManager {
     }
     
     public static Pane computeMinimap(
-        Map<Pair<Integer, Integer>, EnvironmentTile> map, int width, int height, int size) {
+        Map<Pair<Integer, Integer>, EnvironmentTile> map, double size) {
         //TODO Render Unit positions.
-        
+
+        // since it's a square map
+        double squareSide = Math.sqrt(map.size());
+
+        if (size < 0) {
+            // 3 times big map side length
+            size = 192 / squareSide;
+        }
+
         Pane result = new Pane();
-        Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
+        Canvas canvas = new Canvas(squareSide * size, squareSide * size);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : map.entrySet()) {

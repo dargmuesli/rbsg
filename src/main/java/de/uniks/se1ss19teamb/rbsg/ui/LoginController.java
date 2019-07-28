@@ -118,8 +118,10 @@ public class LoginController {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogin)) {
             login();
+            btnLogin.setDisable(true);
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
+            btnRegistration.setDisable(true);
             ChuckNorrisJokeTicker.stopAnimation();
         }
     }
@@ -135,21 +137,15 @@ public class LoginController {
             return;
         }
 
-        LoginUserRequest login = new LoginUserRequest(userName.getText(), password.getText());
-        login.sendRequest();
-
-        if (!login.getSuccessful()) {
-            NotificationHandler.getInstance().sendError("Login fehlgeschlagen!", logger);
-            return;
-        }
-
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
             UserData.deleteUserData(NotificationHandler.getInstance());
         }
 
-        setUserKey(login.getUserKey());
+        RequestUtil.request(new LoginUserRequest(userName.getText(), password.getText()))
+            .ifPresent(LoginController::setUserKey);
+
         setUser(userName.getText());
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(

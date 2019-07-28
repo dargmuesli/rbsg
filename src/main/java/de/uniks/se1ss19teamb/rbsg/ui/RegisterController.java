@@ -5,10 +5,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
-import de.uniks.se1ss19teamb.rbsg.util.Theming;
-import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
+import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -84,8 +81,10 @@ public class RegisterController {
     @FXML
     void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnConfirm)) {
+            btnConfirm.setDisable(true);
             register();
         } else if (event.getSource().equals(btnCancel)) {
+            btnCancel.setDisable(true);
             goToLogin();
         } else if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
@@ -121,12 +120,7 @@ public class RegisterController {
             return;
         }
 
-        RegisterUserRequest register = new RegisterUserRequest(
-            username.getText(), password.getText());
-        register.sendRequest();
-
-        if (!register.getSuccessful()) {
-            NotificationHandler.getInstance().sendWarning("Die Registrierung ist fehlgeschlagen!", logger);
+        if (!RequestUtil.request(new RegisterUserRequest(username.getText(), password.getText()))) {
             return;
         }
 

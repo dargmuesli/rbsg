@@ -31,4 +31,9 @@ public class DeleteArmyRequest extends AbstractRestRequest {
     protected String getUserToken() {
         return userToken;
     }
+
+    @Override
+    public String getErrorMessage() {
+        return "Could not delete army!";
+    }
 }
