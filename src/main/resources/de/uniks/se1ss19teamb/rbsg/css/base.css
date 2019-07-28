@@ -15,11 +15,7 @@ ScrollPane {
     -fx-background-color: rgba(0, 0, 0, 0.2);
 }
 
-.button {
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
-    -fx-font-size: 12px;
-}
+
 
 .text-field {
     -fx-font-size: 12pt;
@@ -47,4 +43,8 @@ ScrollPane {
 
 .tile-path {
     -fx-background-color: rgba(0, 0, 255, 0.2);
+}
+
+{
+    -fx-background-color: white;
 }

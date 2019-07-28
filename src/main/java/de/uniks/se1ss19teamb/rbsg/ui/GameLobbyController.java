@@ -121,6 +121,7 @@ public class GameLobbyController {
     @FXML
     private void eventHandler(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
+            btnBack.setDisable(true);
             GameSocket.instance.disconnect();
             MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
@@ -134,7 +135,7 @@ public class GameLobbyController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
                 return;
             }
-
+            btnLogout.setDisable(true);
             LoginController.setUserKey(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
@@ -146,7 +147,7 @@ public class GameLobbyController {
                 btnStart.setDisable(true);
             });
         } else if (event.getSource().equals(btnStart)) {
-            NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgewählt !", logger);
+            NotificationHandler.getInstance().sendInfo("No army selected.", logger);
         } else if (event.getSource().equals(btnStart)) {
             RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
                 if (armies.size() != 0) {

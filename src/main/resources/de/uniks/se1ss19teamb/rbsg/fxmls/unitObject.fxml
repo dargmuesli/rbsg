@@ -22,11 +22,11 @@
         <Button fx:id="btnDecrease" disable="true" layoutX="187.0" layoutY="6.0" mnemonicParsing="false"
                 onMouseClicked="#decreaseCount" prefWidth="30.0" text="-" AnchorPane.rightAnchor="8.0"/>
     </children>
-    <stylesheets>
-        <URL value="@../css/base.css"/>
-        <URL value="@../css/darkDesign.css"/>
-    </stylesheets>
     <padding>
-        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
     </padding>
+   <stylesheets>
+      <URL value="@../css/whiteDesign.css" />
+      <URL value="@../css/darkDesign.css" />
+   </stylesheets>
 </HBox>

@@ -50,11 +50,15 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnAdd;
     @FXML
+    private JFXButton btnBack;
+    @FXML
     private JFXButton btnEdit;
     @FXML
     private JFXButton btnExport;
     @FXML
     private JFXButton btnImport;
+    @FXML
+    private JFXButton btnLogout;
     @FXML
     private JFXButton btnRemove;
     @FXML
@@ -185,6 +189,7 @@ public class ArmyManagerController {
 
     @FXML
     private void goBack() {
+        btnBack.setDisable(true);
         if ((army != null && army.getId() != null && !army.getId().equals("")) || discardConfirmation) {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
@@ -200,7 +205,7 @@ public class ArmyManagerController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
                 return;
             }
-
+            btnLogout.setDisable(true);
             LoginController.setUserKey(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);

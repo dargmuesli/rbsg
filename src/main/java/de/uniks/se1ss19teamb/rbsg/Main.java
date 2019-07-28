@@ -7,9 +7,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 
@@ -35,7 +32,7 @@ public class Main extends Application {
         primaryStage.setMinHeight(621);
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
-        EasterEggKeyEventHandler.setTicTacToe(scene, new KeyCodeCombination(KeyCode.F1, KeyCombination.SHIFT_ANY));
-        EasterEggKeyEventHandler.setSnake(scene, new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY));
+        EasterEggKeyEventHandler.setEvents(scene);
+
     }
 }

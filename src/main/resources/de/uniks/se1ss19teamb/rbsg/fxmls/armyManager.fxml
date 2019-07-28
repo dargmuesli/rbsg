@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -110,8 +109,4 @@
             </VBox>
         </VBox>
     </AnchorPane>
-    <stylesheets>
-        <URL value="@../css/base.css"/>
-        <URL value="@../css/darkDesign.css"/>
-    </stylesheets>
 </AnchorPane>

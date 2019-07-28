@@ -18,6 +18,7 @@ import org.junit.Test;
 public class WebSocketTestsMocked {
 
     private WebSocketClient client;
+    private GameSocket gameSocket = new GameSocket("TeamBTestUser", "12345", "54321", "12543", false);
 
     @Before
     public void prepareClient() {
@@ -82,6 +83,31 @@ public class WebSocketTestsMocked {
     }
 
     @Test
+    public void gameSocketTest() {
+
+        List<String> gameMsg = new ArrayList<>();
+
+        gameSocket.registerGameRemoveObject((type -> gameMsg.add("removed|" + type)));
+
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
+            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"from\":\"Game@37392bfa\",\""
+            + "fieldName\":\"allUnits\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\",\"from\":\""
+            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        Assert.assertTrue(gameMsg.contains("removed|Player"));
+        Assert.assertTrue(gameMsg.contains("removed|Unit"));
+        Assert.assertTrue(gameMsg.contains("removed|Unit"));
+
+    }
+
+    @Test
     public void chatSocketTest() throws ParseException {
 
         ChatSocket chat = new ChatSocket("TeamBTestUser2", "111111111111111111111111111111111111");
@@ -99,6 +125,27 @@ public class WebSocketTestsMocked {
 
         Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser|false"));
         Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true"));
+    }
+
+    @Test
+    public void gameChatSocketTest() {
+
+        List<String> gameMsg = new ArrayList<>();
+
+        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
+            + isPrivate));
+
+        setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"all\",\"message\":\"Hello World!\",\""
+            + "from\":\"TeamBTestUser2\"}}", gameSocket);
+        gameSocket.sendMessage("Hello World!");
+
+        setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"private\",\"to\":\"TeamBTestUser2\",\""
+            + "message\":\"Hello World! Private\",\"from\":\"TeamBTestUser2\"}}", gameSocket);
+        gameSocket.sendPrivateMessage("Hello World! Private", "TeamBTestUser");
+
+
+        Assert.assertTrue(gameMsg.contains("Hello World!|TeamBTestUser2|false"));
+        Assert.assertTrue(gameMsg.contains("Hello World! Private|TeamBTestUser2|true"));
     }
 
 }
