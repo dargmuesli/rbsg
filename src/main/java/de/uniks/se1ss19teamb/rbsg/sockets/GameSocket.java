@@ -20,7 +20,7 @@ import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GameSocket extends AbstractWebSocket {
+public class GameSocket extends AbstractMessageWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -335,10 +335,6 @@ public class GameSocket extends AbstractWebSocket {
         return userName;
     }
 
-    public void registerGameMessageHandler(ChatMessageHandler handler) {
-        handlersChat.add(handler);
-    }
-
     public void changeArmy(String armyId) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -401,6 +397,12 @@ public class GameSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    @Override
+    public void registerMessageHandler(ChatMessageHandler handler) {
+        handlersChat.add(handler);
+    }
+
+    @Override
     public void sendMessage(String message) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "chat");
@@ -409,6 +411,7 @@ public class GameSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    @Override
     public void sendPrivateMessage(String message, String target) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "chat");

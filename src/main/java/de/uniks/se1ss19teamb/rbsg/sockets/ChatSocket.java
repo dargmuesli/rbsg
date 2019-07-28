@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 
-public class ChatSocket extends AbstractWebSocket {
+public class ChatSocket extends AbstractMessageWebSocket {
 
     public static ChatSocket instance;
 
@@ -59,12 +59,12 @@ public class ChatSocket extends AbstractWebSocket {
         return userName;
     }
 
-    //Custom Helpers
-
-    public void registerChatMessageHandler(ChatMessageHandler handler) {
+    @Override
+    public void registerMessageHandler(ChatMessageHandler handler) {
         handlersChat.add(handler);
     }
 
+    @Override
     public void sendMessage(String message) {
         JsonObject json = new JsonObject();
         json.addProperty("channel", "all");
@@ -72,6 +72,7 @@ public class ChatSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    @Override
     public void sendPrivateMessage(String message, String target) {
         JsonObject json = new JsonObject();
         json.addProperty("channel", "private");

@@ -45,7 +45,7 @@ public class Chat {
      */
     public Chat(ChatSocket chatSocket, Path path) {
         this.chatSocket = chatSocket;
-        this.chatSocket.registerChatMessageHandler(chatMessageHandler);
+        this.chatSocket.registerMessageHandler(chatMessageHandler);
         this.path = path;
     }
 
@@ -57,7 +57,7 @@ public class Chat {
      */
     public Chat(GameSocket gameSocket, Path path) {
         this.gameSocket = gameSocket;
-        this.gameSocket.registerGameMessageHandler(gameChatMessageHandler);
+        this.gameSocket.registerMessageHandler(gameChatMessageHandler);
         this.path = path;
     }
 

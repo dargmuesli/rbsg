@@ -123,7 +123,7 @@ public class GameLobbyController {
         });
 
 
-        GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
+        GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {

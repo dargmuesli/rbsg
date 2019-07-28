@@ -149,7 +149,7 @@ public class MainController {
             ChatSocket.instance = new ChatSocket(LoginController.getUser(), LoginController.getUserKey());
         }
 
-        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
+        ChatSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {

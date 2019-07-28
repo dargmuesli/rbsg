@@ -67,7 +67,7 @@ public class WebSocketTestsReal {
 
         List<String> msg = new ArrayList<>();
 
-        chat2.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat2.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         chat.connect();
         chat2.connect();
