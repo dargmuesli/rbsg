@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Strings {
     public static boolean checkHas(JsonObject jsonObject, String key, Logger logger) {
+    public static boolean checkHasNot(JsonObject jsonObject, String key, Logger logger) {
         if (!jsonObject.has(key)) {
             if (jsonObject.has("status") && jsonObject.has("message")) {
                 NotificationHandler.getInstance().sendError(jsonObject.get("status").getAsString() + ": "
@@ -14,9 +15,9 @@ public class Strings {
                     .sendError("There was unexpected data!", logger,
                         new NoSuchFieldException("Json does not have an \"" + key + "\" key!"));
             }
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
