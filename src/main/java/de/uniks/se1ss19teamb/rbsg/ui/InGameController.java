@@ -125,7 +125,7 @@ public class InGameController {
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
             }
         });
-        if(newPos != null) {
+        if (newPos != null) {
             unitTileMapByTileId.put(newPos, currentUnit);
             SoundManager.playSound(
                 finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
