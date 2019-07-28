@@ -28,10 +28,7 @@
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                    <Label alignment="CENTER" text="Players" textFill="#756e6e">
-                        <font>
-                            <Font size="15.0"/>
-                        </font>
+                    <Label alignment="CENTER" styleClass="text-title" text="Players" textFill="#756e6e">
                         <VBox.margin>
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
@@ -110,10 +107,7 @@
                     </HBox.margin>
                 </Pane>
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                    <Label alignment="CENTER" text="New Game" textAlignment="CENTER">
-                        <font>
-                            <Font size="15.0"/>
-                        </font>
+                    <Label alignment="CENTER" styleClass="text-title" text="New Game" textAlignment="CENTER">
                         <VBox.margin>
                             <Insets bottom="10.0" top="5.0"/>
                         </VBox.margin>
@@ -156,10 +150,7 @@
                         </HBox.margin>
                     </Pane>
                     <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
-                        <Label alignment="CENTER" text="Army Manager" textAlignment="CENTER">
-                            <font>
-                                <Font size="15.0"/>
-                            </font>
+                        <Label alignment="CENTER" styleClass="text-title" text="Army Manager" textAlignment="CENTER">
                             <VBox.margin>
                                 <Insets bottom="10.0" top="5.0"/>
                             </VBox.margin>
