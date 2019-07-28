@@ -52,7 +52,6 @@
                         <ScrollPane fx:id="mapScrollPane" hbarPolicy="NEVER" pannable="true" prefWidth="200.0" vbarPolicy="NEVER">
                             <content>
                                 <GridPane fx:id="gameGrid">
-                                    <AnchorPane fx:id="winScreenPane" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"></AnchorPane>
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
@@ -65,6 +64,7 @@
                                 </GridPane>
                             </content>
                         </ScrollPane>
+                        <AnchorPane fx:id="winScreenPane" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"></AnchorPane>
                     </children>
                 </StackPane>
             </children>
