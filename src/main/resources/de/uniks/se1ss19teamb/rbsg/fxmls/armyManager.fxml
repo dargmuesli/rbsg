@@ -1,112 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainPane1" xmlns="http://javafx.com/javafx/8.0.221"
-            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController">
-    <AnchorPane fx:id="mainPane" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
-        <VBox alignment="CENTER" layoutX="-141.0" spacing="10.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <padding>
-                <Insets bottom="25.0" left="25.0" right="25.0" top="10.0"/>
-            </padding>
-            <HBox alignment="CENTER" spacing="5">
-                <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" onAction="#goBack">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="REPLY"/>
-                    </graphic>
-                </JFXButton>
-                <Pane HBox.hgrow="ALWAYS"/>
-                <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#toggleFullscreen">
-                    <graphic>
-                        <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND"/>
-                    </graphic>
-                </JFXButton>
-                <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
-                    <graphic>
-                        <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT"/>
-                    </graphic>
-                </JFXButton>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0"
+      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+      xmlns="http://javafx.com/javafx/8.0.221" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController">
+    <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+        <children>
+            <JFXComboBox fx:id="cmbArmies" promptText="Select an Army"/>
+            <JFXButton fx:id="btnAdd" contentDisplay="GRAPHIC_ONLY" onAction="#addArmy">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="PLUS"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnRemove" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#removeArmy">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="TRASH"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#editArmy">
+                <graphic>
+                    <FontAwesomeIconView fx:id="btnEditIcon" boundsType="VISUAL" glyphName="PENCIL"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#saveArmy">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="FLOPPY_ALT"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnImport" contentDisplay="GRAPHIC_ONLY" onAction="#importArmy" text="export">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="FOLDER_OPEN_ALT"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnExport" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#exportArmy"
+                       text="export">
+                <graphic>
+                    <FontAwesomeIconView boundsType="VISUAL" glyphName="ARCHIVE"/>
+                </graphic>
+            </JFXButton>
+        </children>
+    </HBox>
+    <VBox fx:id="vboxData" disable="true">
+        <children>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                <GridPane hgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+                    <Label styleClass="text-title" text="Available Units:" GridPane.columnIndex="0"
+                           GridPane.rowIndex="0"/>
+                    <Label fx:id="labelLeftUnits" styleClass="text-title" text="###" GridPane.columnIndex="1"
+                           GridPane.rowIndex="0"/>
+                    <Label styleClass="text-title" text="Army Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <JFXTextField fx:id="txtfldArmyName" promptText="name" GridPane.columnIndex="1"
+                                  GridPane.rowIndex="1"/>
+                </GridPane>
             </HBox>
-            <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
-                <children>
-                    <JFXComboBox fx:id="cmbArmies" promptText="Select an Army"/>
-                    <JFXButton fx:id="btnAdd" contentDisplay="GRAPHIC_ONLY" onAction="#addArmy">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="PLUS"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="btnRemove" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#removeArmy">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="TRASH"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#editArmy">
-                        <graphic>
-                            <FontAwesomeIconView fx:id="btnEditIcon" boundsType="VISUAL" glyphName="PENCIL"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#saveArmy">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="FLOPPY_ALT"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="btnImport" contentDisplay="GRAPHIC_ONLY" onAction="#importArmy" text="export">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="FOLDER_OPEN_ALT"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="btnExport" contentDisplay="GRAPHIC_ONLY" disable="true" onAction="#exportArmy"
-                               text="export">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="ARCHIVE"/>
-                        </graphic>
-                    </JFXButton>
-                </children>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                <VBox fx:id="unitList" alignment="CENTER"/>
             </HBox>
-            <VBox fx:id="vboxData" disable="true">
-                <children>
-                    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                        <GridPane hgap="10.0">
-                            <columnConstraints>
-                                <ColumnConstraints/>
-                                <ColumnConstraints/>
-                                <ColumnConstraints/>
-                                <ColumnConstraints/>
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints/>
-                                <RowConstraints/>
-                            </rowConstraints>
-                            <Label styleClass="text-title" text="Available Units:" GridPane.columnIndex="0"
-                                   GridPane.rowIndex="0"/>
-                            <Label fx:id="labelLeftUnits" styleClass="text-title" text="###" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="0"/>
-                            <Label styleClass="text-title" text="Army Name:" GridPane.columnIndex="0"
-                                   GridPane.rowIndex="1"/>
-                            <JFXTextField fx:id="txtfldArmyName" promptText="name" GridPane.columnIndex="1"
-                                          GridPane.rowIndex="1"/>
-                        </GridPane>
-                    </HBox>
-                    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                        <VBox fx:id="unitList" alignment="CENTER"/>
-                    </HBox>
-                </children>
-            </VBox>
-        </VBox>
-    </AnchorPane>
-</AnchorPane>
+        </children>
+    </VBox>
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="10.0"/>
+    </padding>
+</VBox>

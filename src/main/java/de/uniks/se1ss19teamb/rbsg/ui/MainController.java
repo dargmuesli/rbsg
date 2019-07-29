@@ -253,7 +253,7 @@ public class MainController {
             btnMinimize.setDisable(false);
             btnMinimize.fire();
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManager.fxml", mainScreen, chatWindow);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManagerContainer.fxml", mainScreen, chatWindow);
         } else if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
                 if (checkInput(message.getText())) {

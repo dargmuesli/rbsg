@@ -19,7 +19,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,17 +39,9 @@ public class ArmyManagerController {
     private static ArrayList<UnitObjectController> unitObjectControllers = new ArrayList<>();
 
     @FXML
-    private AnchorPane mainPane;
-    @FXML
-    private AnchorPane mainPane1;
-    @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private FontAwesomeIconView btnEditIcon;
     @FXML
     private JFXButton btnAdd;
-    @FXML
-    private JFXButton btnBack;
     @FXML
     private JFXButton btnEdit;
     @FXML
@@ -58,15 +49,11 @@ public class ArmyManagerController {
     @FXML
     private JFXButton btnImport;
     @FXML
-    private JFXButton btnLogout;
-    @FXML
     private JFXButton btnRemove;
     @FXML
     private JFXButton btnSave;
     @FXML
     private JFXComboBox<Army> cmbArmies;
-    @FXML
-    private JFXButton btnFullscreen;
     @FXML
     private JFXTextField txtfldArmyName;
     @FXML
@@ -85,8 +72,6 @@ public class ArmyManagerController {
 
     @FXML
     private void initialize() {
-        UserInterfaceUtils.initialize(mainPane, mainPane1, ArmyManagerController.class, btnFullscreen, errorContainer);
-
         ArmyManagerController.instance = this;
 
         RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken())).ifPresent(units -> {
@@ -185,41 +170,6 @@ public class ArmyManagerController {
                 cmbArmies.getItems().addAll(armies);
             }
         });
-    }
-
-    @FXML
-    private void goBack() {
-        btnBack.setDisable(true);
-
-        if ((army != null && army.getId() != null && !army.getId().equals("")) || discardConfirmation) {
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
-        } else {
-            NotificationHandler.getInstance().sendWarning(Strings.DISCARD_CONFIRMATION, logger);
-            discardConfirmation = true;
-        }
-    }
-
-    @FXML
-    private void logout() {
-        if ((army.getId() != null && !army.getId().equals("")) || discardConfirmation) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
-                return;
-            }
-
-            btnLogout.setDisable(true);
-            LoginController.setUserToken(null);
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
-        } else {
-            NotificationHandler.getInstance().sendWarning(Strings.DISCARD_CONFIRMATION, logger);
-            discardConfirmation = true;
-        }
-    }
-
-    @FXML
-    private void toggleFullscreen() {
-        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
     }
 
     @FXML
