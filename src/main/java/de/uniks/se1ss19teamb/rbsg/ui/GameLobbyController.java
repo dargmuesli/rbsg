@@ -125,6 +125,7 @@ public class GameLobbyController {
     private void toggleReadiness() {
         GameSocket.instance.readyToPlay();
         tglReadiness.setDisable(true);
+        tglReadiness.setText("Ready");
         btnStartGame.setDisable(false);
     }
 
