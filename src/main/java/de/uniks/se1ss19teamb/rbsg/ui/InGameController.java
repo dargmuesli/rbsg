@@ -442,7 +442,6 @@ public class InGameController {
         } else if (event.getSource().equals(btnYes)) {
             GameSocket.instance.leaveGame();
             GameSocket.instance.disconnect();
-            MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
         } else if (event.getSource().equals(btnNo)) {

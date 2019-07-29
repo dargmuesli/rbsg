@@ -29,7 +29,8 @@ public class ArmyUtil {
         }
 
         if (currentArmyId == null) {
-            RequestUtil.request(new CreateArmyRequest(currentArmyName, currentArmyUnits, LoginController.getUserToken()))
+            RequestUtil.request(
+                new CreateArmyRequest(currentArmyName, currentArmyUnits, LoginController.getUserToken()))
                 .ifPresent(s -> {
                     NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
                     currentArmy.setId(s);

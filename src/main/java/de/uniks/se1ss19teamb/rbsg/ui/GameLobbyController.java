@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTabPane;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
@@ -78,6 +79,7 @@ public class GameLobbyController {
 
     private static final Path ARMY_SAVE_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_army-save-%d.json");
+    private static Chat chat;
     private ArrayList<UnitConfigController> configControllers = new ArrayList<>();
     private Army currentArmy;
     private Army armyBuffer1 = new Army(null, null, new ArrayList<>());
@@ -120,7 +122,6 @@ public class GameLobbyController {
             btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
 
-
         GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
@@ -129,8 +130,8 @@ public class GameLobbyController {
             }
         });
 
-        MainController.setGameChat(GameSocket.instance);
-        MainController.setInGameChat(true);
+        GameLobbyController.chat = new Chat(GameSocket.instance, Chat.chatLogPath);
+        GameSocket.instance.connect();
 
         RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken())).ifPresent(units -> {
             for (Unit unit : units) {
@@ -202,7 +203,6 @@ public class GameLobbyController {
         if (event.getSource().equals(btnBack)) {
             btnBack.setDisable(true);
             GameSocket.instance.disconnect();
-            MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
         }
