@@ -70,9 +70,7 @@ public class GameLobbyController {
         UserInterfaceUtils.initialize(
             gameLobby, gameLobby1, GameLobbyController.class, btnFullscreen, errorContainer);
 
-        instance = this;
-
-        gameName.setText(GameSelectionController.joinedGame.getName());
+        GameLobbyController.instance = this;
 
         GameSocket.instance = new GameSocket(
             GameSelectionController.joinedGame.getId());
@@ -95,6 +93,8 @@ public class GameLobbyController {
 
         MainController.setGameChat(GameSocket.instance);
 
+        gameName.setText(GameSelectionController.joinedGame.getName());
+
         /*if (currentArmy.getUnits().size() < 10) {
             NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
             return;
@@ -116,13 +116,28 @@ public class GameLobbyController {
     }
 
     @FXML
-    private void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnBack)) {
-            btnBack.setDisable(true);
-            GameSocket.instance.disconnect();
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
+    private void goBack() {
+        btnBack.setDisable(true);
+        GameSocket.instance.disconnect();
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
+    }
+
+    @FXML
+    private void logout() {
+        if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
+            return;
         }
+
+        btnLogout.setDisable(true);
+        LoginController.setUserToken(null);
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
+    }
+
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
     }
 
     @FXML

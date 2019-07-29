@@ -25,17 +25,17 @@
                     <children>
                         <HBox alignment="TOP_RIGHT" spacing="5.0">
                             <children>
-                                <JFXButton fx:id="btnBack" onAction="#eventHandler" visible="false">
+                                <JFXButton fx:id="btnBack" onAction="#goBack" visible="false">
                                     <graphic>
                                         <FontAwesomeIconView glyphName="REPLY" size="15"/>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton fx:id="btnLogout" onAction="#setOnAction" visible="false">
+                                <JFXButton fx:id="btnLogout" onAction="#logout" visible="false">
                                     <graphic>
                                         <FontAwesomeIconView glyphName="SIGN_OUT" size="15"/>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton fx:id="btnFullscreen" onAction="#setOnAction" visible="false">
+                                <JFXButton fx:id="btnFullscreen" onAction="#toggleFullscreen" visible="false">
                                     <graphic>
                                         <FontAwesomeIconView glyphName="EXPAND" size="15"/>
                                     </graphic>

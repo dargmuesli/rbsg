@@ -190,6 +190,7 @@ public class ArmyManagerController {
     @FXML
     private void goBack() {
         btnBack.setDisable(true);
+
         if ((army != null && army.getId() != null && !army.getId().equals("")) || discardConfirmation) {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
@@ -205,6 +206,7 @@ public class ArmyManagerController {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
+
             btnLogout.setDisable(true);
             LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
