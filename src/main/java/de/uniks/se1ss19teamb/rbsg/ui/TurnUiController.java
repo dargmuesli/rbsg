@@ -52,7 +52,7 @@ public class TurnUiController {
     }
 
     private void underLining(Label label, Line line) {
-        line.setEndX(fontLoader.computeStringWidth(label.getText(), label.getFont()));
+        //line.setEndX(fontLoader.computeStringWidth(label.getText(), label.getFont()));
     }
 
     @FXML

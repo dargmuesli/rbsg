@@ -12,15 +12,15 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
-class UiTestsReal extends ApplicationTest {
+public class UiTestsReal extends ApplicationTest {
 
-    @BeforeAll
-    static void setupHeadlessMode() {
+    @Before
+    public void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
@@ -53,7 +53,7 @@ class UiTestsReal extends ApplicationTest {
 
     // username and password: junit
     @Test
-    void testInGame() {
+    public void testInGame() {
         RestRequestTestsReal.loginUser();
         RestRequestTestsReal.createGame();
 
@@ -73,7 +73,7 @@ class UiTestsReal extends ApplicationTest {
         gameSocket.readyToPlay();
 
         // player with UI
-        clickOn("#userName");
+        clickOn("#txtUserName");
         write("TeamBTestUser2");
         clickOn("#password");
         write("qwertz");

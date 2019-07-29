@@ -14,19 +14,20 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 // UI Tests take a lot of time.
 // To load new Scenes and finish actions javaFX needs time. All the sleeping time below is estimated and can
 // probably be reduced if estimated properly.
 
-class UiTests extends ApplicationTest {
+public class UiTests extends ApplicationTest {
 
-    @BeforeAll
-    static void setupHeadlessMode() {
+    @Before
+    public void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
@@ -44,14 +45,14 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void clickFullscreenTest() {
+    public void clickFullscreenTest() {
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
     }
 
     @Test
-    void falseLoginTest() {
-        clickOn("#userName");
+    public void falseLoginTest() {
+        clickOn("#txtUserName");
         write("");
         clickOn("#password");
         write("");
@@ -60,7 +61,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void registerTest() {
+    public void registerTest() {
         clickOn("#btnRegistration");
         sleep(2000); // sleep to finish transition
         clickOn("#username");
@@ -80,8 +81,8 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void loginMainTest() {
-        clickOn("#userName");
+    public void loginMainTest() {
+        clickOn("#txtUserName");
         write("TeamBTestUser");
         clickOn("#password");
         write("qwertz");
@@ -118,7 +119,8 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void ticTacToeTest() {
+    @Ignore
+    public void ticTacToeTest() {
         push(KeyCode.SHIFT).push(KeyCode.F1);
         sleep(500); // given some time to open window
         String[] buttons = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
@@ -132,7 +134,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void snakeTest() {
+    public void snakeTest() {
         press(KeyCode.SHIFT).press(KeyCode.F2);
         sleep(500); // given some time to open window
         push(KeyCode.LEFT);
@@ -142,7 +144,7 @@ class UiTests extends ApplicationTest {
     }
 
     @Test
-    void notificationPopupTest() {
+    public void notificationPopupTest() {
 
         Logger logger = LogManager.getLogger();
 
