@@ -317,7 +317,7 @@ public class MainController {
 
             existingGames.forEach((s, gameMeta) -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameSelection.fxml"));
 
                 try {
                     Parent parent = fxmlLoader.load();
