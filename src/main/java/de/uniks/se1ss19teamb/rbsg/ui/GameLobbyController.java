@@ -125,13 +125,25 @@ public class GameLobbyController {
     private void toggleReadiness() {
         GameSocket.instance.readyToPlay();
         tglReadiness.setDisable(true);
-        tglReadiness.setText("Ready");
-        btnStartGame.setDisable(false);
     }
 
     @FXML
     private void startGame() {
         GameSocket.instance.startGame();
+    }
+
+    public void confirmReadiness() {
+        Platform.runLater(() -> {
+            tglReadiness.setText("Ready");
+            btnStartGame.setDisable(false);
+        });
+    }
+
+    public void denyReadiness() {
+        Platform.runLater(() -> {
+            tglReadiness.setSelected(false);
+            tglReadiness.setDisable(false);
+        });
     }
 
     public void startGameTransition() {

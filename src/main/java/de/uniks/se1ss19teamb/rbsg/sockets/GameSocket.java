@@ -194,7 +194,12 @@ public class GameSocket extends AbstractMessageWebSocket {
                             newValue = data.get("newValue").getAsString();
 
                             if (fieldName.equals("isReady")) {
-                                inGamePlayer.setReady(Boolean.valueOf(newValue));
+                                boolean ready = Boolean.parseBoolean(newValue);
+                                inGamePlayer.setReady(ready);
+
+                                if (inGamePlayer.getName().equals(LoginController.getUserName()) && ready) {
+                                    GameLobbyController.instance.confirmReadiness();
+                                }
 
                                 if (GameLobbyController.instance != null) {
                                     GameLobbyController.instance.updatePlayers();
@@ -311,6 +316,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "inGameError":
+                    if (response.get("data").getAsString().equals("You need to select an army to be ready.")) {
+                        GameLobbyController.instance.denyReadiness();
+                    }
+
                     NotificationHandler.getInstance().sendError("InGameError: "
                         + response.get("data").getAsString(), logger);
                     break;
