@@ -42,15 +42,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainController {
+    public static MainController instance;
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static Chat chat;
-    public static SingleSelectionModel<Tab> selectionModel;
-    public static String sendTo = null;
     private static HashMap<String, GameMeta> existingGames;
-    private static boolean inGameChat = false;
+    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+    private static SingleSelectionModel<Tab> selectionModel;
+    private static String sendTo = null;
 
     @FXML
     private AnchorPane errorContainer;
@@ -103,6 +103,8 @@ public class MainController {
 
     public void initialize() {
         UserInterfaceUtils.initialize(mainScreen, mainScreen1, MainController.class, btnFullscreen, errorContainer);
+
+        MainController.instance = this;
 
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
@@ -222,10 +224,6 @@ public class MainController {
     static void setGameChat(GameSocket gameSocket) {
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
-    }
-
-    static void setInGameChat(boolean state) {
-        inGameChat = state;
     }
 
     public void setOnAction(ActionEvent event) {
@@ -379,7 +377,7 @@ public class MainController {
     }
 
     // ChatTabController
-    private void addElement(String player, String message, VBox box, boolean whisper) {
+    void addElement(String player, String message, VBox box, boolean whisper) {
 
         VBox container = new VBox();
 
@@ -441,7 +439,7 @@ public class MainController {
             + "-fx-background-radius: 10px;");
     }
 
-    private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
+    void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
         boolean createTab = true;
         for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
@@ -470,7 +468,7 @@ public class MainController {
                         } else {
                             getPrivate(from, message, newTab);
                         }
-                        selectionModel.select(newTab);
+                        MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
                             .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -486,6 +484,7 @@ public class MainController {
         if (message != null) {
             addElement(from, message, area, true);
         }
+        MainController.selectionModel.select(tab);
     }
 
     private boolean checkInput(String input) {
@@ -520,14 +519,14 @@ public class MainController {
 
     private void setPrivate(String input, int count) {
         if (count == -1) {
-            sendTo = input;
+            MainController.sendTo = input;
         } else if (count == 0) {
-            sendTo = input.substring(3);
+            MainController.sendTo = input.substring(3);
         } else {
-            sendTo = input.substring(3, count);
+            MainController.sendTo = input.substring(3, count);
         }
         Platform.runLater(() -> {
-            addNewPane(sendTo, null, true, chatPane);
+            addNewPane(MainController.sendTo, null, true, chatPane);
             message.clear();
             message.setStyle("-fx-text-fill: -fx-privatetext;"
                 + "-jfx-focus-color: -fx-privatetext;");
