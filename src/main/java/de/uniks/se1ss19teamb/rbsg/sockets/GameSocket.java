@@ -150,6 +150,10 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                             InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
 
+                            if (GameLobbyController.instance != null) {
+                                GameLobbyController.instance.updatePlayers();
+                            }
+
                             // TODO handle in chat window
                             NotificationHandler.getInstance().sendInfo("New Player joined! \""
                                 + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
@@ -190,6 +194,10 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                             if (fieldName.equals("isReady")) {
                                 inGamePlayer.setReady(Boolean.valueOf(newValue));
+
+                                if (GameLobbyController.instance != null) {
+                                    GameLobbyController.instance.updatePlayers();
+                                }
                             }
 
                             StringBuilder readyMessage = new StringBuilder("Player \"")
@@ -253,6 +261,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                     switch (type) {
                         case "Player":
                             InGameController.inGameObjects.remove(data.get("id"));
+
+                            if (GameLobbyController.instance != null) {
+                                GameLobbyController.instance.updatePlayers();
+                            }
 
                             // TODO handle in chat window
                             NotificationHandler.getInstance()

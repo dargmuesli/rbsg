@@ -7,6 +7,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
@@ -17,6 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,7 +64,7 @@ public class GameLobbyController {
     @FXML
     private Label gameName;
     @FXML
-    private ListView<Label> playerList;
+    private ListView<Parent> playerList;
 
     private JFXTabPane chatPane;
     private VBox textArea;
@@ -66,7 +72,8 @@ public class GameLobbyController {
     private VBox chatBox;
     private JFXButton btnMinimize;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         UserInterfaceUtils.initialize(
             gameLobby, gameLobby1, GameLobbyController.class, btnFullscreen, errorContainer);
 
@@ -113,6 +120,24 @@ public class GameLobbyController {
         VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         btnMinimize.setDisable(false);*/
+    }
+
+    public void updatePlayers() {
+        InGameController.inGameObjects.entrySet().stream()
+            .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
+            .forEachOrdered(inGameObjectEntry -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/lobbyPlayer.fxml"));
+
+                try {
+                    Parent parent = fxmlLoader.load();
+                    LobbyPlayerController controller = fxmlLoader.getController();
+                    controller.setInGamePlayer((InGamePlayer) inGameObjectEntry.getValue());
+                    playerList.getItems().add(parent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
     }
 
     @FXML
