@@ -122,9 +122,9 @@ public class GameLobbyController {
 
         GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                addNewPane(from, message, false, chatPane);
+                MainController.instance.addNewPane(from, message, false, chatPane);
             } else {
-                addElement(from, message, textArea, false);
+                MainController.instance.addElement(from, message, textArea, false);
             }
         });
 
@@ -288,136 +288,5 @@ public class GameLobbyController {
             }
         });
     }
-
-
-    private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
-        boolean createTab = true;
-        for (Tab t : pane.getTabs()) {
-            if (t.getText().equals(from)) {
-                if (!t.isSelected()) {
-                    Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
-                }
-                if (mymessage) {
-                    getPrivate(LoginController.getUserName(), message, t);
-                    createTab = false;
-                } else {
-                    getPrivate(from, message, t);
-                    createTab = false;
-                }
-            }
-        }
-        if (createTab) {
-            Platform.runLater(
-                () -> {
-                    try {
-                        Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/privateTab.fxml"));
-                        newTab.setText(from);
-                        pane.getTabs().add(newTab);
-                        if (mymessage) {
-                            getPrivate(LoginController.getUserName(), message, newTab);
-                        } else {
-                            getPrivate(from, message, newTab);
-                        }
-                        MainController.selectionModel.select(newTab);
-                    } catch (IOException e) {
-                        NotificationHandler.getInstance()
-                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
-                    }
-                }
-            );
-        }
-    }
-
-
-    private void addElement(String player, String message, VBox box, boolean whisper) {
-
-        VBox container = new VBox();
-
-        if (player != null) {
-            Label name = new Label(player + ":");
-            name.setPadding(new Insets(5));
-            name.setWrapText(true);
-            if (whisper) {
-                name.setStyle("-fx-text-fill: -fx-privatetext;");
-            } else {
-                name.setStyle("-fx-text-fill: black;");
-            }
-            // whisper on double click
-            name.setOnMouseClicked(mouseEvent -> {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        setPrivate(player, -1);
-                    }
-                }
-            });
-            Label text = new Label(message);
-            text.setPadding(new Insets(5));
-            text.setWrapText(true);
-            setChatStyle(text);
-
-            Platform.runLater(() -> {
-                name.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                setChatStyle(name);
-            });
-
-            container.getChildren().addAll(name, text);
-        } else {
-            Label text = new Label(message);
-            text.setPadding(new Insets(5));
-            text.setWrapText(true);
-            setChatStyle(text);
-
-            container.getChildren().add(text);
-        }
-
-        Platform.runLater(() -> box.getChildren().add(container));
-        if (!chatPane.getTabs().get(0).isSelected() && !whisper) {
-            Platform.runLater(() ->
-                chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
-        }
-
-        if (!chatBox.isVisible()) {
-            Platform.runLater(() ->
-                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
-        }
-    }
-
-
-    private void setChatStyle(Label label) {
-        label.setStyle("-fx-text-fill: " + (Theming.darkModeActive()
-            ? "-fx-primary" : "black") + ";"
-            + "-fx-background-color: " + (Theming.darkModeActive()
-            ? "-fx-secondary" : "white") + ";"
-            + "-fx-border-radius: 20px;"
-            + "-fx-background-radius: 10px;");
-    }
-
-    private void setPrivate(String input, int count) {
-        if (count == -1) {
-            MainController.sendTo = input;
-        } else if (count == 0) {
-            MainController.sendTo = input.substring(3);
-        } else {
-            MainController.sendTo = input.substring(3, count);
-        }
-        Platform.runLater(() -> {
-            addNewPane(MainController.sendTo, null, true, chatPane);
-            message.clear();
-            message.setStyle("-fx-text-fill: -fx-privatetext;"
-                + "-jfx-focus-color: -fx-privatetext;");
-        });
-    }
-
-    private void getPrivate(String from, String message, Tab tab) {
-        ScrollPane scrollPane = (ScrollPane) tab.getContent();
-        VBox area = (VBox) scrollPane.getContent();
-        if (message != null) {
-            addElement(from, message, area, true);
-        }
-        MainController.selectionModel.select(tab);
-    }
-
-
 }
 
