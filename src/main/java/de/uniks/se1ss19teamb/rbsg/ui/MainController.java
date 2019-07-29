@@ -48,7 +48,6 @@ public class MainController {
 
     private static Chat chat;
     private static HashMap<String, GameMeta> existingGames;
-    private static boolean inGameChat = false;
     private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static SingleSelectionModel<Tab> selectionModel;
     private static String sendTo = null;
@@ -225,10 +224,6 @@ public class MainController {
     static void setGameChat(GameSocket gameSocket) {
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
-    }
-
-    static void setInGameChat(boolean state) {
-        inGameChat = state;
     }
 
     public void setOnAction(ActionEvent event) {

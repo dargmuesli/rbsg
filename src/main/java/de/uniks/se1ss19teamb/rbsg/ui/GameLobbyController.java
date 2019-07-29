@@ -129,7 +129,6 @@ public class GameLobbyController {
         });
 
         MainController.setGameChat(GameSocket.instance);
-        MainController.setInGameChat(true);
 
         RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken())).ifPresent(units -> {
             for (Unit unit : units) {
@@ -201,7 +200,6 @@ public class GameLobbyController {
         if (event.getSource().equals(btnBack)) {
             btnBack.setDisable(true);
             GameSocket.instance.disconnect();
-            MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
         }
