@@ -18,7 +18,7 @@ import org.junit.Test;
 public class WebSocketTestsMocked {
 
     private WebSocketClient client;
-    private GameSocket gameSocket = new GameSocket("TeamBTestUser", "12345", "54321", "12543", false);
+    private GameSocket gameSocket = new GameSocket("54321", "12543", false);
 
     @Before
     public void prepareClient() {
@@ -45,7 +45,7 @@ public class WebSocketTestsMocked {
 
     @Test
     public void systemSocketTest() throws ParseException {
-        SystemSocket system = new SystemSocket("111111111111111111111111111111111111");
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 

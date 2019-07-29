@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ public class ChatSocket extends AbstractMessageWebSocket {
 
     public static ChatSocket instance;
 
-    private String userKey;
-    private String userName;
     private boolean ignoreOwn;
     private List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
@@ -22,8 +21,6 @@ public class ChatSocket extends AbstractMessageWebSocket {
     }
 
     private ChatSocket(String userName, String userKey, boolean ignoreOwn) {
-        this.userKey = userKey;
-        this.userName = userName;
         this.ignoreOwn = ignoreOwn;
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
@@ -47,16 +44,7 @@ public class ChatSocket extends AbstractMessageWebSocket {
 
     @Override
     protected String getEndpoint() {
-        return "/chat?user=" + userName;
-    }
-
-    @Override
-    public String getUserKey() {
-        return userKey;
-    }
-
-    public String getUserName() {
-        return userName;
+        return "/chat?user=" + LoginController.getUserName();
     }
 
     @Override

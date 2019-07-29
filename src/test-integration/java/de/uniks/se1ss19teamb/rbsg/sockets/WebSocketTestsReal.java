@@ -14,7 +14,7 @@ public class WebSocketTestsReal {
     public void systemSocketTest() throws ParseException, InterruptedException {
         RestRequestTestsReal.loginUser();
 
-        SystemSocket system = new SystemSocket(RestRequestTestsReal.userToken);
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 

@@ -106,7 +106,7 @@ public class MainController {
 
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
-            SystemSocket.instance = new SystemSocket(LoginController.getUserKey());
+            SystemSocket.instance = new SystemSocket();
         }
 
         SystemSocket.instance.registerUserJoinHandler(

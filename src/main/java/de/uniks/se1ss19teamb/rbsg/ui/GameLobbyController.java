@@ -107,8 +107,6 @@ public class GameLobbyController {
         instance = this;
 
         GameSocket.instance = new GameSocket(
-            LoginController.getUserName(),
-            LoginController.getUserKey(),
             GameSelectionController.joinedGame.getId(),
             ArmyManagerController.currentArmy.getId(),
             ArmyManagerController.spectator);

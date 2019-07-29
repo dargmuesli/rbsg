@@ -5,6 +5,7 @@ import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
@@ -32,9 +33,9 @@ public class Chat {
      * Defines that and how received messages are added to the chat history.
      */
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
-        -> addToHistory(message, from, isPrivate ? chatSocket.getUserName() : "All");
+        -> addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
     public ChatMessageHandler gameChatMessageHandler = (message, from, isPrivate)
-        -> addToHistory(message, from, isPrivate ? gameSocket.getUserName() : "All");
+        -> addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
     private Path path;
 
     /**
@@ -67,7 +68,7 @@ public class Chat {
     public void disconnect() {
         this.chatSocket.disconnect();
         writeHistory();
-        new LogoutUserRequest(this.chatSocket.getUserKey()).sendRequest();
+        new LogoutUserRequest(LoginController.getUserKey()).sendRequest();
     }
 
     /**
@@ -86,7 +87,7 @@ public class Chat {
      * @param receiver The receiver's name.
      */
     public void sendMessage(String message, String receiver) {
-        addToHistory(message, this.chatSocket.getUserName(), receiver);
+        addToHistory(message, LoginController.getUserName(), receiver);
         this.chatSocket.sendPrivateMessage(message, receiver);
     }
 
@@ -106,7 +107,7 @@ public class Chat {
      * @param receiver The receiver's name.
      */
     public void gameSendMessage(String message, String receiver) {
-        addToHistory(message, this.gameSocket.getUserName(), receiver);
+        addToHistory(message, LoginController.getUserName(), receiver);
         this.gameSocket.sendPrivateMessage(message, receiver);
     }
 

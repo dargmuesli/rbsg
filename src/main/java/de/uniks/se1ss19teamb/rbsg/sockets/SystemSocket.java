@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,6 @@ import java.util.List;
 public class SystemSocket extends AbstractWebSocket {
 
     public static SystemSocket instance;
-
-    private String userKey;
 
     private List<SystemSocketMessageHandler.SystemSocketUserJoinHandler> handlersUserJoin
         = new ArrayList<>();
@@ -20,9 +19,7 @@ public class SystemSocket extends AbstractWebSocket {
     private List<SystemSocketMessageHandler.SystemSocketGameDeleteHandler> handlersGameDelete
         = new ArrayList<>();
 
-    public SystemSocket(String userKey) {
-        this.userKey = userKey;
-
+    public SystemSocket() {
         registerWebSocketHandler((response) -> {
             String action = response.get("action").getAsString();
             JsonObject data = response.get("data").getAsJsonObject();
@@ -63,11 +60,6 @@ public class SystemSocket extends AbstractWebSocket {
     @Override
     protected String getEndpoint() {
         return "/system";
-    }
-
-    @Override
-    protected String getUserKey() {
-        return userKey;
     }
 
     //Custom Helpers
