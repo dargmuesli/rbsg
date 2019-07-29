@@ -15,101 +15,83 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.221"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
-    <children>
-        <AnchorPane fx:id="gameLobby" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <AnchorPane fx:id="errorContainer"/>
-                <VBox layoutY="5.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <HBox alignment="TOP_RIGHT" spacing="5.0">
-                            <children>
-                                <JFXButton fx:id="btnBack" onAction="#goBack" visible="false">
-                                    <graphic>
-                                        <FontAwesomeIconView glyphName="REPLY" size="15"/>
-                                    </graphic>
-                                </JFXButton>
-                                <JFXButton fx:id="btnLogout" onAction="#logout" visible="false">
-                                    <graphic>
-                                        <FontAwesomeIconView glyphName="SIGN_OUT" size="15"/>
-                                    </graphic>
-                                </JFXButton>
-                                <JFXButton fx:id="btnFullscreen" onAction="#toggleFullscreen" visible="false">
-                                    <graphic>
-                                        <FontAwesomeIconView glyphName="EXPAND" size="15"/>
-                                    </graphic>
-                                </JFXButton>
-                                <JFXHamburger fx:id="hamburgerMenu" alignment="TOP_RIGHT" prefHeight="0.0"
-                                              prefWidth="47.0"/>
-                            </children>
-                            <padding>
-                                <Insets top="5.0"/>
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER">
-                            <children>
-                                <Label fx:id="gameName" text="&lt;NAME&gt;" textAlignment="CENTER">
-                                    <font>
-                                        <Font name="System Bold Italic" size="15.0"/>
-                                    </font>
-                                </Label>
-                                <Label alignment="CENTER" text="'s Lobby" textAlignment="CENTER">
-                                    <font>
-                                        <Font name="System Bold Italic" size="15.0"/>
-                                    </font>
-                                </Label>
-                            </children>
-                        </HBox>
-                        <HBox spacing="5.0">
-                            <children>
-                                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <VBox alignment="TOP_CENTER">
-                                            <children>
-                                                <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Players"
-                                                       textAlignment="CENTER">
-                                                    <font>
-                                                        <Font name="System Bold" size="15.0"/>
-                                                    </font>
-                                                    <padding>
-                                                        <Insets left="5.0"/>
-                                                    </padding>
-                                                </Label>
-                                                <JFXScrollPane>
-                                                    <children>
-                                                        <ListView fx:id="playerList"/>
-                                                    </children>
-                                                </JFXScrollPane>
-                                            </children>
-                                        </VBox>
-                                        <JFXButton fx:id="btnStart" alignment="CENTER" onAction="#setOnAction"
-                                                   prefHeight="100.0" prefWidth="100.0" text="Ready"/>
-                                    </children>
-                                </VBox>
-                                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label alignment="CENTER_RIGHT" text="My Armies" textAlignment="CENTER">
-                                            <font>
-                                                <Font name="System Bold" size="15.0"/>
-                                            </font>
-                                        </Label>
-                                        <fx:include source="armyManager.fxml"/>
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-            </children>
-            <stylesheets>
-                <URL value="@../css/whiteDesign.css"/>
-                <URL value="@../css/darkDesign.css"/>
-            </stylesheets>
-        </AnchorPane>
-    </children>
     <stylesheets>
         <URL value="@../css/whiteDesign.css"/>
         <URL value="@../css/darkDesign.css"/>
     </stylesheets>
+    <AnchorPane fx:id="gameLobby" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <stylesheets>
+            <URL value="@../css/whiteDesign.css"/>
+            <URL value="@../css/darkDesign.css"/>
+        </stylesheets>
+        <AnchorPane fx:id="errorContainer"/>
+        <VBox layoutY="5.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="TOP_RIGHT" spacing="5.0">
+                <padding>
+                    <Insets top="5.0"/>
+                </padding>
+                <JFXButton fx:id="btnBack" onAction="#goBack" visible="false">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="REPLY" size="15"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton fx:id="btnLogout" onAction="#logout" visible="false">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SIGN_OUT" size="15"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton fx:id="btnFullscreen" onAction="#toggleFullscreen" visible="false">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="EXPAND" size="15"/>
+                    </graphic>
+                </JFXButton>
+                <JFXHamburger fx:id="hamburgerMenu" alignment="TOP_RIGHT" prefHeight="0.0"
+                              prefWidth="47.0"/>
+            </HBox>
+            <HBox alignment="CENTER">
+                <Label fx:id="gameName" text="&lt;NAME&gt;" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold Italic" size="15.0"/>
+                    </font>
+                </Label>
+                <Label alignment="CENTER" text="'s Lobby" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold Italic" size="15.0"/>
+                    </font>
+                </Label>
+            </HBox>
+            <HBox spacing="5.0">
+                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <VBox alignment="TOP_CENTER">
+                        <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Players"
+                               textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="15.0"/>
+                            </font>
+                            <padding>
+                                <Insets left="5.0"/>
+                            </padding>
+                        </Label>
+                        <JFXScrollPane>
+                            <children>
+                                <ListView fx:id="playerList"/>
+                            </children>
+                        </JFXScrollPane>
+                    </VBox>
+                    <JFXButton fx:id="btnStart" alignment="CENTER" onAction="#setOnAction"
+                               prefHeight="100.0" prefWidth="100.0" text="Ready"/>
+                </VBox>
+                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                    <Label alignment="CENTER_RIGHT" text="My Armies" textAlignment="CENTER">
+                        <font>
+                            <Font name="System Bold" size="15.0"/>
+                        </font>
+                    </Label>
+                    <fx:include source="armyManager.fxml"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </AnchorPane>
 </AnchorPane>
