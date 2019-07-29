@@ -112,16 +112,8 @@ public class GameLobbyController {
 
     @FXML
     private void logout() {
-        btnLogout.setDisable(true);
-
-        if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
-            return;
-        }
-
+        UserInterfaceUtils.logout(gameLobby, btnLogout);
         GameLobbyController.quit();
-        LoginController.setUserToken(null);
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
     }
 
     @FXML
