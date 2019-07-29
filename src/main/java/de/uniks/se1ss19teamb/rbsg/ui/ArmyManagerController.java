@@ -178,7 +178,7 @@ public class ArmyManagerController {
     }
 
     private void loadFromServer() {
-        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
             cmbArmies.getItems().clear();
 
             if (armies.size() != 0) {
@@ -202,7 +202,7 @@ public class ArmyManagerController {
     @FXML
     private void logout() {
         if ((army.getId() != null && !army.getId().equals("")) || discardConfirmation) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
             btnLogout.setDisable(true);
@@ -240,7 +240,7 @@ public class ArmyManagerController {
         if (army.getId() == null || army.getId().equals("")) {
             army = null;
         } else {
-            RequestUtil.request(new DeleteArmyRequest(army.getId(), LoginController.getUserKey()));
+            RequestUtil.request(new DeleteArmyRequest(army.getId(), LoginController.getUserToken()));
             loadFromServer();
         }
 
@@ -341,13 +341,13 @@ public class ArmyManagerController {
         }
 
         if (army.getId() == null || army.getId().equals("")) {
-            RequestUtil.request(new CreateArmyRequest(army.getName(), army.getUnits(), LoginController.getUserKey()))
+            RequestUtil.request(new CreateArmyRequest(army.getName(), army.getUnits(), LoginController.getUserToken()))
                 .ifPresent(s -> {
                     NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
                     army.setId(s);
                 });
         } else {
-            if (!RequestUtil.request(new UpdateArmyRequest(army, LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new UpdateArmyRequest(army, LoginController.getUserToken()))) {
                 return;
             }
 

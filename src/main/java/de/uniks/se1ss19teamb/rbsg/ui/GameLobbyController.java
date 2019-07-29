@@ -77,7 +77,7 @@ public class GameLobbyController {
         GameSocket.instance = new GameSocket(
             GameSelectionController.joinedGame.getId());
 
-        GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
+        GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {
@@ -147,7 +147,7 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnStart)) {
             NotificationHandler.getInstance().sendInfo("No army selected.", logger);
         } else if (event.getSource().equals(btnStart)) {
-            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
                 if (armies.size() != 0) {
                     GameSocket.instance.startGame();
                 }
