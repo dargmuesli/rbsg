@@ -128,18 +128,20 @@ public class GameLobbyController {
     @FXML
     private void goBack() {
         btnBack.setDisable(true);
-        GameSocket.instance.disconnect();
+        GameLobbyController.quit();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
     }
 
     @FXML
     private void logout() {
+        btnLogout.setDisable(true);
+
         if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
             return;
         }
 
-        btnLogout.setDisable(true);
+        GameLobbyController.quit();
         LoginController.setUserToken(null);
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
@@ -170,6 +172,12 @@ public class GameLobbyController {
         UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
                 gameLobby.getScene().lookup("#chatWindow"));
         btnMinimize.fire();
+    }
+
+    private static void quit() {
+        GameSocket.instance.leaveGame();
+        GameSocket.instance.disconnect();
+        GameLobbyController.instance = null;
     }
 }
 
