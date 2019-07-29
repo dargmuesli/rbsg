@@ -18,7 +18,7 @@ import org.junit.Test;
 public class WebSocketTestsMocked {
 
     private WebSocketClient client;
-    private GameSocket gameSocket = new GameSocket("TeamBTestUser", "12345", "54321", "12543", false);
+    private GameSocket gameSocket = new GameSocket("54321", "12543", false);
 
     @Before
     public void prepareClient() {
@@ -45,7 +45,7 @@ public class WebSocketTestsMocked {
 
     @Test
     public void systemSocketTest() throws ParseException {
-        SystemSocket system = new SystemSocket("111111111111111111111111111111111111");
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 
@@ -114,7 +114,7 @@ public class WebSocketTestsMocked {
 
         List<String> msg = new ArrayList<>();
 
-        chat.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         setupSocket("{\"channel\":\"all\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World!\"}", chat);
         chat.sendMessage("Hello World!");
@@ -132,7 +132,7 @@ public class WebSocketTestsMocked {
 
         List<String> gameMsg = new ArrayList<>();
 
-        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
+        gameSocket.registerMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
             + isPrivate));
 
         setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"all\",\"message\":\"Hello World!\",\""

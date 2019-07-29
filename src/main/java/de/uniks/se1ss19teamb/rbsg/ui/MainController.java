@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Optional;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -107,7 +106,7 @@ public class MainController {
 
         // TODO - after some time it automaticly disconnects system and chatSocket
         if (SystemSocket.instance == null) {
-            SystemSocket.instance = new SystemSocket(LoginController.getUserKey());
+            SystemSocket.instance = new SystemSocket();
         }
 
         SystemSocket.instance.registerUserJoinHandler(
@@ -119,7 +118,7 @@ public class MainController {
         SystemSocket.instance.registerUserLeftHandler(
             (name) -> {
                 addElement(name, " left.", textArea, false);
-                if (!name.equals(LoginController.getUser())) {
+                if (!name.equals(LoginController.getUserName())) {
                     updatePlayerView();
                 }
             });
@@ -146,10 +145,10 @@ public class MainController {
         }
 
         if (ChatSocket.instance == null) {
-            ChatSocket.instance = new ChatSocket(LoginController.getUser(), LoginController.getUserKey());
+            ChatSocket.instance = new ChatSocket(LoginController.getUserName(), LoginController.getUserToken());
         }
 
-        ChatSocket.instance.registerChatMessageHandler((message, from, isPrivate) -> {
+        ChatSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 addNewPane(from, message, false, chatPane);
             } else {
@@ -220,12 +219,12 @@ public class MainController {
         }
     }
 
-    public static void setGameChat(GameSocket gameSocket) {
+    static void setGameChat(GameSocket gameSocket) {
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
     }
 
-    public static void setInGameChat(boolean state) {
+    static void setInGameChat(boolean state) {
         inGameChat = state;
     }
 
@@ -233,7 +232,7 @@ public class MainController {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
-                String userKey = LoginController.getUserKey();
+                String userKey = LoginController.getUserToken();
 
                 if (selected.equals(twoPlayers)) {
                     new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
@@ -244,11 +243,11 @@ public class MainController {
                 NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         } else if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
             btnLogout.setDisable(true);
-            LoginController.setUserKey(null);
+            LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
         } else if (event.getSource().equals(btnArmyManager)) {
@@ -266,25 +265,13 @@ public class MainController {
                 if (sendTo != null) {
                     if (sendTo.trim().equals("")) {
                         sendTo = null;
-                        if (!inGameChat) {
-                            chat.sendMessage(message.getText());
-                        } else {
-                            chat.gameSendMessage(message.getText());
-                        }
+                        chat.sendMessage(message.getText());
                     } else {
-                        if (!inGameChat) {
-                            chat.sendMessage(message.getText(), sendTo);
-                        } else {
-                            chat.gameSendMessage(message.getText(), sendTo);
-                        }
+                        chat.sendMessage(message.getText(), sendTo);
                         addNewPane(sendTo, message.getText(), true, chatPane);
                     }
                 } else {
-                    if (!inGameChat) {
-                        chat.sendMessage(message.getText());
-                    } else {
-                        chat.gameSendMessage(message.getText());
-                    }
+                    chat.sendMessage(message.getText());
                 }
 
                 message.setText("");
@@ -317,7 +304,7 @@ public class MainController {
     }
 
     private static HashMap<String, GameMeta> getExistingGames() {
-        return RequestUtil.request(new QueryGamesRequest(LoginController.getUserKey())).orElse(null);
+        return RequestUtil.request(new QueryGamesRequest(LoginController.getUserToken())).orElse(null);
     }
 
     private void updateGameView() {
@@ -362,7 +349,7 @@ public class MainController {
     }
 
     private ArrayList<String> getExistingPlayers() {
-        return RequestUtil.request(new QueryUsersInLobbyRequest(LoginController.getUserKey())).orElse(null);
+        return RequestUtil.request(new QueryUsersInLobbyRequest(LoginController.getUserToken())).orElse(null);
     }
 
     private Label addPlayerlabel(String player) {
@@ -462,7 +449,7 @@ public class MainController {
                     Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
                 }
                 if (mymessage) {
-                    getPrivate(LoginController.getUser(), message, t);
+                    getPrivate(LoginController.getUserName(), message, t);
                     createTab = false;
                 } else {
                     getPrivate(from, message, t);
@@ -479,7 +466,7 @@ public class MainController {
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
-                            getPrivate(LoginController.getUser(), message, newTab);
+                            getPrivate(LoginController.getUserName(), message, newTab);
                         } else {
                             getPrivate(from, message, newTab);
                         }

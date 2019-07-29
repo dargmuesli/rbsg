@@ -22,14 +22,8 @@ public abstract class AbstractWebSocket implements WebSocket {
 
     protected abstract String getEndpoint();
 
-    protected abstract String getUserKey();
-
     @Override
     public void connect() {
-        if (getUserKey() != null) {
-            WebSocket.changeUserKey(getUserKey());
-        }
-
         if (websocket == null || websocket.mySession == null) {
             try {
                 websocket = new WebSocketClient(new URI(url + getEndpoint()), (response) -> {

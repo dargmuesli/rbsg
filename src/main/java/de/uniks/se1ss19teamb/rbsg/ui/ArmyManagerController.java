@@ -89,7 +89,7 @@ public class ArmyManagerController {
 
         ArmyManagerController.instance = this;
 
-        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserKey())).ifPresent(units -> {
+        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken())).ifPresent(units -> {
             for (Unit unit : units) {
                 availableUnits.put(unit.getId(), unit);
             }
@@ -206,7 +206,7 @@ public class ArmyManagerController {
                 return;
             }
             btnLogout.setDisable(true);
-            LoginController.setUserKey(null);
+            LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
         } else {

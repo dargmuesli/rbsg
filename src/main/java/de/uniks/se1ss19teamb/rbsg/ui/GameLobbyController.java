@@ -75,8 +75,6 @@ public class GameLobbyController {
         gameName.setText(GameSelectionController.joinedGame.getName());
 
         GameSocket.instance = new GameSocket(
-            LoginController.getUser(),
-            LoginController.getUserKey(),
             GameSelectionController.joinedGame.getId());
 
         GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
@@ -132,11 +130,11 @@ public class GameLobbyController {
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
             btnLogout.setDisable(true);
-            LoginController.setUserKey(null);
+            LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
         } else if (event.getSource().equals(btnFullscreen)) {
@@ -178,7 +176,7 @@ public class GameLobbyController {
                     Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
                 }
                 if (mymessage) {
-                    getPrivate(LoginController.getUser(), message, t);
+                    getPrivate(LoginController.getUserName(), message, t);
                     createTab = false;
                 } else {
                     getPrivate(from, message, t);
@@ -195,7 +193,7 @@ public class GameLobbyController {
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
-                            getPrivate(LoginController.getUser(), message, newTab);
+                            getPrivate(LoginController.getUserName(), message, newTab);
                         } else {
                             getPrivate(from, message, newTab);
                         }
