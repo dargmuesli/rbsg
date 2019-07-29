@@ -58,9 +58,9 @@ public class GameLobbyController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnStart;
+    private JFXButton btnStartGame;
     @FXML
-    private JFXHamburger hamburgerMenu;
+    private JFXToggleButton tglReadiness;
     @FXML
     private Label gameName;
     @FXML
@@ -147,31 +147,15 @@ public class GameLobbyController {
     }
 
     @FXML
-    public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
-                return;
-            }
-            btnLogout.setDisable(true);
-            LoginController.setUserToken(null);
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
-        } else if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(btnStart)) {
-            Platform.runLater(() -> {
-                GameSocket.instance.readyToPlay();
-                btnStart.setDisable(true);
-            });
-        } else if (event.getSource().equals(btnStart)) {
-            NotificationHandler.getInstance().sendInfo("No army selected.", logger);
-        } else if (event.getSource().equals(btnStart)) {
-            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
-                if (armies.size() != 0) {
-                    GameSocket.instance.startGame();
-                }
-            });
-        }
+    private void toggleReadiness() {
+        GameSocket.instance.readyToPlay();
+        tglReadiness.setDisable(true);
+        btnStartGame.setDisable(false);
+    }
+
+    @FXML
+    private void startGame() {
+
     }
 
     public void startGameTransition() {

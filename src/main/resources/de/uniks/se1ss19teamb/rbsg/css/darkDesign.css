@@ -58,7 +58,11 @@ ListView {
 
 .jfx-tab-pane .tab-header-background {
     -fx-background-color: #3f424b;
+}
 
+.jfx-toggle-button {
+    -jfx-toggle-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary;
 }
 
 .label {
