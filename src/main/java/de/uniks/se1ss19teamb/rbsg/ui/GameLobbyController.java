@@ -130,7 +130,7 @@ public class GameLobbyController {
 
     @FXML
     private void startGame() {
-
+        GameSocket.instance.startGame();
     }
 
     public void startGameTransition() {
