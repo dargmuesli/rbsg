@@ -29,7 +29,7 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static String user;
+    private static String userName;
     private static String userKey;
     private static UserData userData;
 
@@ -54,12 +54,12 @@ public class LoginController {
     @FXML
     private Label jokeLabel;
 
-    static String getUser() {
-        return user;
+    public static String getUserName() {
+        return userName;
     }
 
-    private static void setUser(String name) {
-        user = name;
+    public static void setUserName(String userName) {
+        LoginController.userName = userName;
     }
 
     public static String getUserKey() {
@@ -146,7 +146,7 @@ public class LoginController {
         RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))
             .ifPresent(LoginController::setUserKey);
 
-        setUser(txtUserName.getText());
+        setUserName(txtUserName.getText());
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);

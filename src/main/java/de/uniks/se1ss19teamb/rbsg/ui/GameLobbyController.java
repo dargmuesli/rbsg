@@ -107,7 +107,7 @@ public class GameLobbyController {
         instance = this;
 
         GameSocket.instance = new GameSocket(
-            LoginController.getUser(),
+            LoginController.getUserName(),
             LoginController.getUserKey(),
             GameSelectionController.joinedGame.getId(),
             ArmyManagerController.currentArmy.getId(),
@@ -301,7 +301,7 @@ public class GameLobbyController {
                     Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
                 }
                 if (mymessage) {
-                    getPrivate(LoginController.getUser(), message, t);
+                    getPrivate(LoginController.getUserName(), message, t);
                     createTab = false;
                 } else {
                     getPrivate(from, message, t);
@@ -318,7 +318,7 @@ public class GameLobbyController {
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
-                            getPrivate(LoginController.getUser(), message, newTab);
+                            getPrivate(LoginController.getUserName(), message, newTab);
                         } else {
                             getPrivate(from, message, newTab);
                         }

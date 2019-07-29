@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Optional;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -119,7 +118,7 @@ public class MainController {
         SystemSocket.instance.registerUserLeftHandler(
             (name) -> {
                 addElement(name, " left.", textArea, false);
-                if (!name.equals(LoginController.getUser())) {
+                if (!name.equals(LoginController.getUserName())) {
                     updatePlayerView();
                 }
             });
@@ -146,7 +145,7 @@ public class MainController {
         }
 
         if (ChatSocket.instance == null) {
-            ChatSocket.instance = new ChatSocket(LoginController.getUser(), LoginController.getUserKey());
+            ChatSocket.instance = new ChatSocket(LoginController.getUserName(), LoginController.getUserKey());
         }
 
         ChatSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
@@ -463,7 +462,7 @@ public class MainController {
                     Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
                 }
                 if (mymessage) {
-                    getPrivate(LoginController.getUser(), message, t);
+                    getPrivate(LoginController.getUserName(), message, t);
                     createTab = false;
                 } else {
                     getPrivate(from, message, t);
@@ -480,7 +479,7 @@ public class MainController {
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
-                            getPrivate(LoginController.getUser(), message, newTab);
+                            getPrivate(LoginController.getUserName(), message, newTab);
                         } else {
                             getPrivate(from, message, newTab);
                         }
