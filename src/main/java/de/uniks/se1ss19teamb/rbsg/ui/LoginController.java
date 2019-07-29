@@ -30,7 +30,7 @@ public class LoginController {
     private static final Logger logger = LogManager.getLogger();
 
     private static String userName;
-    private static String userKey;
+    private static String userToken;
     private static UserData userData;
 
     @FXML
@@ -62,12 +62,12 @@ public class LoginController {
         LoginController.userName = userName;
     }
 
-    public static String getUserKey() {
-        return userKey;
+    public static String getUserToken() {
+        return userToken;
     }
 
-    public static void setUserKey(String key) {
-        userKey = key;
+    public static void setUserToken(String key) {
+        userToken = key;
     }
 
     public void initialize() {
@@ -144,7 +144,7 @@ public class LoginController {
         }
 
         RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))
-            .ifPresent(LoginController::setUserKey);
+            .ifPresent(LoginController::setUserToken);
 
         setUserName(txtUserName.getText());
         ChuckNorrisJokeTicker.stopAnimation();

@@ -13,7 +13,7 @@ public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurat
     public void beforeRequest(Map<String, List<String>> headers) {
         super.beforeRequest(headers);
         ArrayList<String> key = new ArrayList<>();
-        key.add(LoginController.getUserKey());
+        key.add(LoginController.getUserToken());
         headers.put("userKey", key);
     }
 }

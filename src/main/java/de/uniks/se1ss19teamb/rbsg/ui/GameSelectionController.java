@@ -1,7 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -60,7 +59,7 @@ public class GameSelectionController {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
-        if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserKey()))) {
+        if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
             return;
         }
 
@@ -88,7 +87,7 @@ public class GameSelectionController {
     }
 
     public void deleteGame() {
-        if (!RequestUtil.request(new DeleteGameRequest(gameMeta.getId(), LoginController.getUserKey()))) {
+        if (!RequestUtil.request(new DeleteGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
             return;
         }
     }

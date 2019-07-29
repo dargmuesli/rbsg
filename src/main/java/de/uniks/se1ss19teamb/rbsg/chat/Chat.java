@@ -68,7 +68,7 @@ public class Chat {
     public void disconnect() {
         this.chatSocket.disconnect();
         writeHistory();
-        new LogoutUserRequest(LoginController.getUserKey()).sendRequest();
+        new LogoutUserRequest(LoginController.getUserToken()).sendRequest();
     }
 
     /**

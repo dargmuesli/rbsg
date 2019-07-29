@@ -145,7 +145,7 @@ public class MainController {
         }
 
         if (ChatSocket.instance == null) {
-            ChatSocket.instance = new ChatSocket(LoginController.getUserName(), LoginController.getUserKey());
+            ChatSocket.instance = new ChatSocket(LoginController.getUserName(), LoginController.getUserToken());
         }
 
         ChatSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
@@ -232,7 +232,7 @@ public class MainController {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
                 Toggle selected = playerNumberToggleGroup.getSelectedToggle();
-                String userKey = LoginController.getUserKey();
+                String userKey = LoginController.getUserToken();
 
                 if (selected.equals(twoPlayers)) {
                     new CreateGameRequest(gameName.getText(), 2, userKey).sendRequest();
@@ -243,11 +243,11 @@ public class MainController {
                 NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
             }
         } else if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
             btnLogout.setDisable(true);
-            LoginController.setUserKey(null);
+            LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
         } else if (event.getSource().equals(btnArmyManager)) {
@@ -317,7 +317,7 @@ public class MainController {
     }
 
     private static HashMap<String, GameMeta> getExistingGames() {
-        return RequestUtil.request(new QueryGamesRequest(LoginController.getUserKey())).orElse(null);
+        return RequestUtil.request(new QueryGamesRequest(LoginController.getUserToken())).orElse(null);
     }
 
     private void updateGameView() {
@@ -362,7 +362,7 @@ public class MainController {
     }
 
     private ArrayList<String> getExistingPlayers() {
-        return RequestUtil.request(new QueryUsersInLobbyRequest(LoginController.getUserKey())).orElse(null);
+        return RequestUtil.request(new QueryUsersInLobbyRequest(LoginController.getUserToken())).orElse(null);
     }
 
     private Label addPlayerlabel(String player) {

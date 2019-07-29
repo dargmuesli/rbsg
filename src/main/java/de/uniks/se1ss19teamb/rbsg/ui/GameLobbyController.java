@@ -132,7 +132,7 @@ public class GameLobbyController {
         MainController.setGameChat(GameSocket.instance);
         MainController.setInGameChat(true);
 
-        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserKey())).ifPresent(units -> {
+        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken())).ifPresent(units -> {
             for (Unit unit : units) {
                 ArmyManagerController.availableUnits.put(unit.getId(), unit);
             }
@@ -211,11 +211,11 @@ public class GameLobbyController {
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
             btnLogout.setDisable(true);
-            LoginController.setUserKey(null);
+            LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
         } else if (event.getSource().equals(btnFullscreen)) {
@@ -262,7 +262,7 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnMyReady)) {
             NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgew\u00E4hlt !", logger);
         } else if (event.getSource().equals(btnStart)) {
-            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
                 loadFromServer();
                 if (armies.size() != 0) {
                     GameSocket.instance.startGame();
@@ -282,7 +282,7 @@ public class GameLobbyController {
     }
 
     private void loadFromServer() {
-        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
             if (armies.size() == 0) {
                 NotificationHandler.getInstance()
                     .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
