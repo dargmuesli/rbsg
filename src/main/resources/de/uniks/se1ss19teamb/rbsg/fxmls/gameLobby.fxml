@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXScrollPane?>
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
+<?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.221"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
     <stylesheets>
         <URL value="@../css/whiteDesign.css"/>
         <URL value="@../css/darkDesign.css"/>
     </stylesheets>
-    <AnchorPane fx:id="gameLobby" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane fx:id="gameLobby" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0">
         <stylesheets>
             <URL value="@../css/whiteDesign.css"/>
             <URL value="@../css/darkDesign.css"/>
@@ -47,8 +41,7 @@
                         <FontAwesomeIconView glyphName="EXPAND" size="15"/>
                     </graphic>
                 </JFXButton>
-                <JFXHamburger fx:id="hamburgerMenu" alignment="TOP_RIGHT" prefHeight="0.0"
-                              prefWidth="47.0"/>
+                <JFXHamburger fx:id="hamburgerMenu" alignment="TOP_RIGHT" prefHeight="0.0" prefWidth="47.0"/>
             </HBox>
             <HBox alignment="CENTER">
                 <Label fx:id="gameName" text="&lt;NAME&gt;" textAlignment="CENTER">
@@ -65,8 +58,7 @@
             <HBox spacing="5.0">
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <VBox alignment="TOP_CENTER">
-                        <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Players"
-                               textAlignment="CENTER">
+                        <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Players" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="15.0"/>
                             </font>
@@ -80,8 +72,8 @@
                             </children>
                         </JFXScrollPane>
                     </VBox>
-                    <JFXButton fx:id="btnStart" alignment="CENTER" onAction="#setOnAction"
-                               prefHeight="100.0" prefWidth="100.0" text="Ready"/>
+                    <JFXButton fx:id="btnStart" alignment="CENTER" onAction="#setOnAction" prefHeight="100.0"
+                               prefWidth="100.0" text="Ready"/>
                 </VBox>
                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <Label alignment="CENTER_RIGHT" text="My Armies" textAlignment="CENTER">

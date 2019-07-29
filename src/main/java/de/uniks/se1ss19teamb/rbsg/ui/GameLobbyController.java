@@ -101,25 +101,6 @@ public class GameLobbyController {
         MainController.setGameChat(GameSocket.instance);
 
         gameName.setText(GameSelectionController.joinedGame.getName());
-
-        /*if (currentArmy.getUnits().size() < 10) {
-            NotificationHandler.getInstance().sendInfo("You need ten units. Add some.", logger);
-            return;
-        }
-
-        saveToServer();
-
-        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
-            if (armies.size() != 0) {
-                UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", mainPane,
-                    mainPane.getScene().lookup("#chatWindow"));
-            }
-        });
-
-        loadFromServer();
-        VBox chatWindow = (VBox) mainPane.getScene().lookup("#chatWindow");
-        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
-        btnMinimize.setDisable(false);*/
     }
 
     public void updatePlayers() {
