@@ -104,21 +104,25 @@ public class GameLobbyController {
     }
 
     public void updatePlayers() {
-        InGameController.inGameObjects.entrySet().stream()
-            .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
-            .forEachOrdered(inGameObjectEntry -> {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/lobbyPlayer.fxml"));
+        Platform.runLater(() -> {
+            playerList.getItems().clear();
 
-                try {
-                    Parent parent = fxmlLoader.load();
-                    LobbyPlayerController controller = fxmlLoader.getController();
-                    controller.setInGamePlayer((InGamePlayer) inGameObjectEntry.getValue());
-                    playerList.getItems().add(parent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            InGameController.inGameObjects.entrySet().stream()
+                .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
+                .forEachOrdered(inGameObjectEntry -> {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                        .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/lobbyPlayer.fxml"));
+
+                    try {
+                        Parent parent = fxmlLoader.load();
+                        LobbyPlayerController controller = fxmlLoader.getController();
+                        controller.setInGamePlayer((InGamePlayer) inGameObjectEntry.getValue());
+                        playerList.getItems().add(parent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        });
     }
 
     @FXML
