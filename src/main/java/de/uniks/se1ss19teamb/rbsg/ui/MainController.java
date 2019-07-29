@@ -471,7 +471,7 @@ public class MainController {
                         } else {
                             getPrivate(from, message, newTab);
                         }
-                        selectionModel.select(newTab);
+                        MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
                             .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
@@ -487,6 +487,7 @@ public class MainController {
         if (message != null) {
             addElement(from, message, area, true);
         }
+        MainController.selectionModel.select(tab);
     }
 
     private boolean checkInput(String input) {
@@ -521,14 +522,14 @@ public class MainController {
 
     private void setPrivate(String input, int count) {
         if (count == -1) {
-            sendTo = input;
+            MainController.sendTo = input;
         } else if (count == 0) {
-            sendTo = input.substring(3);
+            MainController.sendTo = input.substring(3);
         } else {
-            sendTo = input.substring(3, count);
+            MainController.sendTo = input.substring(3, count);
         }
         Platform.runLater(() -> {
-            addNewPane(sendTo, null, true, chatPane);
+            addNewPane(MainController.sendTo, null, true, chatPane);
             message.clear();
             message.setStyle("-fx-text-fill: -fx-privatetext;"
                 + "-jfx-focus-color: -fx-privatetext;");
