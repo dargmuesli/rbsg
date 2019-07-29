@@ -103,13 +103,13 @@
                 </VBox>
             </children>
             <stylesheets>
+                <URL value="@../css/whiteDesign.css"/>
                 <URL value="@../css/darkDesign.css"/>
-                <URL value="@../css/base.css"/>
             </stylesheets>
         </AnchorPane>
     </children>
     <stylesheets>
+        <URL value="@../css/whiteDesign.css"/>
         <URL value="@../css/darkDesign.css"/>
-        <URL value="@../css/base.css"/>
     </stylesheets>
 </AnchorPane>
