@@ -64,8 +64,6 @@ class UiTestsReal extends ApplicationTest {
         RestRequestTestsReal.queryUnits();
 
         GameSocket gameSocket = new GameSocket(
-            "TeamBTestUser",
-            RestRequestTestsReal.userToken,
             RestRequestTestsReal.gameId,
             null,
             false);

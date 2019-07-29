@@ -29,13 +29,14 @@ public class ArmyUtil {
         }
 
         if (currentArmyId == null) {
-            RequestUtil.request(new CreateArmyRequest(currentArmyName, currentArmyUnits, LoginController.getUserKey()))
+            RequestUtil.request(
+                new CreateArmyRequest(currentArmyName, currentArmyUnits, LoginController.getUserToken()))
                 .ifPresent(s -> {
                     NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
                     currentArmy.setId(s);
                 });
         } else {
-            if (!RequestUtil.request(new UpdateArmyRequest(currentArmy, LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new UpdateArmyRequest(currentArmy, LoginController.getUserToken()))) {
                 return null;
             }
 

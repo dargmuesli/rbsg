@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 import de.uniks.se1ss19teamb.rbsg.util.Strings;
@@ -20,7 +21,7 @@ import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GameSocket extends AbstractWebSocket {
+public class GameSocket extends AbstractMessageWebSocket {
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -28,18 +29,14 @@ public class GameSocket extends AbstractWebSocket {
         new ArrayList<>();
 
     public static GameSocket instance;
-    private static String userKey;
     private static String gameId;
     private static String armyId;
     private static boolean spectator;
     private static boolean firstGameInitObjectReceived;
     private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
-    private static String userName;
     private boolean ignoreOwn = false;
 
-    public GameSocket(String userName, String userKey, String gameId, String armyId, boolean spectator) {
-        GameSocket.userName = userName;
-        GameSocket.userKey = userKey;
+    public GameSocket(String gameId, String armyId, boolean spectator) {
         GameSocket.gameId = gameId;
         GameSocket.armyId = armyId;
         GameSocket.spectator = spectator;
@@ -285,7 +282,7 @@ public class GameSocket extends AbstractWebSocket {
                 case "gameChat":
                     String from = data.get("from").getAsString();
 
-                    if (this.ignoreOwn && from.equals(userName)) {
+                    if (this.ignoreOwn && from.equals(LoginController.getUserName())) {
                         return;
                     }
 
@@ -324,19 +321,6 @@ public class GameSocket extends AbstractWebSocket {
         }
 
         return stringBuilder.toString();
-    }
-
-    @Override
-    protected String getUserKey() {
-        return userKey;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void registerGameMessageHandler(ChatMessageHandler handler) {
-        handlersChat.add(handler);
     }
 
     public void changeArmy(String armyId) {
@@ -401,6 +385,12 @@ public class GameSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    @Override
+    public void registerMessageHandler(ChatMessageHandler handler) {
+        handlersChat.add(handler);
+    }
+
+    @Override
     public void sendMessage(String message) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "chat");
@@ -409,6 +399,7 @@ public class GameSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    @Override
     public void sendPrivateMessage(String message, String target) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "chat");

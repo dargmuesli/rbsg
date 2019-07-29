@@ -14,7 +14,7 @@ public class WebSocketTestsReal {
     public void systemSocketTest() throws ParseException, InterruptedException {
         RestRequestTestsReal.loginUser();
 
-        SystemSocket system = new SystemSocket(RestRequestTestsReal.userToken);
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class WebSocketTestsReal {
 
         List<String> msg = new ArrayList<>();
 
-        chat2.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat2.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         chat.connect();
         chat2.connect();

@@ -107,8 +107,6 @@ public class GameLobbyController {
         instance = this;
 
         GameSocket.instance = new GameSocket(
-            LoginController.getUser(),
-            LoginController.getUserKey(),
             GameSelectionController.joinedGame.getId(),
             ArmyManagerController.currentArmy.getId(),
             ArmyManagerController.spectator);
@@ -122,19 +120,17 @@ public class GameLobbyController {
             btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
 
-
-        GameSocket.instance.registerGameMessageHandler((message, from, isPrivate) -> {
+        GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
-                addNewPane(from, message, false, chatPane);
+                MainController.instance.addNewPane(from, message, false, chatPane);
             } else {
-                addElement(from, message, textArea, false);
+                MainController.instance.addElement(from, message, textArea, false);
             }
         });
 
         MainController.setGameChat(GameSocket.instance);
-        MainController.setInGameChat(true);
 
-        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserKey())).ifPresent(units -> {
+        RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken())).ifPresent(units -> {
             for (Unit unit : units) {
                 ArmyManagerController.availableUnits.put(unit.getId(), unit);
             }
@@ -204,7 +200,6 @@ public class GameLobbyController {
         if (event.getSource().equals(btnBack)) {
             btnBack.setDisable(true);
             GameSocket.instance.disconnect();
-            MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
         }
@@ -213,11 +208,11 @@ public class GameLobbyController {
     @FXML
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserKey()))) {
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
                 return;
             }
             btnLogout.setDisable(true);
-            LoginController.setUserKey(null);
+            LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", gameLobby);
         } else if (event.getSource().equals(btnFullscreen)) {
@@ -264,7 +259,7 @@ public class GameLobbyController {
         } else if (event.getSource().equals(btnMyReady)) {
             NotificationHandler.getInstance().sendInfo("Es wurde keine Armee ausgew\u00E4hlt !", logger);
         } else if (event.getSource().equals(btnStart)) {
-            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+            RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
                 loadFromServer();
                 if (armies.size() != 0) {
                     GameSocket.instance.startGame();
@@ -284,143 +279,12 @@ public class GameLobbyController {
     }
 
     private void loadFromServer() {
-        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserKey())).ifPresent(armies -> {
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
             if (armies.size() == 0) {
                 NotificationHandler.getInstance()
                     .sendInfo("Keine Armeen auf dem Server gespeichert.", logger);
             }
         });
     }
-
-
-    private void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
-        boolean createTab = true;
-        for (Tab t : pane.getTabs()) {
-            if (t.getText().equals(from)) {
-                if (!t.isSelected()) {
-                    Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
-                }
-                if (mymessage) {
-                    getPrivate(LoginController.getUser(), message, t);
-                    createTab = false;
-                } else {
-                    getPrivate(from, message, t);
-                    createTab = false;
-                }
-            }
-        }
-        if (createTab) {
-            Platform.runLater(
-                () -> {
-                    try {
-                        Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/privateTab.fxml"));
-                        newTab.setText(from);
-                        pane.getTabs().add(newTab);
-                        if (mymessage) {
-                            getPrivate(LoginController.getUser(), message, newTab);
-                        } else {
-                            getPrivate(from, message, newTab);
-                        }
-                        MainController.selectionModel.select(newTab);
-                    } catch (IOException e) {
-                        NotificationHandler.getInstance()
-                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
-                    }
-                }
-            );
-        }
-    }
-
-
-    private void addElement(String player, String message, VBox box, boolean whisper) {
-
-        VBox container = new VBox();
-
-        if (player != null) {
-            Label name = new Label(player + ":");
-            name.setPadding(new Insets(5));
-            name.setWrapText(true);
-            if (whisper) {
-                name.setStyle("-fx-text-fill: -fx-privatetext;");
-            } else {
-                name.setStyle("-fx-text-fill: black;");
-            }
-            // whisper on double click
-            name.setOnMouseClicked(mouseEvent -> {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        setPrivate(player, -1);
-                    }
-                }
-            });
-            Label text = new Label(message);
-            text.setPadding(new Insets(5));
-            text.setWrapText(true);
-            setChatStyle(text);
-
-            Platform.runLater(() -> {
-                name.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                setChatStyle(name);
-            });
-
-            container.getChildren().addAll(name, text);
-        } else {
-            Label text = new Label(message);
-            text.setPadding(new Insets(5));
-            text.setWrapText(true);
-            setChatStyle(text);
-
-            container.getChildren().add(text);
-        }
-
-        Platform.runLater(() -> box.getChildren().add(container));
-        if (!chatPane.getTabs().get(0).isSelected() && !whisper) {
-            Platform.runLater(() ->
-                chatPane.getTabs().get(0).setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
-        }
-
-        if (!chatBox.isVisible()) {
-            Platform.runLater(() ->
-                btnMinimize.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
-        }
-    }
-
-
-    private void setChatStyle(Label label) {
-        label.setStyle("-fx-text-fill: " + (Theming.darkModeActive()
-            ? "-fx-primary" : "black") + ";"
-            + "-fx-background-color: " + (Theming.darkModeActive()
-            ? "-fx-secondary" : "white") + ";"
-            + "-fx-border-radius: 20px;"
-            + "-fx-background-radius: 10px;");
-    }
-
-    private void setPrivate(String input, int count) {
-        if (count == -1) {
-            MainController.sendTo = input;
-        } else if (count == 0) {
-            MainController.sendTo = input.substring(3);
-        } else {
-            MainController.sendTo = input.substring(3, count);
-        }
-        Platform.runLater(() -> {
-            addNewPane(MainController.sendTo, null, true, chatPane);
-            message.clear();
-            message.setStyle("-fx-text-fill: -fx-privatetext;"
-                + "-jfx-focus-color: -fx-privatetext;");
-        });
-    }
-
-    private void getPrivate(String from, String message, Tab tab) {
-        ScrollPane scrollPane = (ScrollPane) tab.getContent();
-        VBox area = (VBox) scrollPane.getContent();
-        if (message != null) {
-            addElement(from, message, area, true);
-        }
-        MainController.selectionModel.select(tab);
-    }
-
-
 }
 
