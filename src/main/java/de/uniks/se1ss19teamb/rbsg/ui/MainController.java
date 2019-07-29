@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Optional;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -333,7 +332,7 @@ public class MainController {
 
             existingGames.forEach((s, gameMeta) -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameField.fxml"));
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameSelection.fxml"));
 
                 try {
                     Parent parent = fxmlLoader.load();
