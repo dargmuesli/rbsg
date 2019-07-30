@@ -6,11 +6,14 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.*;
 
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -23,6 +26,15 @@ public class RestRequestTestsReal {
 
     // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void resetHttpManager() {
+        AbstractRestRequest.httpManager = new HttpManager();
+    }
+    
+    @Before
+    public void setupTests() {
+    	resetHttpManager();
+    }
+    
     private void createArmy() {
         List<Unit> units = new ArrayList<>();
 

@@ -81,6 +81,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
+    @Ignore
     public void loginMainTest() {
         clickOn("#txtUserName");
         write("TeamBTestUser");
