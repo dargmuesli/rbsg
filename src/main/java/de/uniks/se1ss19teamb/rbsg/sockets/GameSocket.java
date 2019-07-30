@@ -36,6 +36,10 @@ public class GameSocket extends AbstractMessageWebSocket {
     private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
     private boolean ignoreOwn = false;
 
+    public GameSocket(String gameId) {
+        this(gameId, null, false);
+    }
+
     public GameSocket(String gameId, String armyId, boolean spectator) {
         GameSocket.gameId = gameId;
         GameSocket.armyId = armyId;
@@ -134,6 +138,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     break;
                 case "gameInitFinished":
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
+                    GameLobbyController.instance.updatePlayers();
                     break;
                 case "gameNewObject":
                     if (Strings.checkHasNot(data, "id", logger)) {
@@ -145,6 +150,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                             InGamePlayer inGamePlayer = SerializeUtils.deserialize(data.toString(), InGamePlayer.class);
 
                             InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+
+                            if (GameLobbyController.instance != null) {
+                                GameLobbyController.instance.updatePlayers();
+                            }
 
                             // TODO handle in chat window
                             NotificationHandler.getInstance().sendInfo("New Player joined! \""
@@ -185,7 +194,16 @@ public class GameSocket extends AbstractMessageWebSocket {
                             newValue = data.get("newValue").getAsString();
 
                             if (fieldName.equals("isReady")) {
-                                inGamePlayer.setReady(Boolean.valueOf(newValue));
+                                boolean ready = Boolean.parseBoolean(newValue);
+                                inGamePlayer.setReady(ready);
+
+                                if (inGamePlayer.getName().equals(LoginController.getUserName()) && ready) {
+                                    GameLobbyController.instance.confirmReadiness();
+                                }
+
+                                if (GameLobbyController.instance != null) {
+                                    GameLobbyController.instance.updatePlayers();
+                                }
                             }
 
                             StringBuilder readyMessage = new StringBuilder("Player \"")
@@ -250,6 +268,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                         case "Player":
                             InGameController.inGameObjects.remove(data.get("id"));
 
+                            if (GameLobbyController.instance != null) {
+                                GameLobbyController.instance.updatePlayers();
+                            }
+
                             // TODO handle in chat window
                             NotificationHandler.getInstance()
                                 .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
@@ -294,6 +316,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "inGameError":
+                    if (response.get("data").getAsString().equals("You need to select an army to be ready.")) {
+                        GameLobbyController.instance.denyReadiness();
+                    }
+
                     NotificationHandler.getInstance().sendError("InGameError: "
                         + response.get("data").getAsString(), logger);
                     break;

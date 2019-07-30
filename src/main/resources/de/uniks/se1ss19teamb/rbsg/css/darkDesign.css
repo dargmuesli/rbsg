@@ -15,6 +15,10 @@ ListView {
     -fx-padding: 0px;
 }
 
+#inGamePlayerRED {
+    -fx-text-fill: red;
+}
+
 .background-color_transparent {
     -fx-background-color: -fx-primary;
 }
@@ -39,6 +43,11 @@ ListView {
     -jfx-checked-color: -fx-secondary;
 }
 
+.combo-box .list-cell {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-secondary;
+}
+
 .glyph-icon {
     -fx-fill: -fx-primarytext;
 }
@@ -53,7 +62,11 @@ ListView {
 
 .jfx-tab-pane .tab-header-background {
     -fx-background-color: #3f424b;
+}
 
+.jfx-toggle-button {
+    -jfx-toggle-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary;
 }
 
 .label {
