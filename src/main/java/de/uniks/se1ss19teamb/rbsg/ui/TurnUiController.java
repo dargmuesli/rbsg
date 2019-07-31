@@ -3,12 +3,12 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import java.util.ArrayList;
 
 public class TurnUiController {
     @FXML
@@ -40,12 +40,12 @@ public class TurnUiController {
     }
 
     private void updatePlayers() {
-            InGameController.inGameObjects.entrySet().stream()
-                .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
-                .forEachOrdered(inGameObjectEntry -> {
-                    inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue()));
-                });
-            players();
+        InGameController.inGameObjects.entrySet().stream()
+            .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
+            .forEachOrdered(inGameObjectEntry -> {
+                inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue()));
+            });
+        players();
     }
 
     @FXML
@@ -59,8 +59,17 @@ public class TurnUiController {
         if (inGamePlayerList.size() == 2) {
             labelOne.setVisible(true);
             labelTwo.setVisible(true);
-            labelOne.setText(inGamePlayerList.get(0).getName());
-            labelTwo.setText(inGamePlayerList.get(1).getName());
+            labelOne.setText(inGamePlayerList.get(1).getName());
+            labelTwo.setText(inGamePlayerList.get(0).getName());
+        } else if (inGamePlayerList.size() == 4) {
+            labelOne.setVisible(true);
+            labelTwo.setVisible(true);
+            labelThree.setVisible(true);
+            labelFour.setVisible(true);
+            labelOne.setText(inGamePlayerList.get(3).getName());
+            labelTwo.setText(inGamePlayerList.get(2).getName());
+            labelThree.setText(inGamePlayerList.get(1).getName());
+            labelFour.setText(inGamePlayerList.get(0).getName());
         }
     }
 
