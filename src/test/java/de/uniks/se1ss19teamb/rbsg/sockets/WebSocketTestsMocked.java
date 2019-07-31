@@ -103,6 +103,8 @@ public class WebSocketTestsMocked {
 
         gameSocket.registerGameRemoveObject((type -> gameMsg.add("removed|" + type)));
 
+        gameSocket.registerGameChangeObject((type -> gameMsg.add("changed|" + type)));
+
         setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
             + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
@@ -115,9 +117,35 @@ public class WebSocketTestsMocked {
             + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"fieldName\":\"hp\",\""
+            + "newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"fieldName\":\"position\",\""
+            + "newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Player@29f70a3b\",\"fieldName\":\"isReady\",\""
+            + "newValue\":\"true\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\", "
+            +
+            "\"fieldName\":\"phase\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\","
+            + "\"fieldName\":\"position\",\"newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+
         Assert.assertTrue(gameMsg.contains("removed|Player"));
         Assert.assertTrue(gameMsg.contains("removed|Unit"));
         Assert.assertTrue(gameMsg.contains("removed|Unit"));
+        Assert.assertTrue(gameMsg.contains("changed|Unit"));
+        Assert.assertTrue(gameMsg.contains("changed|Unit"));
+        Assert.assertTrue(gameMsg.contains("changed|Player"));
+        Assert.assertTrue(gameMsg.contains("changed|Game"));
 
     }
 

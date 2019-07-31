@@ -27,6 +27,8 @@ public class GameSocket extends AbstractMessageWebSocket {
 
     private List<GameSocketMessageHandler.GameSocketGameRemoveObject> handlersRemoveObject =
         new ArrayList<>();
+    private List<GameSocketMessageHandler.GameSocketGameChangeObject> handlersChangeObject =
+        new ArrayList<>();
 
     public static GameSocket instance;
     private static String gameId;
@@ -176,7 +178,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                     String newValue;
                     String fieldName;
 
-                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
+                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                    switch (type) {
                         case "Player":
                             InGamePlayer inGamePlayer =
                                 (InGamePlayer) InGameController.inGameObjects.get(data.get("id").getAsString());
@@ -195,10 +199,13 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                             if (fieldName.equals("isReady")) {
                                 boolean ready = Boolean.parseBoolean(newValue);
-                                inGamePlayer.setReady(ready);
 
-                                if (inGamePlayer.getName().equals(LoginController.getUserName()) && ready) {
-                                    GameLobbyController.instance.confirmReadiness();
+                                if (inGamePlayer != null) {
+                                    inGamePlayer.setReady(ready);
+
+                                    if (inGamePlayer.getName().equals(LoginController.getUserName()) && ready) {
+                                        GameLobbyController.instance.confirmReadiness();
+                                    }
                                 }
 
                                 if (GameLobbyController.instance != null) {
@@ -206,26 +213,31 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 }
                             }
 
-                            StringBuilder readyMessage = new StringBuilder("Player \"")
-                                .append(inGamePlayer.getName())
-                                .append(" (")
-                                .append(inGamePlayer.getColor())
-                                .append(") is ");
+                            if (inGamePlayer != null) {
+                                StringBuilder readyMessage = new StringBuilder("Player \"")
+                                    .append(inGamePlayer.getName())
+                                    .append(" (")
+                                    .append(inGamePlayer.getColor())
+                                    .append(") is ");
 
-                            if (inGamePlayer.isReady()) {
-                                // TODO maybe handler to chat window
-                                readyMessage.append("now ready.");
-                            } else {
-                                readyMessage.append("not ready.");
+                                if (inGamePlayer.isReady()) {
+                                    // TODO maybe handler to chat window
+                                    readyMessage.append("now ready.");
+                                } else {
+                                    readyMessage.append("not ready.");
+                                }
+
+                                NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
                             }
-
-                            NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
                             break;
                         case "Game":
                             if (!InGameController.gameInitFinished
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
-                                GameLobbyController.instance.startGameTransition();
+                                if (GameLobbyController.instance != null) {
+                                    GameLobbyController.instance.startGameTransition();
+
+                                }
                             }
                             break;
                         case "Unit":
@@ -241,11 +253,15 @@ public class GameSocket extends AbstractMessageWebSocket {
                             String id = data.get("id").getAsString();
                             switch (fieldName) {
                                 case "position":
-                                    InGameController.getInstance().changeUnitPos(id, newValue);
+                                    if (InGameController.getInstance() != null) {
+                                        InGameController.getInstance().changeUnitPos(id, newValue);
+                                    }
                                     break;
                                 case "hp":
-                                    SoundManager.playSound("Omae", 0);
-                                    InGameController.getInstance().changeUnitHp(id, newValue);
+                                    //SoundManager.playSound("Omae", 0);
+                                    if (InGameController.getInstance() != null) {
+                                        InGameController.getInstance().changeUnitHp(id, newValue);
+                                    }
                                     break;
                                 default:
                                     NotificationHandler.getInstance().sendError(
@@ -256,13 +272,17 @@ public class GameSocket extends AbstractMessageWebSocket {
                             NotificationHandler.getInstance().sendError(
                                 "Unknown changed game object id: " + data.get("id").getAsString(), logger);
                     }
+
+                    for (GameSocketMessageHandler.GameSocketGameChangeObject handler : handlersChangeObject) {
+                        handler.handle(type);
+                    }
                     break;
                 case "gameRemoveObject":
                     if (Strings.checkHasNot(data, "id", logger)) {
                         return;
                     }
 
-                    String type = data.get("id").getAsString().replaceFirst("@.+", "");
+                    type = data.get("id").getAsString().replaceFirst("@.+", "");
 
                     switch (type) {
                         case "Player":
@@ -438,8 +458,13 @@ public class GameSocket extends AbstractMessageWebSocket {
     //Custom Helpers
 
     public void registerGameRemoveObject(GameSocketMessageHandler
-                                            .GameSocketGameRemoveObject handler) {
+                                             .GameSocketGameRemoveObject handler) {
         handlersRemoveObject.add(handler);
+    }
+
+    public void registerGameChangeObject(GameSocketMessageHandler
+                                             .GameSocketGameChangeObject handler) {
+        handlersChangeObject.add(handler);
     }
 
 }

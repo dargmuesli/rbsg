@@ -26,7 +26,7 @@ public class SystemSocket extends AbstractWebSocket {
         registerWebSocketHandler((response) -> {
             String action = response.get("action").getAsString();
             JsonObject data = response.get("data").getAsJsonObject();
-            System.out.println(response);
+
             switch (action) {
                 case "userJoined":
                     for (SystemSocketMessageHandler.SystemSocketUserJoinHandler handler : handlersUserJoin) {
