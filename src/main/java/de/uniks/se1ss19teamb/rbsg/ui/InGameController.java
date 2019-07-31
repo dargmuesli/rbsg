@@ -149,7 +149,7 @@ public class InGameController {
 
         // changing width and height to heigher values makes the canvas of the minimap too big
         // if you want to change the size of minimap please use the size parameter (or rework calculation)
-        miniMap = TextureManager.computeMinimap(environmentTiles, -1);
+        miniMap = TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId);
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
 
@@ -486,4 +486,5 @@ public class InGameController {
         }
         return neighbor;
     }
+
 }
