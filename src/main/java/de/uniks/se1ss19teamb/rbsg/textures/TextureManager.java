@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +9,6 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import javafx.geometry.Dimension2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
