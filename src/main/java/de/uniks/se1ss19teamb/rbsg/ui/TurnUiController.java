@@ -42,9 +42,7 @@ public class TurnUiController {
     private void updatePlayers() {
         InGameController.inGameObjects.entrySet().stream()
             .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
-            .forEachOrdered(inGameObjectEntry -> {
-                inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue()));
-            });
+            .forEachOrdered(inGameObjectEntry -> inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue())));
         players();
     }
 
@@ -74,17 +72,15 @@ public class TurnUiController {
     }
 
     public void setTurn(String phase) {
-        Platform.runLater(() -> {
-            turnLabel.setText(phase);
-        });
+        Platform.runLater(() -> turnLabel.setText(phase));
     }
 
     public void showTurn() {
         Platform.runLater(() -> {
-            if (labelOne.getStyle() == "-fx-text-fill: Red") {
+            if (labelOne.getStyle().equals("-fx-text-fill: Red")) {
                 labelTwo.setStyle("-fx-text-fill: Red");
                 labelOne.setStyle("-fx-text-fill: #FFFF8d");
-            } else if (labelTwo.getStyle() == "-fx-text-fill: Red") {
+            } else if (labelTwo.getStyle().equals("-fx-text-fill: Red")) {
                 labelOne.setStyle("-fx-text-fill: Red");
                 labelTwo.setStyle("-fx-text-fill: #FFFF8d");
             }
