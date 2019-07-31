@@ -25,6 +25,9 @@ public class GameSelectionController {
     private HBox root;
 
     @FXML
+    private Label spaces;
+
+    @FXML
     private Label gameNameLabel;
 
     @FXML
@@ -45,6 +48,8 @@ public class GameSelectionController {
     void setUpGameLabel(GameMeta gameMeta) {
         this.gameMeta = gameMeta;
         gameNameLabel.setText(gameMeta.getName());
+        String s = String.valueOf(gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ");
+        spaces.setText(s);
     }
 
     public void joinGame() {

@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ public class SystemSocket extends AbstractWebSocket {
     private List<SystemSocketMessageHandler.SystemSocketGameCreateHandler> handlersGameCreate
         = new ArrayList<>();
     private List<SystemSocketMessageHandler.SystemSocketGameDeleteHandler> handlersGameDelete
+        = new ArrayList<>();
+    private List<SystemSocketMessageHandler.SystemSocketPlayerJoinedGame> handlersPlayerJoinedGame
         = new ArrayList<>();
 
     public SystemSocket() {
@@ -39,6 +42,7 @@ public class SystemSocket extends AbstractWebSocket {
                     for (SystemSocketMessageHandler.SystemSocketGameCreateHandler handler : handlersGameCreate) {
                         handler.handle(data.get("name").getAsString(),
                             data.get("id").getAsString(), data.get("neededPlayer").getAsInt());
+
                     }
                     break;
                 case "gameDeleted":
@@ -47,8 +51,14 @@ public class SystemSocket extends AbstractWebSocket {
                     }
                     break;
                 case "playerJoinedGame":
+                    for (SystemSocketMessageHandler.SystemSocketPlayerJoinedGame handler : handlersPlayerJoinedGame) {
+                        handler.handle(data.get("id").getAsString(), data.get("joinedPlayer").getAsInt());
+                    }
+                    break;
                 case "playerLeftGame":
-                    // TODO
+                    for (SystemSocketMessageHandler.SystemSocketPlayerJoinedGame handler : handlersPlayerJoinedGame) {
+                        handler.handle(data.get("id").getAsString(), data.get("joinedPlayer").getAsInt());
+                    }
                     break;
                 default:
                     throw new IllegalArgumentException("Illegal action " + action
@@ -82,6 +92,11 @@ public class SystemSocket extends AbstractWebSocket {
     public void registerGameDeleteHandler(SystemSocketMessageHandler
                                               .SystemSocketGameDeleteHandler handler) {
         handlersGameDelete.add(handler);
+    }
+
+    public void registerPlayerJoinedGameHandler(SystemSocketMessageHandler.SystemSocketPlayerJoinedGame handler) {
+
+        handlersPlayerJoinedGame.add(handler);
     }
 
 }
