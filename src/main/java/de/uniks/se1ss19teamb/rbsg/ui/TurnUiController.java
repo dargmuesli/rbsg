@@ -1,11 +1,14 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+
+import java.util.ArrayList;
 
 public class TurnUiController {
     @FXML
@@ -20,6 +23,7 @@ public class TurnUiController {
     private JFXButton phaseBtn;
     @FXML
     private Label turnLabel;
+    private ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
 
     public static TurnUiController instance;
 
@@ -28,11 +32,22 @@ public class TurnUiController {
     }
 
     public void initialize() {
+        updatePlayers();
         labelOne.setStyle("-fx-text-fill: Red");
         instance = this;
         setTurn("movePhase");
         players();
         phaseBtn.setTranslateY(-4);
+    }
+
+    private void updatePlayers() {
+        Platform.runLater(() -> {
+            InGameController.inGameObjects.entrySet().stream()
+                .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
+                .forEachOrdered(inGameObjectEntry -> {
+                    inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue()));
+                });
+        });
     }
 
     @FXML
@@ -43,7 +58,12 @@ public class TurnUiController {
     }
 
     private void players() {
-        //implementation of playernames needed.
+        if (inGamePlayerList.size() == 2) {
+            labelOne.setVisible(true);
+            labelTwo.setVisible(true);
+            labelOne.setText(inGamePlayerList.get(0).getName());
+            labelTwo.setText(inGamePlayerList.get(1).getName());
+        }
     }
 
     public void setTurn(String phase) {
