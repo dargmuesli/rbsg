@@ -58,6 +58,9 @@ public class WebSocketTestsMocked {
 
         system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
 
+        system.registerPlayerJoinedGameHandler((id, joinedPlayer)
+            -> msg.add("playerJoinedGame|" + id + "|" + joinedPlayer));
+
         setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"TeamBTestUser2\"}}", system);
         system.sendToWebsocket(null);
 
@@ -68,7 +71,16 @@ public class WebSocketTestsMocked {
             + "id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
         system.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}", system);
+        setupSocket("{\"action\":\"playerJoinedGame\","
+            + "\"data\":{\"id\":\"123456789012345678901234\", \"joinedPlayer\":2}}", system);
+        system.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"playerLeftGame\",\"data\":{\"id\":\"123456789012345678901234\", "
+            + "\"joinedPlayer\":0}}", system);
+        system.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}",
+            system);
         system.sendToWebsocket(null);
 
         system.disconnect();
@@ -79,6 +91,8 @@ public class WebSocketTestsMocked {
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + "123456789012345678901234" + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + "123456789012345678901234"));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + "123456789012345678901234" + "|2"));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + "123456789012345678901234" + "|0"));
 
     }
 
