@@ -21,7 +21,7 @@ public class WinScreenController {
     @FXML
     private JFXButton backBtn;
 
-    ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
+    private ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
 
     public static WinScreenController instance;
 
@@ -38,9 +38,7 @@ public class WinScreenController {
         // fills inGamePlayerList with InGamePlayers
         InGameController.inGameObjects.entrySet().stream()
             .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
-            .forEachOrdered(inGameObjectEntry -> {
-                inGamePlayerList.add((InGamePlayer)inGameObjectEntry.getValue());
-            });
+            .forEachOrdered(inGameObjectEntry -> inGamePlayerList.add((InGamePlayer)inGameObjectEntry.getValue()));
     }
 
     private void calculateWinner(String winner) {
