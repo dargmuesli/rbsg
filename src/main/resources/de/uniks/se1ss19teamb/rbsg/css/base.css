@@ -1,6 +1,6 @@
-
-
-
+JFXTextField {
+    -fx-font-size: 15px;
+}
 
 ListView {
     -fx-background-insets: 0px;
@@ -19,6 +19,10 @@ ScrollPane {
 
 .text-field {
     -fx-font-size: 12pt;
+}
+
+.text-title {
+    -fx-font-size: 15px;
 }
 
 .jfx-tab-pane .headers-region {

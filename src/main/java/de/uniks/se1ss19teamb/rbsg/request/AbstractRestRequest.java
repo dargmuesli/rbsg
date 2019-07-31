@@ -60,7 +60,7 @@ public abstract class AbstractRestRequest implements RestRequest {
             NotificationHandler.getInstance().sendError("Fehler bei einer Webanfrage!", logger, e);
         } finally {
             JsonParser parser = new JsonParser();
-            response = (JsonObject) parser.parse(result == null ? "" : result.body);
+            response = (JsonObject) parser.parse(result == null ? "{}" : result.body);
 
             //TODO Handle result status codes
         }

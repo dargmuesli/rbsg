@@ -18,7 +18,7 @@ import org.junit.Test;
 public class WebSocketTestsMocked {
 
     private WebSocketClient client;
-    private GameSocket gameSocket = new GameSocket("TeamBTestUser", "12345", "54321", "12543", false);
+    private GameSocket gameSocket = new GameSocket("54321", "12543", false);
 
     @Before
     public void prepareClient() {
@@ -45,7 +45,7 @@ public class WebSocketTestsMocked {
 
     @Test
     public void systemSocketTest() throws ParseException {
-        SystemSocket system = new SystemSocket("111111111111111111111111111111111111");
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 
@@ -58,6 +58,9 @@ public class WebSocketTestsMocked {
 
         system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
 
+        system.registerPlayerJoinedGameHandler((id, joinedPlayer)
+            -> msg.add("playerJoinedGame|" + id + "|" + joinedPlayer));
+
         setupSocket("{\"action\":\"userJoined\",\"data\":{\"name\":\"TeamBTestUser2\"}}", system);
         system.sendToWebsocket(null);
 
@@ -68,7 +71,16 @@ public class WebSocketTestsMocked {
             + "id\":\"123456789012345678901234\",\"neededPlayer\":2}}", system);
         system.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}", system);
+        setupSocket("{\"action\":\"playerJoinedGame\","
+            + "\"data\":{\"id\":\"123456789012345678901234\", \"joinedPlayer\":2}}", system);
+        system.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"playerLeftGame\",\"data\":{\"id\":\"123456789012345678901234\", "
+            + "\"joinedPlayer\":0}}", system);
+        system.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameDeleted\",\"data\":{\"id\":\"123456789012345678901234\"}}",
+            system);
         system.sendToWebsocket(null);
 
         system.disconnect();
@@ -79,6 +91,8 @@ public class WebSocketTestsMocked {
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + "123456789012345678901234" + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + "123456789012345678901234"));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + "123456789012345678901234" + "|2"));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + "123456789012345678901234" + "|0"));
 
     }
 
@@ -88,6 +102,8 @@ public class WebSocketTestsMocked {
         List<String> gameMsg = new ArrayList<>();
 
         gameSocket.registerGameRemoveObject((type -> gameMsg.add("removed|" + type)));
+
+        gameSocket.registerGameChangeObject((type -> gameMsg.add("changed|" + type)));
 
         setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
             + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
@@ -101,9 +117,35 @@ public class WebSocketTestsMocked {
             + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"fieldName\":\"hp\",\""
+            + "newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"fieldName\":\"position\",\""
+            + "newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Player@29f70a3b\",\"fieldName\":\"isReady\",\""
+            + "newValue\":\"true\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\", "
+            +
+            "\"fieldName\":\"phase\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\","
+            + "\"fieldName\":\"position\",\"newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+
         Assert.assertTrue(gameMsg.contains("removed|Player"));
         Assert.assertTrue(gameMsg.contains("removed|Unit"));
         Assert.assertTrue(gameMsg.contains("removed|Unit"));
+        Assert.assertTrue(gameMsg.contains("changed|Unit"));
+        Assert.assertTrue(gameMsg.contains("changed|Unit"));
+        Assert.assertTrue(gameMsg.contains("changed|Player"));
+        Assert.assertTrue(gameMsg.contains("changed|Game"));
 
     }
 
@@ -114,7 +156,7 @@ public class WebSocketTestsMocked {
 
         List<String> msg = new ArrayList<>();
 
-        chat.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         setupSocket("{\"channel\":\"all\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World!\"}", chat);
         chat.sendMessage("Hello World!");
@@ -132,7 +174,7 @@ public class WebSocketTestsMocked {
 
         List<String> gameMsg = new ArrayList<>();
 
-        gameSocket.registerGameMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
+        gameSocket.registerMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
             + isPrivate));
 
         setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"all\",\"message\":\"Hello World!\",\""

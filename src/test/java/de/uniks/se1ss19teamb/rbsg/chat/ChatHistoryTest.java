@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
 import de.uniks.se1ss19teamb.rbsg.sockets.*;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
 
 import java.io.*;
@@ -22,8 +23,7 @@ public class ChatHistoryTest {
     @Before
     public void prepareClient() {
         chatSocket = mock(ChatSocket.class);
-
-        when(chatSocket.getUserName()).thenReturn("me");
+        LoginController.setUserName("me");
     }
 
     private void setupSocket(Chat chat, String msg, String from) {
@@ -40,15 +40,16 @@ public class ChatHistoryTest {
 
         chat.deleteHistory();
 
-        ChatHistoryEntry chatHistoryEntry1 = new ChatHistoryEntry("message1", chatSocket.getUserName());
+        ChatHistoryEntry chatHistoryEntry1 = new ChatHistoryEntry("message1", LoginController.getUserName());
         setupSocket(chat, chatHistoryEntry1.message, chatHistoryEntry1.sender);
         chat.sendMessage(chatHistoryEntry1.message);
 
-        ChatHistoryEntry chatHistoryEntry2 = new ChatHistoryEntry("message2", chatSocket.getUserName(), "receiver2");
+        ChatHistoryEntry chatHistoryEntry2
+            = new ChatHistoryEntry("message2", LoginController.getUserName(), "receiver2");
         setupSocket(chat, chatHistoryEntry2.message, chatHistoryEntry2.sender);
         chat.sendMessage(chatHistoryEntry2.message, chatHistoryEntry2.receiver);
 
-        ChatHistoryEntry chatHistoryEntry3 = new ChatHistoryEntry("message3", chatSocket.getUserName());
+        ChatHistoryEntry chatHistoryEntry3 = new ChatHistoryEntry("message3", LoginController.getUserName());
         setupSocket(chat, chatHistoryEntry3.message, chatHistoryEntry3.sender);
         chat.sendMessage(chatHistoryEntry3.message);
 

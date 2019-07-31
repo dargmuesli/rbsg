@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
@@ -8,12 +9,10 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 
-public class ChatSocket extends AbstractWebSocket {
+public class ChatSocket extends AbstractMessageWebSocket {
 
     public static ChatSocket instance;
 
-    private String userKey;
-    private String userName;
     private boolean ignoreOwn;
     private List<ChatMessageHandler> handlersChat = new ArrayList<>();
 
@@ -22,8 +21,6 @@ public class ChatSocket extends AbstractWebSocket {
     }
 
     private ChatSocket(String userName, String userKey, boolean ignoreOwn) {
-        this.userKey = userKey;
-        this.userName = userName;
         this.ignoreOwn = ignoreOwn;
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
@@ -47,24 +44,15 @@ public class ChatSocket extends AbstractWebSocket {
 
     @Override
     protected String getEndpoint() {
-        return "/chat?user=" + userName;
+        return "/chat?user=" + LoginController.getUserName();
     }
 
     @Override
-    public String getUserKey() {
-        return userKey;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    //Custom Helpers
-
-    public void registerChatMessageHandler(ChatMessageHandler handler) {
+    public void registerMessageHandler(ChatMessageHandler handler) {
         handlersChat.add(handler);
     }
 
+    @Override
     public void sendMessage(String message) {
         JsonObject json = new JsonObject();
         json.addProperty("channel", "all");
@@ -72,6 +60,7 @@ public class ChatSocket extends AbstractWebSocket {
         sendToWebsocket(json);
     }
 
+    @Override
     public void sendPrivateMessage(String message, String target) {
         JsonObject json = new JsonObject();
         json.addProperty("channel", "private");

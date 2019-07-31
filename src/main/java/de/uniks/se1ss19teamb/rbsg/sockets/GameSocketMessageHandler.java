@@ -6,4 +6,7 @@ public interface GameSocketMessageHandler {
         void handle(String type);
     }
 
+    interface GameSocketGameChangeObject {
+        void handle(String type);
+    }
 }
