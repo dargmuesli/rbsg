@@ -48,7 +48,7 @@ public class GameSelectionController {
     void setUpGameLabel(GameMeta gameMeta) {
         this.gameMeta = gameMeta;
         gameNameLabel.setText(gameMeta.getName());
-        String s = String.valueOf(gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers());
+        String s = String.valueOf(gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ");
         spaces.setText(s);
     }
 
