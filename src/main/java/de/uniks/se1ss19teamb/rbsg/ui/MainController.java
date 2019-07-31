@@ -142,6 +142,13 @@ public class MainController {
                 });
             });
 
+        SystemSocket.instance.registerPlayerJoinedGameHandler(
+            (id, joinedPlayer) -> {
+                MainController.getExistingGames().get(id).setJoinedPlayers((long) joinedPlayer);
+                Platform.runLater(this::updateGameView);
+            }
+        );
+
         if (SystemSocket.instance.websocket == null || SystemSocket.instance.websocket.mySession == null) {
             SystemSocket.instance.connect();
         }
