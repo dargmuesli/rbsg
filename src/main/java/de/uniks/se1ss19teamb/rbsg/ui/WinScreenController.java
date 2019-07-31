@@ -44,7 +44,7 @@ public class WinScreenController {
 
     private void calculateWinner(String winner) {
         for (InGamePlayer player: inGamePlayerList) {
-            if (player.getId() == winner) {
+            if (player.getId().equals(winner)) {
                 winnerLabel.setText(player.getName());
             } else {
                 return;
@@ -52,7 +52,7 @@ public class WinScreenController {
         }
     }
 
-    public void checkWinner(String winner) {
+    public void setWinningScreen(String winner) {
         Platform.runLater(() -> {
             InGameController.instance.winScreenPane.setVisible(true);
             trophyPic.setVisible(true);

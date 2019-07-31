@@ -243,7 +243,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
 
                             if (data.get("fieldName").getAsString().equals("winner")) {
-                                WinScreenController.instance.checkWinner(data.get("newValue").getAsString());
+                                WinScreenController.instance.setWinningScreen(data.get("newValue").getAsString());
                             }
                             break;
                         case "Unit":

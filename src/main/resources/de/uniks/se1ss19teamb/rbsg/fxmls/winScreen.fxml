@@ -12,6 +12,6 @@
            <Image url="/de/uniks/se1ss19teamb/rbsg/winScreen/kisspng-trophy-medal-clip-art-golden-cup-5ab5a5777b2d43.png" />
        </image>
    </ImageView>
-    <Label fx:id="winnerLabel" layoutX="383.0" layoutY="489.0" text="Winner" visible="false" />
+    <Label fx:id="winnerLabel" layoutX="383.0" layoutY="489.0" text="Winner" visible="false" style="-fx-text-fill: black"/>
    <JFXButton fx:id="backBtn" layoutX="341.0" layoutY="519.0" mnemonicParsing="false" onAction="#setOnAction" text="Return to Lobby" />
 </AnchorPane>
