@@ -14,7 +14,7 @@ public class WebSocketTestsReal {
     public void systemSocketTest() throws ParseException, InterruptedException {
         RestRequestTestsReal.loginUser();
 
-        SystemSocket system = new SystemSocket(RestRequestTestsReal.userToken);
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 
@@ -26,6 +26,9 @@ public class WebSocketTestsReal {
             -> msg.add("gameCreate|" + name + '|' + id + '|' + neededPlayers));
 
         system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
+
+        system.registerPlayerJoinedGameHandler((id, joinedPlayer)
+            -> msg.add("playerJoinedGame|" + id + "|" + joinedPlayer));
 
         system.connect();
 
@@ -51,6 +54,7 @@ public class WebSocketTestsReal {
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + RestRequestTestsReal.gameId + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + RestRequestTestsReal.gameId));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|2"));
     }
 
     @Test
@@ -67,7 +71,7 @@ public class WebSocketTestsReal {
 
         List<String> msg = new ArrayList<>();
 
-        chat2.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat2.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         chat.connect();
         chat2.connect();
