@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXScrollPane?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.221"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
     <stylesheets>
@@ -23,25 +30,25 @@
         <VBox layoutY="5.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <HBox alignment="TOP_RIGHT" spacing="5.0">
-                <padding>
-                    <Insets top="5.0"/>
-                </padding>
-                <JFXButton fx:id="btnBack" onAction="#goBack" visible="false">
+                <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" onAction="#goBack">
                     <graphic>
                         <FontAwesomeIconView glyphName="REPLY" size="15"/>
                     </graphic>
                 </JFXButton>
-                <JFXButton fx:id="btnLogout" onAction="#logout" visible="false">
+                <Pane HBox.hgrow="ALWAYS"/>
+                <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
                     <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="15"/>
                     </graphic>
                 </JFXButton>
-                <JFXButton fx:id="btnFullscreen" onAction="#toggleFullscreen" visible="false">
+                <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#toggleFullscreen">
                     <graphic>
                         <FontAwesomeIconView glyphName="EXPAND" size="15"/>
                     </graphic>
                 </JFXButton>
-                <JFXHamburger fx:id="hamburgerMenu" alignment="TOP_RIGHT" prefHeight="0.0" prefWidth="47.0"/>
+                <padding>
+                    <Insets bottom="25.0" left="25.0" right="25.0" top="10.0"/>
+                </padding>
             </HBox>
             <HBox alignment="CENTER">
                 <Label fx:id="gameName" text="&lt;NAME&gt;" textAlignment="CENTER">
