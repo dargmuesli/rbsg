@@ -39,7 +39,7 @@ public class CryptoTest {
             }
 
             encryptedMessage = encryptReturn(recoveredSecret.toString());
-            Assert.assertEquals(encryptedMessage, msg, "gå til helvete!!!");
+            Assert.assertEquals(encryptedMessage, msg, "g\u00E5 til helvete!!!");
             Assert.assertNotEquals(encryptedMessage, msg);
 
             fr.close();
