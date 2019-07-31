@@ -36,18 +36,16 @@ public class TurnUiController {
         labelOne.setStyle("-fx-text-fill: Red");
         instance = this;
         setTurn("movePhase");
-        players();
         phaseBtn.setTranslateY(-4);
     }
 
     private void updatePlayers() {
-        Platform.runLater(() -> {
             InGameController.inGameObjects.entrySet().stream()
                 .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
                 .forEachOrdered(inGameObjectEntry -> {
                     inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue()));
                 });
-        });
+            players();
     }
 
     @FXML
