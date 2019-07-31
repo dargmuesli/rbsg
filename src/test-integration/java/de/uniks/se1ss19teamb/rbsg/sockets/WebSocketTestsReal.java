@@ -27,6 +27,9 @@ public class WebSocketTestsReal {
 
         system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
 
+        system.registerPlayerJoinedGameHandler((id, joinedPlayer)
+            -> msg.add("playerJoinedGame|" + id + "|" + joinedPlayer));
+
         system.connect();
 
         RestRequestTestsReal.loginUser("TeamBTestUser2");
@@ -51,6 +54,7 @@ public class WebSocketTestsReal {
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + RestRequestTestsReal.gameId + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + RestRequestTestsReal.gameId));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|2"));
     }
 
     @Test
