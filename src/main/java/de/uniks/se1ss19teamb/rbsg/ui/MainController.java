@@ -42,13 +42,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainController {
+    public static Chat chat;
     public static MainController instance;
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static Chat chat;
     private static HashMap<String, GameMeta> existingGames;
-    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static SingleSelectionModel<Tab> selectionModel;
     private static String sendTo = null;
 
@@ -165,7 +164,7 @@ public class MainController {
             }
         });
 
-        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+        MainController.chat = new Chat(ChatSocket.instance, Chat.chatLogPath);
 
         if (ChatSocket.instance.websocket == null || ChatSocket.instance.websocket.mySession == null) {
             ChatSocket.instance.connect();
@@ -226,11 +225,6 @@ public class MainController {
         if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         }
-    }
-
-    static void setGameChat(GameSocket gameSocket) {
-        MainController.chat = new Chat(gameSocket, chatLogPath);
-        gameSocket.connect();
     }
 
     public void setOnAction(ActionEvent event) {

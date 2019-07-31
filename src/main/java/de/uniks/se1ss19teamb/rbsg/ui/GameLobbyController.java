@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
@@ -58,9 +59,10 @@ public class GameLobbyController {
 
         GameLobbyController.instance = this;
 
+        MainController.chat = new Chat(GameSocket.instance, Chat.chatLogPath);
+
         GameSocket.instance = new GameSocket(
             GameSelectionController.joinedGame.getId());
-
         GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 MainController.instance.addNewPane(from, message, false, chatPane);
@@ -68,6 +70,7 @@ public class GameLobbyController {
                 MainController.instance.addElement(from, message, textArea, false);
             }
         });
+        GameSocket.instance.connect();
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
@@ -76,8 +79,6 @@ public class GameLobbyController {
             chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
             btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
-
-        MainController.setGameChat(GameSocket.instance);
 
         gameName.setText(GameSelectionController.joinedGame.getName());
     }
