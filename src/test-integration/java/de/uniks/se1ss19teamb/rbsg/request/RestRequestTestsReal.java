@@ -6,8 +6,6 @@ import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 
-import static org.mockito.Mockito.mock;
-
 import java.util.*;
 
 import org.apache.http.ParseException;
