@@ -79,7 +79,7 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate();
     }
     
-    public static Pane computeMinimap(
+    public static Canvas computeMinimap(
         Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {
         //TODO Render Unit positions.
 
@@ -91,7 +91,6 @@ public class TextureManager {
             size = 192 / squareSide;
         }
 
-        Pane result = new Pane();
         Canvas canvas = new Canvas(squareSide * size, squareSide * size);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
@@ -102,22 +101,15 @@ public class TextureManager {
 
             if (possibleUnit != null) {
                 //TODO set player color
-
                 gc.setFill(Color.RED);
-
             } else {
-
                 gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
-
             }
 
             gc.fillRect(pos.getKey() * size, pos.getValue() * size, size, size);
         }
 
-
-        
-        result.getChildren().add(canvas);
-        return result;
+        return canvas;
     }
     
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, EnvironmentTile> map, int x, int y) {
