@@ -59,8 +59,6 @@ public class GameLobbyController {
 
         GameLobbyController.instance = this;
 
-        MainController.chat = new Chat(GameSocket.instance, Chat.chatLogPath);
-
         GameSocket.instance = new GameSocket(
             GameSelectionController.joinedGame.getId());
         GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
@@ -71,6 +69,8 @@ public class GameLobbyController {
             }
         });
         GameSocket.instance.connect();
+
+        MainController.chat = new Chat(GameSocket.instance, Chat.chatLogPath);
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
