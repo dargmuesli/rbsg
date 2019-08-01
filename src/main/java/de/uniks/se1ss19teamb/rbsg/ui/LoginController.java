@@ -114,8 +114,10 @@ public class LoginController {
 
     @FXML
     private void goToRegistration() {
-        goToRegister();
         btnRegistration.setDisable(true);
+        saveUserData();
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
         ChuckNorrisJokeTicker.stopAnimation();
     }
 
@@ -151,12 +153,6 @@ public class LoginController {
     @FXML
     public void onEnter() {
         login();
-    }
-
-    private void goToRegister() {
-        saveUserData();
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
     }
 
     private void saveUserData() {

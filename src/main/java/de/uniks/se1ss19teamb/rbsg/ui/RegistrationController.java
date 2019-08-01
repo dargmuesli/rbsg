@@ -7,22 +7,15 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RegisterController {
+public class RegistrationController {
 
     private static final Logger logger = LogManager.getLogger();
     @FXML
@@ -47,7 +40,7 @@ public class RegisterController {
 
     public void initialize() {
         UserInterfaceUtils.initialize(
-            registerScreen, registerScreen1, RegisterController.class, btnFullscreen, errorContainer);
+            registerScreen, registerScreen1, RegistrationController.class, btnFullscreen, errorContainer);
 
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
