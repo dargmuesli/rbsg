@@ -239,7 +239,7 @@ public class MainController {
                     new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
             } else {
-                NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
+                NotificationHandler.getInstance().sendWarning("Please enter a game name.", logger);
             }
         } else if (event.getSource().equals(btnLogout)) {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
@@ -327,7 +327,7 @@ public class MainController {
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
                     NotificationHandler.getInstance()
-                        .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                        .sendError("A game field could not be loaded!", logger, e);
                 }
             });
         });
@@ -472,7 +472,7 @@ public class MainController {
                         MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
-                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                            .sendError("A tab could not be loaded!", logger, e);
                     }
                 }
             );
@@ -551,4 +551,3 @@ public class MainController {
         btnSend.fire();
     }
 }
-

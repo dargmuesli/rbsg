@@ -49,7 +49,7 @@ public class UserInterfaceUtils {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
+                    "Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -75,7 +75,7 @@ public class UserInterfaceUtils {
                 nodeToFade.getScene().setRoot(nextFxml);
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
+                    "Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -142,7 +142,7 @@ public class UserInterfaceUtils {
             });
         } catch (IOException e) {
             NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+                .sendError("Error loading the popup controller's fxml!", logger, e);
         }
     }
 
