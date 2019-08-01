@@ -111,12 +111,12 @@ public class RegisterController {
         if (username.getText().isEmpty()
             || password.getText().isEmpty()
             || passwordRepeat.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie etwas ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Please enter everything.", logger);
             return;
         }
 
         if (!password.getText().equals(passwordRepeat.getText())) {
-            NotificationHandler.getInstance().sendWarning("Die Passwörter sind verschieden!", logger);
+            NotificationHandler.getInstance().sendWarning("The password do not match!", logger);
             return;
         }
 
@@ -130,7 +130,7 @@ public class RegisterController {
 
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
-        NotificationHandler.getInstance().sendSuccess("Registrierung erfolgreich!", logger);
+        NotificationHandler.getInstance().sendSuccess("Registered successfully!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);

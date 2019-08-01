@@ -77,7 +77,7 @@ public class LoginController {
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
-      
+
         UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
@@ -133,7 +133,7 @@ public class LoginController {
 
     private void login() {
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
             return;
         }
 

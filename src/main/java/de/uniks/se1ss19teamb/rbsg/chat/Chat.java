@@ -102,7 +102,7 @@ public class Chat {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
                 NotificationHandler.getInstance()
-                    .sendError("Chat-Verzeichnis konnte nicht erstellt werden!", logger, e);
+                    .sendError("Chat directory could not be created!", logger, e);
             }
         }
 
@@ -113,7 +113,7 @@ public class Chat {
                 out.println(SerializeUtils.serialize(cle));
             }
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Schreiben im Chat-Verzeichnis!", logger, e);
+            NotificationHandler.getInstance().sendError("Writing to the chat directory failed!", logger, e);
         }
     }
 
