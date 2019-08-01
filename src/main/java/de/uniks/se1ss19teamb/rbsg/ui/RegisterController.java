@@ -7,18 +7,12 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,16 +44,16 @@ public class RegisterController {
             registerScreen, registerScreen1, RegisterController.class, btnFullscreen, errorContainer);
 
         // load user data
-        userData = UserData.loadUserData(NotificationHandler.getInstance());
+        userData = UserData.loadUserData();
 
         if (userData == null) {
             NotificationHandler.getInstance().sendWarning("User data couldn't be deserialized!", logger);
             return;
         }
 
-        username.setText(userData.getRegisterUsername());
-        password.setText(userData.getRegisterPassword());
-        passwordRepeat.setText(userData.getRegisterPasswordRepeat());
+        username.setText(userData.getRegistrationUsername());
+        password.setText(userData.getRegistrationPassword());
+        passwordRepeat.setText(userData.getRegistrationPasswordRepeat());
 
         Platform.runLater(() -> {
             if (username.getText().equals("")) {
@@ -73,7 +67,7 @@ public class RegisterController {
             }
         });
 
-        UserData.deleteUserData(NotificationHandler.getInstance());
+        UserData.deleteUserData();
 
         registerScreen.setOpacity(0);
     }
@@ -138,9 +132,9 @@ public class RegisterController {
 
     private void goToLogin() {
         // save user data for registration screen
-        userData.setRegisterUsername(username.getText());
-        userData.setRegisterPassword(password.getText());
-        userData.setRegisterPasswordRepeat(passwordRepeat.getText());
+        userData.setRegistrationUsername(username.getText());
+        userData.setRegistrationPassword(password.getText());
+        userData.setRegistrationPasswordRepeat(passwordRepeat.getText());
 
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 

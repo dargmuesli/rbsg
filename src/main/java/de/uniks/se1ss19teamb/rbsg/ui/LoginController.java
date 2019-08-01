@@ -76,12 +76,13 @@ public class LoginController {
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
+        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
 
         UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
-        userData = UserData.loadUserData(NotificationHandler.getInstance());
+        userData = UserData.loadUserData();
 
         if (userData == null) {
             userData = new UserData();
@@ -101,7 +102,7 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData(NotificationHandler.getInstance());
+        UserData.deleteUserData();
 
         loginScreen.setOpacity(0);
 
@@ -140,7 +141,7 @@ public class LoginController {
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
-            UserData.deleteUserData(NotificationHandler.getInstance());
+            UserData.deleteUserData();
         }
 
         RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))
