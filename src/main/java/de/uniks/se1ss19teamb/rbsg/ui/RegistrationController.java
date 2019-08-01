@@ -8,7 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RegisterController {
+public class RegistrationController {
 
     private static final Logger logger = LogManager.getLogger();
     @FXML
@@ -41,7 +40,7 @@ public class RegisterController {
 
     public void initialize() {
         UserInterfaceUtils.initialize(
-            registerScreen, registerScreen1, RegisterController.class, btnFullscreen, errorContainer);
+            registerScreen, registerScreen1, RegistrationController.class, btnFullscreen, errorContainer);
 
         // load user data
         userData = UserData.loadUserData();
@@ -73,16 +72,20 @@ public class RegisterController {
     }
 
     @FXML
-    void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnConfirm)) {
-            btnConfirm.setDisable(true);
-            register();
-        } else if (event.getSource().equals(btnCancel)) {
-            btnCancel.setDisable(true);
-            goToLogin();
-        } else if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        }
+    private void cancel() {
+        btnCancel.setDisable(true);
+        goToLogin();
+    }
+
+    @FXML
+    private void confirm() {
+        btnConfirm.setDisable(true);
+        register();
+    }
+
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
     }
 
     @FXML
