@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,20 +80,41 @@ public class TextureManager {
     }
     
     public static Pane computeMinimap(
-        Map<Pair<Integer, Integer>, EnvironmentTile> map, int width, int height, int size) {
+        Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {
         //TODO Render Unit positions.
-        
+
+        // since it's a square map
+        double squareSide = Math.sqrt(map.size());
+
+        if (size < 0) {
+            // 3 times big map side length
+            size = 192 / squareSide;
+        }
+
         Pane result = new Pane();
-        Canvas canvas = new Canvas((double) (width * size), (double) (height * size));
+        Canvas canvas = new Canvas(squareSide * size, squareSide * size);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : map.entrySet()) {
             Pair<Integer, Integer> pos = tile.getKey();
-            
-            gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
-            
+
+            UnitTile possibleUnit = unitTileMapByTileId.get(tile.getValue().getId());
+
+            if (possibleUnit != null) {
+                //TODO set player color
+
+                gc.setFill(Color.RED);
+
+            } else {
+
+                gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
+
+            }
+
             gc.fillRect(pos.getKey() * size, pos.getValue() * size, size, size);
         }
+
+
         
         result.getChildren().add(canvas);
         return result;

@@ -15,11 +15,10 @@ import org.apache.logging.log4j.Logger;
 @ClientEndpoint(configurator = CustomWebSocketConfigurator.class)
 public class WebSocketClient {
 
+    public Session mySession;
+
     private static final Logger logger = LogManager.getLogger();
-
     private static final String NOOP = "noop";
-
-    Session mySession;
 
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
@@ -89,13 +88,13 @@ public class WebSocketClient {
 
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
-        String info = "WS " + mySession.getRequestURI() + " closed.";
+        String message = "WS " + mySession.getRequestURI() + " closed.";
 
         if (!closeReason.getReasonPhrase().equals("")) {
-            info += " Reason: " + closeReason.getReasonPhrase();
-            NotificationHandler.getInstance().sendWarning(info, logger);
+            message += " Reason: " + closeReason.getReasonPhrase();
+            logger.warn(message);
         } else {
-            NotificationHandler.getInstance().sendInfo(info, logger);
+            logger.info(message);
         }
         this.mySession = null;
         this.noopTimer.cancel();

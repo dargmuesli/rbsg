@@ -4,7 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
+import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
+import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 
 import java.io.IOException;
@@ -26,6 +29,18 @@ import org.apache.logging.log4j.Logger;
 public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
 
+    public static void logout(Pane pane, JFXButton btnLogout) {
+        btnLogout.setDisable(true);
+
+        if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
+            return;
+        }
+
+        LoginController.setUserToken(null);
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", pane);
+    }
+
     public static void makeFadeOutTransition(String path, Node node) {
         FadeTransition fadeTransition = setTransition(node);
         fadeTransition.setOnFinished(event -> {
@@ -33,7 +48,7 @@ public class UserInterfaceUtils {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
+                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
             }
         });
         fadeTransition.play();
@@ -49,7 +64,7 @@ public class UserInterfaceUtils {
                 node.getScene().setRoot(pane);
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "Übergang in die nächste Szene konnte nicht ausgeführt werden!", logger, e);
+                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
             }
         });
         fadeTransition.play();

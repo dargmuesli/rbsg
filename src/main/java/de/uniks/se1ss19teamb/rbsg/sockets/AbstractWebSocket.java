@@ -13,23 +13,17 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractWebSocket implements WebSocket {
 
-    private static final Logger logger = LogManager.getLogger();
-
-    private static final String url = "wss://rbsg.uniks.de/ws";
+    public WebSocketClient websocket;
 
     List<WebSocketMessageHandler> handlers = new ArrayList<>();
-    WebSocketClient websocket;
+
+    private static final Logger logger = LogManager.getLogger();
+    private static final String url = "wss://rbsg.uniks.de/ws";
 
     protected abstract String getEndpoint();
 
-    protected abstract String getUserKey();
-
     @Override
     public void connect() {
-        if (getUserKey() != null) {
-            WebSocket.changeUserKey(getUserKey());
-        }
-
         if (websocket == null || websocket.mySession == null) {
             try {
                 websocket = new WebSocketClient(new URI(url + getEndpoint()), (response) -> {

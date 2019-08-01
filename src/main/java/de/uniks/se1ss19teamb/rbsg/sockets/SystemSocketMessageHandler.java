@@ -18,4 +18,8 @@ public interface SystemSocketMessageHandler {
     interface SystemSocketGameDeleteHandler {
         void handle(String gameId);
     }
+
+    interface SystemSocketPlayerJoinedGame {
+        void handle(String gameId, int joinedPlayer);
+    }
 }

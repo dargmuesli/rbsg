@@ -11,6 +11,12 @@
 
 ListView {
     -fx-control-inner-background: -fx-primary;
+    -fx-background-insets: 0px;
+    -fx-padding: 0px;
+}
+
+#inGamePlayerRED {
+    -fx-text-fill: red;
 }
 
 .background-color_transparent {
@@ -21,6 +27,9 @@ ListView {
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 12px;
 }
 
 .button:hover, .button:focused {
@@ -32,6 +41,11 @@ ListView {
 .check-box {
     -fx-text-fill: -fx-primarytext;
     -jfx-checked-color: -fx-secondary;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-secondary;
 }
 
 .glyph-icon {
@@ -48,6 +62,11 @@ ListView {
 
 .jfx-tab-pane .tab-header-background {
     -fx-background-color: #3f424b;
+}
+
+.jfx-toggle-button {
+    -jfx-toggle-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary;
 }
 
 .label {
@@ -130,4 +149,32 @@ ListView {
 .list-view .scroll-bar:horizontal .increment-button,
 .list-view .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
+}
+
+ScrollPane {
+    -fx-padding: 0px;
+}
+
+
+.text-field {
+    -fx-font-size: 12pt;
+}
+
+
+.jfx-tab-pane .tab .tab-label {
+    -fx-text-fill: black;
+
+}
+
+#tile-selected {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.tile-attack {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+}
+
+.tile-path {
+    -fx-background-color: rgba(0, 0, 255, 0.2);
 }

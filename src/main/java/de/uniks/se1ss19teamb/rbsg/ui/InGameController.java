@@ -7,8 +7,10 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -19,10 +21,13 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,6 +66,14 @@ public class InGameController {
     @FXML
     private JFXButton btnYes;
     @FXML
+    private JFXButton btnBigger;
+    @FXML
+    private JFXButton btnSmaller;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private ScrollPane mapScrollPane;
+    @FXML
     private JFXHamburger hamburgerMenu;
     @FXML
     private Pane miniMap;
@@ -72,16 +85,19 @@ public class InGameController {
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
+    private int zoomCounter = 0;
+
     private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
 
+    private static final double ZOOM_FACTOR = 0.07;
 
     public static InGameController getInstance() {
         return instance;
     }
 
-    public void moveUnit(String unitId, String newPos) {
+    public void changeUnitPos(String unitId, String newPos) {
         UnitTile currentUnit = null;
         for (UnitTile unit : unitTiles) {
             if (unitId.equals(unit.getId())) {
@@ -90,14 +106,24 @@ public class InGameController {
             }
         }
         assert (currentUnit != null);
+
         UnitTile finalCurrentUnit = currentUnit;
+        unitTileMapByTileId.remove(currentUnit.getPosition());
+
         Platform.runLater(() -> {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
             stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
                 .remove(texture);
-            stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
-            finalCurrentUnit.setPosition(newPos);
+            if (newPos != null) { // delete UnitTile if no given position
+                stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
+            }
         });
+        if (newPos != null) {
+            unitTileMapByTileId.put(newPos, currentUnit);
+            SoundManager.playSound(
+                finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
+            currentUnit.setPosition(newPos);
+        }
     }
 
     public void initialize() {
@@ -105,15 +131,18 @@ public class InGameController {
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
 
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnBack);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnLogout);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnFullscreen);
-        Theming.hamburgerMenuTransition(hamburgerMenu, btnMiniMap);
+        for (Node node : head.getChildren()) {
+            if (node.getClass().equals(JFXButton.class)) {
+                Theming.hamburgerMenuTransition(hamburgerMenu, (JFXButton) node);
+            }
+        }
 
 
         fillGameGrid();
 
-        miniMap = TextureManager.computeMinimap(environmentTiles, 100, 100, 5);
+        // changing width and height to heigher values makes the canvas of the minimap too big
+        // if you want to change the size of minimap please use the size parameter (or rework calculation)
+        miniMap = TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId);
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
 
@@ -133,21 +162,44 @@ public class InGameController {
         if (event.getSource().equals(btnFullscreen)) {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogout)) {
-            LogoutUserRequest logout = new LogoutUserRequest(LoginController.getUserKey());
-            logout.sendRequest();
-            if (logout.getSuccessful()) {
-                LoginController.setUserKey(null);
-                UserInterfaceUtils.makeFadeOutTransition(
-                    "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
+            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
+                return;
             }
+            btnLogout.setDisable(true);
+            LoginController.setUserToken(null);
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
         } else if (event.getSource().equals(btnMiniMap)) {
             if (miniMap.isVisible()) {
                 miniMap.setVisible(false);
             } else {
                 miniMap.setVisible(true);
             }
+        } else if (event.getSource().equals(btnBigger)) {
+            zoomCounter++;
+            zoom();
+        } else if (event.getSource().equals(btnSmaller)) {
+            zoomCounter--;
+            zoom();
         }
     }
+
+    private void zoom() {
+
+        Scale scale = new Scale(1 + zoomCounter * ZOOM_FACTOR, 1 + zoomCounter * ZOOM_FACTOR, 0, 0);
+
+        if (mapScrollPane.getHeight() < gameGrid.getHeight() * (scale.getY() + ZOOM_FACTOR)) {
+            Group zoomGroup = new Group();
+            zoomGroup.getChildren().add(gameGrid);
+            Group contentGroup = new Group();
+            zoomGroup.getTransforms().add(scale);
+            contentGroup.getChildren().add(zoomGroup);
+            mapScrollPane.setContent(contentGroup);
+        } else {
+            zoomCounter++;
+        }
+    }
+
 
     private void fillGameGrid() {
         int maxX = 0;
@@ -205,23 +257,41 @@ public class InGameController {
                                 break;
                             }
                         }
-
-                        LinkedList<String> path = new LinkedList<>();
-                        assert source != null;
-                        path.addFirst(source.getId());
-                        String next = previousTileMapById.get(source.getId());
                         assert previous != null;
-                        while (!next.equals(previous.getPosition())) {
-                            path.addFirst(next);
-                            next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
-                        }
+                        assert source != null;
 
-                        //server
-                        GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[0]));
+                        UnitTile toAttack = unitTileMapByTileId.get(source.getId());
+                        EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
+                        assert lastSelected != null;
+                        //is there a unit on the selected and is selected a neighbor?
+                        if (toAttack != null
+                            && ((lastSelected.getBottom() != null && lastSelected.getBottom().equals(source.getId()))
+                            || (lastSelected.getLeft() != null && lastSelected.getLeft().equals(source.getId()))
+                            || (lastSelected.getRight() != null && lastSelected.getRight().equals(source.getId()))
+                            || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
+                        ) {
+                            //yes: attack
+                            GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
+
+
+                        } else {
+                            //no: move
+                            LinkedList<String> path = new LinkedList<>();
+                            path.addFirst(source.getId());
+                            String next = previousTileMapById.get(source.getId());
+                            while (!next.equals(previous.getPosition())) {
+                                path.addFirst(next);
+                                next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
+                            }
+
+                            //server
+                            GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                        }
 
                         //reset
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
+
                     } else {
 
                         if (lastSelectedPane == null) {
@@ -365,7 +435,6 @@ public class InGameController {
         } else if (event.getSource().equals(btnYes)) {
             GameSocket.instance.leaveGame();
             GameSocket.instance.disconnect();
-            MainController.setInGameChat(false);
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
         } else if (event.getSource().equals(btnNo)) {
@@ -376,4 +445,39 @@ public class InGameController {
         }
 
     }
+
+    public void changeUnitHp(String unitId, String newHp) {
+        UnitTile unit = null;
+        for (UnitTile unitTile : unitTiles) {
+            if (unitTile.getId().equals(unitId)) {
+                unit = unitTile;
+                break;
+            }
+        }
+        assert unit != null;
+        unit.setHp(Integer.parseInt(newHp));
+
+        //for sounds find the attacking unit
+        UnitTile attacker = findAttackingUnit(unit);
+        if (attacker != null) {
+            SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+        }
+
+    }
+
+    public UnitTile findAttackingUnit(UnitTile unit) {
+        UnitTile neighbor = null;
+        EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());
+        for (UnitTile unitTile : unitTiles) {
+            if ((unitPos.getBottom() != null && unitPos.getBottom().equals(unitTile.getPosition()))
+                || (unitPos.getLeft() != null && unitPos.getLeft().equals(unitTile.getPosition()))
+                || (unitPos.getRight() != null && unitPos.getRight().equals(unitTile.getPosition()))
+                || (unitPos.getTop() != null && unitPos.getTop().equals(unitTile.getPosition()))) {
+                neighbor = unitTile;
+                break;
+            }
+        }
+        return neighbor;
+    }
+
 }

@@ -1,19 +1,29 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A model for armies.
  */
 public class Army {
-    private String id;
-    private String name;
-    private List<Unit> units;
+    private String id = "";
+    private String name = "";
+    private List<Unit> units = new ArrayList<>();
+
+    public Army() {
+    }
 
     public Army(String id, String name, List<Unit> units) {
         this.id = id;
         this.name = name;
         this.units = units;
+    }
+
+    public Army(Army army) {
+        this.id = army.getId();
+        this.name = army.getName();
+        this.units = new ArrayList<>(army.getUnits());
     }
 
     /**
@@ -68,5 +78,15 @@ public class Army {
      */
     public void setUnits(List<Unit> units) {
         this.units = units;
+    }
+
+    /**
+     * Standard {@code toString()} override.
+     *
+     * @return The army's name.
+     */
+    @Override
+    public String toString() {
+        return this.getName();
     }
 }

@@ -10,14 +10,12 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 public class GameSocketTestsMocked {
-    private final String userName = "myUserName";
-    private final String userKey = "myUserKey";
     private final String gameId = "myGameId";
     private final String armyId = "myArmyId";
     private final boolean spectator = false;
 
     private ArgumentCaptor<JsonObject> argumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
-    private GameSocket gameSocket = spy(new GameSocket(userName, userKey, gameId, armyId, spectator));
+    private GameSocket gameSocket = spy(new GameSocket(gameId, armyId, spectator));
 
     @Before
     public void prepareTests() {
@@ -28,7 +26,7 @@ public class GameSocketTestsMocked {
     public void getEndpointTest() {
         Assert.assertEquals("/game?gameId=myGameId&armyId=myArmyId&spectator=false", gameSocket.getEndpoint());
 
-        GameSocket gameSocketSpectator = spy(new GameSocket(userName, userKey, gameId, armyId, true));
+        GameSocket gameSocketSpectator = spy(new GameSocket(gameId, armyId, true));
 
         Assert.assertEquals("/game?gameId=myGameId&spectator=true", gameSocketSpectator.getEndpoint());
     }
@@ -79,15 +77,15 @@ public class GameSocketTestsMocked {
             argumentCaptor.getValue().toString());
     }
 
-    //    @Test
-    //    public void attackUnitTest() {
-    //        gameSocket.attackUnit("123456789", "987654321");
-    //        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
-    //        Assert.assertEquals(
-    //            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
-    //                + "\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}",
-    //            argumentCaptor.getValue().toString());
-    //    }
+    @Test
+    public void attackUnitTest() {
+        gameSocket.attackUnit("123456789", "987654321");
+        verify(gameSocket).sendToWebsocket(argumentCaptor.capture());
+        Assert.assertEquals(
+            "{\"messageType\":\"command\",\"action\":\"attackUnit\","
+                + "\"data\":{\"unitId\":\"123456789\",\"toAttackId\":\"987654321\"}}",
+            argumentCaptor.getValue().toString());
+    }
 
     @Test
     public void nextPhaseTest() {

@@ -8,16 +8,25 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 
 public class EasterEggKeyEventHandler {
 
-    public static void setTicTacToe(Scene scene, KeyCombination keyCombination) {
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-            if (keyCombination.match(e)) {
+    private static final KeyCodeCombination snake = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHIFT_ANY);
+    private static final KeyCodeCombination tictactoe = new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY);
+
+    public static void setEvents(Scene scene) {
+
+        scene.setOnKeyPressed(e -> {
+            if (snake.match(e)) {
+                Snake game = new Snake();
+                game.start(Snake.classStage);
+            }
+            if (tictactoe.match(e)) {
                 try {
                     Parent root1 = FXMLLoader
                         .load(TicTacToeController.class
@@ -29,15 +38,6 @@ public class EasterEggKeyEventHandler {
                 } catch (IOException b) {
                     b.printStackTrace();
                 }
-            }
-        });
-    }
-
-    public static void setSnake(Scene scene, KeyCombination keyCombination) {
-        scene.setOnKeyPressed(e -> {
-            if (keyCombination.match(e)) {
-                Snake snake = new Snake();
-                snake.start(Snake.classStage);
             }
         });
     }

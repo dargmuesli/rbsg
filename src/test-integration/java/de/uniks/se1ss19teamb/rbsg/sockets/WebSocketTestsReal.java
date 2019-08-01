@@ -1,13 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
-import de.uniks.se1ss19teamb.rbsg.request.CreateGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
-import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-
+import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,11 +12,9 @@ public class WebSocketTestsReal {
 
     @Test
     public void systemSocketTest() throws ParseException, InterruptedException {
-        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
-        login.sendRequest();
+        RestRequestTestsReal.loginUser();
 
-
-        SystemSocket system = new SystemSocket(login.getUserKey());
+        SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
 
@@ -33,19 +27,22 @@ public class WebSocketTestsReal {
 
         system.registerGameDeleteHandler((id) -> msg.add("gameDelete|" + id));
 
+        system.registerPlayerJoinedGameHandler((id, joinedPlayer)
+            -> msg.add("playerJoinedGame|" + id + "|" + joinedPlayer));
+
         system.connect();
 
-        LoginUserRequest login2 = new LoginUserRequest("TeamBTestUser2", "qwertz");
-        login2.sendRequest();
+        RestRequestTestsReal.loginUser("TeamBTestUser2");
 
-        CreateGameRequest createGame = new CreateGameRequest("TeamBTestUserGame", 2, login.getUserKey());
-        createGame.sendRequest();
+        RestRequestTestsReal.createGame();
 
-        DeleteGameRequest deleteGame = new DeleteGameRequest(createGame.getGameId(), login2.getUserKey());
-        deleteGame.sendRequest();
+        if (!RequestUtil.request(new DeleteGameRequest(RestRequestTestsReal.gameId, RestRequestTestsReal.userToken))) {
+            Assert.fail();
+        }
 
-        LogoutUserRequest logout = new LogoutUserRequest(login2.getUserKey());
-        logout.sendRequest();
+        if (!RequestUtil.request(new LogoutUserRequest(RestRequestTestsReal.userToken))) {
+            Assert.fail();
+        }
 
         Thread.sleep(2000); //Wait for Msg
 
@@ -55,26 +52,26 @@ public class WebSocketTestsReal {
 
         Assert.assertTrue(msg.contains("userJoin|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
-        Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + createGame.getGameId() + "|2"));
-        Assert.assertTrue(msg.contains("gameDelete|" + createGame.getGameId()));
-
+        Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + RestRequestTestsReal.gameId + "|2"));
+        Assert.assertTrue(msg.contains("gameDelete|" + RestRequestTestsReal.gameId));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|2"));
     }
 
     @Test
     public void chatSocketTest() throws ParseException, InterruptedException {
-        LoginUserRequest login = new LoginUserRequest("TeamBTestUser", "qwertz");
-        login.sendRequest();
+        RestRequestTestsReal.loginUser();
+        String userToken1 = RestRequestTestsReal.userToken;
 
-        ChatSocket chat = new ChatSocket("TeamBTestUser", login.getUserKey());
+        ChatSocket chat = new ChatSocket("TeamBTestUser", userToken1);
 
-        LoginUserRequest login2 = new LoginUserRequest("TeamBTestUser2", "qwertz");
-        login2.sendRequest();
+        RestRequestTestsReal.loginUser("TeamBTestUser2");
+        String userToken2 = RestRequestTestsReal.userToken;
 
-        ChatSocket chat2 = new ChatSocket("TeamBTestUser2", login2.getUserKey());
+        ChatSocket chat2 = new ChatSocket("TeamBTestUser2", userToken2);
 
         List<String> msg = new ArrayList<>();
 
-        chat2.registerChatMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat2.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         chat.connect();
         chat2.connect();
@@ -87,16 +84,17 @@ public class WebSocketTestsReal {
         chat.disconnect();
         chat2.disconnect();
 
-        LogoutUserRequest logout = new LogoutUserRequest(login.getUserKey());
-        logout.sendRequest();
+        if (!RequestUtil.request(new LogoutUserRequest(userToken1))) {
+            Assert.fail();
+        }
 
-        LogoutUserRequest logout2 = new LogoutUserRequest(login2.getUserKey());
-        logout2.sendRequest();
+        if (!RequestUtil.request(new LogoutUserRequest(userToken2))) {
+            Assert.fail();
+        }
 
         System.out.println(msg);
 
         Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser|false"));
         Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true"));
     }
-
 }

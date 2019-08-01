@@ -29,14 +29,14 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static String user;
-    private static String userKey;
+    private static String userName;
+    private static String userToken;
     private static UserData userData;
 
     @FXML
     private AnchorPane loginScreen;
     @FXML
-    private JFXTextField userName;
+    private JFXTextField txtUserName;
     @FXML
     private JFXPasswordField password;
     @FXML
@@ -54,20 +54,20 @@ public class LoginController {
     @FXML
     private Label jokeLabel;
 
-    static String getUser() {
-        return user;
+    public static String getUserName() {
+        return userName;
     }
 
-    private static void setUser(String name) {
-        user = name;
+    public static void setUserName(String userName) {
+        LoginController.userName = userName;
     }
 
-    public static String getUserKey() {
-        return userKey;
+    public static String getUserToken() {
+        return userToken;
     }
 
-    public static void setUserKey(String key) {
-        userKey = key;
+    public static void setUserToken(String key) {
+        userToken = key;
     }
 
     public void initialize() {
@@ -87,13 +87,13 @@ public class LoginController {
             userData = new UserData();
         }
 
-        userName.setText(userData.getLoginUsername());
+        txtUserName.setText(userData.getLoginUsername());
         password.setText(userData.getLoginPassword());
         rememberLogin.setSelected(userData.isLoginRemember());
 
         Platform.runLater(() -> {
-            if (userName.getText().equals("")) {
-                userName.requestFocus();
+            if (txtUserName.getText().equals("")) {
+                txtUserName.requestFocus();
             } else if (password.getText().equals("")) {
                 password.requestFocus();
             } else {
@@ -118,8 +118,10 @@ public class LoginController {
             UserInterfaceUtils.toggleFullscreen(btnFullscreen);
         } else if (event.getSource().equals(btnLogin)) {
             login();
+            btnLogin.setDisable(true);
         } else if (event.getSource().equals(btnRegistration)) {
             goToRegister();
+            btnRegistration.setDisable(true);
             ChuckNorrisJokeTicker.stopAnimation();
         }
     }
@@ -130,16 +132,8 @@ public class LoginController {
     }
 
     private void login() {
-        if (userName.getText().isEmpty() || password.getText().isEmpty()) {
+        if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
             NotificationHandler.getInstance().sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
-            return;
-        }
-
-        LoginUserRequest login = new LoginUserRequest(userName.getText(), password.getText());
-        login.sendRequest();
-
-        if (!login.getSuccessful()) {
-            NotificationHandler.getInstance().sendError("Login fehlgeschlagen!", logger);
             return;
         }
 
@@ -149,8 +143,10 @@ public class LoginController {
             UserData.deleteUserData(NotificationHandler.getInstance());
         }
 
-        setUserKey(login.getUserKey());
-        setUser(userName.getText());
+        RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))
+            .ifPresent(LoginController::setUserToken);
+
+        setUserName(txtUserName.getText());
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
@@ -163,7 +159,7 @@ public class LoginController {
     }
 
     private void saveUserData() {
-        userData.setLoginUsername(userName.getText());
+        userData.setLoginUsername(txtUserName.getText());
         userData.setLoginPassword(password.getText());
         userData.setLoginRemember(rememberLogin.isSelected());
 
