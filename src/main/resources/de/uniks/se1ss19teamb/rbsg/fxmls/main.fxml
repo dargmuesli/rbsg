@@ -18,9 +18,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainScreen1" stylesheets="@../css/whiteDesign.css"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" stylesheets="@../css/whiteDesign.css"
             xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.MainController">
-    <AnchorPane fx:id="mainScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
+    <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
         <VBox minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

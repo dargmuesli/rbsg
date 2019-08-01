@@ -45,6 +45,9 @@ public class MainController {
     public static Chat chat;
     public static MainController instance;
 
+    @FXML
+    public AnchorPane apnFade;
+
     private static final Logger logger = LogManager.getLogger();
 
     private static HashMap<String, GameMeta> existingGames;
@@ -54,9 +57,7 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private AnchorPane mainScreen1;
-    @FXML
-    private AnchorPane mainScreen;
+    private AnchorPane apnRoot;
     @FXML
     private JFXButton btnArmyManager;
     @FXML
@@ -105,7 +106,7 @@ public class MainController {
     }
 
     public void initialize() {
-        UserInterfaceUtils.initialize(mainScreen, mainScreen1, MainController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen, errorContainer);
 
         MainController.instance = this;
 
@@ -227,7 +228,7 @@ public class MainController {
     @FXML
     private void changeTheme() {
         SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
-        Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
+        Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
 
         // the game view contains sub-fxmls and thus needs to be updated separately
         updateGameView();
@@ -255,12 +256,12 @@ public class MainController {
         btnMinimize.setDisable(false);
         btnMinimize.fire();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManagerContainer.fxml", mainScreen, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManagerContainer.fxml", apnFade, chatWindow);
     }
 
     @FXML
     private void logout() {
-        UserInterfaceUtils.logout(mainScreen, btnLogout);
+        UserInterfaceUtils.logout(apnFade, btnLogout);
     }
 
     @FXML

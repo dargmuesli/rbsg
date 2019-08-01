@@ -23,14 +23,14 @@ public class GameLobbyController {
     public static GameLobbyController instance;
 
     @FXML
+    public AnchorPane apnFade;
+    @FXML
     public VBox vbxMinimap;
 
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    public AnchorPane gameLobby;
-    @FXML
-    private AnchorPane gameLobby1;
+    private AnchorPane apnRoot;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -55,7 +55,7 @@ public class GameLobbyController {
     @FXML
     private void initialize() {
         UserInterfaceUtils.initialize(
-            gameLobby, gameLobby1, GameLobbyController.class, btnFullscreen, errorContainer);
+            apnFade, apnRoot, GameLobbyController.class, btnFullscreen, errorContainer);
 
         GameLobbyController.instance = this;
 
@@ -110,12 +110,12 @@ public class GameLobbyController {
         btnBack.setDisable(true);
         GameLobbyController.quit();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
     }
 
     @FXML
     private void logout() {
-        UserInterfaceUtils.logout(gameLobby, btnLogout);
+        UserInterfaceUtils.logout(apnFade, btnLogout);
         GameLobbyController.quit();
     }
 
@@ -150,12 +150,12 @@ public class GameLobbyController {
     }
 
     public void startGameTransition() {
-        VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
+        VBox chatWindow = (VBox) apnFade.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         btnMinimize.setDisable(false);
      
-        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
-                gameLobby.getScene().lookup("#chatWindow"));
+        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", apnFade,
+                apnFade.getScene().lookup("#chatWindow"));
         btnMinimize.fire();
     }
 

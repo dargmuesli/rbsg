@@ -21,7 +21,7 @@ public class RegistrationController {
     @FXML
     AnchorPane errorContainer;
     @FXML
-    private AnchorPane registerScreen;
+    private AnchorPane apnFade;
     @FXML
     private JFXButton btnCancel;
     @FXML
@@ -35,12 +35,12 @@ public class RegistrationController {
     @FXML
     private JFXPasswordField passwordRepeat;
     @FXML
-    private AnchorPane registerScreen1;
+    private AnchorPane apnRoot;
     private UserData userData;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
-            registerScreen, registerScreen1, RegistrationController.class, btnFullscreen, errorContainer);
+            apnFade, apnRoot, RegistrationController.class, btnFullscreen, errorContainer);
 
         // load user data
         userData = UserData.loadUserData();
@@ -68,7 +68,7 @@ public class RegistrationController {
 
         UserData.deleteUserData();
 
-        registerScreen.setOpacity(0);
+        apnFade.setOpacity(0);
     }
 
     @FXML
@@ -130,7 +130,7 @@ public class RegistrationController {
         NotificationHandler.getInstance().sendSuccess("Registered successfully!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
     }
 
     private void goToLogin() {
@@ -142,6 +142,6 @@ public class RegistrationController {
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
     }
 }

@@ -18,7 +18,7 @@ public class TicTacToeController {
     private static boolean playable = true;
     private ArrayList<JFXButton> buttons = new ArrayList<>();
     @FXML
-    private AnchorPane tictactoeScreen;
+    private AnchorPane apnRoot;
     @FXML
     private JFXButton one;
     @FXML
@@ -53,7 +53,7 @@ public class TicTacToeController {
         buttons.add(7, eight);
         buttons.add(8, nine);
 
-        Theming.setTheme(Arrays.asList(new Pane[]{tictactoeScreen}));
+        Theming.setTheme(Arrays.asList(new Pane[]{apnRoot}));
 
         for (JFXButton button : buttons) {
             button.setStyle("-fx-font-size: 72.0;" + "-fx-border-radius: 0.0;" + "-fx-background-radius: 0.0;");

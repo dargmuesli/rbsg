@@ -16,9 +16,9 @@ public class ArmyManagerContainerController {
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
-    private AnchorPane mainPane;
+    private AnchorPane apnFade;
     @FXML
-    private AnchorPane mainPane1;
+    private AnchorPane apnRoot;
     @FXML
     private AnchorPane errorContainer;
     @FXML
@@ -30,7 +30,7 @@ public class ArmyManagerContainerController {
 
     @FXML
     private void initialize() {
-        UserInterfaceUtils.initialize(mainPane, mainPane1, this.getClass(), btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, this.getClass(), btnFullscreen, errorContainer);
     }
 
     @FXML
@@ -43,7 +43,7 @@ public class ArmyManagerContainerController {
             || ArmyManagerController.getInstance().discardConfirmation) {
 
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", mainPane);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
             NotificationHandler.getInstance().sendWarning(Strings.DISCARD_CONFIRMATION, logger);
             ArmyManagerController.getInstance().discardConfirmation = true;
@@ -63,7 +63,7 @@ public class ArmyManagerContainerController {
             btnLogout.setDisable(true);
             LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainPane);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
         } else {
             NotificationHandler.getInstance().sendWarning(Strings.DISCARD_CONFIRMATION, logger);
             ArmyManagerController.getInstance().discardConfirmation = true;
