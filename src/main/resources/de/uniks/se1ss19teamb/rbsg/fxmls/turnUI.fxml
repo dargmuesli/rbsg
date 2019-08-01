@@ -10,21 +10,21 @@
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
     <HBox AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" spacing="40">
         <VBox fx:id="vBoxOne" visible="false">
-            <Label fx:id="labelOne" text="Team1"></Label>
-            <Line fx:id="linePlayerOne"></Line>
+            <Label fx:id="labelOne" text="Team1"/>
+            <Line fx:id="linePlayerOne"/>
         </VBox>
         <VBox fx:id="vBoxTwo" visible="false">
-            <Label fx:id="labelTwo" text="Team2"></Label>
-            <Line fx:id="linePlayerTwo"></Line>
+            <Label fx:id="labelTwo" text="Team2"/>
+            <Line fx:id="linePlayerTwo"/>
         </VBox>
         <VBox fx:id="vBoxThree" visible="false">
-            <Label fx:id="labelThree" text="Team3"></Label>
-            <Line fx:id="linePlayerThree"></Line>
+            <Label fx:id="labelThree" text="Team3"/>
+            <Line fx:id="linePlayerThree"/>
         </VBox>
         <VBox fx:id="vBoxFour" visible="false">
-            <Label fx:id="labelFour" text="Team4"></Label>
-            <Line fx:id="linePlayerFour"></Line>
+            <Label fx:id="labelFour" text="Team4"/>
+            <Line fx:id="linePlayerFour"/>
         </VBox>
-        <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#setOnAction"></JFXButton>
+        <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#nextPhase"/>
     </HBox>
 </AnchorPane>

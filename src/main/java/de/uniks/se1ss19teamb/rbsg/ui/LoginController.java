@@ -77,7 +77,7 @@ public class LoginController {
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
-      
+
         UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
@@ -113,25 +113,16 @@ public class LoginController {
     }
 
     @FXML
-    void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(btnLogin)) {
-            login();
-            btnLogin.setDisable(true);
-        } else if (event.getSource().equals(btnRegistration)) {
-            goToRegister();
-            btnRegistration.setDisable(true);
-            ChuckNorrisJokeTicker.stopAnimation();
-        }
+    private void goToRegistration() {
+        goToRegister();
+        btnRegistration.setDisable(true);
+        ChuckNorrisJokeTicker.stopAnimation();
     }
 
     @FXML
-    public void onEnter() {
-        login();
-    }
-
     private void login() {
+        btnLogin.setDisable(true);
+
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
             NotificationHandler.getInstance().sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
             return;
@@ -150,6 +141,16 @@ public class LoginController {
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
+    }
+
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+    }
+
+    @FXML
+    public void onEnter() {
+        login();
     }
 
     private void goToRegister() {

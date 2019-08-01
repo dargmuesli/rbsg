@@ -79,16 +79,20 @@ public class RegisterController {
     }
 
     @FXML
-    void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnConfirm)) {
-            btnConfirm.setDisable(true);
-            register();
-        } else if (event.getSource().equals(btnCancel)) {
-            btnCancel.setDisable(true);
-            goToLogin();
-        } else if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        }
+    private void cancel() {
+        btnCancel.setDisable(true);
+        goToLogin();
+    }
+
+    @FXML
+    private void confirm() {
+        btnConfirm.setDisable(true);
+        register();
+    }
+
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
     }
 
     @FXML

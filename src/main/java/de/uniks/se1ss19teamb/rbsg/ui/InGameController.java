@@ -36,13 +36,14 @@ import org.apache.logging.log4j.Logger;
 
 public class InGameController {
 
+    private static final double ZOOM_FACTOR = 0.07;
     public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
-
+    private final Pane selectionOverlay = new Pane();
     @FXML
     private AnchorPane errorContainer;
     @FXML
@@ -81,14 +82,11 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private AnchorPane turnUI;
-
-    private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private int zoomCounter = 0;
-
     private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
@@ -97,8 +95,6 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
-
-    private static final double ZOOM_FACTOR = 0.07;
 
     public static InGameController getInstance() {
         return instance;
@@ -133,7 +129,8 @@ public class InGameController {
         }
     }
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         instance = this;
         UserInterfaceUtils.initialize(
             inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
@@ -166,29 +163,34 @@ public class InGameController {
         selectionOverlay.setId("tile-selected");
     }
 
-    public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
-                return;
-            }
-            btnLogout.setDisable(true);
-            LoginController.setUserToken(null);
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
-        } else if (event.getSource().equals(btnMiniMap)) {
-            if (miniMap.isVisible()) {
-                miniMap.setVisible(false);
-            } else {
-                miniMap.setVisible(true);
-            }
-        } else if (event.getSource().equals(btnBigger)) {
-            zoomCounter++;
-            zoom();
-        } else if (event.getSource().equals(btnSmaller)) {
-            zoomCounter--;
-            zoom();
+    @FXML
+    private void bigger() {
+        zoomCounter++;
+        zoom();
+    }
+
+    @FXML
+    private void logout() {
+        UserInterfaceUtils.logout(inGameScreen, btnLogout);
+    }
+
+    @FXML
+    private void smaller() {
+        zoomCounter--;
+        zoom();
+    }
+
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+    }
+
+    @FXML
+    private void toggleMinimap() {
+        if (miniMap.isVisible()) {
+            miniMap.setVisible(false);
+        } else {
+            miniMap.setVisible(true);
         }
     }
 
@@ -207,7 +209,6 @@ public class InGameController {
             zoomCounter++;
         }
     }
-
 
     private void fillGameGrid() {
         int maxX = 0;
@@ -384,53 +385,52 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                    // Limit to existing fields and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId())) {
-                        return;
+                // Limit to existing fields and exclude the selected tile.
+                if (neighborId == null || neighborId.equals(startTile.getId())) {
+                    return;
+                }
+
+                EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
+                StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
+
+                // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
+                if (neighborTile.isPassable()
+                    && !overlayedStacks.containsKey(neighborStack)) {
+
+                    Pane overlay = new Pane();
+                    UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
+
+                    if (neighborUnitTile != null
+                        && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
+
+                        // The tile that is going to receive an overlay contains a unit that can be attacked.
+                        // TODO: for when the gamelobby exists
+                        //  Only allow this for own units.
+                        overlay.getStyleClass().add("tile-attack");
+                    } else {
+                        // TODO: for when the gamelobby exists
+                        //  Is it possible to have two units on the same field?
+                        //  Is it possible to walk across a field on which a unit is already present?
+                        overlay.getStyleClass().add("tile-path");
                     }
 
-                    EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
-                    StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
+                    // Add the overlay to the tile and a map so that it can easily be removed in the future.
+                    neighborStack.getChildren().add(overlay);
+                    overlayedStacks.put(neighborStack, overlay);
 
-                    // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
-                    if (neighborTile.isPassable()
-                        && !overlayedStacks.containsKey(neighborStack)) {
+                    // Save the tile from which the tile that received an overlay was reached so that a path can
+                    // be reconstructed for server requests.
+                    previousTileMapById.put(neighborId, currentTile.getId());
 
-                        Pane overlay = new Pane();
-                        UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
-
-                        if (neighborUnitTile != null
-                            && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
-
-                            // The tile that is going to receive an overlay contains a unit that can be attacked.
-                            // TODO: for when the gamelobby exists
-                            //  Only allow this for own units.
-                            overlay.getStyleClass().add("tile-attack");
-                        } else {
-                            // TODO: for when the gamelobby exists
-                            //  Is it possible to have two units on the same field?
-                            //  Is it possible to walk across a field on which a unit is already present?
-                            overlay.getStyleClass().add("tile-path");
-                        }
-
-                        // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                        neighborStack.getChildren().add(overlay);
-                        overlayedStacks.put(neighborStack, overlay);
-
-                        // Save the tile from which the tile that received an overlay was reached so that a path can
-                        // be reconstructed for server requests.
-                        previousTileMapById.put(neighborId, currentTile.getId());
-
-                        // Add the tile that received an overlay to the quere so that its neighbors are checked too.
-                        queue.add(new Pair<>(neighborTile, currentMp - 1));
-                    }
-                });
+                    // Add the tile that received an overlay to the quere so that its neighbors are checked too.
+                    queue.add(new Pair<>(neighborTile, currentMp - 1));
+                }
+            });
         }
     }
 
 
     public void leaveGame(ActionEvent event) {
-
         if (event.getSource().equals(btnBack)) {
             leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
             leaveGame.setLayoutY(head.getHeight());
@@ -450,31 +450,33 @@ public class InGameController {
                 node.setVisible(false);
             }
         }
-
     }
 
     public void changeUnitHp(String unitId, String newHp) {
         UnitTile unit = null;
+
         for (UnitTile unitTile : unitTiles) {
             if (unitTile.getId().equals(unitId)) {
                 unit = unitTile;
                 break;
             }
         }
+
         assert unit != null;
         unit.setHp(Integer.parseInt(newHp));
 
         //for sounds find the attacking unit
         UnitTile attacker = findAttackingUnit(unit);
+
         if (attacker != null) {
             SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
         }
-
     }
 
     public UnitTile findAttackingUnit(UnitTile unit) {
         UnitTile neighbor = null;
         EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());
+
         for (UnitTile unitTile : unitTiles) {
             if ((unitPos.getBottom() != null && unitPos.getBottom().equals(unitTile.getPosition()))
                 || (unitPos.getLeft() != null && unitPos.getLeft().equals(unitTile.getPosition()))
@@ -484,7 +486,7 @@ public class InGameController {
                 break;
             }
         }
+
         return neighbor;
     }
-
 }
