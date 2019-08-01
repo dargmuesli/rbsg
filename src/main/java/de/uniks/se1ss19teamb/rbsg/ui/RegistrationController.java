@@ -43,16 +43,16 @@ public class RegistrationController {
             registerScreen, registerScreen1, RegistrationController.class, btnFullscreen, errorContainer);
 
         // load user data
-        userData = UserData.loadUserData(NotificationHandler.getInstance());
+        userData = UserData.loadUserData();
 
         if (userData == null) {
             NotificationHandler.getInstance().sendWarning("User data couldn't be deserialized!", logger);
             return;
         }
 
-        username.setText(userData.getRegisterUsername());
-        password.setText(userData.getRegisterPassword());
-        passwordRepeat.setText(userData.getRegisterPasswordRepeat());
+        username.setText(userData.getRegistrationUsername());
+        password.setText(userData.getRegistrationPassword());
+        passwordRepeat.setText(userData.getRegistrationPasswordRepeat());
 
         Platform.runLater(() -> {
             if (username.getText().equals("")) {
@@ -66,7 +66,7 @@ public class RegistrationController {
             }
         });
 
-        UserData.deleteUserData(NotificationHandler.getInstance());
+        UserData.deleteUserData();
 
         registerScreen.setOpacity(0);
     }
@@ -108,12 +108,12 @@ public class RegistrationController {
         if (username.getText().isEmpty()
             || password.getText().isEmpty()
             || passwordRepeat.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie etwas ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Please enter everything.", logger);
             return;
         }
 
         if (!password.getText().equals(passwordRepeat.getText())) {
-            NotificationHandler.getInstance().sendWarning("Die Passwörter sind verschieden!", logger);
+            NotificationHandler.getInstance().sendWarning("The password do not match!", logger);
             return;
         }
 
@@ -127,7 +127,7 @@ public class RegistrationController {
 
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
-        NotificationHandler.getInstance().sendSuccess("Registrierung erfolgreich!", logger);
+        NotificationHandler.getInstance().sendSuccess("Registered successfully!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
@@ -135,9 +135,9 @@ public class RegistrationController {
 
     private void goToLogin() {
         // save user data for registration screen
-        userData.setRegisterUsername(username.getText());
-        userData.setRegisterPassword(password.getText());
-        userData.setRegisterPasswordRepeat(passwordRepeat.getText());
+        userData.setRegistrationUsername(username.getText());
+        userData.setRegistrationPassword(password.getText());
+        userData.setRegistrationPasswordRepeat(passwordRepeat.getText());
 
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 

@@ -41,6 +41,7 @@ public class InGameController {
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
+    public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
     private final Pane selectionOverlay = new Pane();
@@ -87,7 +88,6 @@ public class InGameController {
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private int zoomCounter = 0;
-    private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private JFXTabPane chatPane;
@@ -141,12 +141,11 @@ public class InGameController {
             }
         }
 
-
         fillGameGrid();
 
         // changing width and height to heigher values makes the canvas of the minimap too big
         // if you want to change the size of minimap please use the size parameter (or rework calculation)
-        miniMap = TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId);
+        miniMap.getChildren().add(TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId));
         miniMap.setVisible(false);
         inGameScreen.getChildren().add(miniMap);
 

@@ -42,11 +42,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainController {
-    private static final Logger logger = LogManager.getLogger();
+    public static Chat chat;
     public static MainController instance;
-    private static Chat chat;
+
+    private static final Logger logger = LogManager.getLogger();
+
     private static HashMap<String, GameMeta> existingGames;
-    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static SingleSelectionModel<Tab> selectionModel;
     private static String sendTo = null;
 
@@ -98,11 +99,6 @@ public class MainController {
     private double chatWindowHeight;
     @FXML
     private VBox textArea;
-
-    static void setGameChat(GameSocket gameSocket) {
-        MainController.chat = new Chat(gameSocket, chatLogPath);
-        gameSocket.connect();
-    }
 
     private static HashMap<String, GameMeta> getExistingGames() {
         return RequestUtil.request(new QueryGamesRequest(LoginController.getUserToken())).orElse(null);
@@ -172,7 +168,7 @@ public class MainController {
             }
         });
 
-        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+        MainController.chat = new Chat(ChatSocket.instance, Chat.chatLogPath);
 
         if (ChatSocket.instance.websocket == null || ChatSocket.instance.websocket.mySession == null) {
             ChatSocket.instance.connect();
@@ -337,7 +333,7 @@ public class MainController {
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
                     NotificationHandler.getInstance()
-                        .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                        .sendError("A game field could not be loaded!", logger, e);
                 }
             });
         });
@@ -482,7 +478,7 @@ public class MainController {
                         MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
-                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                            .sendError("A tab could not be loaded!", logger, e);
                     }
                 }
             );
@@ -561,4 +557,3 @@ public class MainController {
         btnSend.fire();
     }
 }
-
