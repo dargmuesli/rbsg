@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="tictactoeScreen" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController">
+<AnchorPane fx:id="apnRoot" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController">
     <JFXButton fx:id="one" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text="" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <JFXButton fx:id="two" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text="" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0" />
     <JFXButton fx:id="three" onAction="#setOnAction" prefHeight="200.0" prefWidth="200.0" text="" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />

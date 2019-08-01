@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
-import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
@@ -25,9 +24,9 @@ public class GameLobbyController {
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private AnchorPane gameLobby;
+    private AnchorPane apnFade;
     @FXML
-    private AnchorPane gameLobby1;
+    private AnchorPane apnRoot;
     @FXML
     private JFXButton btnBack;
     @FXML
@@ -52,7 +51,7 @@ public class GameLobbyController {
     @FXML
     private void initialize() {
         UserInterfaceUtils.initialize(
-            gameLobby, gameLobby1, GameLobbyController.class, btnFullscreen, errorContainer);
+            apnFade, apnRoot, GameLobbyController.class, btnFullscreen, errorContainer);
 
         GameLobbyController.instance = this;
 
@@ -107,12 +106,12 @@ public class GameLobbyController {
         btnBack.setDisable(true);
         GameLobbyController.quit();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", gameLobby);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
     }
 
     @FXML
     private void logout() {
-        UserInterfaceUtils.logout(gameLobby, btnLogout);
+        UserInterfaceUtils.logout(apnFade, btnLogout);
         GameLobbyController.quit();
     }
 
@@ -147,12 +146,12 @@ public class GameLobbyController {
     }
 
     public void startGameTransition() {
-        VBox chatWindow = (VBox) gameLobby.getScene().lookup("#chatWindow");
+        VBox chatWindow = (VBox) apnFade.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         btnMinimize.setDisable(false);
      
-        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", gameLobby,
-                gameLobby.getScene().lookup("#chatWindow"));
+        UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", apnFade,
+                apnFade.getScene().lookup("#chatWindow"));
         btnMinimize.fire();
     }
 

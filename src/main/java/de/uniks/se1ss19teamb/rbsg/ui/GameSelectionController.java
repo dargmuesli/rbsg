@@ -22,7 +22,7 @@ import javafx.scene.layout.VBox;
 public class GameSelectionController {
 
     @FXML
-    private HBox root;
+    private HBox hbxRoot;
 
     @FXML
     private Label spaces;
@@ -42,7 +42,7 @@ public class GameSelectionController {
     private VBox chatWindow;
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{root}));
+        Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
     }
 
     void setUpGameLabel(GameMeta gameMeta) {
@@ -56,7 +56,7 @@ public class GameSelectionController {
         join();
         join.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.mainScreen, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow);
 
     }
 
@@ -70,7 +70,7 @@ public class GameSelectionController {
 
         joinedGame = gameMeta;
 
-        chatWindow = (VBox) root.getScene().lookup("#chatWindow");
+        chatWindow = (VBox) hbxRoot.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
@@ -101,6 +101,6 @@ public class GameSelectionController {
         chatWindow.setVisible(false);
         spectate.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", hbxRoot, chatWindow);
     }
 }

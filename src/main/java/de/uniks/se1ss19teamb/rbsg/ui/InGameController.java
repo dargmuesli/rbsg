@@ -46,9 +46,9 @@ public class InGameController {
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private AnchorPane inGameScreen1;
+    private AnchorPane apnRoot;
     @FXML
-    private AnchorPane inGameScreen;
+    private AnchorPane apnFade;
     @FXML
     private AnchorPane leaveGame;
     @FXML
@@ -136,7 +136,7 @@ public class InGameController {
     public void initialize() {
         instance = this;
         UserInterfaceUtils.initialize(
-            inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
+            apnFade, apnRoot, InGameController.class, btnFullscreen, errorContainer);
 
         for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {
@@ -151,7 +151,7 @@ public class InGameController {
         // if you want to change the size of minimap please use the size parameter (or rework calculation)
         miniMap = TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId);
         miniMap.setVisible(false);
-        inGameScreen.getChildren().add(miniMap);
+        apnFade.getChildren().add(miniMap);
 
         FXMLLoader loader = new FXMLLoader(getClass()
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
@@ -176,7 +176,7 @@ public class InGameController {
             btnLogout.setDisable(true);
             LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
         } else if (event.getSource().equals(btnMiniMap)) {
             if (miniMap.isVisible()) {
                 miniMap.setVisible(false);
@@ -443,7 +443,7 @@ public class InGameController {
             GameSocket.instance.leaveGame();
             GameSocket.instance.disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {
             leaveGame.setVisible(false);
             for (Node node : leaveGame.getChildren()) {

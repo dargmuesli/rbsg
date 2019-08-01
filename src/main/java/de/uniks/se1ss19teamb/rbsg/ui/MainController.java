@@ -45,7 +45,7 @@ public class MainController {
     public static MainController instance;
 
     @FXML
-    public AnchorPane mainScreen;
+    public AnchorPane apnFade;
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -58,7 +58,7 @@ public class MainController {
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private AnchorPane mainScreen1;
+    private AnchorPane apnRoot;
     @FXML
     private JFXButton btnArmyManager;
     @FXML
@@ -103,7 +103,7 @@ public class MainController {
     private VBox textArea;
 
     public void initialize() {
-        UserInterfaceUtils.initialize(mainScreen, mainScreen1, MainController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen, errorContainer);
 
         MainController.instance = this;
 
@@ -255,13 +255,13 @@ public class MainController {
             btnLogout.setDisable(true);
             LoginController.setUserToken(null);
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", mainScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
         } else if (event.getSource().equals(btnArmyManager)) {
             btnArmyManager.setDisable(true);
             btnMinimize.setDisable(false);
             btnMinimize.fire();
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManagerContainer.fxml", mainScreen, chatWindow);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/armyManagerContainer.fxml", apnFade, chatWindow);
         } else if (event.getSource().equals(btnSend)) {
             if (!message.getText().isEmpty()) {
                 if (checkInput(message.getText())) {
@@ -284,7 +284,7 @@ public class MainController {
             }
         } else if (event.getSource().equals(btnColorMode)) {
             SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
-            Theming.setTheme(Arrays.asList(new Pane[]{mainScreen, mainScreen1}));
+            Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
 
             // the game view contains sub-fxmls and thus needs to be updated separately
             updateGameView();

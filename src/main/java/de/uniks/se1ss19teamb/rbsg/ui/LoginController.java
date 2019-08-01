@@ -34,7 +34,7 @@ public class LoginController {
     private static UserData userData;
 
     @FXML
-    private AnchorPane loginScreen;
+    private AnchorPane apnFade;
     @FXML
     private JFXTextField txtUserName;
     @FXML
@@ -50,7 +50,7 @@ public class LoginController {
     @FXML
     private JFXCheckBox rememberLogin;
     @FXML
-    private AnchorPane loginScreen1;
+    private AnchorPane apnRoot;
     @FXML
     private Label jokeLabel;
 
@@ -72,13 +72,13 @@ public class LoginController {
 
     public void initialize() {
 
-        Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
+        Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
       
-        UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
@@ -103,12 +103,12 @@ public class LoginController {
 
         UserData.deleteUserData(NotificationHandler.getInstance());
 
-        loginScreen.setOpacity(0);
+        apnFade.setOpacity(0);
 
         // 1% meme chance
         if (new Random().nextFloat() < 0.01) {
             // needed because of root.getWidth/Height
-            Platform.runLater(() -> ZuendorfMeme.setup(loginScreen1));
+            Platform.runLater(() -> ZuendorfMeme.setup(apnRoot));
         }
     }
 
@@ -149,13 +149,13 @@ public class LoginController {
         setUserName(txtUserName.getText());
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
     }
 
     private void goToRegister() {
         saveUserData();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", apnFade);
     }
 
     private void saveUserData() {

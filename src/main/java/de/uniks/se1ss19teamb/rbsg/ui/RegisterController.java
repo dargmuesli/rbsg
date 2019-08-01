@@ -7,18 +7,12 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +22,7 @@ public class RegisterController {
     @FXML
     AnchorPane errorContainer;
     @FXML
-    private AnchorPane registerScreen;
+    private AnchorPane apnFade;
     @FXML
     private JFXButton btnCancel;
     @FXML
@@ -42,12 +36,12 @@ public class RegisterController {
     @FXML
     private JFXPasswordField passwordRepeat;
     @FXML
-    private AnchorPane registerScreen1;
+    private AnchorPane apnRoot;
     private UserData userData;
 
     public void initialize() {
         UserInterfaceUtils.initialize(
-            registerScreen, registerScreen1, RegisterController.class, btnFullscreen, errorContainer);
+            apnFade, apnRoot, RegisterController.class, btnFullscreen, errorContainer);
 
         // load user data
         userData = UserData.loadUserData(NotificationHandler.getInstance());
@@ -75,7 +69,7 @@ public class RegisterController {
 
         UserData.deleteUserData(NotificationHandler.getInstance());
 
-        registerScreen.setOpacity(0);
+        apnFade.setOpacity(0);
     }
 
     @FXML
@@ -133,7 +127,7 @@ public class RegisterController {
         NotificationHandler.getInstance().sendSuccess("Registrierung erfolgreich!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
     }
 
     private void goToLogin() {
@@ -145,6 +139,6 @@ public class RegisterController {
         SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", registerScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
     }
 }

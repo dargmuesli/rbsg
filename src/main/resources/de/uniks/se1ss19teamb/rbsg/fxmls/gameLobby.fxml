@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameLobby1" xmlns="http://javafx.com/javafx/8.0.221"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" xmlns="http://javafx.com/javafx/8.0.221"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
     <stylesheets>
         <URL value="@../css/whiteDesign.css"/>
         <URL value="@../css/darkDesign.css"/>
     </stylesheets>
-    <AnchorPane fx:id="gameLobby" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+    <AnchorPane fx:id="apnFade" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                 AnchorPane.topAnchor="0.0">
         <stylesheets>
             <URL value="@../css/whiteDesign.css"/>
