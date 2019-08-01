@@ -121,6 +121,7 @@ public class ArmyManagerController {
                 btnExport.setDisable(false);
             }
         });
+
         setUpUnitObjects();
         loadFromServer();
     }
@@ -175,6 +176,7 @@ public class ArmyManagerController {
             }
         });
     }
+
     @FXML
     private void addArmy() {
         cmbArmies.getSelectionModel().clearSelection();

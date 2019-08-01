@@ -272,8 +272,6 @@ public class InGameController {
                         ) {
                             //yes: attack
                             GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
-
-
                         } else {
                             //no: move
                             LinkedList<String> path = new LinkedList<>();

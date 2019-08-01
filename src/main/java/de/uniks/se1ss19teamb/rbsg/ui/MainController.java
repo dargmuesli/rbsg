@@ -232,6 +232,7 @@ public class MainController {
         MainController.chat = new Chat(gameSocket, chatLogPath);
         gameSocket.connect();
     }
+
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {

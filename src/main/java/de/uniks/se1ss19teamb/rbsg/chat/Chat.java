@@ -35,6 +35,7 @@ public class Chat {
      */
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
         -> addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
+
     private static final Logger logger = LogManager.getLogger();
     private ArrayList<ChatHistoryEntry> history = new ArrayList<>();
     private AbstractMessageWebSocket messageWebSocket;
