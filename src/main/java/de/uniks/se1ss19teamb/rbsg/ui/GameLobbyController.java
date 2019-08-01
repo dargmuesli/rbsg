@@ -3,8 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
-import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
@@ -23,9 +23,12 @@ public class GameLobbyController {
     public static GameLobbyController instance;
 
     @FXML
+    public VBox vbxMinimap;
+
+    @FXML
     private AnchorPane errorContainer;
     @FXML
-    private AnchorPane gameLobby;
+    public AnchorPane gameLobby;
     @FXML
     private AnchorPane gameLobby1;
     @FXML
@@ -41,7 +44,7 @@ public class GameLobbyController {
     @FXML
     private Label gameName;
     @FXML
-    private ListView<Parent> playerList;
+    private VBox playerList;
 
     private JFXTabPane chatPane;
     private VBox textArea;
@@ -58,7 +61,6 @@ public class GameLobbyController {
 
         GameSocket.instance = new GameSocket(
             GameSelectionController.joinedGame.getId());
-
         GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 MainController.instance.addNewPane(from, message, false, chatPane);
@@ -66,6 +68,9 @@ public class GameLobbyController {
                 MainController.instance.addElement(from, message, textArea, false);
             }
         });
+        GameSocket.instance.connect();
+
+        MainController.chat = new Chat(GameSocket.instance, Chat.chatLogPath);
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
@@ -75,14 +80,12 @@ public class GameLobbyController {
             btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
 
-        MainController.setGameChat(GameSocket.instance);
-
         gameName.setText(GameSelectionController.joinedGame.getName());
     }
 
     public void updatePlayers() {
         Platform.runLater(() -> {
-            playerList.getItems().clear();
+            playerList.getChildren().clear();
 
             InGameController.inGameObjects.entrySet().stream()
                 .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
@@ -94,7 +97,7 @@ public class GameLobbyController {
                         Parent parent = fxmlLoader.load();
                         LobbyPlayerController controller = fxmlLoader.getController();
                         controller.setInGamePlayer((InGamePlayer) inGameObjectEntry.getValue());
-                        playerList.getItems().add(parent);
+                        playerList.getChildren().add(parent);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
