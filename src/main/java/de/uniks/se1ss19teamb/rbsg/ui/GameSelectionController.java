@@ -56,7 +56,7 @@ public class GameSelectionController {
         join();
         join.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.mainScreen, chatWindow);
 
     }
 

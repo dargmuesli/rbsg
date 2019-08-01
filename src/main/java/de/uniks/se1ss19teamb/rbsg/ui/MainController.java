@@ -44,6 +44,9 @@ import org.apache.logging.log4j.Logger;
 public class MainController {
     public static MainController instance;
 
+    @FXML
+    public AnchorPane mainScreen;
+
     private static final Logger logger = LogManager.getLogger();
 
     private static Chat chat;
@@ -56,8 +59,6 @@ public class MainController {
     private AnchorPane errorContainer;
     @FXML
     private AnchorPane mainScreen1;
-    @FXML
-    private AnchorPane mainScreen;
     @FXML
     private JFXButton btnArmyManager;
     @FXML
