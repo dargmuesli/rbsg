@@ -76,6 +76,7 @@ public class LoginController {
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
+        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
       
         UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
