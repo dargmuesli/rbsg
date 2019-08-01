@@ -11,15 +11,30 @@ public class Army {
     private String name = "";
     private List<Unit> units = new ArrayList<>();
 
+    /**
+     * Constructor for an army with default field values.
+     */
     public Army() {
     }
 
+    /**
+     * Constructor for an army with individual field values.
+     *
+     * @param id    The army's id.
+     * @param name  The army's name.
+     * @param units The army's units.
+     */
     public Army(String id, String name, List<Unit> units) {
         this.id = id;
         this.name = name;
         this.units = units;
     }
 
+    /**
+     * Constructor for an army copy.
+     *
+     * @param army The army to clone.
+     */
     public Army(Army army) {
         this.id = army.getId();
         this.name = army.getName();

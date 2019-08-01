@@ -76,12 +76,13 @@ public class LoginController {
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
+        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
       
         UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
-        userData = UserData.loadUserData(NotificationHandler.getInstance());
+        userData = UserData.loadUserData();
 
         if (userData == null) {
             userData = new UserData();
@@ -101,7 +102,7 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData(NotificationHandler.getInstance());
+        UserData.deleteUserData();
 
         apnFade.setOpacity(0);
 
@@ -133,14 +134,14 @@ public class LoginController {
 
     private void login() {
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
             return;
         }
 
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
-            UserData.deleteUserData(NotificationHandler.getInstance());
+            UserData.deleteUserData();
         }
 
         RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))

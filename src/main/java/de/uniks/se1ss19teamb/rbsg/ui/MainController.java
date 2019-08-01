@@ -42,6 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainController {
+    public static Chat chat;
     public static MainController instance;
 
     @FXML
@@ -49,9 +50,7 @@ public class MainController {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static Chat chat;
     private static HashMap<String, GameMeta> existingGames;
-    private static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
     private static SingleSelectionModel<Tab> selectionModel;
     private static String sendTo = null;
 
@@ -166,7 +165,7 @@ public class MainController {
             }
         });
 
-        MainController.chat = new Chat(ChatSocket.instance, chatLogPath);
+        MainController.chat = new Chat(ChatSocket.instance, Chat.chatLogPath);
 
         if (ChatSocket.instance.websocket == null || ChatSocket.instance.websocket.mySession == null) {
             ChatSocket.instance.connect();
@@ -229,11 +228,6 @@ public class MainController {
         }
     }
 
-    static void setGameChat(GameSocket gameSocket) {
-        MainController.chat = new Chat(gameSocket, chatLogPath);
-        gameSocket.connect();
-    }
-
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(btnCreate)) {
             if (!gameName.getText().isEmpty()) {
@@ -246,7 +240,7 @@ public class MainController {
                     new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
                 }
             } else {
-                NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
+                NotificationHandler.getInstance().sendWarning("Please enter a game name.", logger);
             }
         } else if (event.getSource().equals(btnLogout)) {
             if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
@@ -334,7 +328,7 @@ public class MainController {
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
                     NotificationHandler.getInstance()
-                        .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                        .sendError("A game field could not be loaded!", logger, e);
                 }
             });
         });
@@ -479,7 +473,7 @@ public class MainController {
                         MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.getInstance()
-                            .sendError("Ein GameField konnte nicht geladen werden!", logger, e);
+                            .sendError("A tab could not be loaded!", logger, e);
                     }
                 }
             );
@@ -558,4 +552,3 @@ public class MainController {
         btnSend.fire();
     }
 }
-

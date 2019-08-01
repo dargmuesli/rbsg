@@ -21,24 +21,20 @@ import javafx.scene.layout.VBox;
 
 public class GameSelectionController {
 
-    @FXML
-    private HBox hbxRoot;
-
-    @FXML
-    private Label spaces;
-
-    @FXML
-    private Label gameNameLabel;
+    static GameMeta joinedGame;
 
     @FXML
     private Button join;
-
     @FXML
     private Button spectate;
+    @FXML
+    private HBox hbxRoot;
+    @FXML
+    private Label gameNameLabel;
+    @FXML
+    private Label spaces;
 
     private GameMeta gameMeta;
-    static GameMeta joinedGame;
-
     private VBox chatWindow;
 
     public void initialize() {
@@ -56,8 +52,7 @@ public class GameSelectionController {
         join();
         join.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow);
-
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow, false);
     }
 
     public void join() {
@@ -85,8 +80,6 @@ public class GameSelectionController {
 
         chatWindow.setPrefHeight(300);
         chatWindow.setPrefWidth(400);
-
-
     }
 
     public void deleteGame() {

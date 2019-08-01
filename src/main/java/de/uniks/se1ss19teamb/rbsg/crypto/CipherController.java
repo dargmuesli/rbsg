@@ -34,7 +34,7 @@ class CipherController {
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
             | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Verschlüsseln einer Nachricht!", logger, e);
+            NotificationHandler.getInstance().sendError("Encryption of a message failed!", logger, e);
         }
     }
 
@@ -65,7 +65,7 @@ class CipherController {
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
             | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            NotificationHandler.getInstance().sendError("Fehler beim Entschlüsseln einer Nachricht!", logger, e);
+            NotificationHandler.getInstance().sendError("Decryption of a message failed!", logger, e);
         }
         return decryptedMessage;
     }
