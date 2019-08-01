@@ -56,7 +56,7 @@ public class GameSelectionController {
         join();
         join.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow, false);
 
     }
 
@@ -85,8 +85,6 @@ public class GameSelectionController {
 
         chatWindow.setPrefHeight(300);
         chatWindow.setPrefWidth(400);
-
-
     }
 
     public void deleteGame() {
