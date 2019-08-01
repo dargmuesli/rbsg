@@ -27,12 +27,12 @@ public class RestRequestTestsReal {
     public static void resetHttpManager() {
         AbstractRestRequest.httpManager = new HttpManager();
     }
-    
+
     @Before
     public void setupTests() {
-    	resetHttpManager();
+        resetHttpManager();
     }
-    
+
     private void createArmy() {
         List<Unit> units = new ArrayList<>();
 
@@ -363,14 +363,15 @@ public class RestRequestTestsReal {
         RequestUtil.request(new QueryGamesRequest(userToken)).ifPresent(
             stringGameMetaHashMap -> stringGameMetaHashMap.entrySet().stream().filter(
                 stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
-            .equals("TeamBTestUserGame"))
-            .forEach(stringGameMetaEntry -> {
-                System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
-                    + " with id " + stringGameMetaEntry.getValue().getId() + "...");
+                    .equals("TeamBTestUserGame"))
+                .forEach(stringGameMetaEntry -> {
+                    System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
+                        + " with id " + stringGameMetaEntry.getValue().getId() + "...");
 
-                if (!RequestUtil.request(new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
-                    Assert.fail();
-                }
-            }));
+                    if (!RequestUtil.request(
+                        new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
+                        Assert.fail();
+                    }
+                }));
     }
 }

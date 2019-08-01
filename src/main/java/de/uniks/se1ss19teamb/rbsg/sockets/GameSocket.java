@@ -142,7 +142,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     break;
                 case "gameInitFinished":
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
-                    if(GameLobbyController.instance != null) {
+                    if (GameLobbyController.instance != null) {
                         GameLobbyController.instance.updatePlayers();
                     }
                     break;
