@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.util;
 
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
@@ -39,6 +39,7 @@ public class DragMoveResize {
         region.setOnMouseReleased(event -> resizer.mouseReleased());
 
         region.setOnMouseExited(e -> {
+            //TODO: use css id/classes instead of style tags.
             region.setStyle("-fx-border-width: none; "
                 + "-fx-border-insets: none; -fx-effect: none;");
             region.setOpacity(0.3);
@@ -48,7 +49,6 @@ public class DragMoveResize {
     }
 
     private void mousePressed(MouseEvent event) {
-
         lastX = event.getSceneX();
         lastY = event.getSceneY();
 
@@ -92,6 +92,7 @@ public class DragMoveResize {
             if (event.getX() > (region.getWidth() - RESIZE_MARGIN)) {
                 return Cursor.NE_RESIZE;
             }
+
             return Cursor.N_RESIZE;
         }
 
@@ -103,6 +104,7 @@ public class DragMoveResize {
             if (event.getX() < RESIZE_MARGIN) {
                 return Cursor.SW_RESIZE;
             }
+
             return Cursor.S_RESIZE;
         }
 
@@ -116,8 +118,6 @@ public class DragMoveResize {
 
         return null;
     }
-
-
 
     private void mouseDragged(MouseEvent event) {
 

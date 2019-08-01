@@ -114,25 +114,18 @@ public class LoginController {
     }
 
     @FXML
-    void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(btnLogin)) {
-            login();
-            btnLogin.setDisable(true);
-        } else if (event.getSource().equals(btnRegistration)) {
-            goToRegister();
-            btnRegistration.setDisable(true);
-            ChuckNorrisJokeTicker.stopAnimation();
-        }
+    private void goToRegistration() {
+        btnRegistration.setDisable(true);
+        saveUserData();
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", apnFade);
+        ChuckNorrisJokeTicker.stopAnimation();
     }
 
     @FXML
-    public void onEnter() {
-        login();
-    }
-
     private void login() {
+        btnLogin.setDisable(true);
+
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
             NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
             return;
@@ -153,10 +146,14 @@ public class LoginController {
             "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
     }
 
-    private void goToRegister() {
-        saveUserData();
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", apnFade);
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+    }
+
+    @FXML
+    public void onEnter() {
+        login();
     }
 
     private void saveUserData() {

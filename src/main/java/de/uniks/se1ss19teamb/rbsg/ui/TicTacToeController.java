@@ -14,7 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 
-
 public class TicTacToeController {
     private static boolean playable = true;
     private ArrayList<JFXButton> buttons = new ArrayList<>();
@@ -56,43 +55,47 @@ public class TicTacToeController {
 
         Theming.setTheme(Arrays.asList(new Pane[]{apnRoot}));
 
-        for (JFXButton button: buttons) {
+        for (JFXButton button : buttons) {
             button.setStyle("-fx-font-size: 72.0;" + "-fx-border-radius: 0.0;" + "-fx-background-radius: 0.0;");
         }
+
         btnReplay.setStyle("-fx-font-size: 20.0");
         label.setStyle("-fx-font-size: 20.0");
+    }
 
+    @FXML
+    private void fieldClick() {
+        String signX = "X";
+
+        for (JFXButton button : buttons) {
+            button.setText(signX);
+            setNextTurn();
+            calculateWinner(signX, "Player wins!");
+            button.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void replay() {
+        playable = true;
+        getTurn();
+
+        for (JFXButton button : buttons) {
+            button.setText("");
+        }
+
+        label.setText("");
     }
 
     private void getTurn() {
         if (playable) {
-            for (JFXButton button: buttons) {
+            for (JFXButton button : buttons) {
                 button.setDisable(false);
             }
         } else {
-            for (JFXButton button: buttons) {
+            for (JFXButton button : buttons) {
                 button.setDisable(true);
             }
-        }
-    }
-
-    public void setOnAction(ActionEvent event) {
-        String signX = "X";
-        for (JFXButton button: buttons) {
-            if (event.getSource().equals(button)) {
-                button.setText(signX);
-                setNextTurn();
-                calculateWinner(signX, "Player wins!");
-                button.setDisable(true);
-            }
-        }
-        if (event.getSource().equals(btnReplay)) {
-            playable = true;
-            getTurn();
-            for (JFXButton button: buttons) {
-                button.setText("");
-            }
-            label.setText("");
         }
     }
 

@@ -1,7 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.textures;
 
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,8 +102,13 @@ public class TextureManager {
             UnitTile possibleUnit = unitTileMapByTileId.get(tile.getValue().getId());
 
             if (possibleUnit != null) {
-                //TODO set player color
-                gc.setFill(Color.RED);
+                InGamePlayer player = (InGamePlayer) InGameController.inGameObjects.get(possibleUnit.getLeader());
+                if (player != null) {
+                    gc.setFill(Color.valueOf(player.getColor()));
+                } else {
+                    gc.setFill(Color.BLACK);
+                }
+
             } else {
                 gc.setFill(instance.terrainColors.get(tile.getValue().getName()));
             }

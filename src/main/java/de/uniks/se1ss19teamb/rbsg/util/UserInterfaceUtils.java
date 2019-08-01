@@ -5,8 +5,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
-import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 

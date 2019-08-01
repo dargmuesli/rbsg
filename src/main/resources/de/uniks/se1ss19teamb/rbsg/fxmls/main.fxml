@@ -65,7 +65,7 @@
                 <VBox fx:id="chatWindow" alignment="BOTTOM_CENTER" spacing="5"
                       style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="5.0"
                       AnchorPane.leftAnchor="5.0" HBox.hgrow="ALWAYS">
-                    <JFXButton fx:id="btnMinimize" alignment="CENTER" onAction="#setOnAction" text="Chat">
+                    <JFXButton fx:id="btnMinimize" alignment="CENTER" onAction="#minimizeChat" text="Chat">
                         <font>
                             <Font size="15.0"/>
                         </font>
@@ -90,7 +90,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0"/>
                                 </HBox.margin>
                             </JFXTextField>
-                            <JFXButton fx:id="btnSend" alignment="CENTER" onAction="#setOnAction">
+                            <JFXButton fx:id="btnSend" alignment="CENTER" onAction="#sendChatMessage">
                                 <graphic>
                                     <FontAwesomeIconView glyphName="SEND" size="15"/>
                                 </graphic>
@@ -138,7 +138,7 @@
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                             </padding>
                         </HBox>
-                        <JFXButton fx:id="btnCreate" mnemonicParsing="false" onAction="#setOnAction">
+                        <JFXButton fx:id="btnCreate" mnemonicParsing="false" onAction="#createGame">
                             <graphic>
                                 <FontAwesomeIconView glyphName="PLUS" size="15"/>
                             </graphic>
@@ -155,7 +155,8 @@
                                 <Insets bottom="10.0" top="5.0"/>
                             </VBox.margin>
                         </Label>
-                        <JFXButton fx:id="btnArmyManager" mnemonicParsing="false" onAction="#setOnAction" text="open">
+                        <JFXButton fx:id="btnArmyManager" mnemonicParsing="false" onAction="#goToArmyManager"
+                                   text="open">
                             <graphic>
                                 <FontAwesomeIconView glyphName="FIGHTER_JET" size="15"/>
                             </graphic>
@@ -169,18 +170,18 @@
         </VBox>
         <HBox alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
             <JFXButton fx:id="btnColorMode" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY"
-                       onAction="#setOnAction" visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
+                       onAction="#changeTheme" visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="ADJUST" size="15"/>
                 </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#setOnAction"
+            <JFXButton fx:id="btnLogout" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" onAction="#logout"
                        visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
                 <graphic>
                     <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
                 </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler" visible="false"
+            <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#toggleFullscreen" visible="false"
                        AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                 <graphic>
                     <FontAwesomeIconView glyphName="EXPAND" size="15"/>
