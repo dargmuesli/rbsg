@@ -48,6 +48,7 @@ public class SerializeUtilTest {
     public void chooseFileTest() throws Exception {
         File file = new File("");
 
+        // Mock the JFrame to prevent a HeadlessException on CI
         JFrame frameMock = mock(JFrame.class);
         JFileChooser fileChooserMock = mock(JFileChooser.class);
         whenNew(JFrame.class).withNoArguments().thenReturn(frameMock);
