@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.util;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 import java.io.File;
 import java.io.FileReader;
@@ -40,6 +41,7 @@ public class SerializeUtilTest {
     @Before
     public void before() {
         NotificationHandler.getInstance().setPopupController(popupControllerMock);
+        TestUtil.setupHeadlessMode();
     }
 
     @Test
