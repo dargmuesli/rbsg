@@ -66,6 +66,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
+    @Ignore
     public void snakeTest() {
         press(KeyCode.SHIFT).press(KeyCode.F2);
         sleep(500); // given some time to open window
