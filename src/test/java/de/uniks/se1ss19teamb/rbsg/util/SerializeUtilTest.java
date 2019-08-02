@@ -48,7 +48,9 @@ public class SerializeUtilTest {
     public void chooseFileTest() throws Exception {
         File file = new File("");
 
+        JFrame frameMock = mock(JFrame.class);
         JFileChooser fileChooserMock = mock(JFileChooser.class);
+        whenNew(JFrame.class).withNoArguments().thenReturn(frameMock);
         whenNew(JFileChooser.class).withNoArguments().thenReturn(fileChooserMock);
         when(fileChooserMock.showSaveDialog(any())).thenReturn(0);
         when(fileChooserMock.getSelectedFile()).thenReturn(file);
