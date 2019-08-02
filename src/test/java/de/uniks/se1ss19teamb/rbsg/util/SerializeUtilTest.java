@@ -1,80 +1,106 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
+
+import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.Optional;
 
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.internal.util.reflection.FieldSetter;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.swing.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SerializeUtil.class)
+@PowerMockIgnore({"javax.management.*", "javax.script.*", "javax.swing.*"})
 public class SerializeUtilTest {
+    static class TestClass {
+        String name = "my name";
+        int mtr = 123456;
+    }
 
-    @Test
-    public void serializeTest() {
+    private PopupController popupControllerMock = mock(PopupController.class);
+    private String fileString = "file.json";
+    private String testClassString = "{\"name\":\"my name\",\"mtr\":123456}";
+    private TestClass testClass = new TestClass();
 
-        TestClass testClass = new TestClass();
-
-        // test serialization
-        SerializeUtil.serialize("file.json", testClass);
-        String serializedToJsonString = SerializeUtil.serialize(testClass);
-
-        // test json string that should be equal to the serialized one
-        String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
-        try {
-            byte[] encoded = Files.readAllBytes(Paths.get("file.json"));
-            String serializedToFile = new String(encoded, StandardCharsets.UTF_8);
-
-            Assert.assertEquals(test, serializedToFile);
-            Assert.assertEquals(test, serializedToJsonString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Files.delete(Paths.get("file.json"));
-        } catch (NoSuchFileException x) {
-            System.err.format("%s: no such" + " file or directory%n", Paths.get("file.json"));
-        } catch (DirectoryNotEmptyException x) {
-            System.err.format("%s not empty%n", Paths.get("file.json"));
-        } catch (IOException x) {
-            // File permission problems are caught here.
-            x.printStackTrace();
-        }
+    @Before
+    public void before() {
+        NotificationHandler.getInstance().setPopupController(popupControllerMock);
     }
 
     @Test
-    public void deserializeTest() {
+    public void chooseFileTest() throws Exception {
+        File file = new File("");
 
-        TestClass testClass = new TestClass();
+        JFileChooser jFileChooserMock = mock(JFileChooser.class);
+        whenNew(JFileChooser.class).withNoArguments().thenReturn(jFileChooserMock);
+        when(jFileChooserMock.showSaveDialog(any())).thenReturn(0);
+        when(jFileChooserMock.getSelectedFile()).thenReturn(file);
+        Assert.assertEquals(Optional.of(file), SerializeUtil.chooseFile());
 
-        SerializeUtil.serialize("file.json", testClass);
-
-        // test deserialization
-        TestClass fromFile = SerializeUtil.deserialize(new File("file.json"), TestClass.class);
-
-        // test deserialization from string
-        String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
-        TestClass fromString = SerializeUtil.deserialize(test, TestClass.class);
-
-        Assert.assertEquals(testClass.name, fromFile.name);
-        Assert.assertEquals(testClass.mtr, fromFile.mtr);
-        Assert.assertEquals(testClass.name, fromString.name);
-        Assert.assertEquals(testClass.mtr, fromString.mtr);
-
-        try {
-            Files.delete(Paths.get("file.json"));
-        } catch (IOException x) {
-            x.printStackTrace();
-        }
+        when(jFileChooserMock.showSaveDialog(any())).thenReturn(1);
+        Assert.assertEquals(Optional.empty(), SerializeUtil.chooseFile());
     }
 
-    class TestClass {
-        String name = "My Very Long Name";
-        int mtr = 12345678;
+    @Test
+    public void deserializeTest() throws Exception {
+        SerializeUtil.serialize(fileString, this.testClass);
+
+        // from file
+        TestClass fromFile = SerializeUtil.deserialize(new File(fileString), TestClass.class);
+        assert fromFile != null;
+        Assert.assertEquals(this.testClass.name, fromFile.name);
+        Assert.assertEquals(this.testClass.mtr, fromFile.mtr);
+
+        // from string
+        TestClass fromString = SerializeUtil.deserialize(this.testClassString, TestClass.class);
+        Assert.assertEquals(this.testClass.name, fromString.name);
+        Assert.assertEquals(this.testClass.mtr, fromString.mtr);
+
+        Files.delete(Paths.get(fileString));
+
+        FieldSetter.setField(SerializeUtil.class, SerializeUtil.class.getDeclaredField("logger"),
+            mock(Logger.class));
+
+        whenNew(FileReader.class).withArguments(new File(fileString)).thenThrow(new IOException());
+        Assert.assertNull(SerializeUtil.deserialize(new File(fileString), TestClass.class));
+        verify(popupControllerMock).displayError("Could not deserialize file.json to"
+            + " de.uniks.se1ss19teamb.rbsg.util.SerializeUtilTest$TestClass!");
+    }
+
+    @Test
+    public void serializeTest() throws Exception {
+        SerializeUtil.serialize(fileString, this.testClass);
+
+        Assert.assertEquals(this.testClassString,
+            new String(Files.readAllBytes(Paths.get(fileString)), StandardCharsets.UTF_8));
+
+        Assert.assertEquals(this.testClassString, SerializeUtil.serialize(this.testClass));
+
+        Files.delete(Paths.get(fileString));
+
+        FieldSetter.setField(SerializeUtil.class, SerializeUtil.class.getDeclaredField("logger"),
+            mock(Logger.class));
+
+        whenNew(FileWriter.class).withArguments(fileString).thenThrow(new IOException());
+        SerializeUtil.serialize(fileString, this.testClass);
+        verify(popupControllerMock).displayError(matches("Could not serialize"
+            + " de\\.uniks\\.se1ss19teamb\\.rbsg\\.util\\.SerializeUtilTest\\$TestClass@[a-z0-9]+ to file\\.json!"));
     }
 }
