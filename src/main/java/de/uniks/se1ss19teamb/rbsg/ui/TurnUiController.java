@@ -35,10 +35,8 @@ public class TurnUiController {
     public void initialize() {
         instance = this;
         phaseBtn.setTranslateY(-4);
-        Platform.runLater(() -> {
-            updatePlayers();
-            //setTurn("movePhase");
-        });
+        updatePlayers();
+        //setTurn("movePhase");
     }
 
     public void updatePlayers() {
@@ -47,6 +45,10 @@ public class TurnUiController {
             .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
             .forEachOrdered(inGameObjectEntry -> inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue())));
         System.out.println(inGamePlayerList.get(0).getName() + "" + inGamePlayerList.get(1).getName());
+        setLabelsVisible();
+    }
+
+    private void setLabelsVisible() {
         // check size of list and add lbls according to size, set labels visible
         if (inGamePlayerList.size() == 2) {
             lblList.add(0, labelOne);
