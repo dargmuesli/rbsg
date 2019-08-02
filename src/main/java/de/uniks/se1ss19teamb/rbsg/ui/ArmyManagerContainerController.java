@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
-import de.uniks.se1ss19teamb.rbsg.util.Strings;
+import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -45,7 +45,7 @@ public class ArmyManagerContainerController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
-            NotificationHandler.getInstance().sendWarning(Strings.DISCARD_CONFIRMATION, logger);
+            NotificationHandler.getInstance().sendWarning(StringUtil.DISCARD_CONFIRMATION, logger);
             ArmyManagerController.getInstance().discardConfirmation = true;
         }
     }
@@ -65,7 +65,7 @@ public class ArmyManagerContainerController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
         } else {
-            NotificationHandler.getInstance().sendWarning(Strings.DISCARD_CONFIRMATION, logger);
+            NotificationHandler.getInstance().sendWarning(StringUtil.DISCARD_CONFIRMATION, logger);
             ArmyManagerController.getInstance().discardConfirmation = true;
         }
     }
