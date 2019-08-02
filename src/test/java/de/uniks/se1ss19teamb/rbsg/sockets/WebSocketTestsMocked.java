@@ -122,6 +122,12 @@ public class WebSocketTestsMocked {
         setupSocket("{\"action\":\"info\",\"data\":{\"message\":\"lolol\n\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
+        setupSocket("{\"action\":\"inGameError\",\"data\":\"lolol\n\"}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"msg\":\"lolol\n\"}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
         //gameInitObject
         setupSocket("{\"action\":\"gameStarts\",\"data\":{\"message\":\"lolol\n\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
@@ -150,7 +156,7 @@ public class WebSocketTestsMocked {
 
         //gameNewObject
 
-        setupSocket("{\"action\":\"gameSarts\",\"data\":{}}", gameSocket);
+        setupSocket("{\"action\":\"gameStarts\",\"data\":{}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
         setupSocket("{\"action\":\"gameNewObject\",\"data\":{\"id\":\"Unit@1923617\","
@@ -160,6 +166,11 @@ public class WebSocketTestsMocked {
             + "\"position\":\"Grass@258b12ff\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
+        setupSocket("{\"action\":\"gameNewObject\",\"data\":{\"id\":\"Player@1923617\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameNewObject\",\"data\":{\"id\":\"damnTrashcan\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
 
         //gameChangeObject
         setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@1923617\",\"fieldName\":\"hp\",\""
@@ -187,15 +198,16 @@ public class WebSocketTestsMocked {
         gameSocket.sendToWebsocket(null);
 
         //gameRemoveObject
-        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
-            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
-        gameSocket.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"from\":\"Game@37392bfa\",\""
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Unit@111\",\"from\":\"Game@37392bfa\",\""
             + "fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
         setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\",\"from\":\""
+            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
             + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
@@ -209,6 +221,7 @@ public class WebSocketTestsMocked {
         Assert.assertTrue(gameMsg.contains("changed|Game"));
         Assert.assertTrue(!InGameController.environmentTiles.isEmpty());
         Assert.assertTrue(!InGameController.unitTiles.isEmpty());
+        Assert.assertEquals("Grass@258b12ff", InGameController.unitTiles.get(0).getPosition());
 
     }
 
