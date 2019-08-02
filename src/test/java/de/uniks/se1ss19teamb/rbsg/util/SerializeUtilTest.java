@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class SerializeTest {
+public class SerializeUtilTest {
 
     @Test
     public void serializeTest() {
@@ -20,8 +20,8 @@ public class SerializeTest {
         TestClass testClass = new TestClass();
 
         // test serialization
-        SerializeUtils.serialize("file.json", testClass);
-        String serializedToJsonString = SerializeUtils.serialize(testClass);
+        SerializeUtil.serialize("file.json", testClass);
+        String serializedToJsonString = SerializeUtil.serialize(testClass);
 
         // test json string that should be equal to the serialized one
         String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
@@ -52,14 +52,14 @@ public class SerializeTest {
 
         TestClass testClass = new TestClass();
 
-        SerializeUtils.serialize("file.json", testClass);
+        SerializeUtil.serialize("file.json", testClass);
 
         // test deserialization
-        TestClass fromFile = SerializeUtils.deserialize(new File("file.json"), TestClass.class);
+        TestClass fromFile = SerializeUtil.deserialize(new File("file.json"), TestClass.class);
 
         // test deserialization from string
         String test = "{\"name\":\"My Very Long Name\",\"mtr\":12345678}";
-        TestClass fromString = SerializeUtils.deserialize(test, TestClass.class);
+        TestClass fromString = SerializeUtil.deserialize(test, TestClass.class);
 
         Assert.assertEquals(testClass.name, fromFile.name);
         Assert.assertEquals(testClass.mtr, fromFile.mtr);

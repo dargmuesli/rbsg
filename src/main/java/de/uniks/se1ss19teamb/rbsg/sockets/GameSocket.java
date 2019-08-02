@@ -12,7 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
 
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     if (!firstGameInitObjectReceived) {
                         firstGameInitObjectReceived = true;
 
-                        InGameGame inGameGame = SerializeUtils.deserialize(data.toString(), InGameGame.class);
+                        InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
 
                         InGameController.inGameObjects.clear();
                         InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
@@ -121,18 +121,18 @@ public class GameSocket extends AbstractMessageWebSocket {
                             case "Water":
                             case "Mountain":
                                 EnvironmentTile environmentTile =
-                                    SerializeUtils.deserialize(data.toString(), EnvironmentTile.class);
+                                    SerializeUtil.deserialize(data.toString(), EnvironmentTile.class);
                                 InGameController.environmentTiles.put(new Pair<>(
                                     environmentTile.getX(), environmentTile.getY()), environmentTile);
                                 break;
                             case "Player":
                                 InGamePlayer inGamePlayer =
-                                    SerializeUtils.deserialize(data.toString(), InGamePlayer.class);
+                                    SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
                                 InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
                                 break;
                             case "Unit":
                                 InGameController.unitTiles.add(
-                                    SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                    SerializeUtil.deserialize(data.toString(), UnitTile.class));
                                 break;
                             default:
                                 NotificationHandler.getInstance().sendWarning(
@@ -155,7 +155,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
                         case "Player":
-                            InGamePlayer inGamePlayer = SerializeUtils.deserialize(data.toString(), InGamePlayer.class);
+                            InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
 
                             InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
 
@@ -170,7 +170,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                             break;
                         case "Unit":
                             InGameController.unitTiles.add(
-                                SerializeUtils.deserialize(data.toString(), UnitTile.class));
+                                SerializeUtil.deserialize(data.toString(), UnitTile.class));
                             break;
                         default:
                             NotificationHandler.getInstance().sendError(

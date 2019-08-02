@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
 import de.uniks.se1ss19teamb.rbsg.sockets.*;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -65,7 +65,7 @@ public class ChatHistoryTest {
         ArrayList<ChatHistoryEntry> loggedEntries = new ArrayList<>();
         while ((strLine = br.readLine()) != null) {
             // deserialize chatLog
-            ChatHistoryEntry entry = SerializeUtils.deserialize(strLine, ChatHistoryEntry.class);
+            ChatHistoryEntry entry = SerializeUtil.deserialize(strLine, ChatHistoryEntry.class);
             loggedEntries.add(entry);
         }
         //Close the input stream
