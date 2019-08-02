@@ -176,9 +176,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                     if (Strings.checkHasNot(data, "id", logger)) {
                         return;
                     }
+
                     String newValue;
                     String fieldName;
-
                     String type = data.get("id").getAsString().replaceFirst("@.+", "");
 
                     switch (type) {
@@ -235,16 +235,17 @@ public class GameSocket extends AbstractMessageWebSocket {
                             if (!InGameController.gameInitFinished
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
+
                                 if (GameLobbyController.instance != null) {
                                     GameLobbyController.instance.startGameTransition();
-
                                 }
                             }
+
                             if (data.get("fieldName").getAsString().equals("currentPlayer")) {
                                 TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
                             }
-                            String phase = data.get("newValue").getAsString();
-                            TurnUiController.getInstance().setTurn(phase);
+
+                            TurnUiController.getInstance().turnLabel.setText(data.get("newValue").getAsString());
                             break;
                         case "Unit":
                             if (Strings.checkHasNot(data, "fieldName", logger)) {
@@ -309,13 +310,16 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
                                     UnitTile attacker = InGameController.getInstance()
                                         .findAttackingUnit(InGameController.unitTiles.get(i));
+
                                     if (attacker != null) {
                                         SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
                                     }
+
                                     InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
                                     InGameController.unitTiles.remove(i);
                                 }
                             }
+
                             SoundManager.playSound("nani", 0);
                             break;
                         default:
@@ -411,9 +415,11 @@ public class GameSocket extends AbstractMessageWebSocket {
         JsonObject data = new JsonObject();
         data.addProperty("unitId", unitId);
         JsonArray jpath = new JsonArray();
+
         for (String p : path) {
             jpath.add(p);
         }
+
         data.add("path", jpath);
         json.add("data", data);
         sendToWebsocket(json);
@@ -472,5 +478,4 @@ public class GameSocket extends AbstractMessageWebSocket {
                                              .GameSocketGameChangeObject handler) {
         handlersChangeObject.add(handler);
     }
-
 }

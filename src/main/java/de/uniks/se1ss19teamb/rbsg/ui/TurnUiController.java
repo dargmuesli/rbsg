@@ -8,9 +8,18 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import org.apache.logging.log4j.LogManager;
 
 
 public class TurnUiController {
+
+    public ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
+
+    @FXML
+    public Label turnLabel;
+
+    @FXML
+    private JFXButton phaseBtn;
     @FXML
     private Label labelOne;
     @FXML
@@ -19,95 +28,77 @@ public class TurnUiController {
     private Label labelThree;
     @FXML
     private Label labelFour;
-    @FXML
-    private JFXButton phaseBtn;
-    @FXML
-    private Label turnLabel;
-    public ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
-    public ArrayList<Label> lblList = new ArrayList<>();
 
-    public static TurnUiController instance;
+    private ArrayList<Label> lblList = new ArrayList<>();
+
+    private static TurnUiController instance;
 
     public static TurnUiController getInstance() {
         return instance;
     }
 
+    @FXML
     public void initialize() {
         instance = this;
         phaseBtn.setTranslateY(-4);
         updatePlayers();
-        //setTurn("movePhase");
     }
 
+    /**
+     * Add all players to the player label list.
+     */
     public void updatePlayers() {
-        // add players from InGameController.ingameObjects to a playerList
         InGameController.inGameObjects.entrySet().stream()
             .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
             .forEachOrdered(inGameObjectEntry -> inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue())));
-        System.out.println(inGamePlayerList.get(0).getName() + "" + inGamePlayerList.get(1).getName());
         setLabelsVisible();
     }
 
+    /**
+     * Add labels according to the player list's size.
+     */
     private void setLabelsVisible() {
-        // check size of list and add lbls according to size, set labels visible
-        if (inGamePlayerList.size() == 2) {
-            lblList.add(0, labelOne);
-            lblList.add(1, labelTwo);
-            for (Label label: lblList) {
-                label.setVisible(true);
-            }
-            players();
-        } else if (inGamePlayerList.size() == 4) {
-            lblList.add(0, labelOne);
-            lblList.add(1, labelTwo);
+        if (inGamePlayerList.size() != 2 && inGamePlayerList.size() != 4) {
+            LogManager.getLogger().error("Did not expect player list size to be neither 2 nor 4!");
+            return;
+        }
+
+        lblList.add(0, labelOne);
+        lblList.add(1, labelTwo);
+
+        if (inGamePlayerList.size() == 4) {
             lblList.add(2, labelThree);
             lblList.add(3, labelFour);
-            for (Label label: lblList) {
-                label.setVisible(true);
-            }
-            players();
+        }
+
+        for (Label label : lblList) {
+            label.setVisible(true);
+        }
+
+        for (int i = 0; i < lblList.size(); i++) {
+            lblList.get(i).setText(inGamePlayerList.get(i).getName());
         }
     }
 
     @FXML
-    private void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(phaseBtn)) {
-            GameSocket.instance.nextPhase();
-        }
-    }
-
-    public void players() {
-        // initalize labels with names
-        if (inGamePlayerList.size() == 2) {
-            for (int i = 0; i < lblList.size(); i++) {
-                lblList.get(i).setText(inGamePlayerList.get(i).getName());
-            }
-        } else if (inGamePlayerList.size() == 4) {
-            for (int i = 0; i < lblList.size(); i++) {
-                lblList.get(i).setText(inGamePlayerList.get(i).getName());
-            }
-        }
-    }
-
-    public void setTurn(String phase) {
-        turnLabel.setText(phase);
+    private void nextPhase() {
+        GameSocket.instance.nextPhase();
     }
 
     public void showTurn(String currentPlayer) {
-        // iterate over all players in the playerList
-            for (InGamePlayer player: inGamePlayerList) {
-                // check if playID from gamesocket equals to any of those players in list
-                if (player.getId().equals(currentPlayer)) {
-                    // check which label has that name and color it red
-                    for (Label label: lblList) {
-                        if (label.getText().equals(player.getName())) {
-                            label.setStyle("-fx-text-fill: Red");
-                            // color the rest in the default text color of the client
-                        } else {
-                            label.setStyle("-fx-text-fill: #FFFF8d");
-                        }
+        // iterate over all players
+        for (InGamePlayer player: inGamePlayerList) {
+            // filter the current player
+            if (player.getId().equals(currentPlayer)) {
+                for (Label label: lblList) {
+                    // color the player's label
+                    if (label.getText().equals(player.getName())) {
+                        label.setStyle("-fx-text-fill: Red");
+                    } else {
+                        label.setStyle("-fx-text-fill: #FFFF8d");
                     }
                 }
             }
+        }
     }
 }

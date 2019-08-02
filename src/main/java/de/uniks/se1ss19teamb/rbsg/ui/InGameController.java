@@ -393,7 +393,6 @@ public class InGameController {
 
                     // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
                     if (neighborTile.isPassable()
-
                         && !overlayedStacks.containsKey(neighborStack)) {
                         
                         Pane overlay = new Pane();
