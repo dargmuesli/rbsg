@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -21,12 +22,14 @@ import org.testfx.util.WaitForAsyncUtils;
 
 public class UiTestsReal extends ApplicationTest {
 
-    @Before
-    public void setupHeadlessMode() {
+    @BeforeClass
+    public static void setupHeadlessMode() {
         System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
         System.setProperty("prism.text", "t2k");
+        System.setProperty("java.awt.headless", "true");
+        System.setProperty("monocle.platform", "Headless");
         
         RestRequestTestsReal.resetHttpManager();
     }
