@@ -13,6 +13,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 
+/**
+ * An easteregg that shows Zuendorf's pictogram on the stage's border that moves on hover and plays sounds after a fixed
+ * amount of location changes.
+ */
 public class ZuendorfMeme {
     protected static ImageView IMAGE_VIEW;
     protected static boolean QUIET = false;
@@ -31,12 +35,17 @@ public class ZuendorfMeme {
                         ZuendorfMeme.class.getResource("/de/uniks/se1ss19teamb/rbsg/memes/zuendorf_icon.png")
                             .getFile(), "UTF-8")));
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            NotificationHandler.getInstance().sendError("Couldn't load Zündorf meme image.", LogManager.getLogger());
+            NotificationHandler.getInstance().sendError("Couldn't load Zuendorf meme image.", LogManager.getLogger());
         }
 
         IMAGE_VIEW = new ImageView(IMAGE);
     }
 
+    /**
+     * The meme initializer.
+     *
+     * @param root The pane Zuendorf shall peek into.
+     */
     public static void setup(Pane root) {
         HOVER_COUNT = 0;
         IMAGE_VIEW.setOnMouseEntered(t -> {

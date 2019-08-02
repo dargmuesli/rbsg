@@ -14,52 +14,62 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="inGameScreen1" stylesheets="@../css/whiteDesign.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
-  <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-    <AnchorPane fx:id="inGameScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
-        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" stylesheets="@../css/whiteDesign.css"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
+    <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+    <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <children>
-                <HBox fx:id="head" alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-               <JFXButton fx:id="btnBigger" mnemonicParsing="false" onAction="#setOnAction" text="+" visible="false" />
-               <JFXButton fx:id="btnSmaller" mnemonicParsing="false" onAction="#setOnAction" prefHeight="27.0" prefWidth="27.0" text="-" visible="false" />
-                    <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#leaveGame" visible="false">
+                <HBox fx:id="head" alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0"
+                      AnchorPane.topAnchor="5.0">
+                    <JFXButton fx:id="btnBigger" mnemonicParsing="false" onAction="#bigger" text="+" visible="false"/>
+                    <JFXButton fx:id="btnSmaller" mnemonicParsing="false" onAction="#smaller" prefHeight="27.0"
+                               prefWidth="27.0" text="-" visible="false"/>
+                    <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#leaveGame" visible="false">
                         <graphic>
-                            <FontAwesomeIconView glyphName="REPLY" />
+                            <FontAwesomeIconView glyphName="REPLY"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+                    <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#logout" visible="false">
                         <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15" />
+                            <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+                    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#toggleFullscreen" visible="false">
                         <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15" />
+                            <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton fx:id="btnMiniMap" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#setOnAction" visible="false">
+                    <JFXButton fx:id="btnMiniMap" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                               onAction="#toggleMinimap" visible="false">
                         <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="MAP" size="15" />
+                            <FontAwesomeIconView boundsType="VISUAL" glyphName="MAP" size="15"/>
                         </graphic>
                     </JFXButton>
-                    <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0" />
+                    <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0"/>
                 </HBox>
                 <AnchorPane fx:id="turnUI">
                 </AnchorPane>
                 <StackPane prefWidth="200.0">
                     <children>
-                        <ScrollPane fx:id="mapScrollPane" hbarPolicy="NEVER" pannable="true" prefWidth="200.0" vbarPolicy="NEVER">
+                        <ScrollPane fx:id="mapScrollPane" hbarPolicy="NEVER" pannable="true" prefWidth="200.0"
+                                    vbarPolicy="NEVER">
                             <content>
                                 <GridPane fx:id="gameGrid">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                 </GridPane>
                             </content>
@@ -69,11 +79,15 @@
             </children>
         </VBox>
     </AnchorPane>
-   <AnchorPane fx:id="leaveGame" layoutX="50.0" layoutY="40.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2A2E37;" stylesheets="@../css/darkDesign.css" visible="false">
-      <children>
-         <JFXButton fx:id="btnNo" layoutX="110.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="No" visible="false" />
-         <JFXButton fx:id="btnYes" layoutX="55.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame" text="Yes" visible="false" />
-         <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="54.0" text="Concede?" textAlignment="CENTER" visible="false" />
-      </children>
-   </AnchorPane>
+    <AnchorPane fx:id="leaveGame" layoutX="50.0" layoutY="40.0" prefHeight="100.0" prefWidth="200.0"
+                style="-fx-background-color: #2A2E37;" stylesheets="@../css/darkDesign.css" visible="false">
+        <children>
+            <JFXButton fx:id="btnNo" layoutX="110.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame"
+                       text="No" visible="false"/>
+            <JFXButton fx:id="btnYes" layoutX="55.0" layoutY="47.0" mnemonicParsing="false" onAction="#leaveGame"
+                       text="Yes" visible="false"/>
+            <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="54.0" text="Concede?"
+                   textAlignment="CENTER" visible="false"/>
+        </children>
+    </AnchorPane>
 </AnchorPane>

@@ -17,7 +17,7 @@ public class UnitObjectController {
     @FXML
     private Button btnIncrease;
     @FXML
-    private HBox root;
+    private HBox hbxRoot;
     @FXML
     private Label labelUnitCount;
     @FXML
@@ -29,7 +29,7 @@ public class UnitObjectController {
     private int count = 0;
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{root}));
+        Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
     }
 
     void setUpUnitObject(Unit unit) {

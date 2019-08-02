@@ -36,19 +36,21 @@ import org.apache.logging.log4j.Logger;
 
 public class InGameController {
 
+    private static final double ZOOM_FACTOR = 0.07;
     public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
+    public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
-
+    private final Pane selectionOverlay = new Pane();
     @FXML
     private AnchorPane errorContainer;
     @FXML
-    private AnchorPane inGameScreen1;
+    private AnchorPane apnRoot;
     @FXML
-    private AnchorPane inGameScreen;
+    private AnchorPane apnFade;
     @FXML
     private AnchorPane leaveGame;
     @FXML
@@ -81,15 +83,11 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private AnchorPane turnUI;
-
-    private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private int zoomCounter = 0;
-
-    private Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private JFXTabPane chatPane;
@@ -97,8 +95,6 @@ public class InGameController {
     private TextField message;
     private VBox chatBox;
     private JFXButton btnMinimize;
-
-    private static final double ZOOM_FACTOR = 0.07;
 
     public static InGameController getInstance() {
         return instance;
@@ -133,10 +129,11 @@ public class InGameController {
         }
     }
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         instance = this;
         UserInterfaceUtils.initialize(
-            inGameScreen, inGameScreen1, InGameController.class, btnFullscreen, errorContainer);
+            apnFade, apnRoot, InGameController.class, btnFullscreen, errorContainer);
 
         for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {
@@ -144,14 +141,13 @@ public class InGameController {
             }
         }
 
-
         fillGameGrid();
 
         // changing width and height to heigher values makes the canvas of the minimap too big
         // if you want to change the size of minimap please use the size parameter (or rework calculation)
-        miniMap = TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId);
+        miniMap.getChildren().add(TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId));
         miniMap.setVisible(false);
-        inGameScreen.getChildren().add(miniMap);
+        apnFade.getChildren().add(miniMap);
 
         FXMLLoader loader = new FXMLLoader(getClass()
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
@@ -166,29 +162,34 @@ public class InGameController {
         selectionOverlay.setId("tile-selected");
     }
 
-    public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(btnLogout)) {
-            if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
-                return;
-            }
-            btnLogout.setDisable(true);
-            LoginController.setUserToken(null);
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", inGameScreen);
-        } else if (event.getSource().equals(btnMiniMap)) {
-            if (miniMap.isVisible()) {
-                miniMap.setVisible(false);
-            } else {
-                miniMap.setVisible(true);
-            }
-        } else if (event.getSource().equals(btnBigger)) {
-            zoomCounter++;
-            zoom();
-        } else if (event.getSource().equals(btnSmaller)) {
-            zoomCounter--;
-            zoom();
+    @FXML
+    private void bigger() {
+        zoomCounter++;
+        zoom();
+    }
+
+    @FXML
+    private void logout() {
+        UserInterfaceUtils.logout(apnFade, btnLogout);
+    }
+
+    @FXML
+    private void smaller() {
+        zoomCounter--;
+        zoom();
+    }
+
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+    }
+
+    @FXML
+    private void toggleMinimap() {
+        if (miniMap.isVisible()) {
+            miniMap.setVisible(false);
+        } else {
+            miniMap.setVisible(true);
         }
     }
 
@@ -207,7 +208,6 @@ public class InGameController {
             zoomCounter++;
         }
     }
-
 
     private void fillGameGrid() {
         int maxX = 0;
@@ -430,7 +430,6 @@ public class InGameController {
 
 
     public void leaveGame(ActionEvent event) {
-
         if (event.getSource().equals(btnBack)) {
             leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
             leaveGame.setLayoutY(head.getHeight());
@@ -443,38 +442,40 @@ public class InGameController {
             GameSocket.instance.leaveGame();
             GameSocket.instance.disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", inGameScreen);
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {
             leaveGame.setVisible(false);
             for (Node node : leaveGame.getChildren()) {
                 node.setVisible(false);
             }
         }
-
     }
 
     public void changeUnitHp(String unitId, String newHp) {
         UnitTile unit = null;
+
         for (UnitTile unitTile : unitTiles) {
             if (unitTile.getId().equals(unitId)) {
                 unit = unitTile;
                 break;
             }
         }
+
         assert unit != null;
         unit.setHp(Integer.parseInt(newHp));
 
         //for sounds find the attacking unit
         UnitTile attacker = findAttackingUnit(unit);
+
         if (attacker != null) {
             SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
         }
-
     }
 
     public UnitTile findAttackingUnit(UnitTile unit) {
         UnitTile neighbor = null;
         EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());
+
         for (UnitTile unitTile : unitTiles) {
             if ((unitPos.getBottom() != null && unitPos.getBottom().equals(unitTile.getPosition()))
                 || (unitPos.getLeft() != null && unitPos.getLeft().equals(unitTile.getPosition()))
@@ -484,7 +485,7 @@ public class InGameController {
                 break;
             }
         }
+
         return neighbor;
     }
-
 }

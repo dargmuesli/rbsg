@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
+import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
@@ -17,6 +18,7 @@ import de.uniks.se1ss19teamb.rbsg.util.Strings;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -141,10 +143,16 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameInitFinished":
+                
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
                     if (GameLobbyController.instance != null) {
                         GameLobbyController.instance.updatePlayers();
                     }
+                
+                    Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
+                        .add(TextureManager.computeMinimap(
+                            InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
+
                     break;
                 case "gameNewObject":
                     if (Strings.checkHasNot(data, "id", logger)) {
@@ -240,7 +248,6 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 InGameController.gameInitFinished = true;
                                 if (GameLobbyController.instance != null) {
                                     GameLobbyController.instance.startGameTransition();
-
                                 }
                             }
                             break;

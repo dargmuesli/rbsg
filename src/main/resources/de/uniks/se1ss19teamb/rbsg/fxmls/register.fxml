@@ -8,22 +8,31 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="registerScreen1" stylesheets="@../css/whiteDesign.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegisterController">
-    <AnchorPane fx:id="registerScreen" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
-        <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <FontAwesomeIconView glyphName="USER_CIRCLE" size="40" />
-            <JFXTextField fx:id="username" labelFloat="true" maxHeight="40.0" maxWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Username" />
-            <JFXPasswordField fx:id="password" labelFloat="true" maxHeight="40.0" maxWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Password" />
-            <JFXPasswordField fx:id="passwordRepeat" labelFloat="true" maxHeight="40.0" maxWidth="300.0" onAction="#onEnter" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password" />
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" stylesheets="@../css/whiteDesign.css"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegistrationController">
+    <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
+        <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <FontAwesomeIconView glyphName="USER_CIRCLE" size="40"/>
+            <JFXTextField fx:id="username" labelFloat="true" maxHeight="40.0" maxWidth="300.0" prefHeight="40.0"
+                          prefWidth="300.0" promptText="Username"/>
+            <JFXPasswordField fx:id="password" labelFloat="true" maxHeight="40.0" maxWidth="300.0" prefHeight="40.0"
+                              prefWidth="300.0" promptText="Password"/>
+            <JFXPasswordField fx:id="passwordRepeat" labelFloat="true" maxHeight="40.0" maxWidth="300.0"
+                              onAction="#onEnter" prefHeight="40.0" prefWidth="300.0" promptText="Confirm Password"/>
             <HBox alignment="CENTER" spacing="25.0">
-                <JFXButton fx:id="btnConfirm" onAction="#eventHandler" onKeyPressed="#keyEventHandler" prefWidth="110.0" text="Confirm" />
-                <JFXButton fx:id="btnCancel" onAction="#eventHandler" onKeyPressed="#keyEventHandler" prefWidth="110.0" text="Cancel" />
+                <JFXButton fx:id="btnConfirm" onAction="#confirm" onKeyPressed="#keyEventHandler" prefWidth="110.0"
+                           text="Confirm"/>
+                <JFXButton fx:id="btnCancel" onAction="#cancel" onKeyPressed="#keyEventHandler" prefWidth="110.0"
+                           text="Cancel"/>
             </HBox>
         </VBox>
-        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#eventHandler" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+        <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#toggleFullscreen"
+                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
             <graphic>
-                <FontAwesomeIconView glyphName="EXPAND" size="15" />
+                <FontAwesomeIconView glyphName="EXPAND" size="15"/>
             </graphic>
         </JFXButton>
     </AnchorPane>
