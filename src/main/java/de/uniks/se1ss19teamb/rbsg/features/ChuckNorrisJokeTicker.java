@@ -3,6 +3,9 @@ package de.uniks.se1ss19teamb.rbsg.features;
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 
+/**
+ * Provider for Chuck Norris Jokes.
+ */
 public class ChuckNorrisJokeTicker {
 
     private static String[] jokes = {
@@ -27,30 +30,39 @@ public class ChuckNorrisJokeTicker {
     private static int random;
     private static AnimationTimer animationTimer;
 
+    /**
+     * Creates and starts a new {@link AnimationTimer} that moves a random joke label.
+     *
+     * @param label The label to set the joke text for and that is to be moved.
+     */
     public static void moveLabel(Label label) {
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-
                 if (label.getLayoutX() != -1000) {
                     label.setLayoutX(label.getLayoutX() - 2);
                 } else if (label.getLayoutX() == -1000) {
-                    random = (int) (Math.random() * jokes.length);
-                    label.setText(jokes[random]);
-                    label.setLayoutX(2200);
+                    setLabelPosition(label);
                 }
             }
         };
         animationTimer.start();
     }
 
+    /**
+     * Selects a random joke and updates a label.
+     *
+     * @param label The label to set the joke text for and that is placed at {@code x = 2200}.
+     */
     public static void setLabelPosition(Label label) {
         random = (int) (Math.random() * jokes.length);
         label.setText(jokes[random]);
         label.setLayoutX(2200);
-        label.setTranslateY(label.getLayoutY() + 75);
     }
 
+    /**
+     * Stops the {@link AnimationTimer}.
+     */
     public static void stopAnimation() {
         animationTimer.stop();
     }

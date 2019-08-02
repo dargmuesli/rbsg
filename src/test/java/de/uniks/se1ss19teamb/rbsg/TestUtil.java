@@ -6,6 +6,7 @@ import java.util.Random;
 import javafx.application.Application;
 
 public class TestUtil {
+
     public static void initJfx() throws InterruptedException {
         Thread t = new Thread("JavaFX Init Thread") {
             public void run() {
@@ -25,5 +26,12 @@ public class TestUtil {
 
     public static void initRandom() {
         RandomUtil.RANDOM = new Random(123);
+    }
+
+    public static void setupHeadlessMode() {
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
     }
 }

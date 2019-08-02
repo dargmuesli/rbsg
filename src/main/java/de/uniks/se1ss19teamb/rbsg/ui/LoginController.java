@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,7 +33,7 @@ public class LoginController {
     private static UserData userData;
 
     @FXML
-    private AnchorPane loginScreen;
+    private AnchorPane apnFade;
     @FXML
     private JFXTextField txtUserName;
     @FXML
@@ -50,7 +49,7 @@ public class LoginController {
     @FXML
     private JFXCheckBox rememberLogin;
     @FXML
-    private AnchorPane loginScreen1;
+    private AnchorPane apnRoot;
     @FXML
     private Label jokeLabel;
 
@@ -72,16 +71,17 @@ public class LoginController {
 
     public void initialize() {
 
-        Theming.setTheme(Arrays.asList(new Pane[]{loginScreen, loginScreen1}));
+        Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
+        jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
       
-        UserInterfaceUtils.initialize(loginScreen, loginScreen1, LoginController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
-        userData = UserData.loadUserData(NotificationHandler.getInstance());
+        userData = UserData.loadUserData();
 
         if (userData == null) {
             userData = new UserData();
@@ -101,46 +101,39 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData(NotificationHandler.getInstance());
+        UserData.deleteUserData();
 
-        loginScreen.setOpacity(0);
+        apnFade.setOpacity(0);
 
         // 1% meme chance
         if (new Random().nextFloat() < 0.01) {
             // needed because of root.getWidth/Height
-            Platform.runLater(() -> ZuendorfMeme.setup(loginScreen1));
+            Platform.runLater(() -> ZuendorfMeme.setup(apnRoot));
         }
     }
 
     @FXML
-    void eventHandler(ActionEvent event) {
-        if (event.getSource().equals(btnFullscreen)) {
-            UserInterfaceUtils.toggleFullscreen(btnFullscreen);
-        } else if (event.getSource().equals(btnLogin)) {
-            login();
-            btnLogin.setDisable(true);
-        } else if (event.getSource().equals(btnRegistration)) {
-            goToRegister();
-            btnRegistration.setDisable(true);
-            ChuckNorrisJokeTicker.stopAnimation();
-        }
+    private void goToRegistration() {
+        btnRegistration.setDisable(true);
+        saveUserData();
+        UserInterfaceUtils.makeFadeOutTransition(
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", apnFade);
+        ChuckNorrisJokeTicker.stopAnimation();
     }
 
     @FXML
-    public void onEnter() {
-        login();
-    }
-
     private void login() {
+        btnLogin.setDisable(true);
+
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie Benutzernamen und Passwort ein.", logger);
+            NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
             return;
         }
 
         if (rememberLogin.isSelected()) {
             saveUserData();
         } else {
-            UserData.deleteUserData(NotificationHandler.getInstance());
+            UserData.deleteUserData();
         }
 
         RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))
@@ -149,13 +142,17 @@ public class LoginController {
         setUserName(txtUserName.getText());
         ChuckNorrisJokeTicker.stopAnimation();
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", loginScreen);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
     }
 
-    private void goToRegister() {
-        saveUserData();
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/register.fxml", loginScreen);
+    @FXML
+    private void toggleFullscreen() {
+        UserInterfaceUtils.toggleFullscreen(btnFullscreen);
+    }
+
+    @FXML
+    public void onEnter() {
+        login();
     }
 
     private void saveUserData() {
@@ -163,7 +160,7 @@ public class LoginController {
         userData.setLoginPassword(password.getText());
         userData.setLoginRemember(rememberLogin.isSelected());
 
-        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
+        SerializeUtil.serialize(UserData.USER_DATA_PATH.toString(),
             userData);
     }
 }

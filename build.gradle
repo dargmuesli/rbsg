@@ -71,6 +71,8 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.fulib', name: 'fulib', version: '1.0+'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
+    testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.2'
+    testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.2'
     testImplementation group: 'org.testfx', name: 'openjfx-monocle', version: '8u76-b04'
     testImplementation group: 'org.testfx', name: 'testfx-core', version: '4.0.15-alpha'
     testImplementation group: 'org.testfx', name: 'testfx-junit5', version: '4.0.15-alpha'

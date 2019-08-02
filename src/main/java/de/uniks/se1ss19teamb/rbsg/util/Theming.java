@@ -40,11 +40,11 @@ public class Theming {
 
     public static boolean darkModeActive() {
         if (!cssModeFile.exists()) {
-            SerializeUtils.serialize(cssModeFile.getAbsolutePath(), true);
+            SerializeUtil.serialize(cssModeFile.getAbsolutePath(), true);
             return true;
         }
 
-        Boolean cssMode = SerializeUtils.deserialize(cssModeFile, boolean.class);
+        Boolean cssMode = SerializeUtil.deserialize(cssModeFile, boolean.class);
 
         if (cssMode == null) {
             NotificationHandler.getInstance().sendError("Could not load css mode from file!", logger);

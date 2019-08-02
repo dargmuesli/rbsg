@@ -4,9 +4,9 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainPane1" xmlns="http://javafx.com/javafx/8.0.221"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" xmlns="http://javafx.com/javafx/8.0.221"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerContainerController">
-    <AnchorPane fx:id="mainPane" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
+    <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
         <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

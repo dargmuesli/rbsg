@@ -5,8 +5,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.ui.DragMoveResize;
-import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 
@@ -21,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
@@ -48,23 +47,33 @@ public class UserInterfaceUtils {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
+                    "Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
     }
 
-    public static void makeFadeOutTransition(String path, Node node, Node chatWindow) {
-        FadeTransition fadeTransition = setTransition(node);
+    public static void makeFadeOutTransition(String nextFxmlPath, Node nodeToFade, Node chatNode) {
+        makeFadeOutTransition(nextFxmlPath, nodeToFade, chatNode, true);
+    }
+
+    public static void makeFadeOutTransition(String nextFxmlPath, Node nodeToFade, Node chatNode, boolean chatMovable) {
+        FadeTransition fadeTransition = setTransition(nodeToFade);
         fadeTransition.setOnFinished(event -> {
             try {
-                DragMoveResize.makeChangeable((Region) chatWindow);
-                AnchorPane pane = FXMLLoader.load(UserInterfaceUtils.class.getResource(path));
-                pane.getChildren().add(chatWindow);
-                node.getScene().setRoot(pane);
+                Pane nextFxml = FXMLLoader.load(UserInterfaceUtils.class.getResource(nextFxmlPath));
+
+                if (chatMovable) {
+                    DragMoveResize.makeChangeable((Region) chatNode);
+                    nextFxml.getChildren().add(chatNode);
+                } else {
+                    ((VBox) nextFxml.lookup("#chatContainer")).getChildren().add(chatNode);
+                }
+
+                nodeToFade.getScene().setRoot(nextFxml);
             } catch (IOException e) {
                 NotificationHandler.getInstance().sendError(
-                    "\u00DCbergang in die n\u00E4chste Szene konnte nicht ausgef\u00FChrt werden!", logger, e);
+                    "Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -131,7 +140,7 @@ public class UserInterfaceUtils {
             });
         } catch (IOException e) {
             NotificationHandler.getInstance()
-                .sendError("Fehler beim Laden der FXML-Datei für die Lobby!", logger, e);
+                .sendError("Error loading the popup controller's fxml!", logger, e);
         }
     }
 

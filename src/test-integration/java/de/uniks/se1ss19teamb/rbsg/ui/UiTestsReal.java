@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
@@ -20,11 +21,8 @@ import org.testfx.util.WaitForAsyncUtils;
 class UiTestsReal extends ApplicationTest {
 
     @BeforeAll
-    static void setupHeadlessMode() {
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
+    static void before() {
+        TestUtil.setupHeadlessMode();
     }
 
     @Override
