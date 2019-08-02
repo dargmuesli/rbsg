@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.ArrayList;
@@ -15,12 +16,18 @@ import java.util.List;
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class WebSocketTestsMocked {
 
     private WebSocketClient client;
     private GameSocket gameSocket = new GameSocket("54321", "12543", false);
+
+    @BeforeClass
+    public static void beforeClass() throws InterruptedException {
+        TestUtil.initJfx();
+    }
 
     @Before
     public void prepareClient() {
