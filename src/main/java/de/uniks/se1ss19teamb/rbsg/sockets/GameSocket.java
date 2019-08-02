@@ -241,7 +241,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 }
                             }
                             if (data.get("fieldName").getAsString().equals("currentPlayer")) {
-                                TurnUiController.instance.showTurn();
+                                TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
                             }
                             String phase = data.get("newValue").getAsString();
                             TurnUiController.getInstance().setTurn(phase);

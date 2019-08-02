@@ -23,7 +23,8 @@ public class TurnUiController {
     private JFXButton phaseBtn;
     @FXML
     private Label turnLabel;
-    private ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
+    public ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
+    public ArrayList<Label> lblList = new ArrayList<>();
 
     public static TurnUiController instance;
 
@@ -32,18 +33,38 @@ public class TurnUiController {
     }
 
     public void initialize() {
-        updatePlayers();
-        labelOne.setStyle("-fx-text-fill: Red");
         instance = this;
-        setTurn("movePhase");
         phaseBtn.setTranslateY(-4);
+        Platform.runLater(() -> {
+            updatePlayers();
+            //setTurn("movePhase");
+        });
     }
 
-    private void updatePlayers() {
+    public void updatePlayers() {
+        // add players from InGameController.ingameObjects to a playerList
         InGameController.inGameObjects.entrySet().stream()
             .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
             .forEachOrdered(inGameObjectEntry -> inGamePlayerList.add(((InGamePlayer)inGameObjectEntry.getValue())));
-        players();
+        System.out.println(inGamePlayerList.get(0).getName() + "" + inGamePlayerList.get(1).getName());
+        // check size of list and add lbls according to size, set labels visible
+        if (inGamePlayerList.size() == 2) {
+            lblList.add(0, labelOne);
+            lblList.add(1, labelTwo);
+            for (Label label: lblList) {
+                label.setVisible(true);
+            }
+            players();
+        } else if (inGamePlayerList.size() == 4) {
+            lblList.add(0, labelOne);
+            lblList.add(1, labelTwo);
+            lblList.add(2, labelThree);
+            lblList.add(3, labelFour);
+            for (Label label: lblList) {
+                label.setVisible(true);
+            }
+            players();
+        }
     }
 
     @FXML
@@ -53,37 +74,38 @@ public class TurnUiController {
         }
     }
 
-    private void players() {
+    public void players() {
+        // initalize labels with names
         if (inGamePlayerList.size() == 2) {
-            labelOne.setVisible(true);
-            labelTwo.setVisible(true);
-            labelOne.setText(inGamePlayerList.get(1).getName());
-            labelTwo.setText(inGamePlayerList.get(0).getName());
+            for (int i = 0; i < lblList.size(); i++) {
+                lblList.get(i).setText(inGamePlayerList.get(i).getName());
+            }
         } else if (inGamePlayerList.size() == 4) {
-            labelOne.setVisible(true);
-            labelTwo.setVisible(true);
-            labelThree.setVisible(true);
-            labelFour.setVisible(true);
-            labelOne.setText(inGamePlayerList.get(3).getName());
-            labelTwo.setText(inGamePlayerList.get(2).getName());
-            labelThree.setText(inGamePlayerList.get(1).getName());
-            labelFour.setText(inGamePlayerList.get(0).getName());
+            for (int i = 0; i < lblList.size(); i++) {
+                lblList.get(i).setText(inGamePlayerList.get(i).getName());
+            }
         }
     }
 
     public void setTurn(String phase) {
-        Platform.runLater(() -> turnLabel.setText(phase));
+        turnLabel.setText(phase);
     }
 
-    public void showTurn() {
-        Platform.runLater(() -> {
-            if (labelOne.getStyle().equals("-fx-text-fill: Red")) {
-                labelTwo.setStyle("-fx-text-fill: Red");
-                labelOne.setStyle("-fx-text-fill: #FFFF8d");
-            } else if (labelTwo.getStyle().equals("-fx-text-fill: Red")) {
-                labelOne.setStyle("-fx-text-fill: Red");
-                labelTwo.setStyle("-fx-text-fill: #FFFF8d");
+    public void showTurn(String currentPlayer) {
+        // iterate over all players in the playerList
+            for (InGamePlayer player: inGamePlayerList) {
+                // check if playID from gamesocket equals to any of those players in list
+                if (player.getId().equals(currentPlayer)) {
+                    // check which label has that name and color it red
+                    for (Label label: lblList) {
+                        if (label.getText().equals(player.getName())) {
+                            label.setStyle("-fx-text-fill: Red");
+                            // color the rest in the default text color of the client
+                        } else {
+                            label.setStyle("-fx-text-fill: #FFFF8d");
+                        }
+                    }
+                }
             }
-        });
     }
 }
