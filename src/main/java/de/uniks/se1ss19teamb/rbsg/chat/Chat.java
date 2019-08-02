@@ -6,7 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.AbstractMessageWebSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -110,7 +110,7 @@ public class Chat {
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
             for (ChatHistoryEntry cle : history) {
-                out.println(SerializeUtils.serialize(cle));
+                out.println(SerializeUtil.serialize(cle));
             }
         } catch (IOException e) {
             NotificationHandler.getInstance().sendError("Writing to the chat directory failed!", logger, e);

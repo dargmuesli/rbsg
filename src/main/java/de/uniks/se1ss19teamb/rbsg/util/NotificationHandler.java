@@ -9,7 +9,6 @@ public class NotificationHandler {
     private PopupController popupController;
 
     private NotificationHandler() {
-
     }
 
     public static NotificationHandler getInstance() {
@@ -20,8 +19,12 @@ public class NotificationHandler {
         return notificationHandler;
     }
 
+    public PopupController getPopupController() {
+        return this.popupController;
+    }
+
     public void setPopupController(PopupController epc) {
-        popupController = epc;
+        this.popupController = epc;
     }
 
     public void sendError(String errorMessage, Logger logger) {
@@ -67,5 +70,4 @@ public class NotificationHandler {
             popupController.displayWarning(warningMessage);
         }
     }
-
 }

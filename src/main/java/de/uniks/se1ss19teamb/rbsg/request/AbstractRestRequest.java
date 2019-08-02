@@ -18,7 +18,7 @@ public abstract class AbstractRestRequest implements RestRequest {
 
     private static final String url = "https://rbsg.uniks.de/api";
     private static final Logger logger = LogManager.getLogger();
-    static HttpManager httpManager = new HttpManager();
+    public static HttpManager httpManager = new HttpManager();
     private JsonObject response = null;
 
     protected abstract JsonObject buildJson();

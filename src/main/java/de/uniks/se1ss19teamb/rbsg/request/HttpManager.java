@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 
-class HttpManager {
+public class HttpManager {
 
     private final HttpClient httpClient;
 

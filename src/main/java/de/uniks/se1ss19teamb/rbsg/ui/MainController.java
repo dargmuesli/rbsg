@@ -11,20 +11,16 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -227,7 +223,7 @@ public class MainController {
 
     @FXML
     private void changeTheme() {
-        SerializeUtils.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
+        SerializeUtil.serialize(Theming.cssModeFile.getAbsolutePath(), !Theming.darkModeActive());
         Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
 
         // the game view contains sub-fxmls and thus needs to be updated separately
