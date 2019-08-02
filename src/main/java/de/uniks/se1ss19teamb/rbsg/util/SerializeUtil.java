@@ -7,8 +7,7 @@ import javax.swing.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-public class SerializeUtils {
+public class SerializeUtil {
     private static final Logger logger = LogManager.getLogger();
 
     public static Optional<File> chooseFile() {
@@ -32,6 +31,7 @@ public class SerializeUtils {
             NotificationHandler.getInstance().sendError(
                 "Could not deserialize " + file.getName() + " to " + myClass.getName() + "!", logger, e);
         }
+
         return null;
     }
 

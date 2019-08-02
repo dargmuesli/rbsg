@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -161,7 +160,7 @@ public class LoginController {
         userData.setLoginPassword(password.getText());
         userData.setLoginRemember(rememberLogin.isSelected());
 
-        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(),
+        SerializeUtil.serialize(UserData.USER_DATA_PATH.toString(),
             userData);
     }
 }

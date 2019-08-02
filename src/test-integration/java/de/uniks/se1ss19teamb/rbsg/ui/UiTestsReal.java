@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
@@ -24,14 +25,7 @@ public class UiTestsReal extends ApplicationTest {
 
     @BeforeClass
     public static void setupHeadlessMode() {
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
-        System.setProperty("java.awt.headless", "true");
-        System.setProperty("monocle.platform", "Headless");
-        
-        RestRequestTestsReal.resetHttpManager();
+        TestUtil.setupHeadlessMode();
     }
 
     @Override

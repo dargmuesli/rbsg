@@ -125,7 +125,7 @@ public class RegistrationController {
         userData.setLoginUsername(username.getText());
         userData.setLoginPassword(password.getText());
 
-        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
+        SerializeUtil.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
         NotificationHandler.getInstance().sendSuccess("Registered successfully!", logger);
 
@@ -139,7 +139,7 @@ public class RegistrationController {
         userData.setRegistrationPassword(password.getText());
         userData.setRegistrationPasswordRepeat(passwordRepeat.getText());
 
-        SerializeUtils.serialize(UserData.USER_DATA_PATH.toString(), userData);
+        SerializeUtil.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);

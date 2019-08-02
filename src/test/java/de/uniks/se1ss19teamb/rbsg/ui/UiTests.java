@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
 
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -29,13 +30,7 @@ public class UiTests extends ApplicationTest {
 
     @BeforeClass
     public static void setupHeadlessMode() {
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
-        System.setProperty("java.awt.headless", "true");
-        System.setProperty("glass.platform", "Monocle");
-        System.setProperty("monocle.platform", "Headless");
+        TestUtil.setupHeadlessMode();
     }
 
     @Override

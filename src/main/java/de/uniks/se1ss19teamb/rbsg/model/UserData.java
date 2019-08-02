@@ -1,7 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ public class UserData {
             return null;
         }
 
-        return SerializeUtils.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
+        return SerializeUtil.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
     }
 
     /**
