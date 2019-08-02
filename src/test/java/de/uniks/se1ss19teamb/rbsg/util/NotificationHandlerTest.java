@@ -1,14 +1,14 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class NotificationHandlerTest {
     private Exception e = new Exception();
