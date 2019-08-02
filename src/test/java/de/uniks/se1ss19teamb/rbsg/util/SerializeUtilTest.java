@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
-
+import javax.swing.*;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,8 +22,6 @@ import org.mockito.internal.util.reflection.FieldSetter;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import javax.swing.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SerializeUtil.class)
@@ -48,13 +46,13 @@ public class SerializeUtilTest {
     public void chooseFileTest() throws Exception {
         File file = new File("");
 
-        JFileChooser jFileChooserMock = mock(JFileChooser.class);
-        whenNew(JFileChooser.class).withNoArguments().thenReturn(jFileChooserMock);
-        when(jFileChooserMock.showSaveDialog(any())).thenReturn(0);
-        when(jFileChooserMock.getSelectedFile()).thenReturn(file);
+        JFileChooser fileChooserMock = mock(JFileChooser.class);
+        whenNew(JFileChooser.class).withNoArguments().thenReturn(fileChooserMock);
+        when(fileChooserMock.showSaveDialog(any())).thenReturn(0);
+        when(fileChooserMock.getSelectedFile()).thenReturn(file);
         Assert.assertEquals(Optional.of(file), SerializeUtil.chooseFile());
 
-        when(jFileChooserMock.showSaveDialog(any())).thenReturn(1);
+        when(fileChooserMock.showSaveDialog(any())).thenReturn(1);
         Assert.assertEquals(Optional.empty(), SerializeUtil.chooseFile());
     }
 
