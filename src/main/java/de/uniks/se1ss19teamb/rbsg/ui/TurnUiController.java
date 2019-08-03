@@ -4,8 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import java.util.ArrayList;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.apache.logging.log4j.LogManager;
@@ -39,9 +37,9 @@ public class TurnUiController {
 
     @FXML
     public void initialize() {
-        instance = this;
-        phaseBtn.setTranslateY(-4);
-        updatePlayers();
+            instance = this;
+            phaseBtn.setTranslateY(-4);
+            updatePlayers();
     }
 
     /**
@@ -82,7 +80,7 @@ public class TurnUiController {
 
     @FXML
     private void nextPhase() {
-        GameSocket.instance.nextPhase();
+            GameSocket.instance.nextPhase();
     }
 
     public void showTurn(String currentPlayer) {
