@@ -9,19 +9,22 @@ import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
-class UiTestsReal extends ApplicationTest {
+public class UiTestsReal extends ApplicationTest {
 
-    @BeforeAll
-    static void before() {
+    @BeforeClass
+    public static void setupHeadlessMode() {
         TestUtil.setupHeadlessMode();
     }
 
@@ -51,7 +54,8 @@ class UiTestsReal extends ApplicationTest {
 
     // username and password: junit
     @Test
-    void testInGame() {
+    @Ignore
+    public void testInGame() {
         RestRequestTestsReal.loginUser();
         RestRequestTestsReal.createGame();
 
@@ -71,7 +75,7 @@ class UiTestsReal extends ApplicationTest {
         gameSocket.readyToPlay();
 
         // player with UI
-        clickOn("#userName");
+        clickOn("#txtUserName");
         write("TeamBTestUser2");
         clickOn("#password");
         write("qwertz");
@@ -154,6 +158,74 @@ class UiTestsReal extends ApplicationTest {
         // logout
         clickOn("#hamburgerMenu");
         WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnLogout");
+        sleep(2000); // sleep to finish transition
+    }
+    
+    @Test
+    public void falseLoginTest() {
+        clickOn("#txtUserName");
+        write("");
+        clickOn("#password");
+        write("");
+        clickOn("#rememberLogin");
+        clickOn("#btnLogin");
+    }
+
+    @Test
+    public void registerTest() {
+        clickOn("#btnRegistration");
+        sleep(2000); // sleep to finish transition
+        clickOn("#username");
+        write("TeamBTestUser").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#password");
+        write("qwertz").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#passwordRepeat");
+        write("qwert").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#passwordRepeat");
+        write("z").push(KeyCode.ENTER);
+        clickOn("#btnConfirm");
+        clickOn("#btnCancel");
+        sleep(2000); // sleep to finish transition
+    }
+
+    @Test
+    public void loginMainTest() {
+        clickOn("#txtUserName");
+        write("TeamBTestUser");
+        clickOn("#password");
+        write("qwertz");
+        clickOn("#btnLogin");
+        sleep(2000); // sleep to finish action
+        // chat
+        clickOn("#message");
+        write("/all ");
+        write("/w me test");
+        clickOn("#btnSend");
+        // game
+        clickOn("#gameName");
+        write("ayGame");
+        clickOn("#btnCreate");
+        sleep(500); // sleep to finish action
+        ListView list = lookup("#gameListView").queryAs(ListView.class);
+        HBox box;
+        for (int i = 0; i < list.getItems().size(); i++) {
+            box = (HBox) list.getItems().get(i);
+            Label label = (Label) box.lookup("Label");
+            if (label.getText().equals("ayGame")) {
+                Button button = (Button) box.lookup("#delete");
+                clickOn(button);
+                sleep(500); // sleep to finish action
+            }
+        }
+        // logout
+        clickOn("#hamburgerMenu");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnColorMode");
+        clickOn("#btnColorMode");
         clickOn("#btnLogout");
         sleep(2000); // sleep to finish transition
     }

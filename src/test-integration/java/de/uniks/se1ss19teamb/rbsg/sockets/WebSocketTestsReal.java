@@ -2,13 +2,21 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.http.ParseException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class WebSocketTestsReal {
+
+    @Before
+    public void setupTests() {
+        RestRequestTestsReal.resetHttpManager();
+    }
 
     @Test
     public void systemSocketTest() throws ParseException, InterruptedException {

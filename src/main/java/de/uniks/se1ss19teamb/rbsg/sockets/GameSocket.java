@@ -58,6 +58,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                 return;
             }
 
+            System.out.println(response);
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
@@ -131,6 +132,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
                                 break;
                             case "Unit":
+                                //TODO does this case exist?
                                 InGameController.unitTiles.add(
                                     SerializeUtil.deserialize(data.toString(), UnitTile.class));
                                 break;
@@ -141,12 +143,16 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameInitFinished":
+                
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
-                    GameLobbyController.instance.updatePlayers();
-
+                    if (GameLobbyController.instance != null) {
+                        GameLobbyController.instance.updatePlayers();
+                    }
+                
                     Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
                         .add(TextureManager.computeMinimap(
                             InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
+
                     break;
                 case "gameNewObject":
                     if (StringUtil.checkHasNot(data, "id", logger)) {

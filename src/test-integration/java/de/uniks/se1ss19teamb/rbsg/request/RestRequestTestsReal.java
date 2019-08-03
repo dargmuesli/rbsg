@@ -11,6 +11,7 @@ import java.util.*;
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,6 +37,15 @@ public class RestRequestTestsReal {
     private String armyId;
 
     // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void resetHttpManager() {
+        AbstractRestRequest.httpManager = new HttpManager();
+    }
+
+    @Before
+    public void setupTests() {
+        resetHttpManager();
+    }
 
     private void createArmy() {
         List<Unit> units = new ArrayList<>();
@@ -390,14 +400,15 @@ public class RestRequestTestsReal {
         RequestUtil.request(new QueryGamesRequest(userToken)).ifPresent(
             stringGameMetaHashMap -> stringGameMetaHashMap.entrySet().stream().filter(
                 stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
-            .equals("TeamBTestUserGame"))
-            .forEach(stringGameMetaEntry -> {
-                System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
-                    + " with id " + stringGameMetaEntry.getValue().getId() + "...");
+                    .equals("TeamBTestUserGame"))
+                .forEach(stringGameMetaEntry -> {
+                    System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
+                        + " with id " + stringGameMetaEntry.getValue().getId() + "...");
 
-                if (!RequestUtil.request(new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
-                    Assert.fail();
-                }
-            }));
+                    if (!RequestUtil.request(
+                        new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
+                        Assert.fail();
+                    }
+                }));
     }
 }
