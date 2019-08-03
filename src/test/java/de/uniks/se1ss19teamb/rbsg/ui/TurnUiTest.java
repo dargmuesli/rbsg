@@ -3,8 +3,10 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 class TurnUiTest {
 
     private InGameGame inGameGame = new InGameGame();
