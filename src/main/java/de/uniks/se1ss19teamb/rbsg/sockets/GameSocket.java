@@ -11,6 +11,7 @@ import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.ui.WinScreenController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
@@ -237,12 +238,17 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
                             break;
                         case "Game":
+                            System.out.print(data);
                             if (!InGameController.gameInitFinished
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
                                 if (GameLobbyController.instance != null) {
                                     GameLobbyController.instance.startGameTransition();
                                 }
+                            }
+
+                            if (data.get("fieldName").getAsString().equals("winner")) {
+                                WinScreenController.instance.setWinningScreen(data.get("newValue").getAsString());
                             }
                             break;
                         case "Unit":
