@@ -56,10 +56,8 @@ public class TurnUiController {
     }
 
     @FXML
-    private void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(phaseBtn)) {
-            GameSocket.instance.nextPhase();
-        }
+    private void nextPhase() {
+        GameSocket.instance.nextPhase();
     }
 
     private void players() {

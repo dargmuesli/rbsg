@@ -9,7 +9,7 @@ public class PrivateTabController {
     @FXML
     public ScrollPane scroll;
     @FXML
-    private Tab newTab;
+    private Tab tbRoot;
     @FXML
     private VBox textArea;
 
@@ -29,12 +29,12 @@ public class PrivateTabController {
     private void addContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem closeMenuItem = new MenuItem("close");
-        closeMenuItem.setOnAction((e) -> newTab.getTabPane().getTabs().remove(newTab));
+        closeMenuItem.setOnAction((e) -> tbRoot.getTabPane().getTabs().remove(tbRoot));
         contextMenu.getItems().add(closeMenuItem);
         contextMenu.setStyle("-fx-background-color:transparent;");
         contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
             + "-fx-padding: 0px;");
-        newTab.setContextMenu(contextMenu);
+        tbRoot.setContextMenu(contextMenu);
 
     }
 }

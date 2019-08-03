@@ -3,7 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.util;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.Logger;
 
-public class Strings {
+public class StringUtil {
     public static final String DISCARD_CONFIRMATION
         = "You did not save yet! Click again to confirm you want discard the changes.";
 
@@ -17,6 +17,7 @@ public class Strings {
                     .sendError("There was unexpected data!", logger,
                         new NoSuchFieldException("Json does not have an \"" + key + "\" key!"));
             }
+
             return true;
         }
 

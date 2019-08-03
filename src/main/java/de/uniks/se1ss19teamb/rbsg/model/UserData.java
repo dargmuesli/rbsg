@@ -1,7 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.model;
 
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.SerializeUtils;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -11,8 +11,14 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * A model for login and registration usernames and passwords.
+ */
 public class UserData {
 
+    /**
+     * The default path to save the user's data to: {@code <tmp-dir>/rbsg_user-data.json}.
+     */
     public static final Path USER_DATA_PATH =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rbsg_user-data.json");
     private static final Logger logger = LogManager.getLogger();
@@ -20,77 +26,141 @@ public class UserData {
     private boolean loginRemember = false;
     private String loginUsername = "";
 
-    private String registerPassword = "";
-    private String registerPasswordRepeat = "";
-    private String registerUsername = "";
+    private String registrationPassword = "";
+    private String registrationPasswordRepeat = "";
+    private String registrationUsername = "";
 
-    public static UserData loadUserData(NotificationHandler notificationHandler) {
+    /**
+     * Checks the default user data file's existence and returns its deserialization.
+     *
+     * @return The deserialized user data file.
+     */
+    public static UserData loadUserData() {
         if (!UserData.USER_DATA_PATH.toFile().exists()) {
-            if (notificationHandler != null) {
-                Platform.runLater(() -> logger.info("User data doesn't exist!"));
-            }
-
+            Platform.runLater(() -> logger.info("User data doesn't exist!"));
             return null;
         }
 
-        return SerializeUtils.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
+        return SerializeUtil.deserialize(UserData.USER_DATA_PATH.toFile(), UserData.class);
     }
 
-    public static void deleteUserData(NotificationHandler notificationHandler) {
+    /**
+     * Deletes the default user data file.
+     */
+    public static void deleteUserData() {
         File userDataFile = UserData.USER_DATA_PATH.toFile();
 
-        if (userDataFile.exists()) {
-            if (!userDataFile.delete()) {
-                Platform.runLater(() -> notificationHandler.sendError("User data file could not be deleted!", logger));
-            }
+        if (userDataFile.exists() && !userDataFile.delete()) {
+            Platform.runLater(() -> NotificationHandler.getInstance()
+                .sendError("User data file could not be deleted!", logger));
         }
     }
 
+    /**
+     * Standard getter.
+     *
+     * @return The user data's login password.
+     */
     public String getLoginPassword() {
         return loginPassword;
     }
 
+    /**
+     * Standard setter.
+     *
+     * @param loginPassword The user data's login password.
+     */
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
     }
 
+    /**
+     * Standard checker.
+     *
+     * @return The user data's remember data boolean.
+     */
     public boolean isLoginRemember() {
         return loginRemember;
     }
 
+    /**
+     * Standard setter.
+     *
+     * @param loginRemember The user data's remember data boolean.
+     */
     public void setLoginRemember(boolean loginRemember) {
         this.loginRemember = loginRemember;
     }
 
+    /**
+     * Standard getter.
+     *
+     * @return The user data's login username.
+     */
     public String getLoginUsername() {
         return loginUsername;
     }
 
+    /**
+     * Standard setter.
+     *
+     * @param loginUsername The user data's login username.
+     */
     public void setLoginUsername(String loginUsername) {
         this.loginUsername = loginUsername;
     }
 
-    public String getRegisterPassword() {
-        return registerPassword;
+    /**
+     * Standard getter.
+     *
+     * @return The user data's registration password.
+     */
+    public String getRegistrationPassword() {
+        return registrationPassword;
     }
 
-    public void setRegisterPassword(String registerPassword) {
-        this.registerPassword = registerPassword;
+    /**
+     * Standard setter.
+     *
+     * @param registrationPassword The user data's registration password.
+     */
+    public void setRegistrationPassword(String registrationPassword) {
+        this.registrationPassword = registrationPassword;
     }
 
-    public String getRegisterPasswordRepeat() {
-        return registerPasswordRepeat;
+    /**
+     * Standard getter.
+     *
+     * @return The user data's registration password repetition.
+     */
+    public String getRegistrationPasswordRepeat() {
+        return registrationPasswordRepeat;
     }
 
-    public void setRegisterPasswordRepeat(String registerPasswordRepeat) {
-        this.registerPasswordRepeat = registerPasswordRepeat;
+    /**
+     * Standard setter.
+     *
+     * @param registrationPasswordRepeat The user data's registration password repetition.
+     */
+    public void setRegistrationPasswordRepeat(String registrationPasswordRepeat) {
+        this.registrationPasswordRepeat = registrationPasswordRepeat;
     }
 
-    public String getRegisterUsername() {
-        return registerUsername;
+    /**
+     * Standard getter.
+     *
+     * @return The user data's registration username.
+     */
+    public String getRegistrationUsername() {
+        return registrationUsername;
     }
 
-    public void setRegisterUsername(String registerUsername) {
-        this.registerUsername = registerUsername;
+    /**
+     * Standard setter.
+     *
+     * @param registrationUsername The user data's registration username.
+     */
+    public void setRegistrationUsername(String registrationUsername) {
+        this.registrationUsername = registrationUsername;
     }
 }

@@ -257,8 +257,8 @@ public class ArmyManagerController {
 
     @FXML
     private void exportArmy() {
-        SerializeUtils.chooseFile().ifPresent(file -> {
-            SerializeUtils.serialize(file.getAbsolutePath(), army);
+        SerializeUtil.chooseFile().ifPresent(file -> {
+            SerializeUtil.serialize(file.getAbsolutePath(), army);
             NotificationHandler.getInstance()
                 .sendSuccess("Exported successfully.", logger);
         });
@@ -266,8 +266,8 @@ public class ArmyManagerController {
 
     @FXML
     private void importArmy() {
-        SerializeUtils.chooseFile().ifPresent(file -> {
-            army = SerializeUtils.deserialize(file, Army.class);
+        SerializeUtil.chooseFile().ifPresent(file -> {
+            army = SerializeUtil.deserialize(file, Army.class);
 
             NotificationHandler.getInstance()
                 .sendSuccess("Imported successfully.", logger);

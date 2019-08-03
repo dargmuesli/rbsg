@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" alignment="CENTER" maxWidth="500.0" spacing="10.0"
+<HBox xmlns:fx="http://javafx.com/fxml/1" fx:id="hbxRoot" alignment="CENTER" maxWidth="500.0" spacing="10.0"
       HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.221"
       fx:controller="de.uniks.se1ss19teamb.rbsg.ui.UnitObjectController">
     <children>
