@@ -27,7 +27,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 public class UiTests extends ApplicationTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setupHeadlessMode() {
         TestUtil.setupHeadlessMode();
     }

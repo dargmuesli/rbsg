@@ -14,16 +14,15 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 public class UiTestsReal extends ApplicationTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setupHeadlessMode() {
         TestUtil.setupHeadlessMode();
     }
@@ -54,7 +53,7 @@ public class UiTestsReal extends ApplicationTest {
 
     // username and password: junit
     @Test
-    @Ignore
+    @Disabled
     public void testInGame() {
         RestRequestTestsReal.loginUser();
         RestRequestTestsReal.createGame();
