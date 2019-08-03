@@ -37,9 +37,9 @@ public class TurnUiController {
 
     @FXML
     public void initialize() {
-            instance = this;
-            phaseBtn.setTranslateY(-4);
-            updatePlayers();
+        instance = this;
+        phaseBtn.setTranslateY(-4);
+        updatePlayers();
     }
 
     /**
@@ -80,7 +80,7 @@ public class TurnUiController {
 
     @FXML
     private void nextPhase() {
-            GameSocket.instance.nextPhase();
+        GameSocket.instance.nextPhase();
     }
 
     public void showTurn(String currentPlayer) {
