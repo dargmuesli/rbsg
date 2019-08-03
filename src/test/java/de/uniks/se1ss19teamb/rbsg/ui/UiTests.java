@@ -26,7 +26,6 @@ import org.testfx.util.WaitForAsyncUtils;
 // probably be reduced if estimated properly.
 
 
-@Disabled
 class UiTests extends ApplicationTest {
 
     @BeforeAll
