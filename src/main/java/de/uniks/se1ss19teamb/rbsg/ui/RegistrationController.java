@@ -7,11 +7,18 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -114,6 +121,16 @@ public class RegistrationController {
 
         if (!password.getText().equals(passwordRepeat.getText())) {
             NotificationHandler.getInstance().sendWarning("The password do not match!", logger);
+            Image image = new Image(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/mem1.jpg").toExternalForm());
+            ImageView imageView = new ImageView(image);
+            Scene scene = new Scene(new VBox(imageView),250,200);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(event -> stage.close());
+            delay.play();
             return;
         }
 
