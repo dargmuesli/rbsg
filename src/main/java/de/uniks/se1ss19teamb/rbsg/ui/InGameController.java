@@ -157,7 +157,6 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUiController controller = loader.getController();
             turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -408,7 +407,7 @@ public class InGameController {
                     // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
                     if (neighborTile.isPassable()
                         && !overlayedStacks.containsKey(neighborStack)) {
-
+                        
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
