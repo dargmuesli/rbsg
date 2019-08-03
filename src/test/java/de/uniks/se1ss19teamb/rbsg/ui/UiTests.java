@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -24,6 +25,8 @@ import org.testfx.util.WaitForAsyncUtils;
 // To load new Scenes and finish actions javaFX needs time. All the sleeping time below is estimated and can
 // probably be reduced if estimated properly.
 
+
+@Disabled
 class UiTests extends ApplicationTest {
 
     @BeforeAll
