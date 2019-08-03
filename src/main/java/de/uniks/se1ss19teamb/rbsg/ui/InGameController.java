@@ -44,7 +44,7 @@ public class InGameController {
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
-    private final Pane selectionOverlay = new Pane();
+
     @FXML
     private AnchorPane errorContainer;
     @FXML
@@ -87,7 +87,6 @@ public class InGameController {
     public AnchorPane winScreenPane;
 
     private final Pane selectionOverlay = new Pane();
-
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
