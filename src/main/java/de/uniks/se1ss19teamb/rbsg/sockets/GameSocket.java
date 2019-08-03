@@ -247,11 +247,12 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 }
                             }
                             JsonObject finalData = data;
-                            Platform.runLater(() ->{
+                            Platform.runLater(() -> {
                                 if (finalData.get("fieldName").getAsString().equals("currentPlayer")) {
                                     TurnUiController.getInstance().showTurn(finalData.get("newValue").getAsString());
-                                } else if (finalData.get("fieldName").getAsString().equals("phase")){
-                                    TurnUiController.getInstance().turnLabel.setText(finalData.get("newValue").getAsString());
+                                } else if (finalData.get("fieldName").getAsString().equals("phase")) {
+                                    TurnUiController.getInstance().turnLabel
+                                        .setText(finalData.get("newValue").getAsString());
                                 }
                             });
                             break;
