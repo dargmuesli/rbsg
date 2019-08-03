@@ -74,6 +74,7 @@
                                 </GridPane>
                             </content>
                         </ScrollPane>
+                        <AnchorPane fx:id="winScreenPane" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"></AnchorPane>
                     </children>
                 </StackPane>
             </children>
