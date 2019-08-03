@@ -44,7 +44,7 @@ public class InGameController {
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
     public static boolean gameInitFinished = false;
-    private final Pane selectionOverlay = new Pane();
+
     @FXML
     private AnchorPane errorContainer;
     @FXML
@@ -83,6 +83,10 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private AnchorPane turnUI;
+    @FXML
+    public AnchorPane winScreenPane;
+
+    private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
@@ -153,13 +157,21 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUiController controller = loader.getController();
             turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         selectionOverlay.setId("tile-selected");
+
+        FXMLLoader loader1 = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/winScreen.fxml"));
+        try {
+            Parent parent = loader1.load();
+            winScreenPane.getChildren().add(parent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -395,7 +407,7 @@ public class InGameController {
                     // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
                     if (neighborTile.isPassable()
                         && !overlayedStacks.containsKey(neighborStack)) {
-
+                        
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 

@@ -11,6 +11,8 @@ import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
+import de.uniks.se1ss19teamb.rbsg.ui.WinScreenController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
@@ -187,9 +189,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
+
                     String newValue;
                     String fieldName;
-
                     String type = data.get("id").getAsString().replaceFirst("@.+", "");
 
                     switch (type) {
@@ -243,12 +245,27 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
                             break;
                         case "Game":
+                            System.out.print(data);
                             if (!InGameController.gameInitFinished
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
+
                                 if (GameLobbyController.instance != null) {
                                     GameLobbyController.instance.startGameTransition();
                                 }
+                            }
+                            JsonObject finalData = data;
+                            Platform.runLater(() -> {
+                                if (finalData.get("fieldName").getAsString().equals("currentPlayer")) {
+                                    TurnUiController.getInstance().showTurn(finalData.get("newValue").getAsString());
+                                } else if (finalData.get("fieldName").getAsString().equals("phase")) {
+                                    TurnUiController.getInstance().turnLabel
+                                        .setText(finalData.get("newValue").getAsString());
+                                }
+                            });
+
+                            if (data.get("fieldName").getAsString().equals("winner")) {
+                                WinScreenController.instance.setWinningScreen(data.get("newValue").getAsString());
                             }
                             break;
                         case "Unit":
@@ -314,13 +331,16 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
                                     UnitTile attacker = InGameController.getInstance()
                                         .findAttackingUnit(InGameController.unitTiles.get(i));
+
                                     if (attacker != null) {
                                         SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
                                     }
+
                                     InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
                                     InGameController.unitTiles.remove(i);
                                 }
                             }
+
                             SoundManager.playSound("nani", 0);
                             break;
                         default:
@@ -416,9 +436,11 @@ public class GameSocket extends AbstractMessageWebSocket {
         JsonObject data = new JsonObject();
         data.addProperty("unitId", unitId);
         JsonArray jpath = new JsonArray();
+
         for (String p : path) {
             jpath.add(p);
         }
+
         data.add("path", jpath);
         json.add("data", data);
         sendToWebsocket(json);
@@ -477,5 +499,4 @@ public class GameSocket extends AbstractMessageWebSocket {
                                              .GameSocketGameChangeObject handler) {
         handlersChangeObject.add(handler);
     }
-
 }
