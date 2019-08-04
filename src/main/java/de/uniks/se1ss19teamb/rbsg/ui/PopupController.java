@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 public class PopupController {
 
     @FXML
-    AnchorPane popup;
+    AnchorPane apnRoot;
 
     @FXML
     Label label;
@@ -48,8 +48,8 @@ public class PopupController {
     }
 
     private void show() {
-        popup.setVisible(true);
-        popup.getScene().lookup("#errorContainer").setVisible(true);
+        apnRoot.setVisible(true);
+        apnRoot.getScene().lookup("#errorContainer").setVisible(true);
         new Thread(new Task<Void>() {
             @Override
             public Void call() {
@@ -58,8 +58,8 @@ public class PopupController {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                popup.setVisible(false);
-                popup.getScene().lookup("#errorContainer").setVisible(false);
+                apnRoot.setVisible(false);
+                apnRoot.getScene().lookup("#errorContainer").setVisible(false);
                 return null;
             }
         }).start();

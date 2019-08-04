@@ -18,7 +18,7 @@ public abstract class AbstractRestRequest implements RestRequest {
 
     private static final String url = "https://rbsg.uniks.de/api";
     private static final Logger logger = LogManager.getLogger();
-    static HttpManager httpManager = new HttpManager();
+    public static HttpManager httpManager = new HttpManager();
     private JsonObject response = null;
 
     protected abstract JsonObject buildJson();
@@ -57,7 +57,7 @@ public abstract class AbstractRestRequest implements RestRequest {
                     throw new MethodNotSupportedException("Method not Supported: " + getHttpMethod());
             }
         } catch (Exception e) {
-            NotificationHandler.getInstance().sendError("Fehler bei einer Webanfrage!", logger, e);
+            NotificationHandler.getInstance().sendError("A web request failed!", logger, e);
         } finally {
             JsonParser parser = new JsonParser();
             response = (JsonObject) parser.parse(result == null ? "{}" : result.body);

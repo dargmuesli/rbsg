@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 
 <?import javafx.scene.layout.VBox?>
-<Tab xmlns:fx="http://javafx.com/fxml" fx:id="newTab" text="newTab" xmlns="http://javafx.com/javafx"
+<Tab xmlns:fx="http://javafx.com/fxml" fx:id="tbRoot" text="newTab" xmlns="http://javafx.com/javafx"
      fx:controller="de.uniks.se1ss19teamb.rbsg.ui.PrivateTabController">
     <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true">
         <VBox fx:id="textArea"/>

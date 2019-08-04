@@ -11,17 +11,41 @@ import java.util.*;
 import org.apache.http.ParseException;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Rest request tests against the real gameserver.
+ */
 public class RestRequestTestsReal {
+
+    /**
+     * A list of units that exist on the gameserver as retrieved by {@link #queryUnits}.
+     */
     public static List<Unit> unitList;
+
+    /**
+     * A game id of the game that is used for the current test as retrieved by {@link #createGame}.
+     */
     public static String gameId;
+
+    /**
+     * A user token for further requests as retrieved by {@link #loginUser}.
+     */
     public static String userToken;
 
     private String armyId;
 
     // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void resetHttpManager() {
+        AbstractRestRequest.httpManager = new HttpManager();
+    }
+
+    @Before
+    public void setupTests() {
+        resetHttpManager();
+    }
 
     private void createArmy() {
         List<Unit> units = new ArrayList<>();
@@ -39,6 +63,11 @@ public class RestRequestTestsReal {
         }
     }
 
+    /**
+     * Creates a game named "TeamBTestUserGame" for two players using {@link RestRequestTestsReal}'s user token.
+     * The id of the created game is saved in {@link #gameId}.
+     * Fails {@link Assert} if unsuccessful.
+     */
     public static void createGame() {
         Optional<String> optional = RequestUtil.request(new CreateGameRequest("TeamBTestUserGame", 2, userToken));
 
@@ -55,10 +84,20 @@ public class RestRequestTestsReal {
         }
     }
 
+    /**
+     * Logs in the user named "TeamBTestUser".
+     */
     public static void loginUser() {
         loginUser("TeamBTestUser");
     }
 
+    /**
+     * Logs the specified user in, using the password "qwertz".
+     * The returned user token is saved in {@link #userToken}.
+     * Fails {@link Assert} if unsuccessful.
+     *
+     * @param username The username to log in with.
+     */
     public static void loginUser(String username) {
         Optional<String> optional = RequestUtil.request(new LoginUserRequest(username, "qwertz"));
 
@@ -69,6 +108,11 @@ public class RestRequestTestsReal {
         }
     }
 
+    /**
+     * Queries the server's units and updates {@link ArmyManagerController#availableUnits}.
+     * The units returned are saved in {@link #unitList}.
+     * Fails {@link Assert} if unsuccessful.
+     */
     public static void queryUnits() {
         Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(userToken));
 
@@ -338,8 +382,11 @@ public class RestRequestTestsReal {
         }
     }
 
+    /**
+     * Logs in with {@link #loginUser}, requests and deletes all armies, requests all games and deletes all own games.
+     */
     @After
-    public void cleanupGames() throws ParseException {
+    public void cleanupGames() {
         loginUser();
 
         RequestUtil.request(new QueryArmiesRequest(userToken)).ifPresent(armies -> {
@@ -353,14 +400,15 @@ public class RestRequestTestsReal {
         RequestUtil.request(new QueryGamesRequest(userToken)).ifPresent(
             stringGameMetaHashMap -> stringGameMetaHashMap.entrySet().stream().filter(
                 stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
-            .equals("TeamBTestUserGame"))
-            .forEach(stringGameMetaEntry -> {
-                System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
-                    + " with id " + stringGameMetaEntry.getValue().getId() + "...");
+                    .equals("TeamBTestUserGame"))
+                .forEach(stringGameMetaEntry -> {
+                    System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
+                        + " with id " + stringGameMetaEntry.getValue().getId() + "...");
 
-                if (!RequestUtil.request(new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
-                    Assert.fail();
-                }
-            }));
+                    if (!RequestUtil.request(
+                        new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
+                        Assert.fail();
+                    }
+                }));
     }
 }

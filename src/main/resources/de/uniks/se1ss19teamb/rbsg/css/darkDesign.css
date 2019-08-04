@@ -15,8 +15,20 @@ ListView {
     -fx-padding: 0px;
 }
 
+#inGamePlayerBLUE {
+    -fx-text-fill: blue;
+}
+
+#inGamePlayerGREEN {
+    -fx-text-fill: green;
+}
+
 #inGamePlayerRED {
     -fx-text-fill: red;
+}
+
+#inGamePlayerYELLOW {
+    -fx-text-fill: yellow;
 }
 
 .background-color_transparent {

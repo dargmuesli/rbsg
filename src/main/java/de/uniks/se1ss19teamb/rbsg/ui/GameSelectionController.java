@@ -19,28 +19,24 @@ import javafx.scene.layout.VBox;
 
 public class GameSelectionController {
 
-    @FXML
-    private HBox root;
-
-    @FXML
-    private Label spaces;
-
-    @FXML
-    private Label gameNameLabel;
+    static GameMeta joinedGame;
 
     @FXML
     private Button join;
-
     @FXML
     private Button spectate;
+    @FXML
+    private HBox hbxRoot;
+    @FXML
+    private Label gameNameLabel;
+    @FXML
+    private Label spaces;
 
     private GameMeta gameMeta;
-    static GameMeta joinedGame;
-
     private VBox chatWindow;
 
     public void initialize() {
-        Theming.setTheme(Arrays.asList(new Pane[]{root}));
+        Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
     }
 
     void setUpGameLabel(GameMeta gameMeta) {
@@ -54,8 +50,7 @@ public class GameSelectionController {
         join();
         join.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
-
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow, false);
     }
 
     public void join() {
@@ -68,7 +63,8 @@ public class GameSelectionController {
 
         joinedGame = gameMeta;
 
-        chatWindow = (VBox) root.getScene().lookup("#chatWindow");
+        chatWindow = (VBox) hbxRoot.getScene().lookup("#chatWindow");
+        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
         // damit gehts:
@@ -82,8 +78,6 @@ public class GameSelectionController {
 
         chatWindow.setPrefHeight(300);
         chatWindow.setPrefWidth(400);
-
-
     }
 
     public void deleteGame() {
@@ -98,6 +92,6 @@ public class GameSelectionController {
         chatWindow.setVisible(false);
         spectate.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", root, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", hbxRoot, chatWindow);
     }
 }
