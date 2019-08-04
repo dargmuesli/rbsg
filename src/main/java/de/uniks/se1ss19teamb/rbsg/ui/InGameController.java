@@ -6,12 +6,10 @@ import com.jfoenix.controls.JFXTabPane;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -43,7 +41,6 @@ public class InGameController {
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
-    public static boolean gameInitFinished = false;
 
     @FXML
     private AnchorPane errorContainer;
@@ -226,7 +223,7 @@ public class InGameController {
         int maxY = 0;
         int tryCounter = 0;
 
-        while (!gameInitFinished) {
+        while (!GameLobbyController.instance.gameInitFinished) {
             try {
                 Thread.sleep(1000);
                 tryCounter++;
