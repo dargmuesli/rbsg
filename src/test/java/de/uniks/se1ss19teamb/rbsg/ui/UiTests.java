@@ -49,6 +49,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
+    @Disabled
     public void ticTacToeTest() {
         push(KeyCode.SHIFT).push(KeyCode.F1);
         sleep(500); // given some time to open window
@@ -73,6 +74,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
+    @Disabled
     public void notificationPopupTest() {
 
         Logger logger = LogManager.getLogger();
