@@ -254,15 +254,11 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     GameLobbyController.instance.startGameTransition();
                                 }
                             }
-                            JsonObject finalData = data;
-                            Platform.runLater(() -> {
-                                if (finalData.get("fieldName").getAsString().equals("currentPlayer")) {
-                                    TurnUiController.getInstance().showTurn(finalData.get("newValue").getAsString());
-                                } else if (finalData.get("fieldName").getAsString().equals("phase")) {
-                                    TurnUiController.getInstance().turnLabel
-                                        .setText(finalData.get("newValue").getAsString());
-                                }
-                            });
+                            if (data.get("fieldName").getAsString().equals("currentPlayer")) {
+                                TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                            } else if (data.get("fieldName").getAsString().equals("phase")) {
+                                TurnUiController.getInstance().setTurnLabel(data.get("newValue").getAsString());
+                            }
 
                             if (data.get("fieldName").getAsString().equals("winner")) {
                                 WinScreenController.instance.setWinningScreen(data.get("newValue").getAsString());
