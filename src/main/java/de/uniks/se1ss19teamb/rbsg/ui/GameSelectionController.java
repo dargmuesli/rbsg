@@ -1,7 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import com.jfoenix.controls.JFXButton;
-
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
