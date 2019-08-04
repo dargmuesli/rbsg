@@ -57,8 +57,6 @@ public class MainController {
     @FXML
     private JFXButton btnArmyManager;
     @FXML
-    private JFXButton btnCreate;
-    @FXML
     private JFXButton btnFullscreen;
     @FXML
     private JFXButton btnLogout;

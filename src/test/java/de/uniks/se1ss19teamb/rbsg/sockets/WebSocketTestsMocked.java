@@ -229,8 +229,8 @@ public class WebSocketTestsMocked {
         Assert.assertTrue(gameMsg.contains("changed|Player"));
         Assert.assertTrue(gameMsg.contains("changed|Player"));
         //Assert.assertTrue(gameMsg.contains("changed|Game"));
-        Assert.assertTrue(!InGameController.environmentTiles.isEmpty());
-        Assert.assertTrue(!InGameController.unitTiles.isEmpty());
+        Assert.assertFalse(InGameController.environmentTiles.isEmpty());
+        Assert.assertFalse(InGameController.unitTiles.isEmpty());
         Assert.assertEquals("Grass@258b12ff", InGameController.unitTiles.get(0).getPosition());
 
     }

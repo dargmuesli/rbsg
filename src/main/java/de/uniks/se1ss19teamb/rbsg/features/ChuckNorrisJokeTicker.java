@@ -26,7 +26,6 @@ public class ChuckNorrisJokeTicker {
         "Arnold Schwarzenegger musste wegen schweren Verletzungen ins Krankenhaus eingeliefert werden. "
             + "Chuck Norris hatte "
             + "ihn auf Facebook angestupst."};
-    private static int random;
     private static AnimationTimer animationTimer;
 
     /**
@@ -54,7 +53,7 @@ public class ChuckNorrisJokeTicker {
      * @param label The label to set the joke text for and that is placed at {@code x = 2200}.
      */
     public static void setLabelPosition(Label label) {
-        random = (int) (Math.random() * jokes.length);
+        int random = (int) (Math.random() * jokes.length);
         label.setText(jokes[random]);
         label.setLayoutX(2200);
     }

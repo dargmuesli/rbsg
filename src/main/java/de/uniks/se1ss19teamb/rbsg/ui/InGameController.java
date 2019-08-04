@@ -5,12 +5,10 @@ import com.jfoenix.controls.JFXHamburger;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -62,13 +60,9 @@ public class InGameController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnMiniMap;
-    @FXML
     private JFXButton btnNo;
     @FXML
     private JFXButton btnYes;
-    @FXML
-    private JFXButton btnBigger;
     @FXML
     private JFXButton btnSmaller;
     @FXML

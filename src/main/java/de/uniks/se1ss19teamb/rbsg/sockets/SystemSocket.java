@@ -1,8 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
-import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +48,7 @@ public class SystemSocket extends AbstractWebSocket {
                         handler.handle(data.get("id").getAsString());
                     }
                     break;
-                case "playerJoinedGame":
-                    for (SystemSocketMessageHandler.SystemSocketPlayerJoinedGame handler : handlersPlayerJoinedGame) {
-                        handler.handle(data.get("id").getAsString(), data.get("joinedPlayer").getAsInt());
-                    }
-                    break;
-                case "playerLeftGame":
+                case "playerJoinedGame": case "playerLeftGame":
                     for (SystemSocketMessageHandler.SystemSocketPlayerJoinedGame handler : handlersPlayerJoinedGame) {
                         handler.handle(data.get("id").getAsString(), data.get("joinedPlayer").getAsInt());
                     }

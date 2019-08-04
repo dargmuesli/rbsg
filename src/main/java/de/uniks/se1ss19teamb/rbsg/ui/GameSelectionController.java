@@ -1,4 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
+import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -42,7 +43,7 @@ public class GameSelectionController {
     void setUpGameLabel(GameMeta gameMeta) {
         this.gameMeta = gameMeta;
         gameNameLabel.setText(gameMeta.getName());
-        String s = String.valueOf(gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ");
+        String s = gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ";
         spaces.setText(s);
     }
 
@@ -53,7 +54,7 @@ public class GameSelectionController {
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow, false);
     }
 
-    public void join() {
+    private void join() {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
