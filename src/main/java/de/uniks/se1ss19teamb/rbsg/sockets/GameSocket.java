@@ -291,7 +291,8 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                                     break;
                                 case "winner":
-                                    WinScreenController.getInstance().setWinningScreen(data.get("newValue").getAsString());
+                                    WinScreenController.getInstance().setWinningScreen(data.get("newValue")
+                                            .getAsString());
                                     break;
                                 default:
                                     logger.error("Unknown field name \"" + fieldName + "\"");
