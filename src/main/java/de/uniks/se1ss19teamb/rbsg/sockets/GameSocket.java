@@ -59,8 +59,7 @@ public class GameSocket extends AbstractMessageWebSocket {
             } else if (StringUtil.checkHasNot(response, "action", logger)) {
                 return;
             }
-
-            System.out.println(response);
+            
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
@@ -79,6 +78,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
             switch (action) {
                 case "info":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "message", logger)) {
                         return;
                     }
@@ -106,11 +106,13 @@ public class GameSocket extends AbstractMessageWebSocket {
                     if (!firstGameInitObjectReceived) {
                         firstGameInitObjectReceived = true;
 
+                        assert data != null;
                         InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
 
                         InGameController.inGameObjects.clear();
                         InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
                     } else {
+                        assert data != null;
                         if (StringUtil.checkHasNot(data, "id", logger)) {
                             return;
                         }
@@ -145,18 +147,19 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameInitFinished":
-                
+
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
                     if (GameLobbyController.instance != null) {
                         GameLobbyController.instance.updatePlayers();
                     }
-                
+
                     Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
                         .add(TextureManager.computeMinimap(
                             InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
 
                     break;
                 case "gameNewObject":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
@@ -186,6 +189,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChangeObject":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
@@ -334,6 +338,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameRemoveObject":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
@@ -342,7 +347,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     switch (type) {
                         case "Player":
-                            InGameController.inGameObjects.remove(data.get("id"));
+                            InGameController.inGameObjects.remove(data.get("id").getAsString());
 
                             if (GameLobbyController.instance != null) {
                                 GameLobbyController.instance.updatePlayers();
@@ -381,6 +386,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChat":
+                    assert data != null;
                     String from = data.get("from").getAsString();
 
                     if (this.ignoreOwn && from.equals(LoginController.getUserName())) {

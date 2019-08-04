@@ -23,7 +23,7 @@ public class WinScreenController {
 
     public ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
 
-    public static WinScreenController instance;
+    private static WinScreenController instance;
 
     public static WinScreenController getInstance() {
         return instance;

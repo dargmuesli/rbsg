@@ -138,6 +138,9 @@ public class LoginController {
         LoginUserRequest userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
         RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
 
+        userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
+        RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
+        
         if (userRequest.getSuccessful()) {
             btnLogin.setDisable(true);
             setUserName(txtUserName.getText());

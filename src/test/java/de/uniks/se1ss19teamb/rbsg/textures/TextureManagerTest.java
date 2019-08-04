@@ -38,9 +38,9 @@ public class TextureManagerTest {
     public void checkInstancedPanes() {
         Pane pane = TextureManager.getTextureInstance("test");
         Assert.assertFalse(pane.getChildren().filtered((node) -> node instanceof ImageView).isEmpty());
-        Assert.assertFalse(((ImageView) pane.getChildren()
+        Assert.assertNotNull(((ImageView) pane.getChildren()
             .stream().filter((node) -> node instanceof ImageView).findAny().get())
-            .getImage() == null);
+            .getImage());
 
         Pane animPane = TextureManager.getTextureInstance("panzer");
         Assert.assertTrue(animPane instanceof AnimatedPane);

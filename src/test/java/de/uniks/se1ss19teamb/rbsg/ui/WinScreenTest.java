@@ -5,7 +5,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class WinScreenTest {
+class WinScreenTest {
     private InGameGame inGameGame = new InGameGame();
     private InGamePlayer inGamePlayer1 = new InGamePlayer();
     private InGamePlayer inGamePlayer2 = new InGamePlayer();
@@ -19,7 +19,7 @@ public class WinScreenTest {
         InGameController.inGameObjects.put("player1", inGamePlayer1);
         InGameController.inGameObjects.put("player2", inGamePlayer2);
         Assert.assertEquals(0, winScreenController.inGamePlayerList.size());
-        Assert.assertEquals(winScreenController.getInstance(), winScreenController.getInstance().instance);
+        Assert.assertEquals(winScreenController.getInstance(), winScreenController.getInstance());
         winScreenController.updatePlayers();
         Assert.assertEquals(2, winScreenController.inGamePlayerList.size());
     }

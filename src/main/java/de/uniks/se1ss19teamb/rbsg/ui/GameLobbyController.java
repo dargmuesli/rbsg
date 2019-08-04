@@ -166,5 +166,17 @@ public class GameLobbyController {
         GameSocket.instance.disconnect();
         GameLobbyController.instance = null;
     }
+
+    public TextField getMessage() {
+        return message;
+    }
+
+    public VBox getChatBox() {
+        return chatBox;
+    }
+
+    public JFXButton getBtnMinimize() {
+        return btnMinimize;
+    }
 }
 

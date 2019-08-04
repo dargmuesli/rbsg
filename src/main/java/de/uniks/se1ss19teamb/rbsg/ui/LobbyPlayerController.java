@@ -13,12 +13,9 @@ public class LobbyPlayerController {
     @FXML
     private Circle crclReadiness;
 
-    private InGamePlayer inGamePlayer;
-
     void setInGamePlayer(InGamePlayer inGamePlayer) {
-        this.inGamePlayer = inGamePlayer;
         this.lblPlayerName.setText(inGamePlayer.getName());
-        this.lblPlayerName.setId("inGamePlayer" + this.inGamePlayer.getColor());
+        this.lblPlayerName.setId("inGamePlayer" + inGamePlayer.getColor());
         this.crclReadiness.setFill(inGamePlayer.isReady() ? Color.GREEN : Color.RED);
     }
 }

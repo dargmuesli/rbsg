@@ -16,7 +16,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -88,7 +87,7 @@ public class UserInterfaceUtils {
         return fadeTransition;
     }
 
-    public static void makeFadeInTransition(Node node) {
+    private static void makeFadeInTransition(Node node) {
         node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(1000));
@@ -119,7 +118,7 @@ public class UserInterfaceUtils {
     }
 
     public static void initialize(
-        Pane root, Pane rootChild, Class clazz, JFXButton btnFullscreen, Pane errorContainer) {
+        Pane root, Pane rootChild, Class<?> clazz, JFXButton btnFullscreen, Pane errorContainer) {
 
         UserInterfaceUtils.makeFadeInTransition(root);
 
