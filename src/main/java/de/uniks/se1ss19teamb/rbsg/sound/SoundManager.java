@@ -19,23 +19,23 @@ public class SoundManager {
 
         instance.sounds.put("BazookaTrooper", new Sound("bazooka1.wav",true));
         instance.sounds.put("BazookaTrooper2", new Sound("bazooka2.wav",true));
-        instance.sounds.put("BazookaTrooper_Move", new Sound("beer.wav",true));
+        //instance.sounds.put("BazookaTrooper_Move", new Sound(".wav",true));
 
         instance.sounds.put("Chopper", new Sound("chooper.wav",true));
-        instance.sounds.put("Chopper_Move", new Sound("beer.wav",true));
+        //instance.sounds.put("Chopper_Move", new Sound(.wav",true));
 
 
         instance.sounds.put("Jeep", new Sound("jeep.wav",true));
-        instance.sounds.put("Jeep_Move", new Sound("beer.wav",true));
+        //instance.sounds.put("Jeep_Move", new Sound(".wav",true));
 
         instance.sounds.put("LightTank", new Sound("lightTank.wav",true));
-        instance.sounds.put("LightTank_Move", new Sound("beer.wav",true));
+        //instance.sounds.put("LightTank_Move", new Sound(".wav",true));
 
         instance.sounds.put("Infantry", new Sound("infantry_fire.wav",true));
         instance.sounds.put("Infantry_Move", new Sound("infantry_move.wav",true));
 
         instance.sounds.put("HeavyTank",new Sound("panzer.wav", true));
-        instance.sounds.put("HeavyTank_Move",new Sound("beer.wav", true));
+        //instance.sounds.put("HeavyTank_Move",new Sound(".wav", true));
 
         instance.sounds.put("nani", new Sound("nani.wav", true));
         instance.sounds.put("Omae", new Sound("Omae_wa_mou_shindeiru.wav", true));
@@ -46,7 +46,7 @@ public class SoundManager {
         Sound bgm = new Sound("katyusha.mp3", false);
         instance.sounds.put("bgm", bgm);
 
-        instance.sounds.put("missing", new Sound("error.wav", true));
+        instance.sounds.put("missing", new Sound("silence.wav", true));
         instance.sounds.put("missing2", new Sound("fail-trombone-01.wav", true));
     }
 
