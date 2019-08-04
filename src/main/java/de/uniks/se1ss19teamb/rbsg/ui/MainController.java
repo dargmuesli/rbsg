@@ -311,7 +311,7 @@ public class MainController {
         existingGames = getExistingGames();
 
         Platform.runLater(() -> {
-            ObservableList items = gameListView.getItems();
+            ObservableList<Parent> items = gameListView.getItems();
 
             while (items.size() != 0) {
                 items.remove(0);
@@ -336,7 +336,7 @@ public class MainController {
 
     private void updatePlayerView() {
         Platform.runLater(() -> {
-            ObservableList playerList = playerListView.getItems();
+            ObservableList<Label> playerList = playerListView.getItems();
 
             while (playerList.size() != 0) {
                 playerList.remove(0);

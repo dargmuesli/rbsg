@@ -318,7 +318,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     switch (type) {
                         case "Player":
-                            InGameController.inGameObjects.remove(data.get("id"));
+                            InGameController.inGameObjects.remove(data.get("id").getAsString());
 
                             if (GameLobbyController.instance != null) {
                                 GameLobbyController.instance.updatePlayers();

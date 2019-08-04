@@ -86,8 +86,9 @@ public class WebSocketClient {
         e.printStackTrace();
     }
 
+    @SuppressWarnings("unused")
     @OnClose
-    public void onClose(CloseReason closeReason) {
+    public void onClose(Session session, CloseReason closeReason) {
         String message = "WS " + mySession.getRequestURI() + " closed.";
 
         if (!closeReason.getReasonPhrase().equals("")) {

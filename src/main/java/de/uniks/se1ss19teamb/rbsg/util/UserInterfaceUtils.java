@@ -118,7 +118,7 @@ public class UserInterfaceUtils {
     }
 
     public static void initialize(
-        Pane root, Pane rootChild, Class clazz, JFXButton btnFullscreen, Pane errorContainer) {
+        Pane root, Pane rootChild, Class<?> clazz, JFXButton btnFullscreen, Pane errorContainer) {
 
         UserInterfaceUtils.makeFadeInTransition(root);
 
