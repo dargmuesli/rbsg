@@ -37,9 +37,9 @@ public class InGameController {
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
+    public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
-    public static boolean gameInitFinished = false;
 
     @FXML
     private AnchorPane errorContainer;
@@ -93,12 +93,14 @@ public class InGameController {
 
     public void changeUnitPos(String unitId, String newPos) {
         UnitTile currentUnit = null;
+
         for (UnitTile unit : unitTiles) {
             if (unitId.equals(unit.getId())) {
                 currentUnit = unit;
                 break;
             }
         }
+
         assert (currentUnit != null);
 
         UnitTile finalCurrentUnit = currentUnit;
@@ -112,6 +114,7 @@ public class InGameController {
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
             }
         });
+
         if (newPos != null) {
             unitTileMapByTileId.put(newPos, currentUnit);
             SoundManager.playSound(
@@ -213,7 +216,7 @@ public class InGameController {
         int maxY = 0;
         int tryCounter = 0;
 
-        while (!gameInitFinished) {
+        while (!GameLobbyController.instance.gameInitFinished) {
             try {
                 Thread.sleep(1000);
                 tryCounter++;
@@ -248,57 +251,72 @@ public class InGameController {
                     StackPane eventStack = (StackPane) event.getSource();
 
                     if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
-                        //find eviromenttile where you last klicked
+                        // Find last clicked eviroment tile.
                         EnvironmentTile source = null;
+
                         for (EnvironmentTile tile : environmentTiles.values()) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(tile.getId()))) {
                                 source = tile;
                                 break;
                             }
                         }
-                        //find unittile where you clicked before
-                        UnitTile previous = null;
+
+                        // Find last clicked unit tile.
+                        UnitTile previousUnitTile = null;
+
                         for (UnitTile unitTile : unitTiles) {
                             if (lastSelectedPane.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
-                                previous = unitTile;
+                                previousUnitTile = unitTile;
                                 break;
                             }
                         }
-                        assert previous != null;
+
+                        if (previousUnitTile != null && movedUnitTiles.containsKey(previousUnitTile.getId())) {
+                            previousUnitTile = movedUnitTiles.get(previousUnitTile.getId());
+                        }
+
+                        assert previousUnitTile != null;
                         assert source != null;
 
                         UnitTile toAttack = unitTileMapByTileId.get(source.getId());
-                        EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
+                        EnvironmentTile lastSelected = environmentTileMapById.get(previousUnitTile.getPosition());
                         assert lastSelected != null;
-                        //is there a unit on the selected and is selected a neighbor?
+
+                        // Is there a unit on the selected field and is the selected field a neighbor?
                         if (toAttack != null
                             && ((lastSelected.getBottom() != null && lastSelected.getBottom().equals(source.getId()))
                             || (lastSelected.getLeft() != null && lastSelected.getLeft().equals(source.getId()))
                             || (lastSelected.getRight() != null && lastSelected.getRight().equals(source.getId()))
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
-                            //yes: attack
-                            GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
+                            // Yes: attack.
+                            GameSocket.instance.attackUnit(previousUnitTile.getId(), toAttack.getId());
+
                         } else {
-                            //no: move
+                            // No: move.
                             LinkedList<String> path = new LinkedList<>();
                             path.addFirst(source.getId());
                             String next = previousTileMapById.get(source.getId());
-                            while (!next.equals(previous.getPosition())) {
+                            int moveDistance = 1;
+
+                            while (!next.equals(previousUnitTile.getPosition())) {
                                 path.addFirst(next);
                                 next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
+                                moveDistance++;
                             }
 
-                            //server
-                            GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                            GameSocket.instance.moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
+
+                            UnitTile movedUnitTile = new UnitTile(previousUnitTile);
+                            movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
+                            movedUnitTile.setPosition(source.getId());
+                            movedUnitTiles.put(movedUnitTile.getId(), movedUnitTile);
                         }
 
-                        //reset
+                        // Remove selection overlay and reset selected pane variable.
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
-
                     } else {
-
                         if (lastSelectedPane == null) {
                             // Nothing was selected.
                             // The new field is selected.
@@ -329,7 +347,10 @@ public class InGameController {
                     if (lastSelectedPane != null) {
                         for (UnitTile unitTile : unitTiles) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
-                                drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
+                                drawOverlay(environmentTileMapById.get(unitTile.getPosition()),
+                                    movedUnitTiles.containsKey(unitTile.getId())
+                                        ? movedUnitTiles.get(unitTile.getId()).getMp()
+                                        : unitTile.getMp());
                                 // Do this only for the first (and hopefully only) unitTile.
                                 break;
                             }

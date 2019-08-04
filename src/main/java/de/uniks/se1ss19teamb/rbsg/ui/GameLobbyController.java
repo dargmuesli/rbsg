@@ -22,6 +22,8 @@ public class GameLobbyController {
 
     public static GameLobbyController instance;
 
+    public boolean gameInitFinished = false;
+
     @FXML
     public AnchorPane apnFade;
     @FXML

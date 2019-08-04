@@ -13,6 +13,9 @@ import org.apache.logging.log4j.LogManager;
 
 public class TurnUiController {
 
+    public static String startShowTurn;
+    public static String startTurnLabel;
+
     public ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
 
     @FXML
@@ -39,8 +42,18 @@ public class TurnUiController {
 
     @FXML
     public void initialize() {
-        setTurnLabel("moveTurn");
         instance = this;
+
+        if (startShowTurn != null) {
+            showTurn(startShowTurn);
+            startShowTurn = null;
+        }
+
+        if (startTurnLabel != null) {
+            setTurnLabel(startTurnLabel);
+            startTurnLabel = null;
+        }
+
         phaseBtn.setTranslateY(-4);
         updatePlayers();
     }
@@ -87,17 +100,15 @@ public class TurnUiController {
     }
 
     public void setTurnLabel(String turn) {
-        Platform.runLater(() -> {
-            turnLabel.setText(turn);
-        });
+        Platform.runLater(() -> turnLabel.setText(turn));
     }
 
     public void showTurn(String currentPlayer) {
         // iterate over all players
-        for (InGamePlayer player: inGamePlayerList) {
+        for (InGamePlayer player : inGamePlayerList) {
             // filter the current player
             if (player.getId().equals(currentPlayer)) {
-                for (Label label: lblList) {
+                for (Label label : lblList) {
                     // color the player's label
                     if (label.getText().equals(player.getName())) {
                         label.setStyle("-fx-text-fill: Red");

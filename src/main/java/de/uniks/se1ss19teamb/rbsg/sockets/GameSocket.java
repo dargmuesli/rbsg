@@ -249,35 +249,68 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
                             break;
                         case "Game":
-                            if (!InGameController.gameInitFinished
-                                && data.get("fieldName").getAsString().equals("phase")) {
-                                InGameController.gameInitFinished = true;
+                            fieldName = data.get("fieldName").getAsString();
 
-                                if (GameLobbyController.instance != null) {
-                                    GameLobbyController.instance.startGameTransition();
-                                }
-                            }
-                            if (data.get("fieldName").getAsString().equals("currentPlayer")) {
-                                TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
-                            } else if (data.get("fieldName").getAsString().equals("phase")) {
-                                TurnUiController.getInstance().setTurnLabel(data.get("newValue").getAsString());
-                            }
+                            switch (fieldName) {
+                                case "currentPlayer":
+                                    InGameController.movedUnitTiles.clear();
 
-                            if (data.get("fieldName").getAsString().equals("winner")) {
-                                WinScreenController.getInstance().setWinningScreen(data.get("newValue").getAsString());
+                                    if (TurnUiController.getInstance() == null) {
+                                        TurnUiController.startShowTurn = data.get("newValue").getAsString();
+                                    } else {
+                                        TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                                    }
+                                    break;
+                                case "phase":
+                                    if (!GameLobbyController.instance.gameInitFinished) {
+                                        GameLobbyController.instance.gameInitFinished = true;
+                                        GameLobbyController.instance.startGameTransition();
+                                    }
+
+                                    String phaseString;
+
+                                    switch (data.get("newValue").getAsString()) {
+                                        case "movePhase":
+                                            phaseString = "Movement Phase";
+                                            break;
+                                        case "attackPhase":
+                                            phaseString = "Attack Phase";
+                                            break;
+                                        case "lastMovePhase":
+                                            phaseString = "Last Movement Phase";
+                                            break;
+                                        default:
+                                            phaseString = "Unknown phase!";
+                                    }
+
+                                    if (TurnUiController.getInstance() == null) {
+                                        TurnUiController.startTurnLabel = phaseString;
+                                    } else {
+                                        TurnUiController.getInstance().setTurnLabel(phaseString);
+                                    }
+
+                                    break;
+                                case "winner":
+                                    WinScreenController.instance.setWinningScreen(data.get("newValue").getAsString());
+                                    break;
+                                default:
+                                    logger.error("Unknown field name \"" + fieldName + "\"");
                             }
                             break;
                         case "Unit":
                             if (StringUtil.checkHasNot(data, "fieldName", logger)) {
                                 return;
                             }
+
                             fieldName = data.get("fieldName").getAsString();
 
                             if (StringUtil.checkHasNot(data, "newValue", logger)) {
                                 return;
                             }
+
                             newValue = data.get("newValue").getAsString();
                             String id = data.get("id").getAsString();
+
                             switch (fieldName) {
                                 case "position":
                                     if (InGameController.getInstance() != null) {
