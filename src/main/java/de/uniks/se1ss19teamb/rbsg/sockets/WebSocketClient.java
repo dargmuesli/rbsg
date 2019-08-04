@@ -23,7 +23,7 @@ public class WebSocketClient {
     private Timer noopTimer;
     private WebSocketMessageHandler initialHandler;
 
-    public WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
+    WebSocketClient(URI endpoint, WebSocketMessageHandler initialHandler) {
         this.noopTimer = new Timer();
         this.initialHandler = initialHandler;
 
@@ -46,7 +46,7 @@ public class WebSocketClient {
         }
     }
 
-    public void stop() throws Exception {
+    void stop() throws Exception {
         if (this.mySession != null && this.mySession.isOpen()) {
             this.mySession.close();
             this.noopTimer.cancel();
@@ -86,6 +86,7 @@ public class WebSocketClient {
         e.printStackTrace();
     }
 
+    @SuppressWarnings("unused")
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         String message = "WS " + mySession.getRequestURI() + " closed.";

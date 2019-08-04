@@ -26,7 +26,6 @@ public class UnitObjectController {
     private Pane imageUnitType;
 
     private Unit unit;
-    private int count = 0;
 
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
@@ -58,7 +57,6 @@ public class UnitObjectController {
     }
 
     void update(int count) {
-        this.count = count;
         labelUnitCount.setText(Integer.toString(count));
 
         if (ArmyManagerController.army == null || ArmyManagerController.army.getUnits() == null) {
@@ -68,7 +66,7 @@ public class UnitObjectController {
         if (ArmyManagerController.army.getUnits().size() == 10) {
             btnIncrease.setDisable(true);
 
-            if (this.count > 0) {
+            if (count > 0) {
                 btnDecrease.setDisable(false);
             } else {
                 btnDecrease.setDisable(true);
@@ -76,7 +74,7 @@ public class UnitObjectController {
         } else if (ArmyManagerController.army.getUnits().size() == 0) {
             btnDecrease.setDisable(true);
 
-            if (this.count == 0) {
+            if (count == 0) {
                 btnIncrease.setDisable(false);
             } else {
                 btnIncrease.setDisable(true);
@@ -84,7 +82,7 @@ public class UnitObjectController {
         } else {
             btnIncrease.setDisable(false);
 
-            if (this.count > 0) {
+            if (count > 0) {
                 btnDecrease.setDisable(false);
             } else {
                 btnDecrease.setDisable(true);

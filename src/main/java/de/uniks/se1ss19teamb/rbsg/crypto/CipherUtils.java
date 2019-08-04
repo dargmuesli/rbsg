@@ -21,7 +21,7 @@ class CipherUtils {
     }
 
     //read Strings and generates public key for the given Strings
-    public static PublicKey readPublicKey(String filename) throws InvalidKeySpecException,
+    static PublicKey readPublicKey(String filename) throws InvalidKeySpecException,
         NoSuchAlgorithmException, IOException {
         X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(readFileBytes(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -29,7 +29,7 @@ class CipherUtils {
     }
 
     //reads Strings and generates Private key for the given Strings
-    public static PrivateKey readPrivateKey(String filename) throws IOException,
+    static PrivateKey readPrivateKey(String filename) throws IOException,
         NoSuchAlgorithmException, InvalidKeySpecException {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(readFileBytes(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -37,7 +37,7 @@ class CipherUtils {
     }
 
     //encrypts using public key and returns as Byte
-    public static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException,
+    static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
         BadPaddingException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
@@ -46,7 +46,7 @@ class CipherUtils {
     }
 
     //decrypts the key using privatekey and returns as Byte
-    public static byte[] decrypt(PrivateKey key, byte[] ciphertext) throws
+    static byte[] decrypt(PrivateKey key, byte[] ciphertext) throws
         NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
         IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");

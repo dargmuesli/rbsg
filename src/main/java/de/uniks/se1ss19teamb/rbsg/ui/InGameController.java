@@ -2,16 +2,13 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXTabPane;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -26,7 +23,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
@@ -64,13 +60,9 @@ public class InGameController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnMiniMap;
-    @FXML
     private JFXButton btnNo;
     @FXML
     private JFXButton btnYes;
-    @FXML
-    private JFXButton btnBigger;
     @FXML
     private JFXButton btnSmaller;
     @FXML
@@ -94,11 +86,6 @@ public class InGameController {
     private int zoomCounter = 0;
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
-    private JFXTabPane chatPane;
-    private VBox textArea;
-    private TextField message;
-    private VBox chatBox;
-    private JFXButton btnMinimize;
 
     public static InGameController getInstance() {
         return instance;
@@ -292,7 +279,6 @@ public class InGameController {
                         ) {
                             //yes: attack
                             GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
-
                         } else {
                             //no: move
                             LinkedList<String> path = new LinkedList<>();
