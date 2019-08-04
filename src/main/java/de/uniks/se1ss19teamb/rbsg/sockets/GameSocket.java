@@ -59,8 +59,7 @@ public class GameSocket extends AbstractMessageWebSocket {
             } else if (StringUtil.checkHasNot(response, "action", logger)) {
                 return;
             }
-
-            System.out.println(response);
+            
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
@@ -250,7 +249,6 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
                             break;
                         case "Game":
-                            System.out.print(data);
                             if (!InGameController.gameInitFinished
                                 && data.get("fieldName").getAsString().equals("phase")) {
                                 InGameController.gameInitFinished = true;
