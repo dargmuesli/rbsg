@@ -15,6 +15,7 @@ public class UnitTile extends AbstractTile {
     }
 
     public UnitTile(UnitTile unitTile) {
+        this.setId(unitTile.getId());
         this.type = unitTile.getType();
         this.mp = unitTile.getMp();
         this.hp = unitTile.getHp();
