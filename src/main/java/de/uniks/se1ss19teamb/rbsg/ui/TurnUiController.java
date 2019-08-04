@@ -87,17 +87,15 @@ public class TurnUiController {
     }
 
     public void setTurnLabel(String turn) {
-        Platform.runLater(() -> {
-            turnLabel.setText(turn);
-        });
+        Platform.runLater(() -> turnLabel.setText(turn));
     }
 
     public void showTurn(String currentPlayer) {
         // iterate over all players
-        for (InGamePlayer player: inGamePlayerList) {
+        for (InGamePlayer player : inGamePlayerList) {
             // filter the current player
             if (player.getId().equals(currentPlayer)) {
-                for (Label label: lblList) {
+                for (Label label : lblList) {
                     // color the player's label
                     if (label.getText().equals(player.getName())) {
                         label.setStyle("-fx-text-fill: Red");
