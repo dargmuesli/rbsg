@@ -29,6 +29,7 @@ public class NotificationHandlerTest {
 
     @Test
     public void getSetPopupController() {
+        this.instance.setPopupController(null);
         PopupController popupController = this.instance.getPopupController();
 
         Assert.assertNull(popupController);

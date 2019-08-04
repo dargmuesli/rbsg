@@ -7,18 +7,27 @@ import static org.mockito.Mockito.mock;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import de.uniks.se1ss19teamb.rbsg.TestUtil;
+import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class WebSocketTestsMocked {
 
     private WebSocketClient client;
     private GameSocket gameSocket = new GameSocket("54321", "12543", false);
+
+    @BeforeClass
+    public static void beforeClass() throws InterruptedException {
+        TestUtil.initJfx();
+    }
 
     @Before
     public void prepareClient() {
@@ -105,11 +114,102 @@ public class WebSocketTestsMocked {
 
         gameSocket.registerGameChangeObject((type -> gameMsg.add("changed|" + type)));
 
-        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
-            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
+        //info
+        setupSocket("{\"action\":\"info\",\"data\":{"
+            + "\"message\":\"You have no army with the given id.\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"from\":\"Game@37392bfa\",\""
+        setupSocket("{\"action\":\"info\",\"data\":{"
+            + "\"message\":\"Initialize game, sending start situation...\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"info\",\"data\":{\"message\":\"You already joined a game.\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"info\",\"data\":{\"message\":\"lolol\n\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"inGameError\",\"data\":\"lolol\n\"}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"msg\":\"lolol\n\"}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        //gameInitObject
+        setupSocket("{\"action\":\"gameStarts\",\"data\":{\"message\":\"lolol\n\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameInitObject\",\"data\":{\"id\":\"Game@792cd9ce\","
+            + "\"allPlayer\":[\"Player@7c047350\"]}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameInitObject\",\"data\":{\"id\":\"Grass@258b12ff\","
+            + "\"game\":\"Game@792cd9ce\",\"x\":\"0\",\"y\":\"0\",\"isPassable\":\"true\","
+            + "\"right\":\"Grass@1c4ac197\",\"bottom\":\"Grass@534e9ecc\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameInitObject\",\"data\":{\"id\":\"Player@7c047350\","
+            + "\"name\":\"TeamBTestUser\",\"color\":\"RED\","
+            + "\"isReady\":\"false\",\"currentGame\":\"Game@792cd9ce\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameInitObject\",\"data\":{\"id\":\"Trash@258b12ff\","
+            + "\"game\":\"Trash@792cd9ce\",\"x\":\"1\",\"y\":\"1\",\"isPassable\":\"true\","
+            + "\"right\":\"Trash@1c4ac197\",\"bottom\":\"Trash@534e9ecc\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        //TODO: Fix Platform.runLater for Travis
+        //setupSocket("{\"action\":\"gameInitFinished\",\"data\":{}}", gameSocket);
+        //gameSocket.sendToWebsocket(null);
+
+        //gameNewObject
+
+        setupSocket("{\"action\":\"gameStarts\",\"data\":{}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameNewObject\",\"data\":{\"id\":\"Unit@1923617\","
+            + "\"type\":\"Chopper\",\"mp\":\"6\",\"hp\":\"10\",\"canAttack\":[\"Infanctry\","
+            + "\"Bazooka Trooper\",\"Jeep\",\"Light Tank\",\"Heavy Tank\"],"
+            + "\"game\":\"Game@52f9b3f7\",\"leader\":\"Player@1c5f2a09\","
+            + "\"position\":\"Grass@258b12ff\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameNewObject\",\"data\":{\"id\":\"Player@1923617\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameNewObject\",\"data\":{\"id\":\"damnTrashcan\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        //gameChangeObject
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@1923617\",\"fieldName\":\"hp\",\""
+            + "newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@1923617\",\"fieldName\":\"position\",\""
+            + "newValue\":\"Grass@258b12ff\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Player@7c047350\",\"fieldName\":\"isReady\",\""
+            + "newValue\":\"true\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+
+        //TODO: Fix Platform.runLater for Travis
+        /*setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\", "
+            + "\"fieldName\":\"phase\",\"newValue\":\"movePhase\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\", "
+            + "\"fieldName\":\"currentPlayer\",\"newValue\":\"Player@7c047350\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);*/
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\","
+            + "\"fieldName\":\"position\",\"newValue\":\"5\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        //gameRemoveObject
+
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Unit@111\",\"from\":\"Game@37392bfa\",\""
             + "fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
@@ -117,28 +217,9 @@ public class WebSocketTestsMocked {
             + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
 
-        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"fieldName\":\"hp\",\""
-            + "newValue\":\"5\"}}", gameSocket);
+        setupSocket("{\"action\":\"gameRemoveObject\",\"data\":{\"id\":\"Player@12a35f8e\",\"from\":\""
+            + "Game@37392bfa\",\"fieldName\":\"allUnits\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
-
-        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@29f70a3b\",\"fieldName\":\"position\",\""
-            + "newValue\":\"5\"}}", gameSocket);
-        gameSocket.sendToWebsocket(null);
-
-        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Player@29f70a3b\",\"fieldName\":\"isReady\",\""
-            + "newValue\":\"true\"}}", gameSocket);
-        gameSocket.sendToWebsocket(null);
-
-        //TODO: Fix Platform.runLater for Travis
-        /*setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\", "
-            +
-            "\"fieldName\":\"phase\"}}", gameSocket);
-        gameSocket.sendToWebsocket(null);*/
-
-        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\","
-            + "\"fieldName\":\"position\",\"newValue\":\"5\"}}", gameSocket);
-        gameSocket.sendToWebsocket(null);
-
 
         Assert.assertTrue(gameMsg.contains("removed|Player"));
         Assert.assertTrue(gameMsg.contains("removed|Unit"));
@@ -146,7 +227,11 @@ public class WebSocketTestsMocked {
         Assert.assertTrue(gameMsg.contains("changed|Unit"));
         Assert.assertTrue(gameMsg.contains("changed|Unit"));
         Assert.assertTrue(gameMsg.contains("changed|Player"));
+        Assert.assertTrue(gameMsg.contains("changed|Player"));
         //Assert.assertTrue(gameMsg.contains("changed|Game"));
+        Assert.assertTrue(!InGameController.environmentTiles.isEmpty());
+        Assert.assertTrue(!InGameController.unitTiles.isEmpty());
+        Assert.assertEquals("Grass@258b12ff", InGameController.unitTiles.get(0).getPosition());
 
     }
 

@@ -77,7 +77,7 @@ public class LoginController {
         ChuckNorrisJokeTicker.setLabelPosition(jokeLabel);
         jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
-      
+
         UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
 
         // load user data
@@ -123,7 +123,6 @@ public class LoginController {
 
     @FXML
     private void login() {
-        btnLogin.setDisable(true);
 
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
             NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
@@ -135,14 +134,20 @@ public class LoginController {
         } else {
             UserData.deleteUserData();
         }
+        
+        LoginUserRequest userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
+        RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
 
-        RequestUtil.request(new LoginUserRequest(txtUserName.getText(), password.getText()))
-            .ifPresent(LoginController::setUserToken);
+        if (userRequest.getSuccessful()) {
+            btnLogin.setDisable(true);
+            setUserName(txtUserName.getText());
+            ChuckNorrisJokeTicker.stopAnimation();
+            UserInterfaceUtils.makeFadeOutTransition(
+                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
+        } else {
+            NotificationHandler.getInstance().sendError("Login Failed, User data doesn't exist! ", logger);
 
-        setUserName(txtUserName.getText());
-        ChuckNorrisJokeTicker.stopAnimation();
-        UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
+        }
     }
 
     @FXML
