@@ -14,7 +14,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-class CipherController {
+public class CipherController {
     private static final Logger logger = LogManager.getLogger();
 
     //This string needs to be related with data
