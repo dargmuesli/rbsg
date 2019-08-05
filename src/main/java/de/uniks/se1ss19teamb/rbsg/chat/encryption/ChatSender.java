@@ -3,9 +3,9 @@ package de.uniks.se1ss19teamb.rbsg.chat.encryption;
 import java.io.IOException;
 
 public class ChatSender extends Thread {
-    String prompt;
-    ChatCommunication chat;
-    ChatMessage msg;
+    private String prompt;
+    private ChatCommunication chat;
+    private String msg;
 
     public ChatSender(ChatCommunication chat, String prompt) {
         this.prompt = prompt;
@@ -13,7 +13,8 @@ public class ChatSender extends Thread {
     }
 
     public void run() {
-        msg = new ChatMessage(chat.myPublicKey);
+        msg = chat.myPublicKey;
+
         try {
             chat.sendMessage(msg);
         } catch (Exception e) {
@@ -22,6 +23,7 @@ public class ChatSender extends Thread {
 
         while (true) {
             String input = "";
+
             try {
                 input = chat.stdIn.readLine();
             } catch (IOException e) {
@@ -33,12 +35,14 @@ public class ChatSender extends Thread {
                 return;
             }
 
-            msg = new ChatMessage(input);
+            msg = input;
+
             try {
                 chat.sendMessage(msg);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             System.out.println("<Sent at : ");
         }
     }

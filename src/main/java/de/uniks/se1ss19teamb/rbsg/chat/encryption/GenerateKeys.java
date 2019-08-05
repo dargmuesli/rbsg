@@ -15,9 +15,9 @@ public class GenerateKeys {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);
         KeyPair kp = kpg.generateKeyPair();
+
         publicKey = kp.getPublic();
         privateKey = kp.getPrivate();
-
     }
 
     public static PublicKey getPublicKey() {

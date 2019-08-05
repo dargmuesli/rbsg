@@ -31,7 +31,6 @@ public class CipherController {
             FileWriter fw = new FileWriter(filename);
             fw.write(Base64.encodeBase64String(secret));
             fw.close();
-
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
             | BadPaddingException | IllegalBlockSizeException | IOException e) {
             NotificationHandler.sendError("Encryption of a message failed!", logger, e);
@@ -40,13 +39,11 @@ public class CipherController {
 
     //decrypt the message
     public String decryptMessage(String filename) {
-
         String decryptedMessage = "";
 
         //1.Reads the encrypted message
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
-
             StringBuilder stringBuilder = new StringBuilder();
             String line;
 
@@ -54,20 +51,19 @@ public class CipherController {
             while ((line = br.readLine()) != null) {
                 stringBuilder.append(line);
             }
-            String recoveredSecret = stringBuilder.toString();
 
+            String recoveredSecret = stringBuilder.toString();
             byte[] recSecret = Base64.decodeBase64(recoveredSecret);
 
             //4.Decrypts the message
             byte[] recoveredMessage = CipherUtils.decrypt(CipherConstant.privateKey, recSecret);
             decryptedMessage = new String(recoveredMessage, StandardCharsets.UTF_8);
             br.close();
-
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
             | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
             NotificationHandler.sendError("Decryption of a message failed!", logger, e);
         }
+
         return decryptedMessage;
     }
-
 }

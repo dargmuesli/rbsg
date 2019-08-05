@@ -10,15 +10,17 @@ import org.apache.logging.log4j.Logger;
 
 class CipherConstant {
     private static final Logger logger = LogManager.getLogger();
-    static PublicKey publicKey;
+
+    private static GenerateKeys keys = new GenerateKeys();
+
     static PrivateKey privateKey;
-    static  GenerateKeys keys = new GenerateKeys();
+    static PublicKey publicKey;
 
     static {
         try {
             keys.createKeys();
-            publicKey = keys.getPublicKey();
-            privateKey = keys.getPrivateKey();
+            publicKey = GenerateKeys.getPublicKey();
+            privateKey = GenerateKeys.getPrivateKey();
         } catch (Exception e) {
             NotificationHandler.sendError("A key could not be read!", logger, e);
         }

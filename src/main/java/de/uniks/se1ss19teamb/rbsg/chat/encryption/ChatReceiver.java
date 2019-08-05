@@ -2,25 +2,26 @@ package de.uniks.se1ss19teamb.rbsg.chat.encryption;
 
 import java.io.IOException;
 
-public class ChatReciever extends Thread {
-    String prompt;
-    ChatCommunication chat;
-    String serverAdd;
+public class ChatReceiver extends Thread {
 
-    public ChatReciever(ChatCommunication chat, String prompt, String serverAdd) {
+    private ChatCommunication chat;
+    private String prompt;
+    private String serverAdd;
+
+    public ChatReceiver(ChatCommunication chat, String prompt, String serverAdd) {
         this.chat = chat;
         this.serverAdd = serverAdd;
         this.prompt = prompt;
     }
 
     public void run() {
-        ChatMessage recieved;
+        String received;
         int count = 0;
         String publicKey;
         try {
-            while ((recieved = chat.receiveMessage()) != null) {
+            while ((received = chat.receiveMessage()) != null) {
                 if (count == 0) {
-                    publicKey = recieved.text;
+                    publicKey = received;
                     chat.anotherPulbic = publicKey;
                 } else if (count == 1) {
                     if (!(prompt.equalsIgnoreCase("Client : "))) {
