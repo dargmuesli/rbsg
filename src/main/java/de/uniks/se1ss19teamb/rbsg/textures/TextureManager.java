@@ -56,6 +56,15 @@ public class TextureManager {
         Texture lightTank = new Texture("lightTankV1.png");
         instance.textures.put("Light Tank", lightTank);
 
+        Texture healthBarBorder = new Texture("healthBorder.png");
+        instance.textures.put("HealthBarBorder", healthBarBorder);
+
+        Texture healthBarBackground = new Texture(("healthBack.png"));
+        instance.textures.put("HealthBarBackground", healthBarBackground);
+
+        Texture healthBarForeground = new Texture("healthFore.png");
+        instance.textures.put("HealthBarForeground", healthBarForeground);
+
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
         

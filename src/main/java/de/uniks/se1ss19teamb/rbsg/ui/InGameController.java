@@ -372,6 +372,7 @@ public class InGameController {
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
+
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
