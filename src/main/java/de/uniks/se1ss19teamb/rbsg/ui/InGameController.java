@@ -378,7 +378,7 @@ public class InGameController {
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {
-    	drawOverlay(startTile, mp, true);
+        drawOverlay(startTile, mp, true);
     }
     
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
