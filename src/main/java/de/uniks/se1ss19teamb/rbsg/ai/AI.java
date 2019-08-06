@@ -29,10 +29,10 @@ public abstract class AI {
     protected InGameController ingameController;
     protected Map<String, Unit> availableUnitTypes;
     
-    public AI(String playerID) {
+    public AI(String playerID, GameSocket socket, InGameController controller) {
         this.playerID = playerID;
-        this.socket = GameSocket.instance;
-        this.ingameController = InGameController.instance;
+        this.socket = socket;
+        this.ingameController = controller;
         this.availableUnitTypes = ArmyManagerController.availableUnits;
     }
     
@@ -94,12 +94,13 @@ public abstract class AI {
         aiModels.put(-1, Kaiten.class);
     }
     
-    public static AI instantiate(String playerID, int difficulty) {
+    public static AI instantiate(String playerID, GameSocket socket, InGameController controller, int difficulty) {
         Class<? extends AI> targetAI = aiModels.get(difficulty);
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
         try {
-            Constructor<? extends AI> constructor = targetAI.getConstructor(new Class[]{String.class});
-            return constructor.newInstance(new Object[]{playerID}); 
+            Constructor<? extends AI> constructor = targetAI.getConstructor(new Class[]{
+                String.class, GameSocket.class, InGameController.class});
+            return constructor.newInstance(new Object[]{playerID, socket, controller}); 
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             return null;
