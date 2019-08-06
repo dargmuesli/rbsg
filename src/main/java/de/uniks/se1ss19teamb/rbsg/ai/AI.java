@@ -1,22 +1,28 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 import javafx.util.Pair;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AI {
     
     //AI Attributes
+    
+    protected static final Logger logger = LogManager.getLogger();
     
     protected String playerID;
     protected GameSocket socket;
@@ -36,18 +42,19 @@ public abstract class AI {
     
     @SuppressWarnings ("static-access")
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y) {
-        ingameController.drawOverlay(ingameController.environmentTileMapById.get(unit.getPosition()), unit.getMp(), false);
+        ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                unit.getPosition()), unit.getMp(), false);
         
         String closest = null;
         int closestDistance = Integer.MAX_VALUE;
         
-        for(String targetTile : ingameController.previousTileMapById.keySet()) {
+        for (String targetTile : ingameController.previousTileMapById.keySet()) {
             EnvironmentTile current = ingameController.environmentTileMapById.get(targetTile);
             
             int currentDistance = Math.abs(x - current.getX()) + Math.abs(y - current.getY());
             
             //Forbid walking onto the target
-            if(currentDistance < closestDistance && currentDistance > 0) {
+            if (currentDistance < closestDistance && currentDistance > 0) {
                 closestDistance = currentDistance;
                 closest = current.getId();
             }
@@ -61,7 +68,8 @@ public abstract class AI {
 
         do {
             pathList.addFirst(closest);
-            closest = ingameController.environmentTileMapById.get(ingameController.previousTileMapById.get(closest)).getId();
+            closest = ingameController.environmentTileMapById.get(
+                    ingameController.previousTileMapById.get(closest)).getId();
         } while (!closest.equals(unit.getPosition()));
 
         path.path = pathList.toArray(new String[0]);
@@ -73,7 +81,9 @@ public abstract class AI {
         //TODO Proper "Wait-For-Socket"
         try {
             Thread.sleep(500);
-        } catch (InterruptedException e) { }
+        } catch (InterruptedException e) {
+            logger.warn("Waiting for Socket failed");
+        }
     }
     
     //Global AI access Management
@@ -89,8 +99,9 @@ public abstract class AI {
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
         try {
             Constructor<? extends AI> constructor = targetAI.getConstructor(new Class[]{String.class});
-            return constructor.newInstance(new Object[]{playerID}) ; 
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            return constructor.newInstance(new Object[]{playerID}); 
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             return null;
         }
     }

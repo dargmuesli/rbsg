@@ -1,15 +1,16 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
-import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
-import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import javafx.util.Pair;
 
-class Kaiten extends AI{
+class Kaiten extends AI {
 
     /*
      * Kaiten Strategy (KISS):
@@ -40,11 +41,12 @@ class Kaiten extends AI{
             int cnt = 0;
             
             //Interate over friendlies to calculate average
-            for(UnitTile unit : ingameController.unitTiles) {
+            for (UnitTile unit : ingameController.unitTiles) {
                 
                 //If not friendly, skip
-                if(!unit.getLeader().equals(playerID))
+                if (!unit.getLeader().equals(playerID)) {
                     continue;
+                }
                 
                 EnvironmentTile tile = ingameController.environmentTileMapById.get(unit.getPosition());
                 
@@ -61,39 +63,42 @@ class Kaiten extends AI{
             EnvironmentTile toAttack = null;
             
             //Interate over enemies to find closest
-            for(UnitTile unit : ingameController.unitTiles) {
+            for (UnitTile unit : ingameController.unitTiles) {
                 
                 //If not enemy, skip
-                if(unit.getLeader().equals(playerID))
+                if (unit.getLeader().equals(playerID)) {
                     continue;
+                }
                 
                 //If cannot be attacked, skip
-                if(!unitType.getCanAttack().contains(unit.getType()))
+                if (!unitType.getCanAttack().contains(unit.getType())) {
                     continue;
+                }
                 
                 EnvironmentTile tile = ingameController.environmentTileMapById.get(unit.getPosition());
                 
                 int currentDistance = Math.abs(centerX - tile.getX()) + Math.abs(centerY - tile.getY());
                 
-                if(currentDistance < closestDistance) {
+                if (currentDistance < closestDistance) {
                     closestDistance = currentDistance;
                     toAttack = tile;
                 }
             }
             
             //Iterate over Friendlies to Move towards enemy
-            for(UnitTile unit : ingameController.unitTiles) {
+            for (UnitTile unit : ingameController.unitTiles) {
                 
                 //If not friendly, skip
-                if(!unit.getLeader().equals(playerID))
+                if (!unit.getLeader().equals(playerID)) {
                     continue;
+                }
                 
                 Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY());
                 
                 socket.moveUnit(unit.getId(), path.getKey().path);
                 
                 //If we land next to the Target, mark for Attacking
-                if(path.getValue() == 1) {
+                if (path.getValue() == 1) {
                     markedForAttack.put(unit, ingameController.unitTileMapByTileId.get(toAttack.getId()));
                 }
                 
@@ -106,7 +111,7 @@ class Kaiten extends AI{
         socket.nextPhase();
         waitForSocket();
         
-        for(Entry<UnitTile, UnitTile> attack : markedForAttack.entrySet()) {
+        for (Entry<UnitTile, UnitTile> attack : markedForAttack.entrySet()) {
             socket.attackUnit(attack.getKey().getId(), attack.getValue().getId());
             waitForSocket();
         }
