@@ -9,9 +9,10 @@ import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javafx.util.Pair;
 
@@ -88,13 +89,14 @@ public abstract class AI {
     
     //Global AI access Management
     
-    private static Map<Integer, Class<? extends AI>> aiModels = new HashMap<>();
+    private static SortedMap<Integer, Class<? extends AI>> aiModels = new TreeMap<>();
     
     static {
         aiModels.put(-1, Kaiten.class);
     }
     
     public static AI instantiate(String playerID, GameSocket socket, InGameController controller, int difficulty) {
+        difficulty = (difficulty == Integer.MAX_VALUE) ? aiModels.lastKey() : difficulty;
         Class<? extends AI> targetAI = aiModels.get(difficulty);
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
         try {
