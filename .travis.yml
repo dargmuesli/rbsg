@@ -11,6 +11,8 @@ matrix:
         - oraclejdk8
       env:
         - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
+# disabled because of missing support by the JFoenix Gradle dependency
+#
 #    - dist: xenial
 #      jdk:
 #        - openjdk11
