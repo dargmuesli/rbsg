@@ -89,6 +89,10 @@ public class TextureManager {
     public static Pane getTextureInstance(String toFetch) {
         return instance.fetchTexture(toFetch).instantiate();
     }
+
+    public static Pane getTextureInstanceWithSize(String toFetch , double heigth, double width) {
+        return instance.fetchTexture(toFetch).instantiate(heigth, width);
+    }
     
     public static Canvas computeMinimap(
         Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {

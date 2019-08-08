@@ -22,4 +22,12 @@ public class Texture {
         return new Pane(iv);
     }
 
+    public Pane instantiate(double heigth, double width) {
+        ImageView iv = new ImageView();
+        iv.setImage(image);
+        iv.setFitHeight(heigth);
+        iv.setFitWidth(width);
+        return new Pane(iv);
+    }
+
 }

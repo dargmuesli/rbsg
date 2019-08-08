@@ -19,6 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Dimension2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -368,7 +369,16 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
+            Pane pane = new Pane();
+            pane.getChildren().add(TextureManager.getTextureInstance(unitTile.getType()));
+            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder",6,50));
+            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground",6,50));
+            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",6,50));
+
+            for (int i = 1; i < pane.getChildren().size(); i++) {
+                pane.getChildren().get(i).setLayoutY(55);
+            }
+
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
