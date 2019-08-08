@@ -90,7 +90,7 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate();
     }
 
-    public static Pane getTextureInstanceWithSize(String toFetch , double heigth, double width) {
+    public static Pane getTextureInstanceWithSize(String toFetch, double heigth, double width) {
         return instance.fetchTexture(toFetch).instantiate(heigth, width);
     }
     

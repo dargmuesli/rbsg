@@ -19,7 +19,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Dimension2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -87,6 +86,8 @@ public class InGameController {
     private int zoomCounter = 0;
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
+    private UnitTile attackingUnit;
+    private boolean isAttacked = false;
 
     public static InGameController getInstance() {
         return instance;
@@ -371,9 +372,22 @@ public class InGameController {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
             Pane pane = new Pane();
             pane.getChildren().add(TextureManager.getTextureInstance(unitTile.getType()));
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder",6,50));
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground",6,50));
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",6,50));
+            double healthBarWidth = 50;
+            double healthBarHigth = 6;
+            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder",
+                healthBarHigth, healthBarWidth));
+            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground",
+                healthBarHigth, healthBarWidth));
+
+            if (!isAttacked) {
+                pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
+                    healthBarHigth, healthBarWidth));
+            } else {
+                UnitTile attackingUnit = getAttackingUnit();
+                double damage = (healthBarWidth / 100) * (attackingUnit.getMp() * 10);
+                pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
+                    healthBarHigth, healthBarWidth - damage));
+            }
 
             for (int i = 1; i < pane.getChildren().size(); i++) {
                 pane.getChildren().get(i).setLayoutY(55);
@@ -493,6 +507,7 @@ public class InGameController {
 
         assert unit != null;
         unit.setHp(Integer.parseInt(newHp));
+        setAttackingUnit(unit);
 
         //for sounds find the attacking unit
         UnitTile attacker = findAttackingUnit(unit);
@@ -512,10 +527,20 @@ public class InGameController {
                 || (unitPos.getRight() != null && unitPos.getRight().equals(unitTile.getPosition()))
                 || (unitPos.getTop() != null && unitPos.getTop().equals(unitTile.getPosition()))) {
                 neighbor = unitTile;
+                isAttacked = true;
                 break;
             }
         }
 
         return neighbor;
     }
+
+    private void setAttackingUnit(UnitTile unitTile) {
+        attackingUnit = unitTile;
+    }
+
+    private UnitTile getAttackingUnit() {
+        return attackingUnit;
+    }
+
 }
