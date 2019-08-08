@@ -435,7 +435,7 @@ public class InGameController {
                             // TODO: for when the gamelobby exists
                             //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
-                        } else if (currentMp > 0) {
+                        } else if (currentMp > 0 && neighborUnitTile == null) {
                             // currentMp = 0 -> Attackable but not moveable
                             // TODO: for when the gamelobby exists
                             //  Is it possible to have two units on the same field?
