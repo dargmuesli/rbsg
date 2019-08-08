@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -126,6 +127,7 @@ public class AiTest {
         tileEnemy.setLeader("enemy");
         tileEnemy.setId("enemy");
         tileEnemy.setType("unittest");
+        tileEnemy.setCanAttack(canAttack.toArray(new String[0]));
         
         UnitTile tileAI = new UnitTile();
         tileAI.setMp(1);
@@ -133,6 +135,7 @@ public class AiTest {
         tileAI.setLeader("unittestplayer");
         tileAI.setId("AI");
         tileAI.setType("unittest");
+        tileAI.setCanAttack(canAttack.toArray(new String[0]));
         
         controller.unitTiles.clear();
         controller.unitTiles.add(tileEnemy);
@@ -144,6 +147,16 @@ public class AiTest {
         
         ArmyManagerController.availableUnits.clear();
         ArmyManagerController.availableUnits.put("unittest", unit);
+        
+        InGamePlayer ai = new InGamePlayer();
+        ai.setName("unittestplayer");
+        
+        InGamePlayer enemy = new InGamePlayer();
+        enemy.setName("enemy");
+        
+        controller.inGameObjects.clear();
+        controller.inGameObjects.put("unittestplayer", ai);
+        controller.inGameObjects.put("enemy", enemy);
         
         //Mocking GameSocket to interact with Mock Map
     }
@@ -158,6 +171,7 @@ public class AiTest {
         controller.unitTiles.clear();
         controller.unitTileMapByTileId.clear();
         controller.environmentTileMapById.clear();
+        controller.inGameObjects.clear();
         ArmyManagerController.availableUnits.clear();
     }
     
