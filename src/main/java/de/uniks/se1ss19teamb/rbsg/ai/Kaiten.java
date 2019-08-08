@@ -28,6 +28,10 @@ class Kaiten extends AI {
         super(playerID, socket, controller);
     }
 
+    /*
+     * Suppress warning, because in near future the relevant fields can't be statically
+     * accessed anymore.
+     */
     @SuppressWarnings ("static-access")
     @Override
     public void doTurn() {

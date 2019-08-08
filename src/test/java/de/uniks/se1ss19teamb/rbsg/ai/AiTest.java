@@ -25,6 +25,10 @@ public class AiTest {
 
     private InGameController controller;
     
+    /*
+     * Suppress warning, because in near future the relevant fields can't be statically
+     * accessed anymore.
+     */
     @SuppressWarnings ("static-access")
     @Before
     public void prepareEnvironment() {
@@ -144,6 +148,10 @@ public class AiTest {
         //Mocking GameSocket to interact with Mock Map
     }
     
+    /*
+     * Suppress warning, because in near future the relevant fields can't be statically
+     * accessed anymore.
+     */
     @SuppressWarnings ("static-access")
     @After
     public void tidyUp() {
@@ -159,6 +167,10 @@ public class AiTest {
         Assert.assertNotNull(testInstance);
     }
     
+    /*
+     * Suppress warning, because in near future the relevant fields can't be statically
+     * accessed anymore.
+     */
     @SuppressWarnings ("static-access")
     @Test
     public void testKaiten() {

@@ -41,6 +41,10 @@ public abstract class AI {
     
     //Helper Functions
     
+    /*
+     * Suppress warning, because in near future the relevant fields can't be statically
+     * accessed anymore.
+     */
     @SuppressWarnings ("static-access")
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
