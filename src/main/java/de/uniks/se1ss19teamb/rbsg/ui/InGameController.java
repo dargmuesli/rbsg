@@ -36,8 +36,10 @@ public class InGameController {
     public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
+    public static Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
+    public static Map<String, String> previousTileMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
@@ -82,9 +84,7 @@ public class InGameController {
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
-    private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private int zoomCounter = 0;
-    private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
 
     public static InGameController getInstance() {
@@ -377,7 +377,11 @@ public class InGameController {
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
     }
 
-    private void drawOverlay(EnvironmentTile startTile, int mp) {
+    public void drawOverlay(EnvironmentTile startTile, int mp) {
+        drawOverlay(startTile, mp, true);
+    }
+    
+    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
 
         // Create a queue for breadth search.
@@ -433,8 +437,10 @@ public class InGameController {
                         }
 
                         // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                        neighborStack.getChildren().add(overlay);
-                        overlayedStacks.put(neighborStack, overlay);
+                        if (draw) {
+                            neighborStack.getChildren().add(overlay);
+                            overlayedStacks.put(neighborStack, overlay);
+                        }
 
                         // Save the tile from which the tile that received an overlay was reached so that a path can
                         // be reconstructed for server requests.

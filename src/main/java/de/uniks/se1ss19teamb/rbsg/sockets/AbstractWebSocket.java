@@ -56,7 +56,7 @@ public abstract class AbstractWebSocket implements WebSocket {
         handlers.add(handler);
     }
 
-    void sendToWebsocket(JsonObject msg) {
+    public void sendToWebsocket(JsonObject msg) {
         websocket.sendMessage(msg);
     }
 
