@@ -239,7 +239,7 @@ public class InGameController {
                         .sendWarning("You can only activate Automode in your first Movementphase "
                             + "or on your opponents turn.", logger);
                 } else {
-                    aI.doTurn();
+                    Objects.requireNonNull(aI).doTurn();
                 }
             }
         }
