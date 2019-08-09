@@ -417,49 +417,49 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                // Limit to existing fields and exclude the selected tile.
-                if (neighborId == null || neighborId.equals(startTile.getId())) {
-                    return;
-                }
-
-                EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
-                StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
-
-                // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
-                if (neighborTile.isPassable()
-                    && !overlayedStacks.containsKey(neighborStack)) {
-
-                    Pane overlay = new Pane();
-                    UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
-
-                    if (neighborUnitTile != null
-                        && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
-
-                        // The tile that is going to receive an overlay contains a unit that can be attacked.
-                        // TODO: for when the gamelobby exists
-                        //  Only allow this for own units.
-                        overlay.getStyleClass().add("tile-attack");
-                    } else {
-                        // TODO: for when the gamelobby exists
-                        //  Is it possible to have two units on the same field?
-                        //  Is it possible to walk across a field on which a unit is already present?
-                        overlay.getStyleClass().add("tile-path");
+                    // Limit to existing fields and exclude the selected tile.
+                    if (neighborId == null || neighborId.equals(startTile.getId())) {
+                        return;
                     }
 
-                    // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                    if (draw) {
-                        neighborStack.getChildren().add(overlay);
-                        overlayedStacks.put(neighborStack, overlay);
+                    EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
+                    StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
+
+                    // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
+                    if (neighborTile.isPassable()
+                        && !overlayedStacks.containsKey(neighborStack)) {
+
+                        Pane overlay = new Pane();
+                        UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
+
+                        if (neighborUnitTile != null
+                            && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
+
+                            // The tile that is going to receive an overlay contains a unit that can be attacked.
+                            // TODO: for when the gamelobby exists
+                            //  Only allow this for own units.
+                            overlay.getStyleClass().add("tile-attack");
+                        } else {
+                            // TODO: for when the gamelobby exists
+                            //  Is it possible to have two units on the same field?
+                            //  Is it possible to walk across a field on which a unit is already present?
+                            overlay.getStyleClass().add("tile-path");
+                        }
+
+                        // Add the overlay to the tile and a map so that it can easily be removed in the future.
+                        if (draw) {
+                            neighborStack.getChildren().add(overlay);
+                            overlayedStacks.put(neighborStack, overlay);
+                        }
+
+                        // Save the tile from which the tile that received an overlay was reached so that a path can
+                        // be reconstructed for server requests.
+                        previousTileMapById.put(neighborId, currentTile.getId());
+
+                        // Add the tile that received an overlay to the quere so that its neighbors are checked too.
+                        queue.add(new Pair<>(neighborTile, currentMp - 1));
                     }
-
-                    // Save the tile from which the tile that received an overlay was reached so that a path can
-                    // be reconstructed for server requests.
-                    previousTileMapById.put(neighborId, currentTile.getId());
-
-                    // Add the tile that received an overlay to the quere so that its neighbors are checked too.
-                    queue.add(new Pair<>(neighborTile, currentMp - 1));
-                }
-            });
+                });
         }
     }
 
