@@ -236,8 +236,9 @@ public class InGameController {
                 if (!GameSocket.instance.phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.getInstance()
-                        .sendWarning("You can only activate Automode in your first Movementphase "
+                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
                             + "or on your opponents turn.", logger);
+
                 } else {
                     Objects.requireNonNull(aI).doTurn();
                 }
