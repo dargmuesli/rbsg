@@ -101,8 +101,6 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData();
-
         apnFade.setOpacity(0);
 
         // 1% meme chance
