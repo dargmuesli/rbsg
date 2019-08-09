@@ -417,6 +417,7 @@ public class InGameController {
     
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        previousTileMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -441,8 +442,8 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                    // Limit to existing fields and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId())) {
+                    // Limit to existing fields that haven't been checked yet and exclude the selected tile.
+                    if (neighborId == null || neighborId.equals(startTile.getId()) || previousTileMapById.containsKey(neighborId)) {
                         return;
                     }
 
