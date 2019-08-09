@@ -444,7 +444,8 @@ public class InGameController {
                 currentTile.getLeft()).forEach((neighborId) -> {
 
                     // Limit to existing fields that haven't been checked yet and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId()) || previousTileMapById.containsKey(neighborId)) {
+                    if (neighborId == null || neighborId.equals(startTile.getId()) 
+                            || previousTileMapById.containsKey(neighborId)) {
                         return;
                     }
 
