@@ -2,6 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -80,6 +82,8 @@ public class InGameController {
     private AnchorPane turnUI;
     @FXML
     public AnchorPane winScreenPane;
+    @FXML
+    public JFXToggleButton autoMode;
 
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
@@ -87,6 +91,9 @@ public class InGameController {
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private int zoomCounter = 0;
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
+    private AI aI = null;
+
+    public String playerId;
 
     public static InGameController getInstance() {
         return instance;
@@ -209,6 +216,33 @@ public class InGameController {
             mapScrollPane.setContent(contentGroup);
         } else {
             zoomCounter++;
+        }
+    }
+
+    @FXML
+    public void autoMode() {
+        if (autoMode.isSelected()) {
+            if (aI == null) {
+                String userName = LoginController.getUserName();
+                for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
+                    if (userName.equals(player.getName())) {
+                        playerId = player.getId();
+                    }
+                }
+                assert playerId != null;
+                aI = AI.instantiate(playerId,GameSocket.instance, InGameController.instance, Integer.MAX_VALUE);
+            }
+            if (GameSocket.instance.currentPlayer.equals(playerId)) {
+                if (!GameSocket.instance.phaseString.equals("Movement Phase")) {
+                    autoMode.setSelected(false);
+                    NotificationHandler.getInstance()
+                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
+                            + "or on your opponents turn.", logger);
+
+                } else {
+                    Objects.requireNonNull(aI).doTurn();
+                }
+            }
         }
     }
 
@@ -384,6 +418,7 @@ public class InGameController {
     
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        previousTileMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -409,8 +444,9 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                    // Limit to existing fields and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId())) {
+                    // Limit to existing fields that haven't been checked yet and exclude the selected tile.
+                    if (neighborId == null || neighborId.equals(startTile.getId()) 
+                            || previousTileMapById.containsKey(neighborId)) {
                         return;
                     }
 

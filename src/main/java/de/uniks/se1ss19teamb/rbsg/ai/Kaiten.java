@@ -94,8 +94,8 @@ class Kaiten extends AI {
             //Iterate over Friendlies to Move towards enemy
             for (UnitTile unit : ingameController.unitTiles) {
                 
-                //If not friendly, skip
-                if (!unit.getLeader().equals(playerID)) {
+                //If not friendly or wrong type, skip
+                if (!unit.getLeader().equals(playerID) || !unit.getType().equals(unitType.getType())) {
                     continue;
                 }
                 
