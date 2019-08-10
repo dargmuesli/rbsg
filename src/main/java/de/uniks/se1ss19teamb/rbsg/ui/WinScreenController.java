@@ -37,7 +37,7 @@ public class WinScreenController {
         updatePlayers();
     }
 
-    public void setGameSocket (int number) {
+    public void setGameSocket(int number) {
         gameSocket = GameSocketDistributor.getGameSocket(number);
     }
 
