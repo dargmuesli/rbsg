@@ -15,8 +15,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Rest request tests against the real gameserver.
  */
