@@ -131,10 +131,11 @@ public class LoginController {
         } else {
             UserData.deleteUserData();
         }
-        
+
         LoginUserRequest userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
         RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
 
+        // Login hotfix (see commit ef5ae5aeb59e162613686dab003feb5e34d72846)
         userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
         RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
         
