@@ -9,9 +9,6 @@ public class GameSocketDistributor {
     private static ArrayList<GameSocket> gameSockets = new ArrayList<>();
 
     public static void setGameSocket(int number, String gameId, String armyId, boolean spectator) {
-        if (gameSockets.get(number) != null) {
-            gameSockets.remove(number);
-        }
         gameSockets.add(new GameSocket(gameId, armyId, spectator));
     }
 
