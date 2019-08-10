@@ -121,7 +121,6 @@ public class LoginController {
 
     @FXML
     private void login() {
-
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
             NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
             return;
@@ -147,7 +146,6 @@ public class LoginController {
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
             NotificationHandler.getInstance().sendError("Login Failed, User data doesn't exist! ", logger);
-
         }
     }
 
