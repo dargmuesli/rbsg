@@ -30,6 +30,10 @@ public class GameSocketDistributor {
     }
 
     public static GameSocket getGameSocket(int number) {
+        if (gameSockets.size() <= number) {
+            new Exception("Wrong gameSockets ArrayList size!").printStackTrace();
+            return null;
+        }
         return gameSockets.get(0);
     }
 }
