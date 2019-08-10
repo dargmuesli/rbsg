@@ -63,8 +63,9 @@ public class GameLobbyController {
             apnFade, apnRoot, GameLobbyController.class, btnFullscreen, errorContainer);
 
         GameLobbyController.instance = this;
-        gameSocket = GameSocketDistributor
-            .getGameSocket(0, GameSelectionController.joinedGame.getId());
+        GameSocketDistributor
+            .setGameSocket(0, GameSelectionController.joinedGame.getId());
+        gameSocket = GameSocketDistributor.getGameSocket(0);
         gameSocket.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 MainController.instance.addNewPane(from, message, false, chatPane);
