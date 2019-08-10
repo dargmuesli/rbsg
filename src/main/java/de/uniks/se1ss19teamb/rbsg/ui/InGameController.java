@@ -88,12 +88,6 @@ public class InGameController {
     private int zoomCounter = 0;
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
 
-    private GameSocket gameSocket = GameSocketDistributor.getGameSocket(0);
-
-    public void setGameSocket(int number) {
-        gameSocket = GameSocketDistributor.getGameSocket(number);
-    }
-
     public static InGameController getInstance() {
         return instance;
     }
@@ -297,7 +291,8 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            gameSocket.attackUnit(previousUnitTile.getId(), toAttack.getId());
+                            GameSocketDistributor.getGameSocket(0).attackUnit(previousUnitTile.getId(),
+                                toAttack.getId());
 
                         } else {
                             // No: move.
@@ -312,7 +307,8 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            gameSocket.moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
+                            GameSocketDistributor.getGameSocket(0).moveUnit(previousUnitTile.getId(),
+                                path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
@@ -471,8 +467,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            gameSocket.leaveGame();
-            gameSocket.disconnect();
+            GameSocketDistributor.getGameSocket(0).leaveGame();
+            GameSocketDistributor.getGameSocket(0).disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {

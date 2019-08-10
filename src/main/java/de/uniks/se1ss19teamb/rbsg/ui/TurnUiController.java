@@ -37,11 +37,11 @@ public class TurnUiController {
 
     private static TurnUiController instance;
 
-    private GameSocket gameSocket = GameSocketDistributor.getGameSocket(0);
-
-    public void setGameSocket(int number) {
-        gameSocket = GameSocketDistributor.getGameSocket(number);
-    }
+    //    private GameSocket gameSocket = GameSocketDistributor.getGameSocket(0);
+    //
+    //    public void setGameSocket(int number) {
+    //        gameSocket = GameSocketDistributor.getGameSocket(number);
+    //    }
 
     public static TurnUiController getInstance() {
         return instance;
@@ -103,7 +103,7 @@ public class TurnUiController {
 
     @FXML
     private void nextPhase() {
-        gameSocket.nextPhase();
+        GameSocketDistributor.getGameSocket(0).nextPhase();
     }
 
     public void setTurnLabel(String turn) {
