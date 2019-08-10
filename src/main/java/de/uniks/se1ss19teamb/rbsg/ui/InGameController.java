@@ -6,6 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
@@ -86,6 +87,12 @@ public class InGameController {
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private int zoomCounter = 0;
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
+
+    private GameSocket gameSocket = GameSocketDistributor.getGameSocket(0);
+
+    public void setGameSocket(int number) {
+        gameSocket = GameSocketDistributor.getGameSocket(number);
+    }
 
     public static InGameController getInstance() {
         return instance;
@@ -290,7 +297,7 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            GameSocket.instance.attackUnit(previousUnitTile.getId(), toAttack.getId());
+                            gameSocket.attackUnit(previousUnitTile.getId(), toAttack.getId());
 
                         } else {
                             // No: move.
@@ -305,7 +312,7 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            GameSocket.instance.moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
+                            gameSocket.moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
@@ -464,8 +471,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            GameSocket.instance.leaveGame();
-            GameSocket.instance.disconnect();
+            gameSocket.leaveGame();
+            gameSocket.instance.disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {
