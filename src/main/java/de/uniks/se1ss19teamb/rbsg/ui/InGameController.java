@@ -472,7 +472,7 @@ public class InGameController {
 
         } else if (event.getSource().equals(btnYes)) {
             gameSocket.leaveGame();
-            gameSocket.instance.disconnect();
+            gameSocket.disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {
