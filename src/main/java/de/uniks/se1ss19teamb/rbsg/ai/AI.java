@@ -73,8 +73,7 @@ public abstract class AI {
 
         do {
             pathList.addFirst(closest);
-            closest = ingameController.environmentTileMapById.get(
-                    ingameController.previousTileMapById.get(closest)).getId();
+            closest = ingameController.previousTileMapById.get(closest);
         } while (!closest.equals(unit.getPosition()));
 
         path.path = pathList.toArray(new String[0]);
@@ -85,7 +84,8 @@ public abstract class AI {
     protected void waitForSocket() {
         //TODO Proper "Wait-For-Socket"
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
+            System.out.println("Waiting for Websocket");
         } catch (InterruptedException e) {
             logger.warn("Waiting for Socket failed");
         }
