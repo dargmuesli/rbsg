@@ -28,7 +28,6 @@ public class GameLobbyController {
     public AnchorPane apnFade;
     @FXML
     public VBox vbxMinimap;
-
     @FXML
     private AnchorPane errorContainer;
     @FXML

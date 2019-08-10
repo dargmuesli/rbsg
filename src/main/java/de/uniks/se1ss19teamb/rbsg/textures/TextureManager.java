@@ -83,7 +83,6 @@ public class TextureManager {
     
     public static Canvas computeMinimap(
         Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {
-        //TODO Render Unit positions.
 
         // since it's a square map
         double squareSide = Math.sqrt(map.size());

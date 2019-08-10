@@ -118,6 +118,10 @@ public class InGameController {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
             stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
                 .remove(texture);
+            if (miniMap.isVisible()) {
+                updateMinimap();
+            }
+
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
             }
@@ -129,6 +133,11 @@ public class InGameController {
                 finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
             currentUnit.setPosition(newPos);
         }
+    }
+
+    private void updateMinimap() {
+        miniMap.getChildren().clear();
+        miniMap.getChildren().add(TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId));
     }
 
     @FXML
@@ -199,6 +208,7 @@ public class InGameController {
         if (miniMap.isVisible()) {
             miniMap.setVisible(false);
         } else {
+            updateMinimap();
             miniMap.setVisible(true);
         }
     }
@@ -415,7 +425,7 @@ public class InGameController {
     public void drawOverlay(EnvironmentTile startTile, int mp) {
         drawOverlay(startTile, mp, true);
     }
-    
+
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
         previousTileMapById.clear();
@@ -460,7 +470,7 @@ public class InGameController {
                         && (unitTileMapByTileId.get(neighborId) == null
                         || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
                         .getName().equals(LoginController.getUserName()))) {
-                        
+                      
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
