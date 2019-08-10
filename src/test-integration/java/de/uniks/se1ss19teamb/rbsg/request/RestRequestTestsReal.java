@@ -130,6 +130,12 @@ public class RestRequestTestsReal {
         }
     }
 
+    public static void joinGame() {
+        if (!RequestUtil.request(new JoinGameRequest(gameId, LoginController.getUserToken()))) {
+            Assert.fail();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Test
