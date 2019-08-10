@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
@@ -335,7 +336,8 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            GameSocket.instance.attackUnit(previousUnitTile.getId(), toAttack.getId());
+                            GameSocketDistributor.getGameSocket(0).attackUnit(previousUnitTile.getId(),
+                                toAttack.getId());
 
                         } else {
                             // No: move.
@@ -350,7 +352,8 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            GameSocket.instance.moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
+                            GameSocketDistributor.getGameSocket(0).moveUnit(previousUnitTile.getId(),
+                                path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
@@ -518,8 +521,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            GameSocket.instance.leaveGame();
-            GameSocket.instance.disconnect();
+            GameSocketDistributor.getGameSocket(0).leaveGame();
+            GameSocketDistributor.getGameSocket(0).disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {
