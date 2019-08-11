@@ -58,7 +58,7 @@ public class UiTestsReal extends ApplicationTest {
         RestRequestTestsReal.loginUser();
         RestRequestTestsReal.createGame();
 
-        if (!RequestUtil.request(new JoinGameRequest(RestRequestTestsReal.gameId, RestRequestTestsReal.userToken))) {
+        if (!RequestUtil.request(new JoinGameRequest(RestRequestTestsReal.gameId, LoginController.getUserToken()))) {
             Assert.fail();
         }
 
