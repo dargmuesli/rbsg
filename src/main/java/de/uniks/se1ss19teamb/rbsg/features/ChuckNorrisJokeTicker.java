@@ -27,7 +27,6 @@ public class ChuckNorrisJokeTicker {
             + "Chuck Norris hatte "
             + "ihn auf Facebook angestupst."};
 
-    private static int random;
     private static AnimationTimer animationTimer;
 
     /**
