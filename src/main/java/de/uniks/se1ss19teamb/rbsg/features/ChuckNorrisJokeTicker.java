@@ -26,6 +26,8 @@ public class ChuckNorrisJokeTicker {
         "Arnold Schwarzenegger musste wegen schweren Verletzungen ins Krankenhaus eingeliefert werden. "
             + "Chuck Norris hatte "
             + "ihn auf Facebook angestupst."};
+
+    private static int random;
     private static AnimationTimer animationTimer;
 
     /**
