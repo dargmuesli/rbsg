@@ -14,7 +14,7 @@
     <Label fx:id="lblPlayerName" text="PLAYER_NAME" wrapText="true"/>
     <Circle fx:id="crclReadiness" fill="PURPLE" radius="5.0" stroke="BLACK" strokeType="INSIDE"/>
     <stylesheets>
-        <URL value="@../css/whiteDesign.css"/>
-        <URL value="@../css/darkDesign.css"/>
+        <URL value="@../../css/whiteDesign.css"/>
+        <URL value="@../../css/darkDesign.css"/>
     </stylesheets>
 </HBox>

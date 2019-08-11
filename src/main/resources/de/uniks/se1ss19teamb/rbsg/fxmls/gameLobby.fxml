@@ -117,7 +117,7 @@
                             <Font name="System Bold" size="15.0"/>
                         </font>
                     </Label>
-                    <fx:include source="armyManager.fxml"/>
+                    <fx:include source="modules/armyManager.fxml"/>
                 </VBox>
             </HBox>
         </VBox>

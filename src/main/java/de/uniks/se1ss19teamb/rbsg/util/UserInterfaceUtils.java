@@ -126,7 +126,7 @@ public class UserInterfaceUtils {
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/popup.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();

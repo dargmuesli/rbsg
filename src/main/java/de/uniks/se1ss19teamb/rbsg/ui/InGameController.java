@@ -8,7 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
@@ -164,7 +163,7 @@ public class InGameController {
         apnFade.getChildren().add(miniMap);
 
         FXMLLoader loader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/turnUI.fxml"));
         try {
             Parent parent = loader.load();
             turnUI.getChildren().add(parent);
@@ -175,7 +174,7 @@ public class InGameController {
         selectionOverlay.setId("tile-selected");
 
         FXMLLoader loader1 = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/winScreen.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/winScreen.fxml"));
         try {
             Parent parent = loader1.load();
             winScreenPane.getChildren().add(parent);

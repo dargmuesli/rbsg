@@ -7,7 +7,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
@@ -130,7 +129,7 @@ public class ArmyManagerController {
     private void setUpUnitObjects() {
         availableUnits.forEach((s, unit) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/unitObject.fxml"));
 
             try {
                 Parent parent = fxmlLoader.load();

@@ -95,7 +95,7 @@ public class GameLobbyController {
                 .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
                 .forEachOrdered(inGameObjectEntry -> {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                        .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/lobbyPlayer.fxml"));
+                        .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/lobbyPlayer.fxml"));
 
                     try {
                         Parent parent = fxmlLoader.load();

@@ -30,7 +30,7 @@
         <Insets left="5.0" right="5.0" />
     </padding>
    <stylesheets>
-      <URL value="@../css/whiteDesign.css" />
-      <URL value="@../css/darkDesign.css" />
+      <URL value="@../../css/whiteDesign.css" />
+      <URL value="@../../css/darkDesign.css" />
    </stylesheets>
 </HBox>

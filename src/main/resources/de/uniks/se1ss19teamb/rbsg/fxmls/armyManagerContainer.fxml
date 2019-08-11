@@ -30,7 +30,7 @@
                         </graphic>
                     </JFXButton>
                 </HBox>
-                <fx:include source="armyManager.fxml"/>
+                <fx:include source="modules/armyManager.fxml"/>
             </children>
             <padding>
                 <Insets bottom="25.0" left="25.0" right="25.0" top="10.0"/>
