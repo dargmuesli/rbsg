@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import animatefx.animation.Bounce;
+import animatefx.animation.Wobble;
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -114,7 +116,8 @@ public class TurnUiController {
                 for (Label label : lblList) {
                     // color the player's label
                     if (label.getText().equals(player.getName())) {
-                        label.setStyle("-fx-text-fill: Red");
+                        new Wobble(label).play();
+                        label.setStyle("-fx-text-fill: red");
                     } else {
                         label.setStyle("-fx-text-fill: #FFFF8d");
                     }
