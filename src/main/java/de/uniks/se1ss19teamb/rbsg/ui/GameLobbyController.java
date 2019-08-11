@@ -195,7 +195,7 @@ public class GameLobbyController {
             BotWindowController controller = fxmlLoader.getController();
             Stage botWindow = new Stage();
             botWindow.setTitle("Bot Manager");
-            botWindow.initModality(Modality.WINDOW_MODAL);
+            botWindow.initModality(Modality.APPLICATION_MODAL);
             botWindow.initStyle(StageStyle.DECORATED);
             botWindow.setScene(new Scene(parent));
             botWindow.show();
