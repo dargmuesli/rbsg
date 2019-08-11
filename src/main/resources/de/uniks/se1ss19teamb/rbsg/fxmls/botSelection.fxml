@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSlider?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane prefHeight="30.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController">
+   <children>
+      <HBox prefHeight="15.0" prefWidth="250.0" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label text="#BotName">
+               <HBox.margin>
+                  <Insets right="16.0" />
+               </HBox.margin>
+            </Label>
+            <JFXSlider />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
