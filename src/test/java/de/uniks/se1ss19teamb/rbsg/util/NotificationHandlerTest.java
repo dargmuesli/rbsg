@@ -3,7 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.util;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
+import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -29,19 +29,19 @@ public class NotificationHandlerTest {
 
     @Test
     public void getSetPopupController() {
-        this.instance.setPopupController(null);
-        PopupController popupController = this.instance.getPopupController();
+        this.instance.setNotificationController(null);
+        NotificationController notificationController = this.instance.getNotificationController();
 
-        Assert.assertNull(popupController);
+        Assert.assertNull(notificationController);
 
-        popupController = new PopupController();
-        this.instance.setPopupController(popupController);
+        notificationController = new NotificationController();
+        this.instance.setNotificationController(notificationController);
 
-        Assert.assertEquals(popupController, this.instance.getPopupController());
+        Assert.assertEquals(notificationController, this.instance.getNotificationController());
 
-        this.instance.setPopupController(null);
+        this.instance.setNotificationController(null);
 
-        Assert.assertNull(this.instance.getPopupController());
+        Assert.assertNull(this.instance.getNotificationController());
     }
 
     @Test
@@ -52,10 +52,10 @@ public class NotificationHandlerTest {
         this.instance.sendError(errorMessage, logger, e);
         verify(logger).error(errorMessage, e);
 
-        PopupController popupControllerMock = mock(PopupController.class);
-        this.instance.setPopupController(popupControllerMock);
+        NotificationController notificationControllerMock = mock(NotificationController.class);
+        this.instance.setNotificationController(notificationControllerMock);
         this.instance.sendError(errorMessage, logger);
-        verify(popupControllerMock).displayError(errorMessage);
+        verify(notificationControllerMock).displayError(errorMessage);
     }
 
     @Test
@@ -63,10 +63,10 @@ public class NotificationHandlerTest {
         this.instance.sendInfo(errorMessage, logger);
         verify(logger).info(errorMessage);
 
-        PopupController popupControllerMock = mock(PopupController.class);
-        this.instance.setPopupController(popupControllerMock);
+        NotificationController notificationControllerMock = mock(NotificationController.class);
+        this.instance.setNotificationController(notificationControllerMock);
         this.instance.sendInfo(errorMessage, logger);
-        verify(popupControllerMock).displayInformation(errorMessage);
+        verify(notificationControllerMock).displayInformation(errorMessage);
     }
 
     @Test
@@ -74,10 +74,10 @@ public class NotificationHandlerTest {
         this.instance.sendSuccess(errorMessage, logger);
         verify(logger).debug(errorMessage);
 
-        PopupController popupControllerMock = mock(PopupController.class);
-        this.instance.setPopupController(popupControllerMock);
+        NotificationController notificationControllerMock = mock(NotificationController.class);
+        this.instance.setNotificationController(notificationControllerMock);
         this.instance.sendSuccess(errorMessage, logger);
-        verify(popupControllerMock).displaySuccess(errorMessage);
+        verify(notificationControllerMock).displaySuccess(errorMessage);
     }
 
     @Test
@@ -85,9 +85,9 @@ public class NotificationHandlerTest {
         this.instance.sendWarning(errorMessage, logger);
         verify(logger).warn(errorMessage);
 
-        PopupController popupControllerMock = mock(PopupController.class);
-        this.instance.setPopupController(popupControllerMock);
+        NotificationController notificationControllerMock = mock(NotificationController.class);
+        this.instance.setNotificationController(notificationControllerMock);
         this.instance.sendWarning(errorMessage, logger);
-        verify(popupControllerMock).displayWarning(errorMessage);
+        verify(notificationControllerMock).displayWarning(errorMessage);
     }
 }

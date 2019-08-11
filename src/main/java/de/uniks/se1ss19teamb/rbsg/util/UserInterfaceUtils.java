@@ -6,7 +6,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
-import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
+import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -126,13 +126,13 @@ public class UserInterfaceUtils {
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/popup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/notification.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
             // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
+            NotificationController controller = fxmlLoader.getController();
+            NotificationHandler.getInstance().setNotificationController(controller);
             Platform.runLater(() -> {
                 errorContainer.getChildren().add(parent);
                 errorContainer.toFront();

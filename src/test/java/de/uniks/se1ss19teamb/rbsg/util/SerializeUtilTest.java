@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 import de.uniks.se1ss19teamb.rbsg.TestUtil;
-import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
+import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,14 +33,14 @@ public class SerializeUtilTest {
         int mtr = 123456;
     }
 
-    private PopupController popupControllerMock = mock(PopupController.class);
+    private NotificationController notificationControllerMock = mock(NotificationController.class);
     private String fileString = "file.json";
     private String testClassString = "{\"name\":\"my name\",\"mtr\":123456}";
     private TestClass testClass = new TestClass();
 
     @Before
     public void before() {
-        NotificationHandler.getInstance().setPopupController(popupControllerMock);
+        NotificationHandler.getInstance().setNotificationController(notificationControllerMock);
         TestUtil.setupHeadlessMode();
     }
 
@@ -83,7 +83,7 @@ public class SerializeUtilTest {
 
         whenNew(FileReader.class).withArguments(new File(fileString)).thenThrow(new IOException());
         Assert.assertNull(SerializeUtil.deserialize(new File(fileString), TestClass.class));
-        verify(popupControllerMock).displayError("Could not deserialize file.json to"
+        verify(notificationControllerMock).displayError("Could not deserialize file.json to"
             + " de.uniks.se1ss19teamb.rbsg.util.SerializeUtilTest$TestClass!");
     }
 
@@ -103,7 +103,7 @@ public class SerializeUtilTest {
 
         whenNew(FileWriter.class).withArguments(fileString).thenThrow(new IOException());
         SerializeUtil.serialize(fileString, this.testClass);
-        verify(popupControllerMock).displayError(matches("Could not serialize"
+        verify(notificationControllerMock).displayError(matches("Could not serialize"
             + " de\\.uniks\\.se1ss19teamb\\.rbsg\\.util\\.SerializeUtilTest\\$TestClass@[a-z0-9]+ to file\\.json!"));
     }
 }

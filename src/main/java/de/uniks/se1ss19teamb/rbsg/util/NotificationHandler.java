@@ -1,12 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
-import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
+import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
 import org.apache.logging.log4j.Logger;
 
 public class NotificationHandler {
 
     private static NotificationHandler notificationHandler;
-    private PopupController popupController;
+    private NotificationController notificationController;
 
     private NotificationHandler() {
     }
@@ -19,12 +19,12 @@ public class NotificationHandler {
         return notificationHandler;
     }
 
-    public PopupController getPopupController() {
-        return this.popupController;
+    public NotificationController getNotificationController() {
+        return this.notificationController;
     }
 
-    public void setPopupController(PopupController epc) {
-        this.popupController = epc;
+    public void setNotificationController(NotificationController epc) {
+        this.notificationController = epc;
     }
 
     public void sendError(String errorMessage, Logger logger) {
@@ -39,8 +39,8 @@ public class NotificationHandler {
         }
 
         // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displayError(errorMessage);
+        if (notificationController != null) {
+            notificationController.displayError(errorMessage);
         }
     }
 
@@ -48,8 +48,8 @@ public class NotificationHandler {
         logger.info(infoMessage);
 
         // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displayInformation(infoMessage);
+        if (notificationController != null) {
+            notificationController.displayInformation(infoMessage);
         }
     }
 
@@ -57,8 +57,8 @@ public class NotificationHandler {
         logger.debug(successMessage);
 
         // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displaySuccess(successMessage);
+        if (notificationController != null) {
+            notificationController.displaySuccess(successMessage);
         }
     }
 
@@ -66,8 +66,8 @@ public class NotificationHandler {
         logger.warn(warningMessage);
 
         // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displayWarning(warningMessage);
+        if (notificationController != null) {
+            notificationController.displayWarning(warningMessage);
         }
     }
 }
