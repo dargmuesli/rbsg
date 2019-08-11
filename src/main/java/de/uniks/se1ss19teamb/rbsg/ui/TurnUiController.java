@@ -5,6 +5,7 @@ import animatefx.animation.Wobble;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -30,6 +31,8 @@ public class TurnUiController {
     private Label labelThree;
     @FXML
     private Label labelFour;
+    @FXML
+    private HBox lblBox;
 
     private ArrayList<Label> lblList = new ArrayList<>();
 
@@ -103,7 +106,7 @@ public class TurnUiController {
 
     @FXML
     private void nextPhase() {
-        GameSocketDistributor.getGameSocket(0).nextPhase();
+        Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).nextPhase();
     }
 
     public void setTurnLabel(String turn) {

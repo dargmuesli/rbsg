@@ -105,7 +105,7 @@
                    textAlignment="CENTER" visible="false"/>
         </children>
     </AnchorPane>
-    <VBox fx:id="vBoxWinScreen" alignment="CENTER" style="-fx-background-color: transparent" visible="false"
+    <VBox fx:id="vBoxWinScreen" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.6)" visible="false"
           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
           AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER" style="-fx-background-color: transparent" VBox.vgrow="ALWAYS">
