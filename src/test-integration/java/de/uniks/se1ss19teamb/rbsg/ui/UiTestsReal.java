@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -24,10 +25,10 @@ import org.testfx.util.WaitForAsyncUtils;
 public class UiTestsReal extends ApplicationTest {
     public static final String TEST_GAME = "TeamBTestGame";
 
-//    @BeforeAll
-//    public static void setupHeadlessMode() {
-//        TestUtil.setupHeadlessMode();
-//    }
+    @BeforeAll
+    public static void setupHeadlessMode() {
+        TestUtil.setupHeadlessMode();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -75,7 +76,7 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#gameName");
         write(TEST_GAME);
         clickOn("#btnCreate");
-        sleep(1000);
+        sleep(2000);
 
         ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
         HBox box = null;
@@ -88,9 +89,9 @@ public class UiTestsReal extends ApplicationTest {
         }
         assert box != null;
         clickOn(box.getChildren().get(3));
-        sleep(2000); // sleep to finish action
+        sleep(4000); // sleep to finish action
         clickOn("#cmbArmies");
-        sleep(1000);
+        sleep(2000);
         clickOn(lookup("#cmbArmies").queryAs(JFXComboBox.class).getChildrenUnmodifiable().get(0));
         sleep(1000);
         clickOn("#tglReadiness");
@@ -145,6 +146,7 @@ public class UiTestsReal extends ApplicationTest {
     }
 
     private void armyManagerTest() {
+        //TODO import export tests
         clickOn("#btnArmyManager");
         sleep(4000); // sleep to finish transition
         clickOn("#btnAdd");
@@ -156,15 +158,39 @@ public class UiTestsReal extends ApplicationTest {
             clickOn("+");
         }
 
-        clickOn("#btnSave");
-
         clickOn("#btnMinimize");
         clickOn("#btnMinimize");
-        
 
         clickOn("#btnLogout");
         sleep(3000);
+
+        clickOn("#btnSave");
+        sleep(2000);
+        clickOn("#btnEditIcon");
         clickOn("#btnBack");
+        sleep(4000); // sleep to finish transition
+
+        clickOn("#btnArmyManager");
+        sleep(4000); // sleep to finish transition
+
+        boolean armyExists = false;
+        int nodeCounter = 0;
+        for (Object node : lookup("#cmbArmies").queryAs(JFXComboBox.class).getItems()) {
+            if (node.toString().equals("testArmy")) {
+                armyExists = true;
+                break;
+            }
+            nodeCounter++;
+        }
+        Assert.assertTrue(armyExists);
+
+        clickOn("#cmbArmies");
+        sleep(1000);
+        clickOn(lookup("#cmbArmies").queryAs(JFXComboBox.class).getChildrenUnmodifiable().get(nodeCounter));
+
+        clickOn("#btnRemove");
+
+        sleep(200);
         clickOn("#btnBack");
         sleep(4000); // sleep to finish transition
     }
