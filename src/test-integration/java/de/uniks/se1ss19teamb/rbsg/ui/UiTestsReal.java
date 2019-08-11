@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXComboBox;
 import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.request.*;
@@ -21,11 +22,12 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 public class UiTestsReal extends ApplicationTest {
+    public static final String TEST_GAME = "TeamBTestGame";
 
-    @BeforeAll
-    public static void setupHeadlessMode() {
-        TestUtil.setupHeadlessMode();
-    }
+//    @BeforeAll
+//    public static void setupHeadlessMode() {
+//        TestUtil.setupHeadlessMode();
+//    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -56,23 +58,7 @@ public class UiTestsReal extends ApplicationTest {
     @Disabled
     public void testInGame() {
         //TODO try again when the sockets arent static anymore
-        RestRequestTestsReal.loginUser();
-        RestRequestTestsReal.createGame();
-
-        if (!RequestUtil.request(new JoinGameRequest(RestRequestTestsReal.gameId, LoginController.getUserToken()))) {
-            Assert.fail();
-        }
-
-        RestRequestTestsReal.queryUnits();
-
-        GameSocket gameSocket = new GameSocket(
-            RestRequestTestsReal.gameId,
-            null,
-            false);
-
-        gameSocket.connect();
-        gameSocket.changeArmy(RestRequestTestsReal.unitList.get(0).getId());
-        gameSocket.readyToPlay();
+        //GameSocket gameSocket = secondPlayer();
 
         // player with UI
         clickOn("#txtUserName");
@@ -82,6 +68,83 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#btnLogin");
         sleep(3000); // sleep to finish action
 
+        //tests ui of armymanager
+        armyManagerTest();
+
+        //createGame
+        clickOn("#gameName");
+        write(TEST_GAME);
+        clickOn("#btnCreate");
+        sleep(1000);
+
+        ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
+        HBox box = null;
+        for (HBox gameField : list.getItems()) {
+            Label label = (Label) gameField.getChildren().get(0);
+            if (label.getText().equals(TEST_GAME)) {
+                box = gameField;
+                break;
+            }
+        }
+        assert box != null;
+        clickOn(box.getChildren().get(3));
+        sleep(2000); // sleep to finish action
+        clickOn("#cmbArmies");
+        sleep(1000);
+        clickOn(lookup("#cmbArmies").queryAs(JFXComboBox.class).getChildrenUnmodifiable().get(0));
+        sleep(1000);
+        clickOn("#tglReadiness");
+        sleep(1000);
+        clickOn("#btnStartGame");
+        sleep(7000); // sleep to finish action
+
+        //TODO repair as soon as bot is ready
+        GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
+        StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
+        Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
+        clickOn("#hamburgerMenu");
+        sleep(1000); // sleep to finish action
+        clickOn("#btnFullscreen");
+        clickOn("#btnFullscreen");
+        clickOn("#btnMiniMap");
+        clickOn("#btnMiniMap");
+        clickOn("#btnMinimize");
+        clickOn("#message").write("Hello").clickOn("#btnSend");
+        clickOn("#message").write("/w TeamBTestUser asd").clickOn("#btnSend");
+
+        //gameSocket.leaveGame();
+        //gameSocket.disconnect();
+
+        clickOn("#btnMinimize");
+        clickOn("#chatWindow")
+            .press(MouseButton.PRIMARY)
+            .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
+            .drop();
+
+        //leaves game
+        leaveGameTest();
+
+        sleep(3000); // sleep to finish action
+        ListView list2 = lookup("#gameListView").queryAs(ListView.class);
+        HBox box2;
+        for (int i = 0; i < list2.getItems().size(); i++) {
+            box2 = (HBox) list2.getItems().get(i);
+            Label label = (Label) box2.lookup("Label");
+            if (label.getText().equals("junitTestGameB")) {
+                Button button = (Button) box2.lookup("#delete");
+                clickOn(button);
+                sleep(500); // sleep to finish action
+            }
+        }
+        sleep(500); // needed to avoid sception
+        // logout
+        clickOn("#hamburgerMenu");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnLogout");
+        sleep(2000); // sleep to finish transition
+    }
+
+    private void armyManagerTest() {
         // armymanager changed so ui test needs to be changed */
         //        clickOn("#btnArmyManager");
         //        sleep(2000); // sleep to finish transition
@@ -106,64 +169,29 @@ public class UiTestsReal extends ApplicationTest {
         //        sleep(2600); // wating for notification do disappear
         //        clickOn("#btnBack");
         //        sleep(2000); // sleep to finish transition
-        ListView<HBox> list = lookup("#gameListView").queryAs(ListView.class);
-        HBox box = null;
-        for (HBox gameField : list.getItems()) {
-            Label label = (Label) gameField.getChildren().get(0);
-            if (label.getText().equals("junitTestGameB")) {
-                box = gameField;
-                break;
-            }
-        }
-        assert box != null;
-        clickOn(box.getChildren().get(1));
-        sleep(2000); // sleep to finish action
-        clickOn("#select1");
-        clickOn("#btnMyReady");
-        clickOn("#btnStart");
-        sleep(7000); // sleep to finish action
-        GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
-        StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
-        Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
-        clickOn("#hamburgerMenu");
-        sleep(1000); // sleep to finish action
-        clickOn("#btnFullscreen");
-        clickOn("#btnFullscreen");
-        clickOn("#btnMiniMap");
-        clickOn("#btnMiniMap");
-        clickOn("#btnMinimize");
-        clickOn("#message").write("Hello").clickOn("#btnSend");
-        clickOn("#message").write("/w TeamBTestUser asd").clickOn("#btnSend");
-        gameSocket.leaveGame();
-        gameSocket.disconnect();
-        clickOn("#btnMinimize");
-        clickOn("#chatWindow")
-            .press(MouseButton.PRIMARY)
-            .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
-            .drop();
-        //leaves game
-        leaveGameTest();
-
-        sleep(3000); // sleep to finish action
-        ListView list2 = lookup("#gameListView").queryAs(ListView.class);
-        HBox box2;
-        for (int i = 0; i < list2.getItems().size(); i++) {
-            box2 = (HBox) list2.getItems().get(i);
-            Label label = (Label) box2.lookup("Label");
-            if (label.getText().equals("junitTestGameB")) {
-                Button button = (Button) box2.lookup("#delete");
-                clickOn(button);
-                sleep(500); // sleep to finish action
-            }
-        }
-        sleep(500); // needed to avoid sception
-        // logout
-        clickOn("#hamburgerMenu");
-        WaitForAsyncUtils.waitForFxEvents();
-        clickOn("#btnLogout");
-        sleep(2000); // sleep to finish transition
     }
-    
+
+    private GameSocket secondPlayer() {
+        RestRequestTestsReal.loginUser();
+        RestRequestTestsReal.createGame();
+
+        if (!RequestUtil.request(new JoinGameRequest(RestRequestTestsReal.gameId, LoginController.getUserToken()))) {
+            Assert.fail();
+        }
+
+        RestRequestTestsReal.queryUnits();
+
+        GameSocket gameSocket = new GameSocket(
+            RestRequestTestsReal.gameId,
+            null,
+            false);
+
+        gameSocket.connect();
+        gameSocket.changeArmy(RestRequestTestsReal.unitList.get(0).getId());
+        gameSocket.readyToPlay();
+        return gameSocket;
+    }
+
     @Test
     public void falseLoginTest() {
         clickOn("#txtUserName");
