@@ -189,10 +189,10 @@ public class GameLobbyController {
 
     public void openBotWindow() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botWindow.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botManager.fxml"));
         try {
             Parent parent = fxmlLoader.load();
-            BotWindowController controller = fxmlLoader.getController();
+            BotManagerController controller = fxmlLoader.getController();
             Stage botWindow = new Stage();
             botWindow.setTitle("Bot Manager");
             botWindow.initModality(Modality.APPLICATION_MODAL);
