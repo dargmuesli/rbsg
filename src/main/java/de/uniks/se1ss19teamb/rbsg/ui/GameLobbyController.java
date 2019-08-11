@@ -194,6 +194,7 @@ public class GameLobbyController {
             Parent parent = fxmlLoader.load();
             BotManagerController controller = fxmlLoader.getController();
             controller.setMaxPlayers(GameSelectionController.joinedGame.getNeededPlayers());
+            controller.setBotSelections();
             Stage botWindow = new Stage();
             botWindow.setTitle("Bot Manager");
             botWindow.initModality(Modality.APPLICATION_MODAL);
