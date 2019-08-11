@@ -52,6 +52,7 @@ public class TurnUiController {
     @FXML
     public void initialize() {
         instance = this;
+        updatePlayers();
 
         if (startShowTurn != null) {
             showTurn(startShowTurn);
@@ -62,8 +63,6 @@ public class TurnUiController {
             setTurnLabel(startTurnLabel);
             startTurnLabel = null;
         }
-
-        updatePlayers();
     }
 
     /**
