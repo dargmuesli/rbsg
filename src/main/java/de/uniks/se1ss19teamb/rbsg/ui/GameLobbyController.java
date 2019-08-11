@@ -15,9 +15,13 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class GameLobbyController {
 
@@ -47,6 +51,8 @@ public class GameLobbyController {
     private Label gameName;
     @FXML
     private VBox playerList;
+    @FXML
+    private JFXButton botButton;
 
     private JFXTabPane chatPane;
     private VBox textArea;
@@ -157,9 +163,9 @@ public class GameLobbyController {
         VBox chatWindow = (VBox) apnFade.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         btnMinimize.setDisable(false);
-     
+
         UserInterfaceUtils.makeFadeOutTransition("/de/uniks/se1ss19teamb/rbsg/fxmls/inGame.fxml", apnFade,
-                apnFade.getScene().lookup("#chatWindow"));
+            apnFade.getScene().lookup("#chatWindow"));
         btnMinimize.fire();
     }
 
@@ -179,6 +185,25 @@ public class GameLobbyController {
 
     public JFXButton getBtnMinimize() {
         return btnMinimize;
+    }
+
+    public void openBotWindow() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+            .getResource("de/uniks/se1ss19teamb/rbsg/fxmls/botWindow.fxml"));
+        try {
+            Parent parent = (Parent) fxmlLoader.load();
+            BotWindowController controller = fxmlLoader.getController();
+            Stage botWindow = new Stage();
+            botWindow.setTitle("Bot Manager");
+            botWindow.initModality(Modality.WINDOW_MODAL);
+            botWindow.initStyle(StageStyle.UNDECORATED);
+            botWindow.setScene(new Scene(parent));
+            botWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
 

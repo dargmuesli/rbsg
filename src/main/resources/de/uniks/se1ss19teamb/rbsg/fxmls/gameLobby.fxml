@@ -31,7 +31,7 @@
                     </graphic>
                 </JFXButton>
                 <Pane HBox.hgrow="ALWAYS" />
-            <JFXButton fx:id="btnBot" mnemonicParsing="false" text="Bots" />
+            <JFXButton fx:id="btnBot" mnemonicParsing="false" onMouseClicked="#openBotWindow" text="Bots" />
                 <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
                     <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="15" />
