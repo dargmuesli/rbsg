@@ -255,6 +255,8 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 case "currentPlayer":
                                     InGameController.movedUnitTiles.clear();
 
+                                    currentPlayer = data.get("newValue").getAsString();
+
                                     if (TurnUiController.getInstance() == null) {
                                         TurnUiController.startShowTurn = data.get("newValue").getAsString();
                                     } else {
@@ -267,11 +269,12 @@ public class GameSocket extends AbstractMessageWebSocket {
                                         GameLobbyController.instance.startGameTransition();
                                     }
 
-                                    String phaseString;
-
                                     switch (data.get("newValue").getAsString()) {
                                         case "movePhase":
                                             phaseString = "Movement Phase";
+                                            if (InGameController.getInstance() != null) {
+                                                InGameController.instance.autoMode();
+                                            }
                                             break;
                                         case "attackPhase":
                                             phaseString = "Attack Phase";

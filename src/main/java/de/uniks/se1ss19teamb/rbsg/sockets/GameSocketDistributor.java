@@ -5,9 +5,6 @@ import java.util.ArrayList;
 // Distributes the GameSocket instances so any class can take the GameSocket that it needs. Whether it's the
 // GameSocket for the main player or for one of the up to 3 extra players that are bots.
 // The main GameSocket should be on place 0.
-
-// comment for test commit
-
 public class GameSocketDistributor {
 
     private static ArrayList<GameSocket> gameSockets = new ArrayList<>();
