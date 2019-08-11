@@ -51,10 +51,8 @@ public class WinScreenController {
 
     public void setWinningScreen(String winner) {
         Platform.runLater(() -> {
-            InGameController.instance.winScreenPane.setVisible(true);
-            trophyPic.setVisible(true);
+            InGameController.instance.vBoxWinScreen.setVisible(true);
             calculateWinner(winner);
-            winnerLabel.setVisible(true);
         });
     }
 

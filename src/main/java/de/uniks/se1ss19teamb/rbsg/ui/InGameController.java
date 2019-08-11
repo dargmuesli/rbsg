@@ -77,6 +77,8 @@ public class InGameController {
     private AnchorPane turnUI;
     @FXML
     public AnchorPane winScreenPane;
+    @FXML
+    public VBox vBoxWinScreen;
 
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
