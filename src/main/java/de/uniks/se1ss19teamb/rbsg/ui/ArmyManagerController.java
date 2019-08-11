@@ -8,7 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
@@ -105,7 +104,7 @@ public class ArmyManagerController {
             updateUnits();
 
             if (GameLobbyController.instance != null) {
-                GameSocketDistributor.getGameSocket(0).changeArmy(army.getId());
+                GameSocket.instance.changeArmy(army.getId());
             }
         });
 

@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
@@ -54,27 +53,25 @@ public class GameLobbyController {
     private VBox chatBox;
     private JFXButton btnMinimize;
 
-    private GameSocket gameSocket;
-
     @FXML
     private void initialize() {
         UserInterfaceUtils.initialize(
             apnFade, apnRoot, GameLobbyController.class, btnFullscreen, errorContainer);
 
         GameLobbyController.instance = this;
-        GameSocketDistributor
-            .setGameSocket(0, GameSelectionController.joinedGame.getId());
-        gameSocket = GameSocketDistributor.getGameSocket(0);
-        gameSocket.registerMessageHandler((message, from, isPrivate) -> {
+
+        GameSocket.instance = new GameSocket(
+            GameSelectionController.joinedGame.getId());
+        GameSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 MainController.instance.addNewPane(from, message, false, chatPane);
             } else {
                 MainController.instance.addElement(from, message, textArea, false);
             }
         });
-        gameSocket.connect();
+        GameSocket.instance.connect();
 
-        MainController.chat = new Chat(gameSocket, Chat.chatLogPath);
+        MainController.chat = new Chat(GameSocket.instance, Chat.chatLogPath);
 
         Platform.runLater(() -> {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
@@ -130,13 +127,13 @@ public class GameLobbyController {
 
     @FXML
     private void toggleReadiness() {
-        gameSocket.readyToPlay();
+        GameSocket.instance.readyToPlay();
         tglReadiness.setDisable(true);
     }
 
     @FXML
     private void startGame() {
-        gameSocket.startGame();
+        GameSocket.instance.startGame();
     }
 
     public void confirmReadiness() {
@@ -164,8 +161,8 @@ public class GameLobbyController {
     }
 
     private static void quit() {
-        GameSocketDistributor.getGameSocket(0).leaveGame();
-        GameSocketDistributor.getGameSocket(0).disconnect();
+        GameSocket.instance.leaveGame();
+        GameSocket.instance.disconnect();
         GameLobbyController.instance = null;
     }
 

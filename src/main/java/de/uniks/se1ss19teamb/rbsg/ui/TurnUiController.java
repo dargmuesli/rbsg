@@ -3,7 +3,6 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -36,12 +35,6 @@ public class TurnUiController {
     private ArrayList<Label> lblList = new ArrayList<>();
 
     private static TurnUiController instance;
-
-    //    private GameSocket gameSocket = GameSocketDistributor.getGameSocket(0);
-    //
-    //    public void setGameSocket(int number) {
-    //        gameSocket = GameSocketDistributor.getGameSocket(number);
-    //    }
 
     public static TurnUiController getInstance() {
         return instance;
@@ -103,7 +96,7 @@ public class TurnUiController {
 
     @FXML
     private void nextPhase() {
-        GameSocketDistributor.getGameSocket(0).nextPhase();
+        GameSocket.instance.nextPhase();
     }
 
     public void setTurnLabel(String turn) {
