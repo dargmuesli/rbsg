@@ -241,10 +241,10 @@ public class InGameController {
                     }
                 }
                 assert playerId != null;
-                aI = AI.instantiate(playerId,GameSocket.instance, InGameController.instance, Integer.MAX_VALUE);
+                aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance, Integer.MAX_VALUE);
             }
-            if (GameSocket.instance.currentPlayer.equals(playerId)) {
-                if (!GameSocket.instance.phaseString.equals("Movement Phase")) {
+            if (GameSocketDistributor.getGameSocket(0).currentPlayer.equals(playerId)) {
+                if (!GameSocketDistributor.getGameSocket(0).phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.getInstance()
                         .sendWarning("You can only activate Automode\nin your first Movementphase\n"

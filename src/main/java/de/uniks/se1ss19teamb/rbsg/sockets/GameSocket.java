@@ -41,6 +41,8 @@ public class GameSocket extends AbstractMessageWebSocket {
     private boolean firstGameInitObjectReceived;
     private List<ChatMessageHandler> handlersChat = new ArrayList<>();
     private boolean ignoreOwn = false;
+    public String currentPlayer;
+    public String phaseString;
 
     public GameSocket(String gameId) {
         this(gameId, null, false);
