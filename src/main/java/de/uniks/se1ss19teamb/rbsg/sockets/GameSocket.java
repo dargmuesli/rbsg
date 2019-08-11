@@ -27,19 +27,19 @@ import org.apache.logging.log4j.Logger;
 
 public class GameSocket extends AbstractMessageWebSocket {
 
-    private final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private List<GameSocketMessageHandler.GameSocketGameRemoveObject> handlersRemoveObject =
         new ArrayList<>();
     private List<GameSocketMessageHandler.GameSocketGameChangeObject> handlersChangeObject =
         new ArrayList<>();
 
-    public GameSocket instance;
-    private String gameId;
-    private String armyId;
-    private boolean spectator;
-    private boolean firstGameInitObjectReceived;
-    private List<ChatMessageHandler> handlersChat = new ArrayList<>();
+    public static GameSocket instance;
+    private static String gameId;
+    private static String armyId;
+    private static boolean spectator;
+    private static boolean firstGameInitObjectReceived;
+    private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
     private boolean ignoreOwn = false;
     public String currentPlayer;
     public String phaseString;
@@ -49,9 +49,9 @@ public class GameSocket extends AbstractMessageWebSocket {
     }
 
     public GameSocket(String gameId, String armyId, boolean spectator) {
-        this.gameId = gameId;
-        this.armyId = armyId;
-        this.spectator = spectator;
+        GameSocket.gameId = gameId;
+        GameSocket.armyId = armyId;
+        GameSocket.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
