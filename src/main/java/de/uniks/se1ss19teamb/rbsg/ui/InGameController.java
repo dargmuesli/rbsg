@@ -83,6 +83,8 @@ public class InGameController {
     @FXML
     public AnchorPane winScreenPane;
     @FXML
+    public VBox vBoxWinScreen;
+    @FXML
     public JFXToggleButton autoMode;
 
     private final Pane selectionOverlay = new Pane();
