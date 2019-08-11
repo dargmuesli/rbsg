@@ -145,30 +145,28 @@ public class UiTestsReal extends ApplicationTest {
     }
 
     private void armyManagerTest() {
-        // armymanager changed so ui test needs to be changed */
-        //        clickOn("#btnArmyManager");
-        //        sleep(2000); // sleep to finish transition
-        //        clickOn("#txtfldArmyName");
-        //        write("testArmy");
-        //        clickOn("#btnSetArmyName");
-        //        for (int i = 0; i < 10; i++) {
-        //            clickOn("+");
-        //        }
-        //        clickOn("#btnMinimize");
-        //        clickOn("#btnMinimize");
-        //        clickOn("#btnLoadServer");
-        //        clickOn("#btnSave1");
-        //        clickOn("#btnSave2");
-        //        clickOn("#btnSave3");
-        //        sleep(2600); // wating for notification do disappear
-        //        clickOn("Save/Load");
-        //        clickOn("#btnSave1");
-        //        clickOn("#btnSave2");
-        //        clickOn("#btnSave3");
-        //        clickOn("#btnSaveServer");
-        //        sleep(2600); // wating for notification do disappear
-        //        clickOn("#btnBack");
-        //        sleep(2000); // sleep to finish transition
+        clickOn("#btnArmyManager");
+        sleep(4000); // sleep to finish transition
+        clickOn("#btnAdd");
+        sleep(200);
+        clickOn("#txtfldArmyName");
+        write("testArmy");
+
+        for (int i = 0; i < 10; i++) {
+            clickOn("+");
+        }
+
+        clickOn("#btnSave");
+
+        clickOn("#btnMinimize");
+        clickOn("#btnMinimize");
+        
+
+        clickOn("#btnLogout");
+        sleep(3000);
+        clickOn("#btnBack");
+        clickOn("#btnBack");
+        sleep(4000); // sleep to finish transition
     }
 
     private GameSocket secondPlayer() {
