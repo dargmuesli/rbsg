@@ -242,7 +242,8 @@ public class InGameController {
                     InGameController.instance, Integer.MAX_VALUE);
             }
             if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
-                if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).phaseString.equals("Movement Phase")) {
+                if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                    .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.getInstance()
                         .sendWarning("You can only activate Automode\nin your first Movementphase\n"
@@ -334,8 +335,8 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).attackUnit(previousUnitTile.getId(),
-                                toAttack.getId());
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .attackUnit(previousUnitTile.getId(), toAttack.getId());
 
                         } else {
                             // No: move.
@@ -350,8 +351,8 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).moveUnit(previousUnitTile.getId(),
-                                path.toArray(new String[0]));
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
