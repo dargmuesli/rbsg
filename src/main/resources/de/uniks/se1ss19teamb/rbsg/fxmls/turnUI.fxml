@@ -6,12 +6,13 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
-    <HBox AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" spacing="40">
-        <Label fx:id="labelOne" text="Team1" visible="false"/>
-        <Label fx:id="labelTwo" text="Team2" visible="false"/>
-        <Label fx:id="labelThree" text="Team3" visible="false"/>
-        <Label fx:id="labelFour" text="Team4" visible="false"/>
-        <HBox spacing="10">
+    <HBox alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0">
+        <HBox HBox.hgrow="ALWAYS" alignment="CENTER" spacing="30">
+            <Label fx:id="labelOne" text="Team1"/>
+            <Label fx:id="labelTwo" text="Team2"/>
+            <Label fx:id="labelThree" text="Team3"/>
+            <Label fx:id="labelFour" text="Team4"/>
             <JFXButton fx:id="phaseBtn" text="Next Phase" onAction="#nextPhase"/>
             <Label fx:id="turnLabel" text="test"/>
         </HBox>

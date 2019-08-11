@@ -21,9 +21,6 @@ public class TurnUiController {
 
     @FXML
     public Label turnLabel;
-
-    @FXML
-    private JFXButton phaseBtn;
     @FXML
     private Label labelOne;
     @FXML
@@ -61,7 +58,6 @@ public class TurnUiController {
             startTurnLabel = null;
         }
 
-        phaseBtn.setTranslateY(-4);
         updatePlayers();
     }
 

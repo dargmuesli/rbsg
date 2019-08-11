@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" stylesheets="@../css/whiteDesign.css"
-            xmlns="http://javafx.com/javafx/8.0.999-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="apnRoot" stylesheets="@../css/whiteDesign.css" xmlns="http://javafx.com/javafx/8.0.999-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.InGameController">
     <BorderPane prefHeight="200.0" prefWidth="200.0"/>
     <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
     <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
@@ -18,8 +29,6 @@
             <children>
                 <HBox fx:id="head" alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0"
                       AnchorPane.topAnchor="5.0">
-                    <JFXToggleButton fx:id="autoMode" contentDisplay="BOTTOM" mnemonicParsing="false"
-                                     onAction="#autoMode" prefHeight="79.0" prefWidth="90.0" text="Automode"/>
                     <JFXButton fx:id="btnBigger" mnemonicParsing="false" onAction="#bigger" text="+" visible="false"/>
                     <JFXButton fx:id="btnSmaller" mnemonicParsing="false" onAction="#smaller" prefHeight="27.0"
                                prefWidth="27.0" text="-" visible="false"/>
@@ -49,7 +58,18 @@
                     </JFXButton>
                     <JFXHamburger fx:id="hamburgerMenu" prefHeight="0.0" prefWidth="47.0"/>
                 </HBox>
-                <AnchorPane fx:id="turnUI">
+                <AnchorPane>
+                    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <JFXToggleButton alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" fx:id="autoMode"
+                                         contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#autoMode"
+                                         prefHeight="0.0" prefWidth="56.0" size="5.0">
+                        </JFXToggleButton>
+                        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <AnchorPane fx:id="turnUI">
+                            </AnchorPane>
+                        </HBox>
+                    </HBox>
                 </AnchorPane>
                 <StackPane prefWidth="200.0">
                     <children>
@@ -85,10 +105,11 @@
                    textAlignment="CENTER" visible="false"/>
         </children>
     </AnchorPane>
-    <VBox fx:id="vBoxWinScreen" visible="false" style="-fx-background-color: transparent" AnchorPane.bottomAnchor="0.0"
-          AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" alignment="CENTER">
-        <HBox VBox.vgrow="ALWAYS" alignment="CENTER" style="-fx-background-color: transparent">
-            <AnchorPane VBox.vgrow="ALWAYS" fx:id="winScreenPane"/>
+    <VBox fx:id="vBoxWinScreen" alignment="CENTER" style="-fx-background-color: transparent" visible="false"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <HBox alignment="CENTER" style="-fx-background-color: transparent" VBox.vgrow="ALWAYS">
+            <AnchorPane fx:id="winScreenPane" VBox.vgrow="ALWAYS"/>
         </HBox>
     </VBox>
 </AnchorPane>
