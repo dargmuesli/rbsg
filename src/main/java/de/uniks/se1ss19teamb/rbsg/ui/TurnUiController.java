@@ -5,6 +5,7 @@ import animatefx.animation.Wobble;
 
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -123,9 +124,9 @@ public class TurnUiController {
                     // color the player's label
                     if (label.getText().equals(player.getName())) {
                         new Wobble(label).play();
-                        label.setStyle("-fx-text-fill: red");
+                        label.setId("inGamePlayerRED");
                     } else {
-                        label.setStyle("-fx-text-fill: #FFFF8d");
+                        label.setId("nonTurnPlayers");
                     }
                 }
             }

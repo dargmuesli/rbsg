@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
@@ -17,4 +18,8 @@
             <Label fx:id="turnLabel" text="test"/>
         </HBox>
     </HBox>
+    <stylesheets>
+        <URL value="@../css/whiteDesign.css"/>
+        <URL value="@../css/darkDesign.css"/>
+    </stylesheets>
 </AnchorPane>

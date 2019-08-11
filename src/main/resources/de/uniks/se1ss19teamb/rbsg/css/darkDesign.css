@@ -15,6 +15,10 @@ ListView {
     -fx-padding: 0px;
 }
 
+#nonTurnPlayers {
+    -fx-text-fill: #FFFF8d;
+}
+
 #inGamePlayerBLUE {
     -fx-text-fill: blue;
 }
