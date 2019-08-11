@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
  */
 public class ChuckNorrisJokeTicker {
 
+    private static AnimationTimer animationTimer;
     private static String[] jokes = {
         "Chuck Norris hat bis zur Unendlichkeit gez\u00E4hlt ... 2-mal.", "Chuck Norris kann schwarze "
             + "Filzstifte nach Farbe sortieren.", "Chuck Norris hat alle Farben erfunden. Außer Rosa! "
@@ -26,8 +27,6 @@ public class ChuckNorrisJokeTicker {
         "Arnold Schwarzenegger musste wegen schweren Verletzungen ins Krankenhaus eingeliefert werden. "
             + "Chuck Norris hatte "
             + "ihn auf Facebook angestupst."};
-
-    private static AnimationTimer animationTimer;
 
     /**
      * Creates and starts a new {@link AnimationTimer} that moves a random joke label.

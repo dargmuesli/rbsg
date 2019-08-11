@@ -87,7 +87,6 @@ public class InGameController {
     @FXML
     public JFXToggleButton autoMode;
 
-
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
