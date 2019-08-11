@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-
 import animatefx.animation.Wobble;
 
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
