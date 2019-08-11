@@ -80,7 +80,7 @@
     </AnchorPane>
              <VBox style="-fx-background-color: transparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" alignment="CENTER">
                  <HBox VBox.vgrow="ALWAYS" alignment="CENTER" style="-fx-background-color: transparent">
-                         <AnchorPane VBox.vgrow="ALWAYS" fx:id="winScreenPane" style="-fx-background-color: black" visible="true"/>
+                         <AnchorPane VBox.vgrow="ALWAYS" fx:id="winScreenPane" visible="false"/>
                  </HBox>
              </VBox>
 </AnchorPane>
