@@ -8,6 +8,6 @@ public class BotControl {
 
     public void createBotUser(int number) {
         BotUser botUser = new BotUser();
-
+        
     }
 }
