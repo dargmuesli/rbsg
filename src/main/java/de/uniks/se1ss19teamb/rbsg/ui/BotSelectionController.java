@@ -11,8 +11,16 @@ public class BotSelectionController {
 
     private int botNumber;
 
+    private boolean botCreated = false;
+
+    BotManagerController botManagerController;
+
     public int getBotNumber() {
         return botNumber;
+    }
+
+    public void setBotManagerController(BotManagerController botManagerController) {
+        this.botManagerController = botManagerController;
     }
 
     public void setBotNumber(int botNumber) {
@@ -21,11 +29,15 @@ public class BotSelectionController {
 
     public void setOnAction(ActionEvent event) {
         if (event.getSource().equals(botCheckbox)) {
-            changeBotActivation();
+            if (botCheckbox.isSelected()) {
+                if (!botCreated) {
+                    createBot();
+                }
+            }
         }
     }
 
-    private void changeBotActivation() {
-
+    private void createBot() {
+        botManagerController.createBot(botNumber);
     }
 }

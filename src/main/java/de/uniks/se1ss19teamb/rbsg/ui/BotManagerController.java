@@ -28,12 +28,17 @@ public class BotManagerController {
                 Parent parent = fxmlLoader.load();
                 BotSelectionController controller = fxmlLoader.getController();
                 controller.setBotNumber(i);
+                controller.setBotManagerController(this);
                 botSelectionControllers.add(i, controller);
                 botSelectionVBox.getChildren().add(parent);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void createBot(int numberOfBot) {
+
     }
 
 }
