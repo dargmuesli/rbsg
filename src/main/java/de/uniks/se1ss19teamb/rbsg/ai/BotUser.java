@@ -17,4 +17,16 @@ public class BotUser {
     public void setBotUserPassword(String botUserPassword) {
         this.botUserPassword = botUserPassword;
     }
+
+    public String getBotUserKey() {
+        return botUserKey;
+    }
+
+    public String getBotUserName() {
+        return botUserName;
+    }
+
+    public String getBotUserPassword() {
+        return botUserPassword;
+    }
 }
