@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import de.uniks.se1ss19teamb.rbsg.ai.BotControl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,7 +39,7 @@ public class BotManagerController {
     }
 
     public void createBot(int numberOfBot) {
-
+        BotControl.createBotUser(numberOfBot);
     }
 
 }

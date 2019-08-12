@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class BotControl {
 
-    ArrayList<BotUser> botUsers = new ArrayList<>();
+    static ArrayList<BotUser> botUsers = new ArrayList<>();
 
-    public void createBotUser(int number) {
+    public static void createBotUser(int number) {
         BotUser botUser = new BotUser();
         CreateTemporaryUserRequest ctur = new CreateTemporaryUserRequest();
         ctur.sendRequest();
@@ -19,5 +19,6 @@ public class BotControl {
             botUser.getBotUserPassword());
         loginUserRequest.sendRequest();
         botUser.setBotUserKey(loginUserRequest.getData());
+        botUsers.add(number, botUser);
     }
 }
