@@ -122,9 +122,10 @@ public class TurnUiController {
                     // color the player's label
                     if (label.getText().equals(player.getName())) {
                         new Wobble(label).play();
-                        label.setId("inGamePlayerRED");
+                        label.setId("currentPlayerRED");
                     } else {
-                        label.setId("nonTurnPlayers");
+                        // set's the id to the standart label color of our UI
+                        label.setId("label");
                     }
                 }
             }

@@ -15,8 +15,8 @@ ListView {
     -fx-padding: 0px;
 }
 
-#nonTurnPlayers {
-    -fx-text-fill: #FFFF8d;
+#currentPlayerRED {
+    -fx-text-fill: red;
 }
 
 #inGamePlayerBLUE {
