@@ -47,8 +47,6 @@ public class InGameController {
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private AnchorPane apnRoot;
     @FXML
     private AnchorPane apnFade;
@@ -145,8 +143,7 @@ public class InGameController {
     @FXML
     private void initialize() {
         instance = this;
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, InGameController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, InGameController.class, btnFullscreen);
 
         for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {

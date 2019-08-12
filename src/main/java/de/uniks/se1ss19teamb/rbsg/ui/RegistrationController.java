@@ -18,8 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class RegistrationController {
 
     private static final Logger logger = LogManager.getLogger();
-    @FXML
-    AnchorPane errorContainer;
+
     @FXML
     private AnchorPane apnFade;
     @FXML
@@ -39,8 +38,7 @@ public class RegistrationController {
     private UserData userData;
 
     public void initialize() {
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, RegistrationController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, RegistrationController.class, btnFullscreen);
 
         // load user data
         userData = UserData.loadUserData();

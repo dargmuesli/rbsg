@@ -30,8 +30,6 @@ public class GameLobbyController {
     @FXML
     public VBox vbxMinimap;
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private AnchorPane apnRoot;
     @FXML
     private JFXButton btnBack;
@@ -58,8 +56,7 @@ public class GameLobbyController {
 
     @FXML
     private void initialize() {
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, GameLobbyController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, GameLobbyController.class, btnFullscreen);
 
         GameLobbyController.instance = this;
         GameSocketDistributor

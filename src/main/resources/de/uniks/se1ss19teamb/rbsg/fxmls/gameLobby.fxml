@@ -23,7 +23,6 @@
             <URL value="@../css/whiteDesign.css"/>
             <URL value="@../css/darkDesign.css"/>
         </stylesheets>
-        <AnchorPane fx:id="errorContainer"/>
         <VBox layoutY="5.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <HBox alignment="TOP_RIGHT" spacing="5.0">

@@ -51,8 +51,6 @@ public class MainController {
     private static String sendTo = null;
 
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private AnchorPane apnRoot;
     @FXML
     private JFXButton btnArmyManager;
@@ -100,7 +98,7 @@ public class MainController {
     }
 
     public void initialize() {
-        UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen);
 
         MainController.instance = this;
 
@@ -462,7 +460,8 @@ public class MainController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/privateTab.fxml"));
+                            .load(this.getClass()
+                                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/privateTab.fxml"));
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {

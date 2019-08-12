@@ -45,8 +45,6 @@ public class LoginController {
     @FXML
     private Button btnRegistration;
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private JFXCheckBox rememberLogin;
     @FXML
     private AnchorPane apnRoot;
@@ -78,7 +76,7 @@ public class LoginController {
         jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
 
-        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen);
 
         // load user data
         userData = UserData.loadUserData();

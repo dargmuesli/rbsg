@@ -117,16 +117,15 @@ public class UserInterfaceUtils {
         });
     }
 
-    public static void initialize(
-        Pane root, Pane rootChild, Class<?> clazz, JFXButton btnFullscreen, Pane errorContainer) {
+    public static void initialize(Pane fade, Pane root, Class<?> clazz, JFXButton btnFullscreen) {
+        UserInterfaceUtils.makeFadeInTransition(fade);
 
-        UserInterfaceUtils.makeFadeInTransition(root);
-
-        Theming.setTheme(Arrays.asList(root, rootChild));
+        Theming.setTheme(Arrays.asList(fade, root));
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/notification.fxml"));
+        /*FXMLLoader fxmlLoader = new FXMLLoader(clazz
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/notification.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();
@@ -140,7 +139,7 @@ public class UserInterfaceUtils {
         } catch (IOException e) {
             NotificationHandler.getInstance()
                 .sendError("Error loading the popup controller's fxml!", logger, e);
-        }
+        }*/
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {

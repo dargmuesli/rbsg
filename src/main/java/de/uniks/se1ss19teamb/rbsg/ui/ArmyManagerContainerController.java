@@ -20,8 +20,6 @@ public class ArmyManagerContainerController {
     @FXML
     private AnchorPane apnRoot;
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private JFXButton btnBack;
     @FXML
     private JFXButton btnLogout;
@@ -30,7 +28,7 @@ public class ArmyManagerContainerController {
 
     @FXML
     private void initialize() {
-        UserInterfaceUtils.initialize(apnFade, apnRoot, this.getClass(), btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, this.getClass(), btnFullscreen);
     }
 
     @FXML
