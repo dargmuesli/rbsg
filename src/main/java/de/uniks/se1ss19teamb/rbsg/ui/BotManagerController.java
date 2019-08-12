@@ -21,12 +21,13 @@ public class BotManagerController {
     }
 
     public void setBotSelections() {
-        for (int i = 0; i < maxPlayers; i++) {
+        for (int i = 0; i < maxPlayers - 1; i++) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botSelection.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 BotSelectionController controller = fxmlLoader.getController();
+                controller.setBotNumber(i);
                 botSelectionControllers.add(i, controller);
                 botSelectionVBox.getChildren().add(parent);
             } catch (IOException e) {
