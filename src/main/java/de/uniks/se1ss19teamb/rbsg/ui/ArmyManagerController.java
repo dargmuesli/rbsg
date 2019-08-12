@@ -259,8 +259,7 @@ public class ArmyManagerController {
     private void exportArmy() {
         SerializeUtil.chooseFile().ifPresent(file -> {
             SerializeUtil.serialize(file.getAbsolutePath(), army);
-            NotificationHandler.getInstance()
-                .sendSuccess("Exported successfully.", logger);
+            NotificationHandler.sendSuccess("Exported successfully.", logger);
         });
     }
 
@@ -269,8 +268,7 @@ public class ArmyManagerController {
         SerializeUtil.chooseFile().ifPresent(file -> {
             army = SerializeUtil.deserialize(file, Army.class);
 
-            NotificationHandler.getInstance()
-                .sendSuccess("Imported successfully.", logger);
+            NotificationHandler.sendSuccess("Imported successfully.", logger);
 
             btnEdit.setDisable(false);
             txtfldArmyName.setText(army.getName());
@@ -287,20 +285,20 @@ public class ArmyManagerController {
     @FXML
     private void saveToServer() {
         if (army.getName() == null || army.getName().equals("")) {
-            NotificationHandler.getInstance().sendError("You have to give the army a name!",
+            NotificationHandler.sendError("You have to give the army a name!",
                 logger);
             return;
         }
 
         if (army.getUnits() == null || army.getUnits().size() < 10) {
-            NotificationHandler.getInstance().sendError("You need at least ten units!", logger);
+            NotificationHandler.sendError("You need at least ten units!", logger);
             return;
         }
 
         if (army.getId() == null || army.getId().equals("")) {
             RequestUtil.request(new CreateArmyRequest(army.getName(), army.getUnits(), LoginController.getUserToken()))
                 .ifPresent(s -> {
-                    NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
+                    NotificationHandler.sendSuccess("The Army was saved.", logger);
                     army.setId(s);
                 });
         } else {
@@ -308,7 +306,7 @@ public class ArmyManagerController {
                 return;
             }
 
-            NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
+            NotificationHandler.sendSuccess("The Army was updated.", logger);
         }
     }
 }

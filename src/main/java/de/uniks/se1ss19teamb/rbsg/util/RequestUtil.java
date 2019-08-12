@@ -10,7 +10,7 @@ public class RequestUtil {
         request.sendRequest();
 
         if (!request.getSuccessful()) {
-            NotificationHandler.getInstance().sendError(request.getErrorMessage(), LogManager.getLogger());
+            NotificationHandler.sendError(request.getErrorMessage(), LogManager.getLogger());
             return false;
         }
 

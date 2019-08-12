@@ -238,7 +238,7 @@ public class MainController {
                 new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
             }
         } else {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
+            NotificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
         }
     }
 
@@ -325,8 +325,7 @@ public class MainController {
                     controller.setUpGameLabel(gameMeta);
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
-                    NotificationHandler.getInstance()
-                        .sendError("A game field could not be loaded!", logger, e);
+                    NotificationHandler.sendError("A game field could not be loaded!", logger, e);
                 }
             });
         });
@@ -471,8 +470,7 @@ public class MainController {
                         }
                         MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
-                        NotificationHandler.getInstance()
-                            .sendError("A tab could not be loaded!", logger, e);
+                        NotificationHandler.sendError("A tab could not be loaded!", logger, e);
                     }
                 }
             );

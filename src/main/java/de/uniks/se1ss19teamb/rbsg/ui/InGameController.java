@@ -245,8 +245,7 @@ public class InGameController {
             if (GameSocketDistributor.getGameSocket(0).currentPlayer.equals(playerId)) {
                 if (!GameSocketDistributor.getGameSocket(0).phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
-                    NotificationHandler.getInstance()
-                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
+                    NotificationHandler.sendWarning("You can only activate Automode\nin your first Movementphase\n"
                             + "or on your opponents turn.", logger);
 
                 } else {
@@ -266,14 +265,13 @@ public class InGameController {
                 Thread.sleep(1000);
                 tryCounter++;
                 if (tryCounter == 10) {
-                    NotificationHandler.getInstance().sendError("The matchfield tiles couldn't be loaded.",
+                    NotificationHandler.sendError("The matchfield tiles couldn't be loaded.",
                         logger);
                     break;
                 }
 
             } catch (InterruptedException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Game couldn't be initialized!", logger, e);
+                NotificationHandler.sendError("Game couldn't be initialized!", logger, e);
             }
         }
 
@@ -421,7 +419,7 @@ public class InGameController {
             unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
-        NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
+        NotificationHandler.sendSuccess("Game initialized.", logger);
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {

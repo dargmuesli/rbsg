@@ -101,8 +101,7 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Chat directory could not be created!", logger, e);
+                NotificationHandler.sendError("Chat directory could not be created!", logger, e);
             }
         }
 
@@ -113,7 +112,7 @@ public class Chat {
                 out.println(SerializeUtil.serialize(cle));
             }
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Writing to the chat directory failed!", logger, e);
+            NotificationHandler.sendError("Writing to the chat directory failed!", logger, e);
         }
     }
 
@@ -124,7 +123,7 @@ public class Chat {
         try {
             Files.deleteIfExists(path);
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Chat log could not be deleted!", logger, e);
+            NotificationHandler.sendError("Chat log could not be deleted!", logger, e);
         }
     }
 }

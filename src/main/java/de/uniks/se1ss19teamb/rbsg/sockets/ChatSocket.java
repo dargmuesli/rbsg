@@ -24,8 +24,7 @@ public class ChatSocket extends AbstractMessageWebSocket {
         this.ignoreOwn = ignoreOwn;
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
-                NotificationHandler.getInstance()
-                    .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+                NotificationHandler.sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
                 return;
             }
 

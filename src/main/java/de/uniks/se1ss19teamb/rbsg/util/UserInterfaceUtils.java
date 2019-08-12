@@ -45,8 +45,7 @@ public class UserInterfaceUtils {
             try {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
-                NotificationHandler.getInstance().sendError(
-                    "Transition to the next scene failed!", logger, e);
+                NotificationHandler.sendError("Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -71,8 +70,7 @@ public class UserInterfaceUtils {
 
                 nodeToFade.getScene().setRoot(nextFxml);
             } catch (IOException e) {
-                NotificationHandler.getInstance().sendError(
-                    "Transition to the next scene failed!", logger, e);
+                NotificationHandler.sendError("Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -123,23 +121,6 @@ public class UserInterfaceUtils {
         Theming.setTheme(Arrays.asList(fade, root));
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        /*FXMLLoader fxmlLoader = new FXMLLoader(clazz
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/notification.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            NotificationController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setNotificationController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Error loading the popup controller's fxml!", logger, e);
-        }*/
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {

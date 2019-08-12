@@ -84,27 +84,27 @@ public class UiTests extends ApplicationTest {
         try {
             throw new Exception("Test Exception");
         } catch (Exception e) {
-            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException", logger, e);
+            NotificationHandler.sendError("Test ERROR NullPointerException", logger, e);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test ERROR NullPointerException");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
-            NotificationHandler.getInstance().sendError("Test ERROR NullPointerException Without e Exception", logger);
+            NotificationHandler.sendError("Test ERROR NullPointerException Without e Exception", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test ERROR NullPointerException Without e Exception");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
-            NotificationHandler.getInstance().sendWarning("Test WARNING", logger);
+            NotificationHandler.sendWarning("Test WARNING", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test WARNING");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
-            NotificationHandler.getInstance().sendInfo("Test INFO", logger);
+            NotificationHandler.sendInfo("Test INFO", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test INFO");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
-            NotificationHandler.getInstance().sendSuccess("Test SUCCESS", logger);
+            NotificationHandler.sendSuccess("Test SUCCESS", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test SUCCESS");
             Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());

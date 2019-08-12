@@ -47,7 +47,7 @@ public class Theming {
         Boolean cssMode = SerializeUtil.deserialize(cssModeFile, boolean.class);
 
         if (cssMode == null) {
-            NotificationHandler.getInstance().sendError("Could not load css mode from file!", logger);
+            NotificationHandler.sendError("Could not load css mode from file!", logger);
             return false;
         }
 

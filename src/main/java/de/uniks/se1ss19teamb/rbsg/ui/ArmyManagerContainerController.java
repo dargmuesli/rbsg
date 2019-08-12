@@ -43,7 +43,7 @@ public class ArmyManagerContainerController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
-            NotificationHandler.getInstance().sendWarning(StringUtil.DISCARD_CONFIRMATION, logger);
+            NotificationHandler.sendWarning(StringUtil.DISCARD_CONFIRMATION, logger);
             ArmyManagerController.getInstance().discardConfirmation = true;
         }
     }
@@ -63,7 +63,7 @@ public class ArmyManagerContainerController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);
         } else {
-            NotificationHandler.getInstance().sendWarning(StringUtil.DISCARD_CONFIRMATION, logger);
+            NotificationHandler.sendWarning(StringUtil.DISCARD_CONFIRMATION, logger);
             ArmyManagerController.getInstance().discardConfirmation = true;
         }
     }
