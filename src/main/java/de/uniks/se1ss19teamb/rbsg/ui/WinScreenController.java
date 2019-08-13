@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 import java.util.ArrayList;
 import javafx.application.Platform;
@@ -23,6 +24,8 @@ public class WinScreenController {
 
     public ArrayList<InGamePlayer> inGamePlayerList = new ArrayList<>();
 
+    private GameSocket gameSocket = GameSocketDistributor.getGameSocket(0);
+
     private static WinScreenController instance;
 
     public static WinScreenController getInstance() {
@@ -32,6 +35,10 @@ public class WinScreenController {
     public void initialize() {
         instance = this;
         updatePlayers();
+    }
+
+    public void setGameSocket(int number) {
+        gameSocket = GameSocketDistributor.getGameSocket(number);
     }
 
     public void updatePlayers() {
@@ -51,18 +58,16 @@ public class WinScreenController {
 
     public void setWinningScreen(String winner) {
         Platform.runLater(() -> {
-            InGameController.instance.winScreenPane.setVisible(true);
-            trophyPic.setVisible(true);
+            InGameController.instance.vBoxWinScreen.setVisible(true);
             calculateWinner(winner);
-            winnerLabel.setVisible(true);
         });
     }
 
     @FXML
     private void setOnAction(ActionEvent event) {
         if (event.getSource().equals(backBtn)) {
-            GameSocket.instance.leaveGame();
-            GameSocket.instance.disconnect();
+            gameSocket.leaveGame();
+            gameSocket.disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", InGameController.getInstance().winScreenPane);
         }

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXPasswordField?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" stylesheets="@../css/whiteDesign.css"
-            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegistrationController">
+            xmlns="http://javafx.com/javafx/8.0.172-ea"
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegistrationController">
     <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
