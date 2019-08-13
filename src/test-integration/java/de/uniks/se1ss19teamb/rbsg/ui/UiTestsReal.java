@@ -3,8 +3,10 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXComboBox;
 import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.TestUtil;
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -58,9 +60,6 @@ public class UiTestsReal extends ApplicationTest {
     @Test
     @Disabled
     public void testInGame() {
-        //TODO try again when the sockets arent static anymore
-        //GameSocket gameSocket = secondPlayer();
-
         // player with UI
         clickOn("#txtUserName");
         write("TeamBTestUser2");
@@ -89,17 +88,22 @@ public class UiTestsReal extends ApplicationTest {
         }
         assert box != null;
         clickOn(box.getChildren().get(3));
+
+        //in gamelobby
         sleep(4000); // sleep to finish action
         clickOn("#cmbArmies");
         sleep(2000);
-        clickOn(lookup("#cmbArmies").queryAs(JFXComboBox.class).getChildrenUnmodifiable().get(0));
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+
+        //TODO select a bot
+
         sleep(1000);
         clickOn("#tglReadiness");
         sleep(1000);
         clickOn("#btnStartGame");
         sleep(7000); // sleep to finish action
 
-        //TODO repair as soon as bot is ready
         GridPane gridPane = lookup("#gameGrid").queryAs(GridPane.class);
         StackPane stackPane = (StackPane) gridPane.getChildren().get(0);
         Assert.assertTrue(stackPane.getChildren().get(0) instanceof Pane);
@@ -112,9 +116,6 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#btnMinimize");
         clickOn("#message").write("Hello").clickOn("#btnSend");
         clickOn("#message").write("/w TeamBTestUser asd").clickOn("#btnSend");
-
-        //gameSocket.leaveGame();
-        //gameSocket.disconnect();
 
         clickOn("#btnMinimize");
         clickOn("#chatWindow")
@@ -131,7 +132,7 @@ public class UiTestsReal extends ApplicationTest {
         for (int i = 0; i < list2.getItems().size(); i++) {
             box2 = (HBox) list2.getItems().get(i);
             Label label = (Label) box2.lookup("Label");
-            if (label.getText().equals("junitTestGameB")) {
+            if (label.getText().equals(TEST_GAME)) {
                 Button button = (Button) box2.lookup("#delete");
                 clickOn(button);
                 sleep(500); // sleep to finish action
@@ -174,8 +175,10 @@ public class UiTestsReal extends ApplicationTest {
         sleep(4000); // sleep to finish transition
 
         boolean armyExists = false;
+        JFXComboBox armies = lookup("#cmbArmies").queryAs(JFXComboBox.class);
+
         int nodeCounter = 0;
-        for (Object node : lookup("#cmbArmies").queryAs(JFXComboBox.class).getItems()) {
+        for (Object node : armies.getItems()) {
             if (node.toString().equals("testArmy")) {
                 armyExists = true;
                 break;
@@ -186,34 +189,15 @@ public class UiTestsReal extends ApplicationTest {
 
         clickOn("#cmbArmies");
         sleep(1000);
-        clickOn(lookup("#cmbArmies").queryAs(JFXComboBox.class).getChildrenUnmodifiable().get(nodeCounter));
+        type(KeyCode.DOWN);
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
 
         clickOn("#btnRemove");
 
         sleep(200);
         clickOn("#btnBack");
         sleep(4000); // sleep to finish transition
-    }
-
-    private GameSocket secondPlayer() {
-        RestRequestTestsReal.loginUser();
-        RestRequestTestsReal.createGame();
-
-        if (!RequestUtil.request(new JoinGameRequest(RestRequestTestsReal.gameId, LoginController.getUserToken()))) {
-            Assert.fail();
-        }
-
-        RestRequestTestsReal.queryUnits();
-
-        GameSocket gameSocket = new GameSocket(
-            RestRequestTestsReal.gameId,
-            null,
-            false);
-
-        gameSocket.connect();
-        gameSocket.changeArmy(RestRequestTestsReal.unitList.get(0).getId());
-        gameSocket.readyToPlay();
-        return gameSocket;
     }
 
     @Test
