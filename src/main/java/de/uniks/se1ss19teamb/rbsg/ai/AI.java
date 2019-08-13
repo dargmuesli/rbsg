@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
-import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
@@ -9,6 +8,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -30,18 +30,18 @@ public abstract class AI {
     protected Map<String, Unit> availableUnitTypes;
     
     public AI() {
+        this.availableUnitTypes = ArmyManagerController.availableUnits;
     }
     
     public void initialize(String playerID, GameSocket socket, InGameController controller) {
         this.playerID = playerID;
         this.socket = socket;
         this.ingameController = controller;
-        this.availableUnitTypes = ArmyManagerController.availableUnits;
     }
     
     public abstract void doTurn();
     
-    public abstract Army requestArmy();
+    public abstract List<String> requestArmy();
     
     //Helper Functions
     

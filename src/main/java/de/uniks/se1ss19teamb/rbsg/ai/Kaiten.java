@@ -1,11 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
-import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -132,7 +132,7 @@ class Kaiten extends AI {
     }
 
     @Override
-    public Army requestArmy() {
+    public List<String> requestArmy() {
         return null;
     }
     
