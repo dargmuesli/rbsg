@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
@@ -7,8 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.SortedMap;
@@ -30,7 +29,10 @@ public abstract class AI {
     protected InGameController ingameController;
     protected Map<String, Unit> availableUnitTypes;
     
-    public AI(String playerID, GameSocket socket, InGameController controller) {
+    public AI() {
+    }
+    
+    public void initialize(String playerID, GameSocket socket, InGameController controller) {
         this.playerID = playerID;
         this.socket = socket;
         this.ingameController = controller;
@@ -38,6 +40,8 @@ public abstract class AI {
     }
     
     public abstract void doTurn();
+    
+    public abstract Army requestArmy();
     
     //Helper Functions
     
@@ -99,16 +103,13 @@ public abstract class AI {
         aiModels.put(-1, Kaiten.class);
     }
     
-    public static AI instantiate(String playerID, GameSocket socket, InGameController controller, int difficulty) {
+    public static AI instantiate(int difficulty) {
         difficulty = (difficulty == Integer.MAX_VALUE) ? aiModels.lastKey() : difficulty;
         Class<? extends AI> targetAI = aiModels.get(difficulty);
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
         try {
-            Constructor<? extends AI> constructor = targetAI.getConstructor(new Class[]{
-                String.class, GameSocket.class, InGameController.class});
-            return constructor.newInstance(new Object[]{playerID, socket, controller}); 
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            return targetAI.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
             return null;
         }
     }

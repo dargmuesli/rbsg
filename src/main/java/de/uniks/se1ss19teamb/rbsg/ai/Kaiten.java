@@ -1,10 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
+import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +23,7 @@ class Kaiten extends AI {
      * 
      */
     
-    public Kaiten(String playerID, GameSocket socket, InGameController controller) {
-        super(playerID, socket, controller);
+    public Kaiten() {
     }
 
     /*
@@ -131,6 +129,11 @@ class Kaiten extends AI {
         socket.nextPhase();
         waitForSocket();
         
+    }
+
+    @Override
+    public Army requestArmy() {
+        return null;
     }
     
 }

@@ -8,7 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
@@ -243,8 +242,8 @@ public class InGameController {
                     }
                 }
                 assert playerId != null;
-                aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0),
-                    InGameController.instance, Integer.MAX_VALUE);
+                aI = AI.instantiate(Integer.MAX_VALUE);
+                aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
             if (GameSocketDistributor.getGameSocket(0).currentPlayer.equals(playerId)) {
                 if (!GameSocketDistributor.getGameSocket(0).phaseString.equals("Movement Phase")) {
