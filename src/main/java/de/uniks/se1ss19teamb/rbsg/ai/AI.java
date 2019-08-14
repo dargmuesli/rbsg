@@ -50,7 +50,7 @@ public abstract class AI {
      * accessed anymore.
      */
     @SuppressWarnings ("static-access")
-    protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y) {
+    protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMp(), false);
         
@@ -63,7 +63,7 @@ public abstract class AI {
             int currentDistance = Math.abs(x - current.getX()) + Math.abs(y - current.getY());
             
             //Forbid walking onto the target
-            if (currentDistance < closestDistance && currentDistance > 0) {
+            if (currentDistance < closestDistance && (onTop || currentDistance > 0)) {
                 closestDistance = currentDistance;
                 closest = current.getId();
             }
@@ -101,6 +101,7 @@ public abstract class AI {
     
     static {
         aiModels.put(-1, Kaiten.class);
+        aiModels.put(0, Nagato.class);
     }
     
     public static AI instantiate(int difficulty) {

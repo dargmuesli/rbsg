@@ -212,11 +212,8 @@ class Nagato extends AI {
     @SuppressWarnings ("static-access")
     private void tankReposition() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
-            //Skip repositioning Dead Units
-            if (!ingameController.inGameObjects.containsKey(position.getKey())) {
-                continue;
-            }
             
+            //Skip repositioning Dead Units
             UnitTile tile = null;
             for (UnitTile tiles : ingameController.unitTiles) {
                 if (tiles.getId().equals(position.getKey())) {
@@ -224,15 +221,13 @@ class Nagato extends AI {
                 }
             }
             
-            assert tile != null;
-            
             //Skip correctly positioned Units
-            if (tile.getPosition() == position.getValue()) {
+            if (tile == null || tile.getPosition().equals(position.getValue())) {
                 continue;
             }
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
-            Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY());
+            Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
             socket.moveUnit(tile.getId(), path.getKey().path);     
             waitForSocket();
         }

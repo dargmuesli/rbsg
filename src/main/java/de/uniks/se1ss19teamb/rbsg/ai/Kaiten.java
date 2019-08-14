@@ -97,7 +97,7 @@ class Kaiten extends AI {
                     continue;
                 }
                 
-                Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY());
+                Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
                 
                 socket.moveUnit(unit.getId(), path.getKey().path);
                 
