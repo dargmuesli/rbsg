@@ -11,7 +11,7 @@
    <children>
       <HBox prefHeight="15.0" prefWidth="300.0" AnchorPane.topAnchor="8.0">
          <children>
-            <JFXCheckBox fx:id="botCheckBox" mnemonicParsing="false" onAction="#setOnAction" />
+            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#setOnAction" />
             <Label text="#Bot Not initialized">
                <HBox.margin>
                   <Insets right="16.0" />
