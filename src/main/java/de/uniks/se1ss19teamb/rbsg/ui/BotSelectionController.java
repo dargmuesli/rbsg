@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXCheckBox;
+import de.uniks.se1ss19teamb.rbsg.ai.BotUser;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -16,6 +17,8 @@ public class BotSelectionController {
 
     private int botNumber;
 
+    private BotUser botUser;
+
     private boolean botCreated = false;
 
     BotManagerController botManagerController;
@@ -28,7 +31,7 @@ public class BotSelectionController {
         this.botManagerController = botManagerController;
     }
 
-    public void setBotNumber(int botNumber) {
+    void setBotNumber(int botNumber) {
         this.botNumber = botNumber;
     }
 
@@ -43,8 +46,13 @@ public class BotSelectionController {
         }
     }
 
-    public void setCheckBoxName(String botName) {
+    private void setCheckBoxName(String botName) {
         botCheckbox.setText(botName);
+    }
+
+    public void setBot (BotUser botUser) {
+        this.botUser = botUser;
+        setCheckBoxName(botUser.getBotUserName());
     }
 
 
