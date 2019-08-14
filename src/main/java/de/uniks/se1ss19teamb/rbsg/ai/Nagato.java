@@ -5,7 +5,6 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import javafx.util.Pair;
 
 
 class Nagato extends AI {
@@ -84,10 +85,10 @@ class Nagato extends AI {
         int stopShort = sideLength / 2 - sideDir;
         int lineCnt = 0;
         
-        SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairXYComperator(sideLength));
+        SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairComperatorXY(sideLength));
         
         for (int shortSide = startShort; shortSide != stopShort; shortSide -= sideDir * 2 - 1) {
-            for(int longSide = lineCnt; longSide < sideLength - lineCnt; longSide++) {
+            for (int longSide = lineCnt; longSide < sideLength - lineCnt; longSide++) {
                 mapQuarter.put(new Pair<Integer, Integer>(longSide, lineCnt), controller.environmentTiles.get(
                         new Pair<Integer, Integer>(sideXY ? shortSide : longSide, sideXY ? longSide : shortSide)));
             }
@@ -101,7 +102,8 @@ class Nagato extends AI {
             EnvironmentTile above = mapQuarter.get(new Pair<>(tile.getKey().getKey(), tile.getKey().getValue() + 1));
             
             //Skip those that are not a Forest/Mountain Edge
-            if (above == null || tile.getValue().getName().equals("Grass") || tile.getValue().getName().equals("Water")) {
+            if (above == null || tile.getValue().getName().equals("Grass")
+                    || tile.getValue().getName().equals("Water")) {
                 continue;
             }
             
@@ -115,7 +117,7 @@ class Nagato extends AI {
         //Fill up if not enough good positions
         for (int i = forestEdges.size(); i < AMOUNT_HEAVY_TANKS; i++) {
             //TODO Better Alt. Positions with bad Map
-            Random r = new Random ();
+            Random r = new Random();
             int x = 0;
             int y = 0;
             do {
@@ -130,7 +132,7 @@ class Nagato extends AI {
         //TODO Improve to "Biggest Block"
         int skip = (forestEdges.size() - AMOUNT_HEAVY_TANKS) / 2;
         Iterator<Entry<Integer, Integer>> it = forestEdges.entrySet().iterator(); 
-        for(int i = 0; i < skip; i++) {
+        for (int i = 0; i < skip; i++) {
             it.next();
         }
 
@@ -142,10 +144,10 @@ class Nagato extends AI {
             
             UnitTile unit = null;
             
-             do {
-                 unitCnt++;
-                 unit = controller.unitTiles.get(unitCnt);
-             } while(!(unit.getLeader().equals(playerID) && unit.getType().equals("Heavy Tank")));
+            do {
+                unitCnt++;
+                unit = controller.unitTiles.get(unitCnt);
+            } while (!(unit.getLeader().equals(playerID) && unit.getType().equals("Heavy Tank")));
              
             tankPositions.put(unit.getId(), mapQuarter.get(new Pair<>(position.getKey(), position.getValue())).getId());
         }
@@ -211,12 +213,12 @@ class Nagato extends AI {
     private void tankReposition() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
             //Skip repositioning Dead Units
-            if(!ingameController.inGameObjects.containsKey(position.getKey())) {
+            if (!ingameController.inGameObjects.containsKey(position.getKey())) {
                 continue;
             }
             
             UnitTile tile = null;
-            for(UnitTile tiles : ingameController.unitTiles) {
+            for (UnitTile tiles : ingameController.unitTiles) {
                 if (tiles.getId().equals(position.getKey())) {
                     tile = tiles;
                 }
@@ -225,7 +227,7 @@ class Nagato extends AI {
             assert tile != null;
             
             //Skip correctly positioned Units
-            if(tile.getPosition() == position.getValue()) {
+            if (tile.getPosition() == position.getValue()) {
                 continue;
             }
             
@@ -263,22 +265,21 @@ class Nagato extends AI {
         return requestIds;
     }
     
-}
+    class PairComperatorXY implements Comparator<Pair<Integer, Integer>> {
 
-class PairXYComperator implements Comparator<Pair<Integer, Integer>> {
-
-    private int sideLength;
-    
-    public PairXYComperator(int length) {
-        sideLength = length;
+        private int sideLength;
+        
+        public PairComperatorXY(int length) {
+            sideLength = length;
+        }
+        
+        @Override
+        public int compare(Pair<Integer, Integer> pairL, Pair<Integer, Integer> pairR) {
+            int diff = (pairR.getValue() - pairL.getValue()) * sideLength;
+            diff += pairL.getKey() - pairR.getKey();
+                
+            return diff;
+        }
+        
     }
-    
-    @Override
-    public int compare(Pair<Integer, Integer> pairL, Pair<Integer, Integer> pairR) {
-        int diff = (pairR.getValue() - pairL.getValue()) * sideLength;
-        diff += pairL.getKey() - pairR.getKey();
-            
-        return diff;
-    }
-    
 }
