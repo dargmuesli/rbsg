@@ -1,17 +1,30 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 
 class Nagato extends AI {
     
     private static final int AMOUNT_HEAVY_TANKS = 7;
 
+    private Map<String, String> tankPositions = new HashMap<>();
+    
     /*
      * Nagato Strategy:
      * 
@@ -32,11 +45,110 @@ class Nagato extends AI {
     public Nagato() {
     }
     
+    @SuppressWarnings ("static-access")
     @Override
     public void initialize(String playerID, GameSocket socket, InGameController controller) {
         super.initialize(playerID, socket, controller);
         
+        final int sideLength = (int) Math.sqrt(controller.environmentTiles.size());
         //Calculate HT Position
+        
+        int sideDir = -1;
+        boolean sideXY = false;
+        
+        //Figure out which side of the Board we are on
+        {
+            EnvironmentTile randomFriendly = null;
+        
+            for (UnitTile unit : controller.unitTiles) {
+                if (unit.getLeader().equals(playerID)) {
+                    randomFriendly = controller.environmentTileMapById.get(unit.getPosition());
+                    break;
+                }
+            }
+            
+            if (randomFriendly.getX() == 0 || randomFriendly.getY() == 0) {
+                sideDir = 0;
+                sideXY = randomFriendly.getX() == 0;
+                
+            } else if (randomFriendly.getX() == sideLength || randomFriendly.getY() == sideLength) {
+                sideDir = 1;
+                sideXY = randomFriendly.getX() == sideLength;
+            }
+            
+            assert sideDir != -1;
+        }
+        
+        //Iterate over our Quarter of the Field, and "normalize" it to our direction
+        int startShort = sideDir == 1 ? sideLength - 1 : 0;
+        int stopShort = sideLength / 2 - sideDir;
+        int lineCnt = 0;
+        
+        SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairXYComperator(sideLength));
+        
+        for (int shortSide = startShort; shortSide != stopShort; shortSide -= sideDir * 2 - 1) {
+            for(int longSide = lineCnt; longSide < sideLength - lineCnt; longSide++) {
+                mapQuarter.put(new Pair<Integer, Integer>(longSide, lineCnt), controller.environmentTiles.get(
+                        new Pair<Integer, Integer>(sideXY ? shortSide : longSide, sideXY ? longSide : shortSide)));
+            }
+            lineCnt++;
+        }
+        
+        SortedMap<Integer, Integer> forestEdges = new TreeMap<>();
+        
+        //Now that we have a normalized map, let's walk through it
+        for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : mapQuarter.entrySet()) {
+            EnvironmentTile above = mapQuarter.get(new Pair<>(tile.getKey().getKey(), tile.getKey().getValue() + 1));
+            
+            //Skip those that are not a Forest/Mountain Edge
+            if (above == null || tile.getValue().getName().equals("Grass") || tile.getValue().getName().equals("Water")) {
+                continue;
+            }
+            
+            //Found a Forest/Mountain to Grass Edge
+            if (above.getName().equals("Grass")) {
+                forestEdges.put(tile.getKey().getKey(), tile.getKey().getValue());
+            }
+            
+        }
+        
+        //Fill up if not enough good positions
+        for (int i = forestEdges.size(); i < AMOUNT_HEAVY_TANKS; i++) {
+            //TODO Better Alt. Positions with bad Map
+            Random r = new Random ();
+            int x = 0;
+            int y = 0;
+            do {
+                x = r.nextInt(sideLength);
+                y = r.nextInt(sideLength / 2);
+            } while (mapQuarter.get(new Pair<>(x, y)) == null || forestEdges.containsKey(x));
+            
+            forestEdges.put(x, y);
+        }
+        
+        //Pick Middle Elements
+        //TODO Improve to "Biggest Block"
+        int skip = (forestEdges.size() - AMOUNT_HEAVY_TANKS) / 2;
+        Iterator<Entry<Integer, Integer>> it = forestEdges.entrySet().iterator(); 
+        for(int i = 0; i < skip; i++) {
+            it.next();
+        }
+
+        int unitCnt = -1;
+        
+        //Assign each Tank a position
+        for (int i = 0; i < AMOUNT_HEAVY_TANKS; i++) {
+            Entry<Integer, Integer> position = it.next();
+            
+            UnitTile unit = null;
+            
+             do {
+                 unitCnt++;
+                 unit = controller.unitTiles.get(unitCnt);
+             } while(!(unit.getLeader().equals(playerID) && unit.getType().equals("Heavy Tank")));
+             
+            tankPositions.put(unit.getId(), mapQuarter.get(new Pair<>(position.getKey(), position.getValue())).getId());
+        }
     }
 
     @Override
@@ -95,9 +207,33 @@ class Nagato extends AI {
         
     }
 
+    @SuppressWarnings ("static-access")
     private void tankReposition() {
-        // TODO Auto-generated method stub
-        
+        for (Entry<String, String> position : tankPositions.entrySet()) {
+            //Skip repositioning Dead Units
+            if(!ingameController.inGameObjects.containsKey(position.getKey())) {
+                continue;
+            }
+            
+            UnitTile tile = null;
+            for(UnitTile tiles : ingameController.unitTiles) {
+                if (tiles.getId().equals(position.getKey())) {
+                    tile = tiles;
+                }
+            }
+            
+            assert tile != null;
+            
+            //Skip correctly positioned Units
+            if(tile.getPosition() == position.getValue()) {
+                continue;
+            }
+            
+            EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
+            Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY());
+            socket.moveUnit(tile.getId(), path.getKey().path);     
+            waitForSocket();
+        }
     }
 
     @Override
@@ -125,6 +261,24 @@ class Nagato extends AI {
         }
         
         return requestIds;
+    }
+    
+}
+
+class PairXYComperator implements Comparator<Pair<Integer, Integer>> {
+
+    private int sideLength;
+    
+    public PairXYComperator(int length) {
+        sideLength = length;
+    }
+    
+    @Override
+    public int compare(Pair<Integer, Integer> pairL, Pair<Integer, Integer> pairR) {
+        int diff = (pairR.getValue() - pairL.getValue()) * sideLength;
+        diff += pairL.getKey() - pairR.getKey();
+            
+        return diff;
     }
     
 }
