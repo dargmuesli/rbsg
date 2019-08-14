@@ -200,6 +200,7 @@ public class AiTest {
         }
         
         testInstance.doTurn();
+        testInstance.waitForTurn();
         
         for (UnitTile tile : controller.unitTiles) {
             if (tile.getId().equals("AI")) {
@@ -209,6 +210,7 @@ public class AiTest {
         }
         
         testInstance.doTurn();
+        testInstance.waitForTurn();
         
         for (UnitTile tile : controller.unitTiles) {
             if (tile.getId().equals("AI")) {

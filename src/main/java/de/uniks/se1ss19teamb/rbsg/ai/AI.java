@@ -28,6 +28,7 @@ public abstract class AI {
     protected GameSocket socket;
     protected InGameController ingameController;
     protected Map<String, Unit> availableUnitTypes;
+    private Thread aiObsThread;
     
     public AI() {
         this.availableUnitTypes = ArmyManagerController.availableUnits;
@@ -39,7 +40,37 @@ public abstract class AI {
         this.ingameController = controller;
     }
     
-    public abstract void doTurn();
+    protected abstract void doTurnInternal();
+    
+    public void doTurn() {
+        aiObsThread = new Thread(() -> {
+            Thread aiThread = new Thread(() -> {
+                
+                doTurnInternal();
+                
+                aiObsThread.interrupt();
+            }, "AI-Thread");
+            aiThread.start();
+            
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                return;
+            }
+            
+            logger.warn("AI Timeout!");
+            aiThread.stop();
+        }, "AI-Observer-Thread");
+        aiObsThread.start();
+    }
+    
+    public void waitForTurn() {
+        try {
+            aiObsThread.join();
+        } catch (InterruptedException e) {
+            logger.warn("Waiting for AI-Observer-Thread was interrupted");
+        }
+    }
     
     public abstract List<String> requestArmy();
     
@@ -88,7 +119,8 @@ public abstract class AI {
     protected void waitForSocket() {
         //TODO Proper "Wait-For-Socket"
         try {
-            Thread.sleep(100);
+            Thread.yield();
+            Thread.sleep(500);
             System.out.println("Waiting for Websocket");
         } catch (InterruptedException e) {
             logger.warn("Waiting for Socket failed");

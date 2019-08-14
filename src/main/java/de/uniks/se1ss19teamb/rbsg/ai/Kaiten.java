@@ -32,7 +32,7 @@ class Kaiten extends AI {
      */
     @SuppressWarnings ("static-access")
     @Override
-    public void doTurn() {
+    protected void doTurnInternal() {
         
         Map<UnitTile, UnitTile> markedForAttack = new HashMap<>();
         

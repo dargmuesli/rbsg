@@ -1,10 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,6 +60,7 @@ class Nagato extends AI {
         boolean sideXY = false;
         
         //Figure out which side of the Board we are on
+        //FIXME == 0 / sideLenght geht so nicht. Rather x/y quot
         {
             EnvironmentTile randomFriendly = null;
         
@@ -81,18 +84,23 @@ class Nagato extends AI {
         }
         
         //Iterate over our Quarter of the Field, and "normalize" it to our direction
+        //if Four Players, take Quarter, if two, take half
         int startShort = sideDir == 1 ? sideLength - 1 : 0;
         int stopShort = sideLength / 2 - sideDir;
         int lineCnt = 0;
+        int players = (int) controller.inGameObjects.values().stream().filter(p -> p instanceof InGamePlayer).count();
         
         SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairComperatorXY(sideLength));
         
-        for (int shortSide = startShort; shortSide != stopShort; shortSide -= sideDir * 2 - 1) {
-            for (int longSide = lineCnt; longSide < sideLength - lineCnt; longSide++) {
+        //FIXME Somehow inverted for sideDir == 0
+        for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDir == 1 ? 1 : -1)) {
+            for (int longSide = (players != 2 ? lineCnt : 0);
+                    longSide < sideLength - (players != 2 ? lineCnt : 0); longSide++) {
                 mapQuarter.put(new Pair<Integer, Integer>(longSide, lineCnt), controller.environmentTiles.get(
                         new Pair<Integer, Integer>(sideXY ? shortSide : longSide, sideXY ? longSide : shortSide)));
             }
             lineCnt++;
+            
         }
         
         SortedMap<Integer, Integer> forestEdges = new TreeMap<>();
@@ -154,7 +162,7 @@ class Nagato extends AI {
     }
 
     @Override
-    public void doTurn() {
+    protected void doTurnInternal() {
         //Move Tanks to Forest Edge
         tankReposition();
         //Move Tanks to Attack if they have enough MP to return
@@ -169,7 +177,15 @@ class Nagato extends AI {
         socket.nextPhase();
         waitForSocket();
         
-        //TODO Check Phase Advancement - Tank Movement Needed? Concede?
+        //TODO Tank Movement Needed? For now, Concede
+        if (socket.phaseString.equals("Movement Phase")) {
+            //FIXME Does not yet work, somehow
+            //For now: Manual recommendation
+            NotificationHandler.getInstance().sendInfo("AI wants to concede", logger);
+            //socket.leaveGame();
+            //socket.disconnect();
+            return;
+        }
         
         attackAvailable();
         
