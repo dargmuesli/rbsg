@@ -38,8 +38,11 @@ public class BotManagerController {
         }
     }
 
-    public void createBot(int numberOfBot) {
-        BotControl.createBotUser(numberOfBot);
+    public void createBot(int numberOfBot, BotSelectionController botSelectionController) {
+        BotControl.createBotUser(numberOfBot, botSelectionController);
     }
 
+    public BotSelectionController getBotSelectionController(int number) {
+        return botSelectionControllers.get(number);
+    }
 }

@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -11,12 +10,10 @@
    <children>
       <HBox prefHeight="15.0" prefWidth="300.0" AnchorPane.topAnchor="8.0">
          <children>
-            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#setOnAction" />
-            <Label text="#Bot Not initialized">
+            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#setOnAction" text="NO BOT">
                <HBox.margin>
-                  <Insets right="16.0" />
-               </HBox.margin>
-            </Label>
+                  <Insets right="8.0" />
+               </HBox.margin></JFXCheckBox>
             <JFXSlider>
                <HBox.margin>
                   <Insets />

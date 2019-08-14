@@ -37,14 +37,18 @@ public class BotSelectionController {
             if (botCheckbox.isSelected()) {
                 if (!botCreated) {
                     createBot();
+                    botCreated = true;
                 }
             }
         }
     }
 
+    public void setCheckBoxName(String botName) {
+        botCheckbox.setText(botName);
+    }
 
 
     private void createBot() {
-        botManagerController.createBot(botNumber);
+        botManagerController.createBot(botNumber, this);
     }
 }
