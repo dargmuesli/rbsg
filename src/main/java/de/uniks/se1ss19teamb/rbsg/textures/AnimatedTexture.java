@@ -39,9 +39,9 @@ public class AnimatedTexture extends Texture {
     }
 
     @Override
-    public Pane instantiate() {
+    public Pane instantiate(String color) {
         ImageView iv = new ImageView();
-        iv.setImage(image);
+        setImageView(iv, color);
         iv.setViewport(new Rectangle2D(0, 0, image.getWidth(), image.getWidth()));
 
         AnimatedPane textured = new AnimatedPane(iv, 0f, periodTime, this);

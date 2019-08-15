@@ -19,7 +19,7 @@ class TextureFancy {
     }
     
     Pane instantiateBase() {
-        return base.instantiate();
+        return base.instantiate(null);
     }
     
     Pane instantiateOverlay(TextureFancyOverlayPosition position, TextureFancyOverlayType type) {

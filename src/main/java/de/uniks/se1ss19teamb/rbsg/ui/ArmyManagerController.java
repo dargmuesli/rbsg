@@ -7,13 +7,14 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -104,7 +105,7 @@ public class ArmyManagerController {
             updateUnits();
 
             if (GameLobbyController.instance != null) {
-                GameSocket.instance.changeArmy(army.getId());
+                Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).changeArmy(army.getId());
             }
         });
 

@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import de.uniks.se1ss19teamb.rbsg.request.*;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-//TODO: Fix WSIntegrationTests
-@Ignore
 public class WebSocketTestsReal {
 
     @Before
@@ -47,11 +46,13 @@ public class WebSocketTestsReal {
 
         RestRequestTestsReal.createGame();
 
-        if (!RequestUtil.request(new DeleteGameRequest(RestRequestTestsReal.gameId, RestRequestTestsReal.userToken))) {
+        RestRequestTestsReal.joinGame();
+
+        if (!RequestUtil.request(new DeleteGameRequest(RestRequestTestsReal.gameId, LoginController.getUserToken()))) {
             Assert.fail();
         }
 
-        if (!RequestUtil.request(new LogoutUserRequest(RestRequestTestsReal.userToken))) {
+        if (!RequestUtil.request(new LogoutUserRequest(LoginController.getUserToken()))) {
             Assert.fail();
         }
 
@@ -65,18 +66,18 @@ public class WebSocketTestsReal {
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + RestRequestTestsReal.gameId + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + RestRequestTestsReal.gameId));
-        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|2"));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|1"));
     }
 
     @Test
     public void chatSocketTest() throws ParseException, InterruptedException {
         RestRequestTestsReal.loginUser();
-        String userToken1 = RestRequestTestsReal.userToken;
+        String userToken1 = LoginController.getUserToken();
 
         ChatSocket chat = new ChatSocket("TeamBTestUser", userToken1);
 
         RestRequestTestsReal.loginUser("TeamBTestUser2");
-        String userToken2 = RestRequestTestsReal.userToken;
+        String userToken2 = LoginController.getUserToken();
 
         ChatSocket chat2 = new ChatSocket("TeamBTestUser2", userToken2);
 
@@ -105,7 +106,7 @@ public class WebSocketTestsReal {
 
         System.out.println(msg);
 
-        Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser|false"));
-        Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true"));
+        Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser2|false"));
+        Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser2|true"));
     }
 }

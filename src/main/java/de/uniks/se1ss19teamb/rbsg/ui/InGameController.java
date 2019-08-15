@@ -2,11 +2,13 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
@@ -26,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -37,8 +40,10 @@ public class InGameController {
     public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
+    public static Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
+    public static Map<String, String> previousTileMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
@@ -65,10 +70,6 @@ public class InGameController {
     @FXML
     private JFXButton btnYes;
     @FXML
-    private JFXButton btnSmaller;
-    @FXML
-    private StackPane stackPane;
-    @FXML
     private ScrollPane mapScrollPane;
     @FXML
     private JFXHamburger hamburgerMenu;
@@ -78,18 +79,20 @@ public class InGameController {
     private AnchorPane turnUI;
     @FXML
     public AnchorPane winScreenPane;
+    @FXML
+    public VBox vBoxWinScreen;
+    @FXML
+    public JFXToggleButton autoMode;
 
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
-    private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private int zoomCounter = 0;
-    private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
-    private UnitTile attackingUnit;
-    private Pane pane = new Pane();
-    private double healthBarWidth = 50;
+    private AI aI = null;
+
+    private String playerId;
 
     public static InGameController getInstance() {
         return instance;
@@ -114,6 +117,10 @@ public class InGameController {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
             stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
                 .remove(texture);
+            if (miniMap.isVisible()) {
+                updateMinimap();
+            }
+
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
             }
@@ -125,6 +132,11 @@ public class InGameController {
                 finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
             currentUnit.setPosition(newPos);
         }
+    }
+
+    private void updateMinimap() {
+        miniMap.getChildren().clear();
+        miniMap.getChildren().add(TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId));
     }
 
     @FXML
@@ -196,6 +208,7 @@ public class InGameController {
         if (miniMap.isVisible()) {
             miniMap.setVisible(false);
         } else {
+            updateMinimap();
             miniMap.setVisible(true);
         }
     }
@@ -213,6 +226,35 @@ public class InGameController {
             mapScrollPane.setContent(contentGroup);
         } else {
             zoomCounter++;
+        }
+    }
+
+    @FXML
+    public void autoMode() {
+        if (autoMode.isSelected()) {
+            if (aI == null) {
+                String userName = LoginController.getUserName();
+                for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
+                    if (userName.equals(player.getName())) {
+                        playerId = player.getId();
+                    }
+                }
+                assert playerId != null;
+                aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0),
+                    InGameController.instance, Integer.MAX_VALUE);
+            }
+            if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
+                if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                    .phaseString.equals("Movement Phase")) {
+                    autoMode.setSelected(false);
+                    NotificationHandler.getInstance()
+                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
+                            + "or on your opponents turn.", logger);
+
+                } else {
+                    Objects.requireNonNull(aI).doTurn();
+                }
+            }
         }
     }
 
@@ -295,7 +337,8 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            GameSocket.instance.attackUnit(previousUnitTile.getId(), toAttack.getId());
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .attackUnit(previousUnitTile.getId(), toAttack.getId());
 
                         } else {
                             // No: move.
@@ -310,7 +353,8 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            GameSocket.instance.moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
@@ -373,22 +417,8 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-
-            pane.getChildren().add(TextureManager.getTextureInstance(unitTile.getType()));
-
-            double healthBarHigth = 6;
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder",
-                healthBarHigth, healthBarWidth));
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground",
-                healthBarHigth, healthBarWidth));
-
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
-                healthBarHigth, healthBarWidth));
-
-
-            for (int i = 1; i < pane.getChildren().size(); i++) {
-                pane.getChildren().get(i).setLayoutY(55);
-            }
+            //adds player color to unitpane
+            Pane pane = generateUnitPane(unitTile);
 
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
@@ -400,8 +430,21 @@ public class InGameController {
 
     }
 
-    private void drawOverlay(EnvironmentTile startTile, int mp) {
+
+    private Pane generateUnitPane(UnitTile unitTile) {
+        InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
+
+        return TextureManager.getTextureInstance(unitTile.getType(),
+            (player != null) ? player.getColor() : null);
+    }
+
+    public void drawOverlay(EnvironmentTile startTile, int mp) {
+        drawOverlay(startTile, mp, true);
+    }
+
+    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        previousTileMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -415,7 +458,8 @@ public class InGameController {
             Integer currentMp = currentElement.getValue();
 
             // Limit moving distance.
-            if (currentMp == 0) {
+            // currentMp = 0 -> Attackable but not moveable
+            if (currentMp == -1) {
                 return;
             }
 
@@ -426,47 +470,56 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                // Limit to existing fields and exclude the selected tile.
-                if (neighborId == null || neighborId.equals(startTile.getId())) {
-                    return;
-                }
+                    // Limit to existing fields that haven't been checked yet and exclude the selected tile.
+                    if (neighborId == null || neighborId.equals(startTile.getId()) 
+                            || previousTileMapById.containsKey(neighborId)) {
+                        return;
+                    }
 
                 EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
                 StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
 
-                // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
-                if (neighborTile.isPassable()
-                    && !overlayedStacks.containsKey(neighborStack)) {
+                    // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
+                    // Skip tiles with own units
+                    if (neighborTile.isPassable()
+                        && !overlayedStacks.containsKey(neighborStack)
+                        && (unitTileMapByTileId.get(neighborId) == null
+                        || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
+                        .getName().equals(LoginController.getUserName()))) {
+                      
+                        Pane overlay = new Pane();
+                        UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
                     Pane overlay = new Pane();
                     UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
-                    if (neighborUnitTile != null
-                        && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
+                            // The tile that is going to receive an overlay contains a unit that can be attacked.
+                            // TODO: for when the gamelobby exists
+                            //  Only allow this for own units.
+                            overlay.getStyleClass().add("tile-attack");
+                        } else if (currentMp > 0 && neighborUnitTile == null) {
+                            // currentMp = 0 -> Attackable but not moveable
+                            // TODO: for when the gamelobby exists
+                            //  Is it possible to have two units on the same field?
+                            //  Is it possible to walk across a field on which a unit is already present?
+                            overlay.getStyleClass().add("tile-path");
+                            
+                            // Save the tile from which the tile that received an overlay was reached so that a path can
+                            // be reconstructed for server requests. But only if it's a move not an attack tile
+                            previousTileMapById.put(neighborId, currentTile.getId());
+                            
+                            // Add the tile that received an overlay to the quere so that its neighbors are checked too.
+                            // But only if movement, as we can't pass through attackable units
+                            queue.add(new Pair<>(neighborTile, currentMp - 1));
+                        }
 
-                        // The tile that is going to receive an overlay contains a unit that can be attacked.
-                        // TODO: for when the gamelobby exists
-                        //  Only allow this for own units.
-                        overlay.getStyleClass().add("tile-attack");
-                    } else {
-                        // TODO: for when the gamelobby exists
-                        //  Is it possible to have two units on the same field?
-                        //  Is it possible to walk across a field on which a unit is already present?
-                        overlay.getStyleClass().add("tile-path");
+                        // Add the overlay to the tile and a map so that it can easily be removed in the future.
+                        if (draw) {
+                            neighborStack.getChildren().add(overlay);
+                            overlayedStacks.put(neighborStack, overlay);
+                        }
                     }
-
-                    // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                    neighborStack.getChildren().add(overlay);
-                    overlayedStacks.put(neighborStack, overlay);
-
-                    // Save the tile from which the tile that received an overlay was reached so that a path can
-                    // be reconstructed for server requests.
-                    previousTileMapById.put(neighborId, currentTile.getId());
-
-                    // Add the tile that received an overlay to the quere so that its neighbors are checked too.
-                    queue.add(new Pair<>(neighborTile, currentMp - 1));
-                }
-            });
+                });
         }
     }
 
@@ -481,8 +534,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            GameSocket.instance.leaveGame();
-            GameSocket.instance.disconnect();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {

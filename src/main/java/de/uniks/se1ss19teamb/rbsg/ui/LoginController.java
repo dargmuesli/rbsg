@@ -101,8 +101,6 @@ public class LoginController {
             }
         });
 
-        UserData.deleteUserData();
-
         apnFade.setOpacity(0);
 
         // 1% meme chance
@@ -123,7 +121,6 @@ public class LoginController {
 
     @FXML
     private void login() {
-
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
             NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
             return;
@@ -134,10 +131,11 @@ public class LoginController {
         } else {
             UserData.deleteUserData();
         }
-        
+
         LoginUserRequest userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
         RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
 
+        // Login hotfix (see commit ef5ae5aeb59e162613686dab003feb5e34d72846)
         userRequest = new LoginUserRequest(txtUserName.getText(), password.getText());
         RequestUtil.request(userRequest).ifPresent(LoginController::setUserToken);
         
@@ -149,7 +147,6 @@ public class LoginController {
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
             NotificationHandler.getInstance().sendError("Login Failed, User data doesn't exist! ", logger);
-
         }
     }
 

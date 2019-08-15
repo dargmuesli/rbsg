@@ -86,8 +86,8 @@ public class TextureManager {
         instance.terrainColors.put("Mountain", Color.SLATEGREY);
     }
 
-    public static Pane getTextureInstance(String toFetch) {
-        return instance.fetchTexture(toFetch).instantiate();
+    public static Pane getTextureInstance(String toFetch, String color) {
+        return instance.fetchTexture(toFetch).instantiate(color);
     }
 
     public static Pane getTextureInstanceWithSize(String toFetch, double heigth, double width) {
@@ -96,7 +96,6 @@ public class TextureManager {
     
     public static Canvas computeMinimap(
         Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {
-        //TODO Render Unit positions.
 
         // since it's a square map
         double squareSide = Math.sqrt(map.size());

@@ -11,30 +11,28 @@
         <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
         <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="0.0">
-            <children>
-                <HBox alignment="CENTER" spacing="5">
-                    <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" onAction="#goBack">
-                        <graphic>
-                            <FontAwesomeIconView glyphName="REPLY"/>
-                        </graphic>
-                    </JFXButton>
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#toggleFullscreen">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
-                        <graphic>
-                            <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT"/>
-                        </graphic>
-                    </JFXButton>
-                </HBox>
-                <fx:include source="armyManager.fxml"/>
-            </children>
             <padding>
                 <Insets bottom="25.0" left="25.0" right="25.0" top="10.0"/>
             </padding>
+            <HBox alignment="CENTER" spacing="5">
+                <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" onAction="#goBack">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="REPLY"/>
+                    </graphic>
+                </JFXButton>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <JFXButton fx:id="btnFullscreen" contentDisplay="GRAPHIC_ONLY" onAction="#toggleFullscreen">
+                    <graphic>
+                        <FontAwesomeIconView boundsType="VISUAL" glyphName="EXPAND"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
+                    <graphic>
+                        <FontAwesomeIconView boundsType="VISUAL" glyphName="SIGN_OUT"/>
+                    </graphic>
+                </JFXButton>
+            </HBox>
+            <fx:include source="armyManager.fxml"/>
         </VBox>
     </AnchorPane>
 </AnchorPane>
