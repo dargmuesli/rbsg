@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxWidth="-Infinity" style="-fx-border-color: red;"
+<HBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxWidth="-Infinity"
       AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0"
       xmlns="http://javafx.com/javafx/8.0.221" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.NotificationController">
     <Label fx:id="label" text="NOTIFICATION"/>

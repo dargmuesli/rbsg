@@ -20,16 +20,20 @@ public class NotificationController {
     public void initialize() {
         switch (initLevel) {
             case "ERROR":
-                label.setStyle("-fx-text-fill: #e00909;");
+                label.getStyleClass().add("label-error");
+                root.getStyleClass().add("border-error");
                 break;
             case "INFO":
-                label.setStyle("-fx-text-fill: #0c51c2;");
+                label.getStyleClass().add("label-info");
+                root.getStyleClass().add("border-info");
                 break;
             case "SUCCESS":
-                label.setStyle("-fx-text-fill: #16b807;");
+                label.getStyleClass().add("label-success");
+                root.getStyleClass().add("border-success");
                 break;
             case "WARNING":
-                label.setStyle("-fx-text-fill: #ffbb00;");
+                label.getStyleClass().add("label-warning");
+                root.getStyleClass().add("border-warning");
                 break;
             default:
                 LogManager.getLogger().error("Unknown notification level \"" + initLevel + "\"!");
