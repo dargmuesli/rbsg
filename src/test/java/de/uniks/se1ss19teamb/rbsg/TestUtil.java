@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.util.RandomUtil;
 import java.util.Random;
 import javafx.application.Application;
@@ -20,8 +19,6 @@ public class TestUtil {
         t.setDaemon(true);
         t.start();
         Thread.sleep(500);
-
-        SoundManager.init();
     }
 
     public static void initRandom() {
