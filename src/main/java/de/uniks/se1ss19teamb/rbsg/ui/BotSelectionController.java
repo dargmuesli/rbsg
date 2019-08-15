@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXSlider;
 import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,8 @@ public class BotSelectionController {
 
     @FXML
     private JFXCheckBox botCheckbox;
+    @FXML
+    JFXSlider diffSlider;
 
     private int botNumber;
 
@@ -34,7 +37,8 @@ public class BotSelectionController {
         if (event.getSource().equals(botCheckbox)) {
             if (botCheckbox.isSelected()) {
                 if (!botCreated) {
-                    createBot();
+                    double difficulty = diffSlider.getValue();
+                    createBot((int) difficulty);
                     botCreated = true;
                 }
             }
@@ -51,7 +55,7 @@ public class BotSelectionController {
     }
 
 
-    private void createBot() {
-        botManagerController.createBot(botNumber, this);
+    private void createBot(int difficulty) {
+        botManagerController.createBot(botNumber, difficulty, this);
     }
 }

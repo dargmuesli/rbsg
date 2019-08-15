@@ -14,7 +14,7 @@
                <HBox.margin>
                   <Insets right="8.0" />
                </HBox.margin></JFXCheckBox>
-            <JFXSlider>
+            <JFXSlider fx:id="diffSlider" max="5.0" min="-1.0" minorTickCount="1">
                <HBox.margin>
                   <Insets />
                </HBox.margin></JFXSlider>

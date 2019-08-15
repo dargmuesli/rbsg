@@ -26,7 +26,7 @@ public class BotControl {
         gameId = id;
     }
 
-    public static void createBotUser(int number, BotSelectionController botSelectionController) {
+    public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
         BotUser botUser = new BotUser();
         botUser.setBotNumber(number);
         CreateTemporaryUserRequest ctur = new CreateTemporaryUserRequest();
@@ -46,7 +46,7 @@ public class BotControl {
         }
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         //TODO: inGameController and GameSocket have to be set.
-        botUser.instantiateBotAi();
+        botUser.instantiateBotAi(difficulty);
         botUser.setInGameController(inGameController);
 
         //Just info for dev. Will be deleted later
