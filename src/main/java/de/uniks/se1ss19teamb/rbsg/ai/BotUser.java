@@ -12,7 +12,16 @@ public class BotUser {
 
     private Kaiten botAi = null;
 
+    public void setInGameController(InGameController inGameController) {
+        this.inGameController = inGameController;
+    }
+
     private InGameController inGameController;
+
+    public void setGameSocket(GameSocket gameSocket) {
+        this.gameSocket = gameSocket;
+    }
+
     private GameSocket gameSocket;
 
     public void createBotAi() {

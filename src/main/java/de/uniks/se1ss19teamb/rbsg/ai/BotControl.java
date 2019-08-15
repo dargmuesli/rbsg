@@ -20,7 +20,7 @@ public class BotControl {
 
     private static ArrayList<BotUser> botUsers = new ArrayList<>();
 
-    private InGameController inGameController;
+    private static InGameController inGameController;
 
     private static String gameId;
 
@@ -46,8 +46,10 @@ public class BotControl {
         if (GameSocketDistributor.getGameSocket(number + 1 ) == null) {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
+        botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         //TODO: inGameController and GameSocket have to be set.
         botUser.createBotAi();
+        botUser.setInGameController(inGameController);
 
         //Just info for dev. Will be deleted later
         NotificationHandler.getInstance().sendInfo(loginUserRequest.getData(), logger);
@@ -55,7 +57,7 @@ public class BotControl {
             "\nBot Password: " + botUser.getBotUserPassword(), logger);
     }
 
-    public void setInGameController(InGameController inGameController) {
-        this.inGameController = inGameController;
+    public static void setInGameController(InGameController inGameControllerInput) {
+        inGameController = inGameControllerInput;
     }
 }

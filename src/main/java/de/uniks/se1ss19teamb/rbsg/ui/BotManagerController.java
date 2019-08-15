@@ -41,6 +41,7 @@ public class BotManagerController {
     public void createBot(int numberOfBot, BotSelectionController botSelectionController) {
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
         BotControl.createBotUser(numberOfBot, botSelectionController);
+        BotControl.setInGameController(InGameController.getInstance());
     }
 
     public BotSelectionController getBotSelectionController(int number) {
