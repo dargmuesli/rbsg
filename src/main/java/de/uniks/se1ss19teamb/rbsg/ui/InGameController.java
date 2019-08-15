@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
@@ -87,7 +88,8 @@ public class InGameController {
     private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private UnitTile attackingUnit;
-    private boolean isAttacked = false;
+    private Pane pane = new Pane();
+    private double healthBarWidth = 50;
 
     public static InGameController getInstance() {
         return instance;
@@ -164,6 +166,7 @@ public class InGameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -370,23 +373,18 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = new Pane();
+
             pane.getChildren().add(TextureManager.getTextureInstance(unitTile.getType()));
-            double healthBarWidth = 50;
+
             double healthBarHigth = 6;
             pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder",
                 healthBarHigth, healthBarWidth));
             pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground",
                 healthBarHigth, healthBarWidth));
+
             pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
                 healthBarHigth, healthBarWidth));
-            /*
-            UnitTile attackingUnit = getAttackingUnit();
-            double damage = (healthBarWidth / 100) * (attackingUnit.getMp() * 10);
-            pane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
-                healthBarHigth, healthBarWidth - damage));
 
-         */
 
             for (int i = 1; i < pane.getChildren().size(); i++) {
                 pane.getChildren().get(i).setLayoutY(55);
@@ -398,9 +396,7 @@ public class InGameController {
 
         }
 
-        NotificationHandler.getInstance().
-
-            sendSuccess("Game initialized.", logger);
+        NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
 
     }
 
@@ -517,6 +513,8 @@ public class InGameController {
         if (attacker != null) {
             SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
         }
+
+        //updateHealthBar();
     }
 
     public UnitTile findAttackingUnit(UnitTile unit) {
@@ -529,7 +527,7 @@ public class InGameController {
                 || (unitPos.getRight() != null && unitPos.getRight().equals(unitTile.getPosition()))
                 || (unitPos.getTop() != null && unitPos.getTop().equals(unitTile.getPosition()))) {
                 neighbor = unitTile;
-                isAttacked = true;
+
                 break;
             }
         }
@@ -537,12 +535,33 @@ public class InGameController {
         return neighbor;
     }
 
+   private void updateHealthBar() {
+        for (UnitTile unitTile : unitTiles) {
+
+            pane.getChildren().remove(TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, healthBarWidth));
+
+        }
+
+        for (int i = 1; i < pane.getChildren().size(); i++) {
+            pane.getChildren().get(i).setLayoutY(55);
+        }
+
+
+    }
+
+
     private void setAttackingUnit(UnitTile unitTile) {
         attackingUnit = unitTile;
     }
 
     private UnitTile getAttackingUnit() {
         return attackingUnit;
+    }
+
+    private double calcDamage() {
+        UnitTile attackingUnit = getAttackingUnit();
+
+        return (healthBarWidth / 100) * (attackingUnit.getMp() * 10);
     }
 
 }
