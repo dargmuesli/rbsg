@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.sound;
 
+import javafx.application.Platform;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -22,15 +23,17 @@ class Sound {
     }
 
     void play(float volume, float balance) {
-        if (keepInRam) {
-            ((AudioClip) sound).setVolume(volume);
-            ((AudioClip) sound).setBalance(balance);
-            ((AudioClip) sound).play();
-        } else {
-            MediaPlayer player = new MediaPlayer((Media) sound);
-            player.setVolume(volume);
-            player.setBalance(balance);
-            player.play();
-        }
+        Platform.runLater(() -> {
+            if (keepInRam) {
+                ((AudioClip) sound).setVolume(volume);
+                ((AudioClip) sound).setBalance(balance);
+                ((AudioClip) sound).play();
+            } else {
+                MediaPlayer player = new MediaPlayer((Media) sound);
+                player.setVolume(volume);
+                player.setBalance(balance);
+                player.play();
+            }
+        });
     }
 }
