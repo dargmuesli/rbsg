@@ -1,5 +1,6 @@
-package de.uniks.se1ss19teamb.rbsg.ai;
+package de.uniks.se1ss19teamb.rbsg.bot;
 
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
@@ -11,7 +12,7 @@ public class BotUser {
 
     private int botNumber;
 
-    private Kaiten botAi = null;
+    private AI botAi = null;
 
     void setInGameController(InGameController inGameController) {
         this.inGameController = inGameController;
@@ -25,9 +26,9 @@ public class BotUser {
 
     private GameSocket gameSocket;
 
-    void createBotAi() {
+    void instantiateBotAi() {
         if (botAi == null) {
-            botAi = new Kaiten(botUserKey, gameSocket, inGameController);
+            botAi = AI.instantiate(botUserKey, gameSocket, inGameController, -1);
         }
     }
 

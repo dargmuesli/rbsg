@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import de.uniks.se1ss19teamb.rbsg.ai.BotControl;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.fxml.FXML;

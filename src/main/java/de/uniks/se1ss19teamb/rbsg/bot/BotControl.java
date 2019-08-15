@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.ai;
+package de.uniks.se1ss19teamb.rbsg.bot;
 
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
@@ -46,7 +46,7 @@ public class BotControl {
         }
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         //TODO: inGameController and GameSocket have to be set.
-        botUser.createBotAi();
+        botUser.instantiateBotAi();
         botUser.setInGameController(inGameController);
 
         //Just info for dev. Will be deleted later
