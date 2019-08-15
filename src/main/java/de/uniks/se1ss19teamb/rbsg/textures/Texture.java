@@ -61,7 +61,6 @@ public class Texture {
                         if (j < copyImage.getHeight()) {
                             copyImage.setRGB(i, j, rgb);
                         }
-
                     }
                 }
             }
@@ -72,7 +71,7 @@ public class Texture {
         }
     }
 
-    public static BufferedImage copyImage(BufferedImage source){
+    public static BufferedImage copyImage(BufferedImage source) {
         BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
         Graphics2D g = b.createGraphics();
         g.drawImage(source, 0, 0, null);
