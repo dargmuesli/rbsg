@@ -4,6 +4,7 @@ import de.uniks.se1ss19teamb.rbsg.TestUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SoundManagerTest {
@@ -20,6 +21,7 @@ public class SoundManagerTest {
     }
 
     @Test
+    @Ignore
     public void checkLoadedSounds() throws InterruptedException {
         //Actually plays the sound and hopes for no exception
         SoundManager.playSound("panzer", 0, 0);
