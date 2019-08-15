@@ -28,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -415,7 +416,9 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
+            //adds player color to unitpane
+            Pane pane = generateUnitPane(unitTile);
+
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
@@ -424,7 +427,15 @@ public class InGameController {
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
     }
 
-    private void drawOverlay(EnvironmentTile startTile, int mp) {
+
+    private Pane generateUnitPane(UnitTile unitTile) {
+        InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
+
+        return TextureManager.getTextureInstance(unitTile.getType(),
+            (player != null) ? player.getColor() : null);
+    }
+
+    public void drawOverlay(EnvironmentTile startTile, int mp) {
         drawOverlay(startTile, mp, true);
     }
 

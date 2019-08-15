@@ -36,13 +36,13 @@ public class TextureManagerTest {
 
     @Test
     public void checkInstancedPanes() {
-        Pane pane = TextureManager.getTextureInstance("test");
+        Pane pane = TextureManager.getTextureInstance("test", null);
         Assert.assertFalse(pane.getChildren().filtered((node) -> node instanceof ImageView).isEmpty());
         Assert.assertNotNull(((ImageView) pane.getChildren()
             .stream().filter((node) -> node instanceof ImageView).findAny().get())
             .getImage());
 
-        Pane animPane = TextureManager.getTextureInstance("panzer");
+        Pane animPane = TextureManager.getTextureInstance("panzer", null);
         Assert.assertTrue(animPane instanceof AnimatedPane);
         
         EnvironmentTile sand = new EnvironmentTile();
