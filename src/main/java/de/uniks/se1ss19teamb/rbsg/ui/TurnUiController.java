@@ -50,6 +50,7 @@ public class TurnUiController {
     @FXML
     public void initialize() {
         instance = this;
+        updatePlayers();
 
         if (startShowTurn != null) {
             showTurn(startShowTurn);
@@ -62,7 +63,6 @@ public class TurnUiController {
         }
 
         phaseBtn.setTranslateY(-4);
-        updatePlayers();
     }
 
     /**
