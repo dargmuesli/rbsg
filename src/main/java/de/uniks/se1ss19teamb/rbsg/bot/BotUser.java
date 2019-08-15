@@ -28,7 +28,8 @@ public class BotUser {
 
     void instantiateBotAi() {
         if (botAi == null) {
-            botAi = AI.instantiate(botUserKey, gameSocket, inGameController, -1);
+            botAi = AI.instantiate(-1);
+            botAi.initialize(botUserKey, gameSocket, inGameController);
         }
     }
 
