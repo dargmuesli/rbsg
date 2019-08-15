@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 
 public class Texture {
 
-    BufferedImage buffer;
+    private BufferedImage buffer;
     Image image;
 
     Texture(String classPath) {
@@ -35,7 +35,7 @@ public class Texture {
         return new Pane(iv);
     }
 
-    protected ImageView setImageView(ImageView iv, String colorName) {
+    void setImageView(ImageView iv, String colorName) {
         Color color;
         try {
             Field field = Class.forName("java.awt.Color").getField(colorName);
@@ -43,34 +43,40 @@ public class Texture {
         } catch (Exception e) {
             color = null;
         }
-        if (buffer != null && color != null) {
-            for (int i = 0; i < buffer.getWidth(); i++) {
-                for (int j = 0; j < buffer.getHeight(); j++) {
-                    if ((buffer.getRGB(i, j) & 0xff000000) >>> 24 != 0) {
+        BufferedImage copyImage = copyImage(buffer);
+        if (copyImage != null && color != null) {
+            for (int i = 0; i < copyImage.getWidth(); i++) {
+                for (int j = 0; j < copyImage.getHeight(); j++) {
+
+                    if ((copyImage.getRGB(i, j) & 0xff000000) >>> 24 != 0) {
                         int rgb = color.getRGB();
                         if (j > 0) {
-                            buffer.setRGB(i, j - 1, rgb);
+                            copyImage.setRGB(i, j - 1, rgb);
                         } else {
-                            buffer.setRGB(i, j, rgb);
+                            copyImage.setRGB(i, j, rgb);
                         }
-
-                        while (j < buffer.getHeight() && buffer.getRGB(i, j) != 0) {
+                        while (j < copyImage.getHeight() && copyImage.getRGB(i, j) != 0) {
                             j++;
                         }
-                        if (j < buffer.getHeight()) {
-                            buffer.setRGB(i, j, rgb);
+                        if (j < copyImage.getHeight()) {
+                            copyImage.setRGB(i, j, rgb);
                         }
 
                     }
                 }
             }
-
-            Image img = SwingFXUtils.toFXImage(buffer, null);
+            Image img = SwingFXUtils.toFXImage(copyImage, null);
             iv.setImage(img);
         } else {
             iv.setImage(image);
         }
-        return iv;
     }
 
+    public static BufferedImage copyImage(BufferedImage source){
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+        Graphics2D g = b.createGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+        return b;
+    }
 }
