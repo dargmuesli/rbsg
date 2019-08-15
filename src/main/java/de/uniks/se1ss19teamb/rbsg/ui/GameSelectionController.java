@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXCheckBox;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -11,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.util.Arrays;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
