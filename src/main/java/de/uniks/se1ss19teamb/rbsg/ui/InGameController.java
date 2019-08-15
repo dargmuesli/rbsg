@@ -29,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -434,7 +435,7 @@ public class InGameController {
         InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
 
         return TextureManager.getTextureInstance(unitTile.getType(),
-            (player != null)? player.getColor() : null);
+            (player != null) ? player.getColor() : null);
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {

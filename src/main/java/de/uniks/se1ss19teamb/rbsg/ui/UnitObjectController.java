@@ -35,7 +35,7 @@ public class UnitObjectController {
         this.unit = unit;
 
         labelUnitType.setText(unit.getType());
-        imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType(), "1"));
+        imageUnitType.getChildren().add(TextureManager.getTextureInstance(unit.getType(), "red"));
 
         update(0);
     }
