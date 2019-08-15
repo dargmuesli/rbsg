@@ -54,5 +54,7 @@ public class BotUser {
         return botUserPassword;
     }
 
-    public void setBotNumber(int botNumber) {this.botNumber = botNumber;}
+    public void setBotNumber(int botNumber) {
+        this.botNumber = botNumber;
+    }
 }

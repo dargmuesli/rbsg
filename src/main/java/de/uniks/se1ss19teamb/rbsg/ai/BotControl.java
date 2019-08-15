@@ -2,17 +2,15 @@ package de.uniks.se1ss19teamb.rbsg.ai;
 
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
-import de.uniks.se1ss19teamb.rbsg.ui.BotManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
-import de.uniks.se1ss19teamb.rbsg.ui.GameSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.logging.LogManager;
+
+import org.apache.logging.log4j.Logger;
+
 
 public class BotControl {
 
@@ -43,7 +41,7 @@ public class BotControl {
         botUsers.add(number, botUser);
         botSelectionController.setBot(botUser);
 
-        if (GameSocketDistributor.getGameSocket(number + 1 ) == null) {
+        if (GameSocketDistributor.getGameSocket(number + 1) == null) {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
@@ -53,8 +51,8 @@ public class BotControl {
 
         //Just info for dev. Will be deleted later
         NotificationHandler.getInstance().sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.getInstance().sendInfo("Bot Username: " + botUser.getBotUserName() +
-            "\nBot Password: " + botUser.getBotUserPassword(), logger);
+        NotificationHandler.getInstance().sendInfo("Bot Username: " + botUser.getBotUserName()
+            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
     }
 
     public static void setInGameController(InGameController inGameControllerInput) {

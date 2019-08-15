@@ -50,7 +50,7 @@ public class BotSelectionController {
         botCheckbox.setText(botName);
     }
 
-    public void setBot (BotUser botUser) {
+    public void setBot(BotUser botUser) {
         this.botUser = botUser;
         setCheckBoxName(botUser.getBotUserName());
     }

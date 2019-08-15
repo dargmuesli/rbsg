@@ -191,7 +191,6 @@ public class GameLobbyController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botManager.fxml"));
         try {
-            Parent parent = fxmlLoader.load();
             BotManagerController controller = fxmlLoader.getController();
             controller.setMaxPlayers(GameSelectionController.joinedGame.getNeededPlayers());
             controller.setBotSelections();
@@ -199,6 +198,7 @@ public class GameLobbyController {
             botWindow.setTitle("Bot Manager");
             botWindow.initModality(Modality.APPLICATION_MODAL);
             botWindow.initStyle(StageStyle.DECORATED);
+            Parent parent = fxmlLoader.load();
             botWindow.setScene(new Scene(parent));
             botWindow.show();
         } catch (IOException e) {
