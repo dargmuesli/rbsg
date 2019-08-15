@@ -146,5 +146,9 @@ public abstract class AI {
             return null;
         }
     }
+
+    public static int getHighestDifficulty() {
+        return aiModels.lastKey();
+    }
     
 }
