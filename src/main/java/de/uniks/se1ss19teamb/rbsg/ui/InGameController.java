@@ -419,13 +419,24 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
+            //adds player color to unitpane
+            Pane pane = generateUnitPane(unitTile);
+
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
+    }
+
+    private Pane generateUnitPane(UnitTile unitTile) {
+        InGamePlayer player = (InGamePlayer) InGameController.inGameObjects.get(unitTile.getLeader());
+
+        Pane pane = TextureManager.getTextureInstance(unitTile.getType(),
+            (player != null)? player.getColor() : null);
+
+        return pane;
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {
