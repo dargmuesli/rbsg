@@ -4,10 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
@@ -28,7 +30,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -93,6 +94,7 @@ public class InGameController {
     private AI aI = null;
 
     private String playerId;
+    private UnitTile attackingUnit;
 
     public static InGameController getInstance() {
         return instance;
@@ -417,12 +419,26 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            //adds player color to unitpane
-            Pane pane = generateUnitPane(unitTile);
+            //adds player color to unitpane and adds healthBar
+            Pane unitPane = new Pane();
+
+            unitPane.getChildren().add(generateUnitPane(unitTile));
+            unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder", 6, 50));
+            unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground", 6, 50));
+            if (isAttacked(unitTile)) {
+                unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, 50-20));
+            } else {
+                unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, 50));
+            }
+
+
+            for (int i = 1; i < unitPane.getChildren().size(); i++) {
+                unitPane.getChildren().get(i).setLayoutY(55);
+            }
 
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
-                .add(pane);
-            unitPaneMapbyUnitTile.put(unitTile, pane);
+                .add(unitPane);
+            unitPaneMapbyUnitTile.put(unitTile, unitPane);
 
         }
 
@@ -470,56 +486,56 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                    // Limit to existing fields that haven't been checked yet and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId()) 
-                            || previousTileMapById.containsKey(neighborId)) {
-                        return;
-                    }
+                // Limit to existing fields that haven't been checked yet and exclude the selected tile.
+                if (neighborId == null || neighborId.equals(startTile.getId())
+                    || previousTileMapById.containsKey(neighborId)) {
+                    return;
+                }
 
                 EnvironmentTile neighborTile = environmentTileMapById.get(neighborId);
                 StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
 
-                    // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
-                    // Skip tiles with own units
-                    if (neighborTile.isPassable()
-                        && !overlayedStacks.containsKey(neighborStack)
-                        && (unitTileMapByTileId.get(neighborId) == null
-                        || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
-                        .getName().equals(LoginController.getUserName()))) {
-                      
-                        Pane overlay = new Pane();
-                        UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
+                // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
+                // Skip tiles with own units
+                if (neighborTile.isPassable()
+                    && !overlayedStacks.containsKey(neighborStack)
+                    && (unitTileMapByTileId.get(neighborId) == null
+                    || !((InGamePlayer) inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
+                    .getName().equals(LoginController.getUserName()))) {
 
                     Pane overlay = new Pane();
                     UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
-                            // The tile that is going to receive an overlay contains a unit that can be attacked.
-                            // TODO: for when the gamelobby exists
-                            //  Only allow this for own units.
-                            overlay.getStyleClass().add("tile-attack");
-                        } else if (currentMp > 0 && neighborUnitTile == null) {
-                            // currentMp = 0 -> Attackable but not moveable
-                            // TODO: for when the gamelobby exists
-                            //  Is it possible to have two units on the same field?
-                            //  Is it possible to walk across a field on which a unit is already present?
-                            overlay.getStyleClass().add("tile-path");
-                            
-                            // Save the tile from which the tile that received an overlay was reached so that a path can
-                            // be reconstructed for server requests. But only if it's a move not an attack tile
-                            previousTileMapById.put(neighborId, currentTile.getId());
-                            
-                            // Add the tile that received an overlay to the quere so that its neighbors are checked too.
-                            // But only if movement, as we can't pass through attackable units
-                            queue.add(new Pair<>(neighborTile, currentMp - 1));
-                        }
+                    if (neighborUnitTile != null
+                        && Arrays.asList(startUnitTile.getCanAttack()).contains(neighborUnitTile.getType())) {
 
-                        // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                        if (draw) {
-                            neighborStack.getChildren().add(overlay);
-                            overlayedStacks.put(neighborStack, overlay);
-                        }
+                        // The tile that is going to receive an overlay contains a unit that can be attacked.
+                        // TODO: for when the gamelobby exists
+                        //  Only allow this for own units.
+                        overlay.getStyleClass().add("tile-attack");
+                    } else if (currentMp > 0 && neighborUnitTile == null) {
+                        // currentMp = 0 -> Attackable but not moveable
+                        // TODO: for when the gamelobby exists
+                        //  Is it possible to have two units on the same field?
+                        //  Is it possible to walk across a field on which a unit is already present?
+                        overlay.getStyleClass().add("tile-path");
+
+                        // Save the tile from which the tile that received an overlay was reached so that a path can
+                        // be reconstructed for server requests. But only if it's a move not an attack tile
+                        previousTileMapById.put(neighborId, currentTile.getId());
+
+                        // Add the tile that received an overlay to the quere so that its neighbors are checked too.
+                        // But only if movement, as we can't pass through attackable units
+                        queue.add(new Pair<>(neighborTile, currentMp - 1));
                     }
-                });
+
+                    // Add the overlay to the tile and a map so that it can easily be removed in the future.
+                    if (draw) {
+                        neighborStack.getChildren().add(overlay);
+                        overlayedStacks.put(neighborStack, overlay);
+                    }
+                }
+            });
         }
     }
 
@@ -558,16 +574,15 @@ public class InGameController {
 
         assert unit != null;
         unit.setHp(Integer.parseInt(newHp));
-        setAttackingUnit(unit);
 
         //for sounds find the attacking unit
         UnitTile attacker = findAttackingUnit(unit);
+        setAttackingUnit(attacker);
 
         if (attacker != null) {
             SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
         }
 
-        //updateHealthBar();
     }
 
     public UnitTile findAttackingUnit(UnitTile unit) {
@@ -580,26 +595,11 @@ public class InGameController {
                 || (unitPos.getRight() != null && unitPos.getRight().equals(unitTile.getPosition()))
                 || (unitPos.getTop() != null && unitPos.getTop().equals(unitTile.getPosition()))) {
                 neighbor = unitTile;
-
                 break;
             }
         }
 
         return neighbor;
-    }
-
-   private void updateHealthBar() {
-        for (UnitTile unitTile : unitTiles) {
-
-            pane.getChildren().remove(TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, healthBarWidth));
-
-        }
-
-        for (int i = 1; i < pane.getChildren().size(); i++) {
-            pane.getChildren().get(i).setLayoutY(55);
-        }
-
-
     }
 
 
@@ -611,10 +611,17 @@ public class InGameController {
         return attackingUnit;
     }
 
+    private boolean isAttacked(UnitTile unitTile) {
+        UnitTile attackingUnit = findAttackingUnit(unitTile);
+
+        return attackingUnit != null;
+    }
+
+
     private double calcDamage() {
         UnitTile attackingUnit = getAttackingUnit();
 
-        return (healthBarWidth / 100) * (attackingUnit.getMp() * 10);
+        return (50 / 100) * (attackingUnit.getMp() * 10);
     }
 
 }

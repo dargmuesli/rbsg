@@ -43,4 +43,49 @@ public class Texture {
         return new Pane(iv);
     }
 
+
+    void setImageView(ImageView iv, String colorName) {
+        Color color;
+        try {
+            Field field = Class.forName("java.awt.Color").getField(colorName);
+            color = (Color)field.get(null);
+        } catch (Exception e) {
+            color = null;
+        }
+        BufferedImage copyImage = copyImage(buffer);
+        if (copyImage != null && color != null) {
+            for (int i = 0; i < copyImage.getWidth(); i++) {
+                for (int j = 0; j < copyImage.getHeight(); j++) {
+
+                    if ((copyImage.getRGB(i, j) & 0xff000000) >>> 24 != 0) {
+                        int rgb = color.getRGB();
+                        if (j > 0) {
+                            copyImage.setRGB(i, j - 1, rgb);
+                        } else {
+                            copyImage.setRGB(i, j, rgb);
+                        }
+                        while (j < copyImage.getHeight() && copyImage.getRGB(i, j) != 0) {
+                            j++;
+                        }
+                        if (j < copyImage.getHeight()) {
+                            copyImage.setRGB(i, j, rgb);
+                        }
+                    }
+                }
+            }
+            Image img = SwingFXUtils.toFXImage(copyImage, null);
+            iv.setImage(img);
+        } else {
+            iv.setImage(image);
+        }
+    }
+
+    public static BufferedImage copyImage(BufferedImage source) {
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+        Graphics2D g = b.createGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+        return b;
+    }
+
 }
