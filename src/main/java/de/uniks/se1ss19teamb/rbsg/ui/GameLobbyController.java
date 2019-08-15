@@ -10,6 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -71,6 +72,7 @@ public class GameLobbyController {
         GameSocketDistributor
             .setGameSocket(0, GameSelectionController.joinedGame.getId());
         gameSocket = GameSocketDistributor.getGameSocket(0);
+        assert gameSocket != null;
         gameSocket.registerMessageHandler((message, from, isPrivate) -> {
             if (isPrivate) {
                 MainController.instance.addNewPane(from, message, false, chatPane);
@@ -170,8 +172,8 @@ public class GameLobbyController {
     }
 
     private static void quit() {
-        GameSocketDistributor.getGameSocket(0).leaveGame();
-        GameSocketDistributor.getGameSocket(0).disconnect();
+        Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
+        Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
         GameLobbyController.instance = null;
     }
 

@@ -98,7 +98,8 @@ class Kaiten extends AI {
                 if (!unit.getLeader().equals(playerID) || !unit.getType().equals(unitType.getType())) {
                     continue;
                 }
-                
+
+                assert toAttack != null;
                 Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY());
                 
                 socket.moveUnit(unit.getId(), path.getKey().path);
