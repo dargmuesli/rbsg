@@ -8,53 +8,51 @@ public class BotUser {
     private String botUserKey;
     private String botUserName;
     private String botUserPassword;
+
     private int botNumber;
 
     private Kaiten botAi = null;
 
-    public void setInGameController(InGameController inGameController) {
+    void setInGameController(InGameController inGameController) {
         this.inGameController = inGameController;
     }
 
     private InGameController inGameController;
 
-    public void setGameSocket(GameSocket gameSocket) {
+    void setGameSocket(GameSocket gameSocket) {
         this.gameSocket = gameSocket;
     }
 
     private GameSocket gameSocket;
 
-    public void createBotAi() {
+    void createBotAi() {
         if (botAi == null) {
             botAi = new Kaiten(botUserKey, gameSocket, inGameController);
         }
     }
 
-    public void setBotUserKey(String botUserKey) {
+    void setBotUserKey(String botUserKey) {
         this.botUserKey = botUserKey;
     }
 
-    public void setBotUserName(String botUserName) {
+    void setBotUserName(String botUserName) {
         this.botUserName = botUserName;
     }
 
-    public void setBotUserPassword(String botUserPassword) {
+    void setBotUserPassword(String botUserPassword) {
         this.botUserPassword = botUserPassword;
     }
 
-    public String getBotUserKey() {
-        return botUserKey;
-    }
 
     public String getBotUserName() {
         return botUserName;
     }
 
-    public String getBotUserPassword() {
+    String getBotUserPassword() {
         return botUserPassword;
     }
 
-    public void setBotNumber(int botNumber) {
+    void setBotNumber(int botNumber) {
         this.botNumber = botNumber;
     }
 }
