@@ -431,12 +431,10 @@ public class InGameController {
     }
 
     private Pane generateUnitPane(UnitTile unitTile) {
-        InGamePlayer player = (InGamePlayer) InGameController.inGameObjects.get(unitTile.getLeader());
+        InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
 
-        Pane pane = TextureManager.getTextureInstance(unitTile.getType(),
+        return TextureManager.getTextureInstance(unitTile.getType(),
             (player != null)? player.getColor() : null);
-
-        return pane;
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {
