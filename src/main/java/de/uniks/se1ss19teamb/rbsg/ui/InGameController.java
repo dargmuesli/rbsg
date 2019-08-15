@@ -8,7 +8,6 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
@@ -71,10 +70,6 @@ public class InGameController {
     @FXML
     private JFXButton btnYes;
     @FXML
-    private JFXButton btnSmaller;
-    @FXML
-    private StackPane stackPane;
-    @FXML
     private ScrollPane mapScrollPane;
     @FXML
     private JFXHamburger hamburgerMenu;
@@ -97,7 +92,7 @@ public class InGameController {
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private AI aI = null;
 
-    public String playerId;
+    private String playerId;
 
     public static InGameController getInstance() {
         return instance;
@@ -247,8 +242,9 @@ public class InGameController {
                 aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0),
                     InGameController.instance, Integer.MAX_VALUE);
             }
-            if (GameSocketDistributor.getGameSocket(0).currentPlayer.equals(playerId)) {
-                if (!GameSocketDistributor.getGameSocket(0).phaseString.equals("Movement Phase")) {
+            if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
+                if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                    .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.getInstance()
                         .sendWarning("You can only activate Automode\nin your first Movementphase\n"
@@ -340,8 +336,8 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            GameSocketDistributor.getGameSocket(0).attackUnit(previousUnitTile.getId(),
-                                toAttack.getId());
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .attackUnit(previousUnitTile.getId(), toAttack.getId());
 
                         } else {
                             // No: move.
@@ -356,8 +352,8 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            GameSocketDistributor.getGameSocket(0).moveUnit(previousUnitTile.getId(),
-                                path.toArray(new String[0]));
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
@@ -430,6 +426,7 @@ public class InGameController {
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
     }
+
 
     private Pane generateUnitPane(UnitTile unitTile) {
         InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
@@ -534,8 +531,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            GameSocketDistributor.getGameSocket(0).leaveGame();
-            GameSocketDistributor.getGameSocket(0).disconnect();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {
