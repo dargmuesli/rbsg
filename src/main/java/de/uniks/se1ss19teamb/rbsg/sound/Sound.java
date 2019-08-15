@@ -21,15 +21,16 @@ public class Sound {
         }
     }
 
-    public void play(float balance) {
+    public void play(float volume, float balance) {
         if (keepInRam) {
+            ((AudioClip) sound).setVolume(volume);
             ((AudioClip) sound).setBalance(balance);
             ((AudioClip) sound).play();
         } else {
             MediaPlayer player = new MediaPlayer((Media) sound);
+            player.setVolume(volume);
             player.setBalance(balance);
             player.play();
         }
     }
-
 }

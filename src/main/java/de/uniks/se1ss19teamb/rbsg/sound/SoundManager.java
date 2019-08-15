@@ -55,7 +55,11 @@ public class SoundManager {
     }
 
     public static void playSound(String toFetch, float balance) {
-        instance.ifPresent(soundManager -> soundManager.fetchSound(toFetch).play(balance));
+        playSound(toFetch, 1, balance);
+    }
+
+    public static void playSound(String toFetch, float volume, float balance) {
+        instance.ifPresent(soundManager -> soundManager.fetchSound(toFetch).play(volume, balance));
     }
 
     public static boolean getLoaded(String toFetch) {
