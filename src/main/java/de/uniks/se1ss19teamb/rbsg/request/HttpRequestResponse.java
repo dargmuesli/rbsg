@@ -4,7 +4,6 @@ public class HttpRequestResponse {
 
     public String body;
     private int status;
-
     private String errorMsg;
 
     public HttpRequestResponse(String body, int status, String errorMsg) {
@@ -12,4 +11,13 @@ public class HttpRequestResponse {
         this.status = status;
         this.errorMsg = errorMsg;
     }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
 }

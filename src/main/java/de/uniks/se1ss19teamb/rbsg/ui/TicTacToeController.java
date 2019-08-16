@@ -7,7 +7,6 @@ import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;

@@ -15,11 +15,10 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 // UI Tests take a lot of time.
@@ -28,7 +27,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 public class UiTests extends ApplicationTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setupHeadlessMode() {
         TestUtil.setupHeadlessMode();
     }
@@ -44,14 +43,13 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    @Ignore
     public void clickFullscreenTest() {
         clickOn("#btnFullscreen");
         clickOn("#btnFullscreen");
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void ticTacToeTest() {
         push(KeyCode.SHIFT).push(KeyCode.F1);
         sleep(500); // given some time to open window
@@ -66,7 +64,6 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    @Ignore
     public void snakeTest() {
         press(KeyCode.SHIFT).press(KeyCode.F2);
         sleep(500); // given some time to open window
@@ -77,7 +74,7 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void notificationPopupTest() {
 
         Logger logger = LogManager.getLogger();

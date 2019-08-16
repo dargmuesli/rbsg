@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryGamesRequest extends AbstractDataRestRequest<HashMap<String, GameMeta>> {

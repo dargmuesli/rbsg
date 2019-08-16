@@ -4,6 +4,7 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 
 import java.util.*;
@@ -29,11 +30,6 @@ public class RestRequestTestsReal {
      */
     public static String gameId;
 
-    /**
-     * A user token for further requests as retrieved by {@link #loginUser}.
-     */
-    public static String userToken;
-
     private String armyId;
 
     // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +50,8 @@ public class RestRequestTestsReal {
             units.add(unitList.get(0));
         }
 
-        Optional<String> optional = RequestUtil.request(new CreateArmyRequest("testArmy001", units, userToken));
+        Optional<String> optional = RequestUtil.request(
+            new CreateArmyRequest("testArmy001", units, LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             armyId = optional.get();
@@ -69,7 +66,8 @@ public class RestRequestTestsReal {
      * Fails {@link Assert} if unsuccessful.
      */
     public static void createGame() {
-        Optional<String> optional = RequestUtil.request(new CreateGameRequest("TeamBTestUserGame", 2, userToken));
+        Optional<String> optional = RequestUtil.request(
+            new CreateGameRequest("TeamBTestUserGame", 2, LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             gameId = optional.get();
@@ -79,7 +77,7 @@ public class RestRequestTestsReal {
     }
 
     private void deleteArmy(String armyID) {
-        if (!RequestUtil.request(new DeleteArmyRequest(armyID, userToken))) {
+        if (!RequestUtil.request(new DeleteArmyRequest(armyID, LoginController.getUserToken()))) {
             Assert.fail();
         }
     }
@@ -93,7 +91,7 @@ public class RestRequestTestsReal {
 
     /**
      * Logs the specified user in, using the password "qwertz".
-     * The returned user token is saved in {@link #userToken}.
+     * The returned user token is saved in {@link LoginController#getUserToken()}.
      * Fails {@link Assert} if unsuccessful.
      *
      * @param username The username to log in with.
@@ -102,7 +100,8 @@ public class RestRequestTestsReal {
         Optional<String> optional = RequestUtil.request(new LoginUserRequest(username, "qwertz"));
 
         if (optional.isPresent()) {
-            userToken = optional.get();
+            LoginController.setUserName(username);
+            LoginController.setUserToken(optional.get());
         } else {
             Assert.fail();
         }
@@ -114,7 +113,7 @@ public class RestRequestTestsReal {
      * Fails {@link Assert} if unsuccessful.
      */
     public static void queryUnits() {
-        Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(userToken));
+        Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             unitList = optional.get();
@@ -125,6 +124,12 @@ public class RestRequestTestsReal {
                 ArmyManagerController.availableUnits.put(unit.getId(), unit);
             }
         } else {
+            Assert.fail();
+        }
+    }
+
+    public static void joinGame() {
+        if (!RequestUtil.request(new JoinGameRequest(gameId, LoginController.getUserToken()))) {
             Assert.fail();
         }
     }
@@ -142,7 +147,8 @@ public class RestRequestTestsReal {
             units.add(unitList.get(0));
         }
 
-        Optional<String> optional = RequestUtil.request(new CreateArmyRequest("TestBArmy", units, userToken));
+        Optional<String> optional = RequestUtil.request(
+            new CreateArmyRequest("TestBArmy", units, LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             deleteArmy(optional.get());
@@ -158,7 +164,7 @@ public class RestRequestTestsReal {
         Optional<String> optional;
 
         optional = RequestUtil.request(
-            new CreateGameRequest("TeamBTestUserGame", 2, userToken));
+            new CreateGameRequest("TeamBTestUserGame", 2, LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             Assert.assertEquals(24, optional.get().length());
@@ -167,7 +173,7 @@ public class RestRequestTestsReal {
         }
 
         optional = RequestUtil.request(
-            new CreateGameRequest("TeamBTestUserGame", 2, userToken, 123));
+            new CreateGameRequest("TeamBTestUserGame", 2, LoginController.getUserToken(), 123));
 
         if (optional.isPresent()) {
             Assert.assertEquals(24, optional.get().length());
@@ -182,7 +188,7 @@ public class RestRequestTestsReal {
         queryUnits();
         createArmy();
 
-        DeleteArmyRequest request = new DeleteArmyRequest(armyId, userToken);
+        DeleteArmyRequest request = new DeleteArmyRequest(armyId, LoginController.getUserToken());
 
         if (RequestUtil.request(request)) {
             Assert.assertEquals("Army deleted", request.getMessage());
@@ -196,7 +202,7 @@ public class RestRequestTestsReal {
         loginUser();
         createGame();
 
-        DeleteGameRequest request = new DeleteGameRequest(gameId, userToken);
+        DeleteGameRequest request = new DeleteGameRequest(gameId, LoginController.getUserToken());
 
         if (RequestUtil.request(request)) {
             Assert.assertEquals("Game deleted", request.getMessage());
@@ -211,7 +217,8 @@ public class RestRequestTestsReal {
         queryUnits();
         createArmy();
 
-        Optional<Army> optional = RequestUtil.request(new GetSpecificArmyRequest(armyId, userToken));
+        Optional<Army> optional = RequestUtil.request(
+            new GetSpecificArmyRequest(armyId, LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             Assert.assertEquals("testArmy001", optional.get().getName());
@@ -230,14 +237,15 @@ public class RestRequestTestsReal {
         createGame();
 
         JoinGameRequest request =
-            new JoinGameRequest(gameId, userToken);
+            new JoinGameRequest(gameId, LoginController.getUserToken());
 
         if (RequestUtil.request(request)) {
             Assert.assertEquals("Game joined, you will be disconnected from the chat and the system socket. "
                 + "Please connect to /ws/game?gameId=GAME_ID(&armyId=ARMY_ID)", request.getMessage());
 
             //Check if we actually joined the game
-            Optional<HashMap<String, GameMeta>> optional = RequestUtil.request(new QueryGamesRequest(userToken));
+            Optional<HashMap<String, GameMeta>> optional = RequestUtil.request(
+                new QueryGamesRequest(LoginController.getUserToken()));
 
             if (optional.isPresent()) {
                 Optional<Map.Entry<String, GameMeta>> optionalEntry = optional.get().entrySet().stream()
@@ -255,7 +263,8 @@ public class RestRequestTestsReal {
 
     @Test
     public void loginUserTest() {
-        Optional<String> optional = RequestUtil.request(new LoginUserRequest("TeamBTestUser", "qwertz"));
+        Optional<String> optional = RequestUtil.request(
+            new LoginUserRequest("TeamBTestUser", "qwertz"));
 
         if (optional.isPresent()) {
             Assert.assertEquals(36, optional.get().length());
@@ -268,7 +277,7 @@ public class RestRequestTestsReal {
     public void logoutUserTest() throws ParseException {
         loginUser();
 
-        LogoutUserRequest request = new LogoutUserRequest(userToken);
+        LogoutUserRequest request = new LogoutUserRequest(LoginController.getUserToken());
 
         if (RequestUtil.request(request)) {
             Assert.assertEquals("Logged out", request.getMessage());
@@ -283,7 +292,8 @@ public class RestRequestTestsReal {
         queryUnits();
         createArmy();
 
-        Optional<ArrayList<Army>> optional = RequestUtil.request(new QueryArmiesRequest(userToken));
+        Optional<ArrayList<Army>> optional = RequestUtil.request(
+            new QueryArmiesRequest(LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             ArrayList<Army> armies = optional.get();
@@ -311,7 +321,7 @@ public class RestRequestTestsReal {
         createGame();
 
         Optional<HashMap<String, GameMeta>> optional =
-            RequestUtil.request(new QueryGamesRequest(userToken));
+            RequestUtil.request(new QueryGamesRequest(LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             final boolean[] hasTeamBTestGame = {false};
@@ -327,7 +337,7 @@ public class RestRequestTestsReal {
     public void queryUnitsRequestTest() {
         loginUser();
 
-        Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(userToken));
+        Optional<ArrayList<Unit>> optional = RequestUtil.request(new QueryUnitsRequest(LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             ArrayList<Unit> unitList = optional.get();
@@ -343,10 +353,11 @@ public class RestRequestTestsReal {
         loginUser();
 
         Optional<ArrayList<String>> optional = RequestUtil.request(
-            new QueryUsersInLobbyRequest(userToken));
+            new QueryUsersInLobbyRequest(LoginController.getUserToken()));
 
         if (optional.isPresent()) {
-            Assert.assertTrue(optional.get().contains("TeamBTestUser"));
+            Assert.assertTrue(optional.get().contains("<"));
+            //TODO < to TeamBTestUser when server fixes the problem
         } else {
             Assert.fail();
         }
@@ -375,7 +386,8 @@ public class RestRequestTestsReal {
             units.add(unitList.get(1));
         }
 
-        if (RequestUtil.request(new UpdateArmyRequest(new Army(armyId, "changedName", units), userToken))) {
+        if (RequestUtil.request(new UpdateArmyRequest(
+            new Army(armyId, "changedName", units), LoginController.getUserToken()))) {
             // TODO what does this endpoint return?!
         } else {
             Assert.fail();
@@ -389,15 +401,15 @@ public class RestRequestTestsReal {
     public void cleanupGames() {
         loginUser();
 
-        RequestUtil.request(new QueryArmiesRequest(userToken)).ifPresent(armies -> {
+        RequestUtil.request(new QueryArmiesRequest(LoginController.getUserToken())).ifPresent(armies -> {
             for (Army a : armies) {
-                if (!RequestUtil.request(new DeleteArmyRequest(a.getId(), userToken))) {
+                if (!RequestUtil.request(new DeleteArmyRequest(a.getId(), LoginController.getUserToken()))) {
                     Assert.fail();
                 }
             }
         });
 
-        RequestUtil.request(new QueryGamesRequest(userToken)).ifPresent(
+        RequestUtil.request(new QueryGamesRequest(LoginController.getUserToken())).ifPresent(
             stringGameMetaHashMap -> stringGameMetaHashMap.entrySet().stream().filter(
                 stringGameMetaEntry -> stringGameMetaEntry.getValue().getName()
                     .equals("TeamBTestUserGame"))
@@ -405,8 +417,9 @@ public class RestRequestTestsReal {
                     System.out.println("Tidying up Game " + stringGameMetaEntry.getValue().getName()
                         + " with id " + stringGameMetaEntry.getValue().getId() + "...");
 
-                    if (!RequestUtil.request(
-                        new DeleteGameRequest(stringGameMetaEntry.getValue().getId(), userToken))) {
+                    if (!RequestUtil.request(new DeleteGameRequest(stringGameMetaEntry.getValue().getId(),
+                        LoginController.getUserToken()))) {
+
                         Assert.fail();
                     }
                 }));

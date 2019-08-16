@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
@@ -12,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.util.Arrays;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -44,7 +45,7 @@ public class GameSelectionController {
     void setUpGameLabel(GameMeta gameMeta) {
         this.gameMeta = gameMeta;
         gameNameLabel.setText(gameMeta.getName());
-        String s = String.valueOf(gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ");
+        String s = gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ";
         spaces.setText(s);
     }
 
@@ -55,7 +56,7 @@ public class GameSelectionController {
             "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow, false);
     }
 
-    public void join() {
+    private void join() {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
@@ -66,7 +67,6 @@ public class GameSelectionController {
         joinedGame = gameMeta;
 
         chatWindow = (VBox) hbxRoot.getScene().lookup("#chatWindow");
-        JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
         // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
         // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
         // damit gehts:

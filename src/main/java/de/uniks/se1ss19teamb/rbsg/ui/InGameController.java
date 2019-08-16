@@ -2,16 +2,16 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
@@ -26,9 +26,9 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -40,11 +40,13 @@ public class InGameController {
     public static InGameController instance;
     public static Logger logger = LogManager.getLogger();
     public static Map<Pair<Integer, Integer>, EnvironmentTile> environmentTiles = new HashMap<>();
+    public static Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
+    public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
+    public static Map<String, String> previousTileMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
-    public static boolean gameInitFinished = false;
-    private final Pane selectionOverlay = new Pane();
+
     @FXML
     private AnchorPane errorContainer;
     @FXML
@@ -64,17 +66,9 @@ public class InGameController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnMiniMap;
-    @FXML
     private JFXButton btnNo;
     @FXML
     private JFXButton btnYes;
-    @FXML
-    private JFXButton btnBigger;
-    @FXML
-    private JFXButton btnSmaller;
-    @FXML
-    private StackPane stackPane;
     @FXML
     private ScrollPane mapScrollPane;
     @FXML
@@ -83,18 +77,22 @@ public class InGameController {
     private Pane miniMap;
     @FXML
     private AnchorPane turnUI;
+    @FXML
+    public AnchorPane winScreenPane;
+    @FXML
+    public VBox vBoxWinScreen;
+    @FXML
+    public JFXToggleButton autoMode;
+
+    private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
     private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
-    private Map<String, EnvironmentTile> environmentTileMapById = new HashMap<>();
     private int zoomCounter = 0;
-    private Map<String, String> previousTileMapById = new HashMap<>();
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
-    private JFXTabPane chatPane;
-    private VBox textArea;
-    private TextField message;
-    private VBox chatBox;
-    private JFXButton btnMinimize;
+    private AI aI = null;
+
+    private String playerId;
 
     public static InGameController getInstance() {
         return instance;
@@ -102,12 +100,14 @@ public class InGameController {
 
     public void changeUnitPos(String unitId, String newPos) {
         UnitTile currentUnit = null;
+
         for (UnitTile unit : unitTiles) {
             if (unitId.equals(unit.getId())) {
                 currentUnit = unit;
                 break;
             }
         }
+
         assert (currentUnit != null);
 
         UnitTile finalCurrentUnit = currentUnit;
@@ -117,16 +117,26 @@ public class InGameController {
             Pane texture = unitPaneMapbyUnitTile.get(finalCurrentUnit);
             stackPaneMapByEnvironmentTileId.get(finalCurrentUnit.getPosition()).getChildren()
                 .remove(texture);
+            if (miniMap.isVisible()) {
+                updateMinimap();
+            }
+
             if (newPos != null) { // delete UnitTile if no given position
                 stackPaneMapByEnvironmentTileId.get(newPos).getChildren().add(texture);
             }
         });
+
         if (newPos != null) {
             unitTileMapByTileId.put(newPos, currentUnit);
             SoundManager.playSound(
                 finalCurrentUnit.getType().replaceAll(" ", "") + "_Move", 0);
             currentUnit.setPosition(newPos);
         }
+    }
+
+    private void updateMinimap() {
+        miniMap.getChildren().clear();
+        miniMap.getChildren().add(TextureManager.computeMinimap(environmentTiles, -1, unitTileMapByTileId));
     }
 
     @FXML
@@ -153,13 +163,21 @@ public class InGameController {
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
         try {
             Parent parent = loader.load();
-            TurnUiController controller = loader.getController();
             turnUI.getChildren().add(parent);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         selectionOverlay.setId("tile-selected");
+
+        FXMLLoader loader1 = new FXMLLoader(getClass()
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/winScreen.fxml"));
+        try {
+            Parent parent = loader1.load();
+            winScreenPane.getChildren().add(parent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -189,6 +207,7 @@ public class InGameController {
         if (miniMap.isVisible()) {
             miniMap.setVisible(false);
         } else {
+            updateMinimap();
             miniMap.setVisible(true);
         }
     }
@@ -209,12 +228,41 @@ public class InGameController {
         }
     }
 
+    @FXML
+    public void autoMode() {
+        if (autoMode.isSelected()) {
+            if (aI == null) {
+                String userName = LoginController.getUserName();
+                for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
+                    if (userName.equals(player.getName())) {
+                        playerId = player.getId();
+                    }
+                }
+                assert playerId != null;
+                aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0),
+                    InGameController.instance, Integer.MAX_VALUE);
+            }
+            if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
+                if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                    .phaseString.equals("Movement Phase")) {
+                    autoMode.setSelected(false);
+                    NotificationHandler.getInstance()
+                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
+                            + "or on your opponents turn.", logger);
+
+                } else {
+                    Objects.requireNonNull(aI).doTurn();
+                }
+            }
+        }
+    }
+
     private void fillGameGrid() {
         int maxX = 0;
         int maxY = 0;
         int tryCounter = 0;
 
-        while (!gameInitFinished) {
+        while (!GameLobbyController.instance.gameInitFinished) {
             try {
                 Thread.sleep(1000);
                 tryCounter++;
@@ -249,58 +297,74 @@ public class InGameController {
                     StackPane eventStack = (StackPane) event.getSource();
 
                     if (!overlayedStacks.isEmpty() && overlayedStacks.containsKey(eventStack)) {
-                        //find eviromenttile where you last klicked
+                        // Find last clicked eviroment tile.
                         EnvironmentTile source = null;
+
                         for (EnvironmentTile tile : environmentTiles.values()) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(tile.getId()))) {
                                 source = tile;
                                 break;
                             }
                         }
-                        //find unittile where you clicked before
-                        UnitTile previous = null;
+
+                        // Find last clicked unit tile.
+                        UnitTile previousUnitTile = null;
+
                         for (UnitTile unitTile : unitTiles) {
                             if (lastSelectedPane.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
-                                previous = unitTile;
+                                previousUnitTile = unitTile;
                                 break;
                             }
                         }
-                        assert previous != null;
+
+                        if (previousUnitTile != null && movedUnitTiles.containsKey(previousUnitTile.getId())) {
+                            previousUnitTile = movedUnitTiles.get(previousUnitTile.getId());
+                        }
+
+                        assert previousUnitTile != null;
                         assert source != null;
 
                         UnitTile toAttack = unitTileMapByTileId.get(source.getId());
-                        EnvironmentTile lastSelected = environmentTileMapById.get(previous.getPosition());
+                        EnvironmentTile lastSelected = environmentTileMapById.get(previousUnitTile.getPosition());
                         assert lastSelected != null;
-                        //is there a unit on the selected and is selected a neighbor?
+
+                        // Is there a unit on the selected field and is the selected field a neighbor?
                         if (toAttack != null
                             && ((lastSelected.getBottom() != null && lastSelected.getBottom().equals(source.getId()))
                             || (lastSelected.getLeft() != null && lastSelected.getLeft().equals(source.getId()))
                             || (lastSelected.getRight() != null && lastSelected.getRight().equals(source.getId()))
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
-                            //yes: attack
-                            GameSocket.instance.attackUnit(previous.getId(), toAttack.getId());
+                            // Yes: attack.
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .attackUnit(previousUnitTile.getId(), toAttack.getId());
 
                         } else {
-                            //no: move
+                            // No: move.
                             LinkedList<String> path = new LinkedList<>();
                             path.addFirst(source.getId());
                             String next = previousTileMapById.get(source.getId());
-                            while (!next.equals(previous.getPosition())) {
+                            int moveDistance = 1;
+
+                            while (!next.equals(previousUnitTile.getPosition())) {
                                 path.addFirst(next);
                                 next = environmentTileMapById.get(previousTileMapById.get(next)).getId();
+                                moveDistance++;
                             }
 
-                            //server
-                            GameSocket.instance.moveUnit(previous.getId(), path.toArray(new String[path.size()]));
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
+
+                            UnitTile movedUnitTile = new UnitTile(previousUnitTile);
+                            movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
+                            movedUnitTile.setPosition(source.getId());
+                            movedUnitTiles.put(movedUnitTile.getId(), movedUnitTile);
                         }
 
-                        //reset
+                        // Remove selection overlay and reset selected pane variable.
                         lastSelectedPane.getChildren().remove(selectionOverlay);
                         lastSelectedPane = null;
-
                     } else {
-
                         if (lastSelectedPane == null) {
                             // Nothing was selected.
                             // The new field is selected.
@@ -331,7 +395,10 @@ public class InGameController {
                     if (lastSelectedPane != null) {
                         for (UnitTile unitTile : unitTiles) {
                             if (eventStack.equals(stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()))) {
-                                drawOverlay(environmentTileMapById.get(unitTile.getPosition()), unitTile.getMp());
+                                drawOverlay(environmentTileMapById.get(unitTile.getPosition()),
+                                    movedUnitTiles.containsKey(unitTile.getId())
+                                        ? movedUnitTiles.get(unitTile.getId()).getMp()
+                                        : unitTile.getMp());
                                 // Do this only for the first (and hopefully only) unitTile.
                                 break;
                             }
@@ -349,7 +416,9 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
+            //adds player color to unitpane
+            Pane pane = generateUnitPane(unitTile);
+
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
@@ -358,8 +427,21 @@ public class InGameController {
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
     }
 
-    private void drawOverlay(EnvironmentTile startTile, int mp) {
+
+    private Pane generateUnitPane(UnitTile unitTile) {
+        InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
+
+        return TextureManager.getTextureInstance(unitTile.getType(),
+            (player != null) ? player.getColor() : null);
+    }
+
+    public void drawOverlay(EnvironmentTile startTile, int mp) {
+        drawOverlay(startTile, mp, true);
+    }
+
+    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        previousTileMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -373,7 +455,8 @@ public class InGameController {
             Integer currentMp = currentElement.getValue();
 
             // Limit moving distance.
-            if (currentMp == 0) {
+            // currentMp = 0 -> Attackable but not moveable
+            if (currentMp == -1) {
                 return;
             }
 
@@ -384,8 +467,9 @@ public class InGameController {
                 currentTile.getBottom(),
                 currentTile.getLeft()).forEach((neighborId) -> {
 
-                    // Limit to existing fields and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId())) {
+                    // Limit to existing fields that haven't been checked yet and exclude the selected tile.
+                    if (neighborId == null || neighborId.equals(startTile.getId()) 
+                            || previousTileMapById.containsKey(neighborId)) {
                         return;
                     }
 
@@ -393,9 +477,13 @@ public class InGameController {
                     StackPane neighborStack = stackPaneMapByEnvironmentTileId.get(neighborId);
 
                     // Exclude tiles that cannot be passed and skip tiles that already received an overlay.
+                    // Skip tiles with own units
                     if (neighborTile.isPassable()
-                        && !overlayedStacks.containsKey(neighborStack)) {
-
+                        && !overlayedStacks.containsKey(neighborStack)
+                        && (unitTileMapByTileId.get(neighborId) == null
+                        || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
+                        .getName().equals(LoginController.getUserName()))) {
+                      
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
@@ -406,23 +494,27 @@ public class InGameController {
                             // TODO: for when the gamelobby exists
                             //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
-                        } else {
+                        } else if (currentMp > 0 && neighborUnitTile == null) {
+                            // currentMp = 0 -> Attackable but not moveable
                             // TODO: for when the gamelobby exists
                             //  Is it possible to have two units on the same field?
                             //  Is it possible to walk across a field on which a unit is already present?
                             overlay.getStyleClass().add("tile-path");
+                            
+                            // Save the tile from which the tile that received an overlay was reached so that a path can
+                            // be reconstructed for server requests. But only if it's a move not an attack tile
+                            previousTileMapById.put(neighborId, currentTile.getId());
+                            
+                            // Add the tile that received an overlay to the quere so that its neighbors are checked too.
+                            // But only if movement, as we can't pass through attackable units
+                            queue.add(new Pair<>(neighborTile, currentMp - 1));
                         }
 
                         // Add the overlay to the tile and a map so that it can easily be removed in the future.
-                        neighborStack.getChildren().add(overlay);
-                        overlayedStacks.put(neighborStack, overlay);
-
-                        // Save the tile from which the tile that received an overlay was reached so that a path can
-                        // be reconstructed for server requests.
-                        previousTileMapById.put(neighborId, currentTile.getId());
-
-                        // Add the tile that received an overlay to the quere so that its neighbors are checked too.
-                        queue.add(new Pair<>(neighborTile, currentMp - 1));
+                        if (draw) {
+                            neighborStack.getChildren().add(overlay);
+                            overlayedStacks.put(neighborStack, overlay);
+                        }
                     }
                 });
         }
@@ -439,8 +531,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            GameSocket.instance.leaveGame();
-            GameSocket.instance.disconnect();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {

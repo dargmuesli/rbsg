@@ -4,7 +4,7 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 
-public class DragMoveResize {
+class DragMoveResize {
 
     private static final int RESIZE_MARGIN = 5;
 
@@ -17,7 +17,6 @@ public class DragMoveResize {
 
     private double lastX;
     private double lastY;
-
     private double orgSceneX;
     private double orgSceneY;
     private double orgTranslateX;
@@ -27,7 +26,7 @@ public class DragMoveResize {
         this.region = region;
     }
 
-    public static void makeChangeable(Region region) {
+    static void makeChangeable(Region region) {
         final DragMoveResize resizer = new DragMoveResize(region);
 
         region.setOnMousePressed(resizer::mousePressed);

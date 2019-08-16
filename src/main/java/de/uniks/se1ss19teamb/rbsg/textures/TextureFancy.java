@@ -4,7 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class TextureFancy {
+class TextureFancy {
 
     private Texture base;
     
@@ -12,17 +12,17 @@ public class TextureFancy {
     
     private int depth;
     
-    protected TextureFancy(String classPathBase, String classPathOverlay, int depth) {
+    TextureFancy(String classPathBase, String classPathOverlay, int depth) {
         base = new Texture(classPathBase);
         overlay = new Texture(classPathOverlay);
         this.depth = depth;
     }
     
-    public Pane instantiateBase() {
-        return base.instantiate();
+    Pane instantiateBase() {
+        return base.instantiate(null);
     }
     
-    public Pane instantiateOverlay(TextureFancyOverlayPosition position, TextureFancyOverlayType type) {
+    Pane instantiateOverlay(TextureFancyOverlayPosition position, TextureFancyOverlayType type) {
         int x = position.px;
         int y = position.py + type.offset;
         
@@ -30,12 +30,10 @@ public class TextureFancy {
         iv.setImage(overlay.image);
         iv.setViewport(new Rectangle2D(x, y, 32, 32));
 
-        Pane textured = new Pane(iv);
-
-        return textured;
+        return new Pane(iv);
     }
 
-    public int getDepth() {
+    int getDepth() {
         return depth;
     }
 }

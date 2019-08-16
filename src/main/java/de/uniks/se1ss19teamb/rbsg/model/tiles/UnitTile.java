@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.model.tiles;
 
+import java.util.Arrays;
+
 public class UnitTile extends AbstractTile {
     private String type;
     private int mp;
@@ -8,6 +10,20 @@ public class UnitTile extends AbstractTile {
     private String game;
     private String leader;
     private String position;
+
+    public UnitTile() {
+    }
+
+    public UnitTile(UnitTile unitTile) {
+        this.setId(unitTile.getId());
+        this.type = unitTile.getType();
+        this.mp = unitTile.getMp();
+        this.hp = unitTile.getHp();
+        this.canAttack = Arrays.copyOf(unitTile.getCanAttack(), unitTile.getCanAttack().length);
+        this.game = unitTile.getGame();
+        this.leader = unitTile.getLeader();
+        this.position = unitTile.getPosition();
+    }
 
     public String getType() {
         return type;

@@ -18,7 +18,7 @@ public class HttpManager {
 
     private final HttpClient httpClient;
 
-    public HttpManager() {
+    HttpManager() {
         this.httpClient = HttpClients.createDefault();
     }
 

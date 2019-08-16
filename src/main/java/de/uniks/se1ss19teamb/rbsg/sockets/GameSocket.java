@@ -11,6 +11,8 @@ import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
+import de.uniks.se1ss19teamb.rbsg.ui.WinScreenController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
@@ -25,29 +27,31 @@ import org.apache.logging.log4j.Logger;
 
 public class GameSocket extends AbstractMessageWebSocket {
 
-    private static final Logger logger = LogManager.getLogger();
+    private final Logger logger = LogManager.getLogger();
 
     private List<GameSocketMessageHandler.GameSocketGameRemoveObject> handlersRemoveObject =
         new ArrayList<>();
     private List<GameSocketMessageHandler.GameSocketGameChangeObject> handlersChangeObject =
         new ArrayList<>();
 
-    public static GameSocket instance;
-    private static String gameId;
-    private static String armyId;
-    private static boolean spectator;
-    private static boolean firstGameInitObjectReceived;
-    private static List<ChatMessageHandler> handlersChat = new ArrayList<>();
+    public GameSocket instance;
+    private String gameId;
+    private String armyId;
+    private boolean spectator;
+    private boolean firstGameInitObjectReceived;
+    private List<ChatMessageHandler> handlersChat = new ArrayList<>();
     private boolean ignoreOwn = false;
+    public String currentPlayer;
+    public String phaseString;
 
     public GameSocket(String gameId) {
         this(gameId, null, false);
     }
 
     public GameSocket(String gameId, String armyId, boolean spectator) {
-        GameSocket.gameId = gameId;
-        GameSocket.armyId = armyId;
-        GameSocket.spectator = spectator;
+        this.gameId = gameId;
+        this.armyId = armyId;
+        this.spectator = spectator;
 
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
@@ -57,8 +61,7 @@ public class GameSocket extends AbstractMessageWebSocket {
             } else if (StringUtil.checkHasNot(response, "action", logger)) {
                 return;
             }
-
-            System.out.println(response);
+            
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
@@ -77,6 +80,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
             switch (action) {
                 case "info":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "message", logger)) {
                         return;
                     }
@@ -104,11 +108,13 @@ public class GameSocket extends AbstractMessageWebSocket {
                     if (!firstGameInitObjectReceived) {
                         firstGameInitObjectReceived = true;
 
+                        assert data != null;
                         InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
 
                         InGameController.inGameObjects.clear();
                         InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
                     } else {
+                        assert data != null;
                         if (StringUtil.checkHasNot(data, "id", logger)) {
                             return;
                         }
@@ -143,18 +149,19 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameInitFinished":
-                
+
                     NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
                     if (GameLobbyController.instance != null) {
                         GameLobbyController.instance.updatePlayers();
                     }
-                
+
                     Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
                         .add(TextureManager.computeMinimap(
                             InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
 
                     break;
                 case "gameNewObject":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
@@ -184,12 +191,13 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChangeObject":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
+
                     String newValue;
                     String fieldName;
-
                     String type = data.get("id").getAsString().replaceFirst("@.+", "");
 
                     switch (type) {
@@ -243,25 +251,72 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
                             break;
                         case "Game":
-                            if (!InGameController.gameInitFinished
-                                && data.get("fieldName").getAsString().equals("phase")) {
-                                InGameController.gameInitFinished = true;
-                                if (GameLobbyController.instance != null) {
-                                    GameLobbyController.instance.startGameTransition();
-                                }
+                            fieldName = data.get("fieldName").getAsString();
+
+                            switch (fieldName) {
+                                case "currentPlayer":
+                                    InGameController.movedUnitTiles.clear();
+
+                                    currentPlayer = data.get("newValue").getAsString();
+
+                                    if (TurnUiController.getInstance() == null) {
+                                        TurnUiController.startShowTurn = data.get("newValue").getAsString();
+                                    } else {
+                                        TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                                    }
+                                    break;
+                                case "phase":
+                                    if (!GameLobbyController.instance.gameInitFinished) {
+                                        GameLobbyController.instance.gameInitFinished = true;
+                                        GameLobbyController.instance.startGameTransition();
+                                    }
+
+                                    switch (data.get("newValue").getAsString()) {
+                                        case "movePhase":
+                                            phaseString = "Movement Phase";
+                                            if (InGameController.getInstance() != null) {
+                                                InGameController.instance.autoMode();
+                                            }
+                                            break;
+                                        case "attackPhase":
+                                            phaseString = "Attack Phase";
+                                            break;
+                                        case "lastMovePhase":
+                                            phaseString = "Last Movement Phase";
+                                            break;
+                                        default:
+                                            phaseString = "Unknown phase!";
+                                    }
+
+                                    if (TurnUiController.getInstance() == null) {
+                                        TurnUiController.startTurnLabel = phaseString;
+                                    } else {
+                                        TurnUiController.getInstance().setTurnLabel(phaseString);
+                                    }
+
+                                    break;
+                                case "winner":
+                                    WinScreenController.getInstance().setWinningScreen(data.get("newValue")
+                                            .getAsString());
+                                    break;
+                                default:
+                                    logger.error("Unknown field name \"" + fieldName + "\"");
                             }
                             break;
                         case "Unit":
                             if (StringUtil.checkHasNot(data, "fieldName", logger)) {
                                 return;
                             }
+
                             fieldName = data.get("fieldName").getAsString();
 
                             if (StringUtil.checkHasNot(data, "newValue", logger)) {
                                 return;
                             }
+
                             newValue = data.get("newValue").getAsString();
                             String id = data.get("id").getAsString();
+
                             switch (fieldName) {
                                 case "position":
                                     if (InGameController.getInstance() != null) {
@@ -289,6 +344,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameRemoveObject":
+                    assert data != null;
                     if (StringUtil.checkHasNot(data, "id", logger)) {
                         return;
                     }
@@ -297,7 +353,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     switch (type) {
                         case "Player":
-                            InGameController.inGameObjects.remove(data.get("id"));
+                            InGameController.inGameObjects.remove(data.get("id").getAsString());
 
                             if (GameLobbyController.instance != null) {
                                 GameLobbyController.instance.updatePlayers();
@@ -314,13 +370,16 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
                                     UnitTile attacker = InGameController.getInstance()
                                         .findAttackingUnit(InGameController.unitTiles.get(i));
+
                                     if (attacker != null) {
                                         SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
                                     }
+
                                     InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
                                     InGameController.unitTiles.remove(i);
                                 }
                             }
+
                             SoundManager.playSound("nani", 0);
                             break;
                         default:
@@ -333,6 +392,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChat":
+                    assert data != null;
                     String from = data.get("from").getAsString();
 
                     if (this.ignoreOwn && from.equals(LoginController.getUserName())) {
@@ -416,9 +476,11 @@ public class GameSocket extends AbstractMessageWebSocket {
         JsonObject data = new JsonObject();
         data.addProperty("unitId", unitId);
         JsonArray jpath = new JsonArray();
+
         for (String p : path) {
             jpath.add(p);
         }
+
         data.add("path", jpath);
         json.add("data", data);
         sendToWebsocket(json);
@@ -477,5 +539,4 @@ public class GameSocket extends AbstractMessageWebSocket {
                                              .GameSocketGameChangeObject handler) {
         handlersChangeObject.add(handler);
     }
-
 }

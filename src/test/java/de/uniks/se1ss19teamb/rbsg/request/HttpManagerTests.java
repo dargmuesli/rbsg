@@ -89,7 +89,7 @@ public class HttpManagerTests {
         Assert.assertEquals("Test Password", responseBody.password);
     }
 
-    class Body {
+    static class Body {
         String name = "Test Name";
         String password = "Test Password";
     }

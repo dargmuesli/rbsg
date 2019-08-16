@@ -5,14 +5,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class AnimatedPane extends Pane {
-    protected ImageView iv;
-    protected AnimatedTexture texture;
-    protected int numberOfSprites;
-    protected double time;
-    protected int sprite;
-    protected float periodTime;
+    private ImageView iv;
+    private AnimatedTexture texture;
+    private int numberOfSprites;
+    private double time;
+    private int sprite;
+    private float periodTime;
 
-    public AnimatedPane(ImageView iv, float phi, float periodTime, AnimatedTexture texture) {
+    AnimatedPane(ImageView iv, float phi, float periodTime, AnimatedTexture texture) {
         super(iv);
         this.iv = iv;
         this.periodTime = periodTime;
@@ -23,14 +23,13 @@ public class AnimatedPane extends Pane {
         {
             int periodAdvances = (int) (phi / periodTime);
             sprite += periodAdvances % numberOfSprites;
-            phi -= periodTime * periodAdvances;
         }
 
         this.time = 0;
 
     }
 
-    public void advance(double delta) {
+    void advance(double delta) {
         time += delta;
 
         if (time >= periodTime) {
@@ -41,7 +40,8 @@ public class AnimatedPane extends Pane {
             }
 
             double width = texture.image.getWidth();
-            iv.setViewport(new Rectangle2D(0, sprite * width, width, width));
+            double height = texture.image.getWidth();
+            iv.setViewport(new Rectangle2D(0, sprite * width, width, height));
         }
     }
 }

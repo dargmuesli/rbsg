@@ -13,14 +13,14 @@ public class AnimatedTexture extends Texture {
     private static List<AnimatedPane> animatedPanes = new ArrayList<>();
     private float periodTime;
 
-    protected AnimatedTexture(String classPath, float periodTime) {
+    AnimatedTexture(String classPath, float periodTime) {
         super(classPath);
         this.periodTime = periodTime;
     }
 
-    protected static void registerAnimUpdates() {
+    static void registerAnimUpdates() {
         new AnimationTimer() {
-            public long ns = 0;
+            long ns = 0;
 
             @Override
             public void handle(long now) {
@@ -39,9 +39,9 @@ public class AnimatedTexture extends Texture {
     }
 
     @Override
-    public Pane instantiate() {
+    public Pane instantiate(String color) {
         ImageView iv = new ImageView();
-        iv.setImage(image);
+        setImageView(iv, color);
         iv.setViewport(new Rectangle2D(0, 0, image.getWidth(), image.getWidth()));
 
         AnimatedPane textured = new AnimatedPane(iv, 0f, periodTime, this);
