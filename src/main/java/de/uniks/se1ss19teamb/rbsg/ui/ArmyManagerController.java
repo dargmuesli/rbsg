@@ -15,12 +15,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -287,6 +293,18 @@ public class ArmyManagerController {
     @FXML
     private void saveToServer() {
         if (army.getName() == null || army.getName().equals("")) {
+
+            Image image = new Image(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/meme2.jpg").toExternalForm());
+            ImageView imageView = new ImageView(image);
+            Scene scene = new Scene(new VBox(imageView), 450, 375);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(event -> stage.close());
+            delay.play();
+
             NotificationHandler.getInstance().sendError("You have to give the army a name!",
                 logger);
             return;
