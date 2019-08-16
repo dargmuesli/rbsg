@@ -99,8 +99,8 @@ class Kaiten extends AI {
                 
                 Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
                 
-                if(path != null) {                	
-                	socket.moveUnit(unit.getId(), path.getKey().path);
+                if (path != null) {                    
+                    socket.moveUnit(unit.getId(), path.getKey().path);
                 }
                 
                 //If we land next to the Target, mark for Attacking

@@ -85,8 +85,8 @@ public abstract class AI {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMp(), false);
         
-        if(ingameController.previousTileMapById.isEmpty()) {
-        	return null;
+        if (ingameController.previousTileMapById.isEmpty()) {
+            return null;
         }
         
         String closest = null;

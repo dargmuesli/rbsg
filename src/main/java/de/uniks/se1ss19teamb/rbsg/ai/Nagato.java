@@ -70,7 +70,8 @@ class Nagato extends AI {
                 }
             }
             
-            float quot = ((float) Math.abs(randomFriendly.getX() - sideLength / 2)) / ((float) Math.abs(randomFriendly.getY() - sideLength / 2));
+            float quot = ((float) Math.abs(randomFriendly.getX() - sideLength / 2))
+                    / ((float) Math.abs(randomFriendly.getY() - sideLength / 2));
             
             sideXY = (quot > 1);
             
@@ -237,8 +238,8 @@ class Nagato extends AI {
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
             Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
-            if(path != null) {
-            	socket.moveUnit(tile.getId(), path.getKey().path);                 	
+            if (path != null) {
+                socket.moveUnit(tile.getId(), path.getKey().path);                     
             }
             waitForSocket();
         }
