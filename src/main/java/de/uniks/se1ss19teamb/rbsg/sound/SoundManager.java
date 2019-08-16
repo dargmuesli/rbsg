@@ -38,7 +38,7 @@ public class SoundManager {
 
         //https://www.youtube.com/watch?v=VZec_PqXXzo
         //If anyone feels offended: Fight me
-        this.sounds.put("bgm", new Sound("katyusha.mp3", false));
+        this.sounds.put("bgm", new Sound("katyusha.wav", false));
 
         this.sounds.put("missing", new Sound("silence.wav", true));
         this.sounds.put("missing2", new Sound("fail-trombone-01.wav", true));
