@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -81,7 +82,9 @@ public abstract class AI {
     @SuppressWarnings ("static-access")
     protected Path findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMp(), false);
+                unit.getPosition()), unit.getMp(), false,
+        		((InGamePlayer)ingameController.inGameObjects
+                .get(unit.getLeader())).getName());
         
         if (ingameController.previousTileMapById.isEmpty()) {
             return null;
@@ -124,7 +127,9 @@ public abstract class AI {
         TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
         
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMp(), false);
+                unit.getPosition()), unit.getMp(), false,
+        		((InGamePlayer)ingameController.inGameObjects
+        		.get(unit.getLeader())).getName());
         
         if (ingameController.previousTileAttackMapById.isEmpty()) {
             return attackable;

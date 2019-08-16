@@ -429,10 +429,10 @@ public class InGameController {
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {
-        drawOverlay(startTile, mp, true);
+        drawOverlay(startTile, mp, true, LoginController.getUserName());
     }
 
-    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
+    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
         previousTileMapById.clear();
         previousTileAttackMapById.clear();
@@ -476,7 +476,7 @@ public class InGameController {
                         && !overlayedStacks.containsKey(neighborStack)
                         && (unitTileMapByTileId.get(neighborId) == null
                         || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
-                        .getName().equals(LoginController.getUserName()))) {
+                        .getName().equals(playerId))) {
                       
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);

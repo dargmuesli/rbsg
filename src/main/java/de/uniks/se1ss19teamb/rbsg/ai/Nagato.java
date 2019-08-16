@@ -198,8 +198,10 @@ class Nagato extends AI {
     }
 
     private void attackAvailable() {
-        // TODO Auto-generated method stub
-        
+    	for (Entry<String, String> attack : toAttack.entrySet()) {
+            socket.attackUnit(attack.getKey(), attack.getValue());
+            waitForSocket();
+        }
     }
 
     private void helicopterMovement() {
@@ -208,13 +210,60 @@ class Nagato extends AI {
     }
 
     private void tankRetreat() {
-        // TODO Auto-generated method stub
-        
+        // TODO Evaluate if smarter Ideas are found
+        tankReposition();
     }
     
-    private void tankMovementAttackAdditional() {
-        // TODO Auto-generated method stub
-        
+    @SuppressWarnings ("static-access")
+	private void tankMovementAttackAdditional() {
+    	for (Entry<String, String> position : tankPositions.entrySet()) {
+            
+            //Skip repositioning Dead Units or units that already did a safe attack
+            UnitTile tank = null;
+            for (UnitTile tiles : ingameController.unitTiles) {
+                if (tiles.getId().equals(position.getKey())) {
+                    tank = tiles;
+                }
+            }
+
+            if (tank == null || toAttack.containsKey(tank.getId())) {
+                continue;
+            }
+            
+            TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
+            
+            for (Entry<Path, UnitTile> toAttack : attackable.entrySet()) {
+            	int hp = projectedHP.get(toAttack.getValue());
+            	//Target has too much HP, don't leave cover to attack
+            	if (hp <= 0 || hp > predictDamage(toAttack.getValue(), hp)) {
+            		continue;
+            	}
+            	
+            	boolean foundEnemy = false;
+            	
+            	for (UnitTile enemy : ingameController.unitTiles) {
+            		if (enemy.getLeader().equals(playerID)) {
+            			continue;
+            		}
+            		
+            		EnvironmentTile enemyTile = ingameController.environmentTileMapById.get(enemy.getPosition());
+            		EnvironmentTile friendly = attackable.firstKey().start;
+            		
+                    int distance = Math.abs(friendly.getX() - enemyTile.getX())
+                    		+ Math.abs(friendly.getY() - enemyTile.getY());
+                    
+                    if (distance < enemy.getMp()) {
+                    	foundEnemy = true;
+                    }
+            	}
+            	
+            	if (!foundEnemy) {
+            		socket.moveUnit(tank.getId(), toAttack.getKey().path);  
+                    waitForSocket();
+            		flagForAttackByHeavyTank(toAttack.getValue(), tank);
+            	}
+            }
+        }
     }
 
     @SuppressWarnings ("static-access")
@@ -244,12 +293,16 @@ class Nagato extends AI {
         
     }
     
-    @SuppressWarnings ("static-access")
     private void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
         toAttack.put(by.getId(), target.getId());
         int hp = projectedHP.get(target);
-        
-        EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
+        hp -= predictDamage(target, hp);
+        projectedHP.put(target, hp);
+    }
+
+    @SuppressWarnings ("static-access")
+    private int predictDamage(UnitTile target, int hp) {
+    	EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
         int fieldDefense = 0;
         
         switch (field.getName()) {
@@ -295,11 +348,9 @@ class Nagato extends AI {
         
         float damage = ((float)(unitDmg - defense)) / 10.0f;
         
-        hp -= (damage < 1) ? 1 : (int) damage;
-        
-        projectedHP.put(target, hp);
+        return (damage < 1) ? 1 : (int) damage;
     }
-
+ 
     @SuppressWarnings ("static-access")
     private void tankReposition() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
