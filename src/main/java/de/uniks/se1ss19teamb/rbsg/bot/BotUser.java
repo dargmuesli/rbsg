@@ -1,8 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
+import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+
+import java.util.List;
 
 public class BotUser {
 
@@ -56,5 +59,10 @@ public class BotUser {
 
     void setBotNumber(int botNumber) {
         this.botNumber = botNumber;
+    }
+
+    private void setupArmy() {
+        List<String> neededArmy = botAi.requestArmy();
+
     }
 }

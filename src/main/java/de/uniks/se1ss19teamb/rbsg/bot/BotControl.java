@@ -45,9 +45,9 @@ public class BotControl {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
-        //TODO: inGameController and GameSocket have to be set.
         botUser.instantiateBotAi(difficulty);
         botUser.setInGameController(inGameController);
+
 
         //Just info for dev. Will be deleted later
         NotificationHandler.getInstance().sendInfo(loginUserRequest.getData(), logger);
