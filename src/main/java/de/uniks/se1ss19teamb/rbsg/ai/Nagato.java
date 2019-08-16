@@ -218,8 +218,8 @@ class Nagato extends AI {
     }
 
     @SuppressWarnings ("static-access")
-	private void tankMovementAttackSafe() {
-    	for (Entry<String, String> position : tankPositions.entrySet()) {
+    private void tankMovementAttackSafe() {
+        for (Entry<String, String> position : tankPositions.entrySet()) {
             
             //Skip repositioning Dead Units
             UnitTile tank = null;
@@ -236,68 +236,68 @@ class Nagato extends AI {
             TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
             
             if (attackable.firstKey().distance <= tank.getMp() / 2) {
-            	socket.moveUnit(tank.getId(), attackable.firstKey().path);  
-            	waitForSocket();
-            	flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
+                socket.moveUnit(tank.getId(), attackable.firstKey().path);  
+                waitForSocket();
+                flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
             }
-    	}
+        }
         
     }
     
     @SuppressWarnings ("static-access")
-	private void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
-    	toAttack.put(by.getId(), target.getId());
-    	int hp = projectedHP.get(target);
-    	
-    	EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
-    	int fieldDefense = 0;
-    	
-    	switch (field.getName()) {
-    		case "Grass":
-    			fieldDefense = 1;
-    			break;
-    		case "Forest":
-    			fieldDefense = 3;
-    			break;
-    		case "Mountain":
-    			fieldDefense = 4;
-    			break;
-    	}
-    	
-    	assert fieldDefense != 0;
-    	
-    	int defense = hp * fieldDefense;
-    	
-    	int unitDmg = 0;
-    	
-    	switch (target.getType()) {
-    		case "Infantry":
-    			unitDmg = 105;
-    			break;
-    		case "Bazooka":
-    			unitDmg = 95;
-    			break;
-    		case "Jeep":
-    			unitDmg = 105;
-    			break;
-    		case "Light Tank":
-    			unitDmg = 85;
-    			break;
-    		case "Heavy Tank":
-    			unitDmg = 55;
-    			break;
-    		case "Chopper":
-    			unitDmg = 75;
-    			break;
-    	}
-    	
-    	assert unitDmg != 0;
-    	
-    	float damage = ((float)(unitDmg - defense)) / 10.0f;
-    	
-    	hp -= (damage < 1) ? 1 : (int) damage;
-    	
-    	projectedHP.put(target, hp);
+    private void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
+        toAttack.put(by.getId(), target.getId());
+        int hp = projectedHP.get(target);
+        
+        EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
+        int fieldDefense = 0;
+        
+        switch (field.getName()) {
+            case "Grass":
+                fieldDefense = 1;
+                break;
+            case "Forest":
+                fieldDefense = 3;
+                break;
+            case "Mountain":
+                fieldDefense = 4;
+                break;
+            default:
+                assert true;
+        }
+        
+        int defense = hp * fieldDefense;
+        
+        int unitDmg = 0;
+        
+        switch (target.getType()) {
+            case "Infantry":
+                unitDmg = 105;
+                break;
+            case "Bazooka":
+                unitDmg = 95;
+                break;
+            case "Jeep":
+                unitDmg = 105;
+                break;
+            case "Light Tank":
+                unitDmg = 85;
+                break;
+            case "Heavy Tank":
+                unitDmg = 55;
+                break;
+            case "Chopper":
+                unitDmg = 75;
+                break;
+            default:
+                assert true;
+        }
+        
+        float damage = ((float)(unitDmg - defense)) / 10.0f;
+        
+        hp -= (damage < 1) ? 1 : (int) damage;
+        
+        projectedHP.put(target, hp);
     }
 
     @SuppressWarnings ("static-access")
@@ -320,7 +320,7 @@ class Nagato extends AI {
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
             Path path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
             if (path != null) {
-            	socket.moveUnit(tile.getId(), path.path);                     
+                socket.moveUnit(tile.getId(), path.path);                     
             }
             waitForSocket();
         }

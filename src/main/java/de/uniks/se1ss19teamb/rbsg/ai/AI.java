@@ -121,8 +121,8 @@ public abstract class AI {
     
     @SuppressWarnings ("static-access")
     protected TreeMap<Path, UnitTile> findAllAttackableEnemies(UnitTile unit) {
-    	TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
-    	
+        TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
+        
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMp(), false);
         
@@ -131,11 +131,10 @@ public abstract class AI {
         }
          
         for (String attackableTile : ingameController.previousTileAttackMapById.keySet()) {
-        	UnitTile toAttack = ingameController.unitTileMapByTileId.get(attackableTile);
-        	EnvironmentTile toAttackFrom = ingameController.environmentTileMapById.get(
-        			ingameController.previousTileAttackMapById.get(attackableTile));
-        	
-        	Path path = new Path();
+            EnvironmentTile toAttackFrom = ingameController.environmentTileMapById.get(
+                    ingameController.previousTileAttackMapById.get(attackableTile));
+            
+            Path path = new Path();
             path.end = toAttackFrom;
             path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
             path.distance = 0;
@@ -152,7 +151,7 @@ public abstract class AI {
 
             path.path = pathList.toArray(new String[0]);
             
-            attackable.put(path, toAttack);
+            attackable.put(path, ingameController.unitTileMapByTileId.get(attackableTile));
         }
         
         return attackable;
