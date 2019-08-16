@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import javafx.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -80,9 +81,9 @@ public abstract class AI {
      * accessed anymore.
      */
     @SuppressWarnings ("static-access")
-    protected Path findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
+    protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMp(), false,
+                unit.getPosition()), unit.getMpLeft(), false,
         		((InGamePlayer)ingameController.inGameObjects
                 .get(unit.getLeader())).getName());
         
@@ -108,18 +109,19 @@ public abstract class AI {
         Path path = new Path();
         path.end = ingameController.environmentTileMapById.get(closest);
         path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
-        path.distance = closestDistance;
+        path.distance = 0;
         
         LinkedList<String> pathList = new LinkedList<>();
 
         do {
+        	path.distance++;
             pathList.addFirst(closest);
             closest = ingameController.previousTileMapById.get(closest);
         } while (!closest.equals(unit.getPosition()));
 
         path.path = pathList.toArray(new String[0]);
         
-        return path;
+        return new Pair<>(path, closestDistance);
     }
     
     @SuppressWarnings ("static-access")
@@ -127,7 +129,7 @@ public abstract class AI {
         TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
         
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMp(), false,
+                unit.getPosition()), unit.getMpLeft(), false,
         		((InGamePlayer)ingameController.inGameObjects
         		.get(unit.getLeader())).getName());
         

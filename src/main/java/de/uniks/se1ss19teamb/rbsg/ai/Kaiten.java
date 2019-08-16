@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.ai;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,10 @@ class Kaiten extends AI {
     @SuppressWarnings ("static-access")
     @Override
     protected void doTurnInternal() {
+        for (UnitTile tile : ingameController.unitTiles) {
+            tile.setMpLeft(tile.getMp());
+        }
+        
         
         Map<UnitTile, UnitTile> markedForAttack = new HashMap<>();
         
@@ -95,14 +100,14 @@ class Kaiten extends AI {
                     continue;
                 }
                 
-                Path path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
+                Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
                 
                 if (path != null) {                    
-                    socket.moveUnit(unit.getId(), path.path);
+                    socket.moveUnit(unit.getId(), path.getKey().path);
                 }
                 
                 //If we land next to the Target, mark for Attacking
-                if (path.distance == 1) {
+                if (path.getValue() == 1) {
                     markedForAttack.put(unit, ingameController.unitTileMapByTileId.get(toAttack.getId()));
                 }
                 

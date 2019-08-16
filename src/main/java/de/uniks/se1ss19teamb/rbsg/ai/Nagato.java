@@ -158,8 +158,20 @@ class Nagato extends AI {
         }
     }
 
-    @Override
+    @SuppressWarnings ("static-access")
+	@Override
     protected void doTurnInternal() {
+    	projectedHP.clear();
+    	toAttack.clear();
+    	for (UnitTile tile : ingameController.unitTiles) {
+    		tile.setMpLeft(tile.getMp());
+    		
+    		if (tile.getLeader().equals(playerID)) {
+    			continue;
+    		}
+    		projectedHP.put(tile, tile.getHp());
+    	}
+    	
         //Move Tanks to Forest Edge
         tankReposition();
         //Move Tanks to Attack if they have enough MP to return
@@ -259,6 +271,7 @@ class Nagato extends AI {
             	
             	if (!foundEnemy) {
             		socket.moveUnit(tank.getId(), toAttack.getKey().path);  
+            		tank.setMpLeft(tank.getMpLeft() - toAttack.getKey().distance);
                     waitForSocket();
             		flagForAttackByHeavyTank(toAttack.getValue(), tank);
             	}
@@ -284,8 +297,13 @@ class Nagato extends AI {
             
             TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
             
-            if (attackable.firstKey().distance <= tank.getMp() / 2) {
+            if (attackable.isEmpty()) {
+            	continue;
+            }
+            
+            if (attackable.firstKey().distance <= tank.getMpLeft() / 2) {
                 socket.moveUnit(tank.getId(), attackable.firstKey().path);  
+                tank.setMpLeft(tank.getMpLeft() - attackable.firstKey().distance);
                 waitForSocket();
                 flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
             }
@@ -369,9 +387,10 @@ class Nagato extends AI {
             }
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
-            Path path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
+            Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
             if (path != null) {
-                socket.moveUnit(tile.getId(), path.path);                     
+            	tile.setMpLeft(tile.getMpLeft() - path.getKey().distance);
+                socket.moveUnit(tile.getId(), path.getKey().path);                     
             }
             waitForSocket();
         }
