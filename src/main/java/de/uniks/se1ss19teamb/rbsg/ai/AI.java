@@ -53,7 +53,7 @@ public abstract class AI {
             aiThread.start();
             
             try {
-                Thread.sleep(20000);
+                Thread.sleep(200000);
             } catch (InterruptedException e) {
                 return;
             }

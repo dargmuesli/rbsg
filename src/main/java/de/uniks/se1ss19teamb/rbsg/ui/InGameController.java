@@ -463,7 +463,8 @@ public class InGameController {
 
                     // Limit to existing fields that haven't been checked yet and exclude the selected tile.
                     if (neighborId == null || neighborId.equals(startTile.getId()) 
-                            || previousTileMapById.containsKey(neighborId)) {
+                            || previousTileMapById.containsKey(neighborId)
+                            || previousTileAttackMapById.containsKey(neighborId)) {
                         return;
                     }
 

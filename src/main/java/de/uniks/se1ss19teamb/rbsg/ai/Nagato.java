@@ -254,7 +254,7 @@ class Nagato extends AI {
             	boolean foundEnemy = false;
             	
             	for (UnitTile enemy : ingameController.unitTiles) {
-            		if (enemy.getLeader().equals(playerID)) {
+            		if (enemy.getLeader().equals(playerID) || toAttack.getValue().getId().equals(enemy.getId())) {
             			continue;
             		}
             		
@@ -266,6 +266,7 @@ class Nagato extends AI {
                     
                     if (distance < enemy.getMp()) {
                     	foundEnemy = true;
+                    	break;
                     }
             	}
             	
@@ -388,11 +389,11 @@ class Nagato extends AI {
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
             Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
-            if (path != null) {
+            if (path != null && path.getKey().distance != 0) {
             	tile.setMpLeft(tile.getMpLeft() - path.getKey().distance);
                 socket.moveUnit(tile.getId(), path.getKey().path);                     
+                waitForSocket();
             }
-            waitForSocket();
         }
     }
 
