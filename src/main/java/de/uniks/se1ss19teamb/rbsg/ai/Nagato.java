@@ -60,7 +60,6 @@ class Nagato extends AI {
         boolean sideXY = false; //True if relevant side is on edge of x axis
         
         //Figure out which side of the Board we are on
-        //FIXME == 0 / sideLenght geht so nicht. Rather x/y quot
         {
             EnvironmentTile randomFriendly = null;
         
@@ -87,7 +86,6 @@ class Nagato extends AI {
         
         SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairComperatorXY(sideLength));
         
-        //FIXME Somehow inverted for sideDir == 0
         for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDirLow ? 1 : -1)) {
             for (int longSide = (players != 2 ? lineCnt : 0);
                     longSide < sideLength - (players != 2 ? lineCnt : 0); longSide++) {
