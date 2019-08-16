@@ -22,8 +22,8 @@ public class SoundManagerTest {
 
     @Test
     public void checkLoadedSounds() throws InterruptedException {
-        TestUtil.initJfx();
         TestUtil.setupHeadlessMode();
+        TestUtil.initJfx();
 
         //Actually plays the sound and hopes for no exception
         SoundManager.playSound("panzer", 0, 0);
