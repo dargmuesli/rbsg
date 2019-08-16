@@ -7,9 +7,8 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -29,15 +28,51 @@ public abstract class AI {
     protected GameSocket socket;
     protected InGameController ingameController;
     protected Map<String, Unit> availableUnitTypes;
+    private Thread aiObsThread;
     
-    public AI(String playerID, GameSocket socket, InGameController controller) {
-        this.playerID = playerID;
-        this.socket = socket;
-        this.ingameController = controller;
+    public AI() {
         this.availableUnitTypes = ArmyManagerController.availableUnits;
     }
     
-    public abstract void doTurn();
+    public void initialize(String playerID, GameSocket socket, InGameController controller) {
+        this.playerID = playerID;
+        this.socket = socket;
+        this.ingameController = controller;
+    }
+    
+    protected abstract void doTurnInternal();
+    
+    public void doTurn() {
+        aiObsThread = new Thread(() -> {
+            Thread aiThread = new Thread(() -> {
+                
+                doTurnInternal();
+                
+                aiObsThread.interrupt();
+            }, "AI-Thread");
+            aiThread.start();
+            
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                return;
+            }
+            
+            logger.warn("AI Timeout!");
+            aiThread.stop();
+        }, "AI-Observer-Thread");
+        aiObsThread.start();
+    }
+    
+    public void waitForTurn() {
+        try {
+            aiObsThread.join();
+        } catch (InterruptedException e) {
+            logger.warn("Waiting for AI-Observer-Thread was interrupted");
+        }
+    }
+    
+    public abstract List<String> requestArmy();
     
     //Helper Functions
     
@@ -46,7 +81,7 @@ public abstract class AI {
      * accessed anymore.
      */
     @SuppressWarnings ("static-access")
-    protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y) {
+    protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMp(), false);
         
@@ -59,7 +94,7 @@ public abstract class AI {
             int currentDistance = Math.abs(x - current.getX()) + Math.abs(y - current.getY());
             
             //Forbid walking onto the target
-            if (currentDistance < closestDistance && currentDistance > 0) {
+            if (currentDistance < closestDistance && (onTop || currentDistance > 0)) {
                 closestDistance = currentDistance;
                 closest = current.getId();
             }
@@ -84,7 +119,8 @@ public abstract class AI {
     protected void waitForSocket() {
         //TODO Proper "Wait-For-Socket"
         try {
-            Thread.sleep(100);
+            Thread.yield();
+            Thread.sleep(500);
             System.out.println("Waiting for Websocket");
         } catch (InterruptedException e) {
             logger.warn("Waiting for Socket failed");
@@ -97,18 +133,16 @@ public abstract class AI {
     
     static {
         aiModels.put(-1, Kaiten.class);
+        aiModels.put(0, Nagato.class);
     }
     
-    public static AI instantiate(String playerID, GameSocket socket, InGameController controller, int difficulty) {
+    public static AI instantiate(int difficulty) {
         difficulty = (difficulty == Integer.MAX_VALUE) ? aiModels.lastKey() : difficulty;
         Class<? extends AI> targetAI = aiModels.get(difficulty);
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
         try {
-            Constructor<? extends AI> constructor = targetAI.getConstructor(new Class[]{
-                String.class, GameSocket.class, InGameController.class});
-            return constructor.newInstance(new Object[]{playerID, socket, controller}); 
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            return targetAI.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
             return null;
         }
     }

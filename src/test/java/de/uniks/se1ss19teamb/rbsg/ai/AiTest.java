@@ -177,7 +177,8 @@ public class AiTest {
     
     @Test
     public void testInstantiation() {
-        AI testInstance = AI.instantiate("unittestplayer", socket, controller, -1);
+        AI testInstance = AI.instantiate(-1);
+        testInstance.initialize("unittestplayer", socket, controller);
         Assert.assertNotNull(testInstance);
     }
     
@@ -188,7 +189,8 @@ public class AiTest {
     @SuppressWarnings ("static-access")
     @Test
     public void testKaiten() {
-        AI testInstance = AI.instantiate("unittestplayer", socket, controller, -1);
+        AI testInstance = AI.instantiate(-1);
+        testInstance.initialize("unittestplayer", socket, controller);
         Assert.assertNotNull(testInstance);
         
         for (UnitTile tile : controller.unitTiles) {
@@ -198,6 +200,7 @@ public class AiTest {
         }
         
         testInstance.doTurn();
+        testInstance.waitForTurn();
         
         for (UnitTile tile : controller.unitTiles) {
             if (tile.getId().equals("AI")) {
@@ -207,6 +210,7 @@ public class AiTest {
         }
         
         testInstance.doTurn();
+        testInstance.waitForTurn();
         
         for (UnitTile tile : controller.unitTiles) {
             if (tile.getId().equals("AI")) {

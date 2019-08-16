@@ -28,7 +28,8 @@ public class BotUser {
 
     void instantiateBotAi(int difficulty) {
         if (botAi == null) {
-            botAi = AI.instantiate(botUserKey, gameSocket, inGameController, difficulty);
+            botAi = AI.instantiate(-1);
+            botAi.initialize(botUserKey, gameSocket, inGameController);
         }
     }
 

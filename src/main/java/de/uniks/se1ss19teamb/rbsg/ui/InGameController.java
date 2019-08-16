@@ -238,8 +238,8 @@ public class InGameController {
                     }
                 }
                 assert playerId != null;
-                aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0),
-                    InGameController.instance, Integer.MAX_VALUE);
+                aI = AI.instantiate(Integer.MAX_VALUE);
+                aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
             if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
                 if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))

@@ -3,10 +3,9 @@ package de.uniks.se1ss19teamb.rbsg.ai;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,8 +23,7 @@ class Kaiten extends AI {
      * 
      */
     
-    public Kaiten(String playerID, GameSocket socket, InGameController controller) {
-        super(playerID, socket, controller);
+    public Kaiten() {
     }
 
     /*
@@ -34,7 +32,7 @@ class Kaiten extends AI {
      */
     @SuppressWarnings ("static-access")
     @Override
-    public void doTurn() {
+    protected void doTurnInternal() {
         
         Map<UnitTile, UnitTile> markedForAttack = new HashMap<>();
         
@@ -98,9 +96,8 @@ class Kaiten extends AI {
                 if (!unit.getLeader().equals(playerID) || !unit.getType().equals(unitType.getType())) {
                     continue;
                 }
-
-                assert toAttack != null;
-                Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY());
+                
+                Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
                 
                 socket.moveUnit(unit.getId(), path.getKey().path);
                 
@@ -132,6 +129,11 @@ class Kaiten extends AI {
         socket.nextPhase();
         waitForSocket();
         
+    }
+
+    @Override
+    public List<String> requestArmy() {
+        return null;
     }
     
 }

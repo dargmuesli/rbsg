@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
