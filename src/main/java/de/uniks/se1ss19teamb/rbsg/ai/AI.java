@@ -7,13 +7,14 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
-import javafx.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import javafx.util.Pair;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,7 +85,7 @@ public abstract class AI {
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMpLeft(), false,
-        		((InGamePlayer)ingameController.inGameObjects
+                ((InGamePlayer)ingameController.inGameObjects
                 .get(unit.getLeader())).getName());
         
         if (ingameController.previousTileMapById.isEmpty()) {
@@ -114,7 +115,7 @@ public abstract class AI {
         LinkedList<String> pathList = new LinkedList<>();
 
         do {
-        	path.distance++;
+            path.distance++;
             pathList.addFirst(closest);
             closest = ingameController.previousTileMapById.get(closest);
         } while (!closest.equals(unit.getPosition()));
@@ -130,8 +131,8 @@ public abstract class AI {
         
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMpLeft(), false,
-        		((InGamePlayer)ingameController.inGameObjects
-        		.get(unit.getLeader())).getName());
+                ((InGamePlayer)ingameController.inGameObjects
+                .get(unit.getLeader())).getName());
         
         if (ingameController.previousTileAttackMapById.isEmpty()) {
             return attackable;

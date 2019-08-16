@@ -159,19 +159,19 @@ class Nagato extends AI {
     }
 
     @SuppressWarnings ("static-access")
-	@Override
+    @Override
     protected void doTurnInternal() {
-    	projectedHP.clear();
-    	toAttack.clear();
-    	for (UnitTile tile : ingameController.unitTiles) {
-    		tile.setMpLeft(tile.getMp());
-    		
-    		if (tile.getLeader().equals(playerID)) {
-    			continue;
-    		}
-    		projectedHP.put(tile, tile.getHp());
-    	}
-    	
+        projectedHP.clear();
+        toAttack.clear();
+        for (UnitTile tile : ingameController.unitTiles) {
+            tile.setMpLeft(tile.getMp());
+            
+            if (tile.getLeader().equals(playerID)) {
+                continue;
+            }
+            projectedHP.put(tile, tile.getHp());
+        }
+        
         //Move Tanks to Forest Edge
         tankReposition();
         //Move Tanks to Attack if they have enough MP to return
@@ -210,7 +210,7 @@ class Nagato extends AI {
     }
 
     private void attackAvailable() {
-    	for (Entry<String, String> attack : toAttack.entrySet()) {
+        for (Entry<String, String> attack : toAttack.entrySet()) {
             socket.attackUnit(attack.getKey(), attack.getValue());
             waitForSocket();
         }
@@ -227,8 +227,8 @@ class Nagato extends AI {
     }
     
     @SuppressWarnings ("static-access")
-	private void tankMovementAttackAdditional() {
-    	for (Entry<String, String> position : tankPositions.entrySet()) {
+    private void tankMovementAttackAdditional() {
+        for (Entry<String, String> position : tankPositions.entrySet()) {
             
             //Skip repositioning Dead Units or units that already did a safe attack
             UnitTile tank = null;
@@ -245,37 +245,37 @@ class Nagato extends AI {
             TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
             
             for (Entry<Path, UnitTile> toAttack : attackable.entrySet()) {
-            	int hp = projectedHP.get(toAttack.getValue());
-            	//Target has too much HP, don't leave cover to attack
-            	if (hp <= 0 || hp > predictDamage(toAttack.getValue(), hp)) {
-            		continue;
-            	}
-            	
-            	boolean foundEnemy = false;
-            	
-            	for (UnitTile enemy : ingameController.unitTiles) {
-            		if (enemy.getLeader().equals(playerID) || toAttack.getValue().getId().equals(enemy.getId())) {
-            			continue;
-            		}
-            		
-            		EnvironmentTile enemyTile = ingameController.environmentTileMapById.get(enemy.getPosition());
-            		EnvironmentTile friendly = attackable.firstKey().start;
-            		
+                int hp = projectedHP.get(toAttack.getValue());
+                //Target has too much HP, don't leave cover to attack
+                if (hp <= 0 || hp > predictDamage(toAttack.getValue(), hp)) {
+                    continue;
+                }
+                
+                boolean foundEnemy = false;
+                
+                for (UnitTile enemy : ingameController.unitTiles) {
+                    if (enemy.getLeader().equals(playerID) || toAttack.getValue().getId().equals(enemy.getId())) {
+                        continue;
+                    }
+                    
+                    EnvironmentTile enemyTile = ingameController.environmentTileMapById.get(enemy.getPosition());
+                    EnvironmentTile friendly = attackable.firstKey().start;
+                    
                     int distance = Math.abs(friendly.getX() - enemyTile.getX())
-                    		+ Math.abs(friendly.getY() - enemyTile.getY());
+                            + Math.abs(friendly.getY() - enemyTile.getY());
                     
                     if (distance < enemy.getMp()) {
-                    	foundEnemy = true;
-                    	break;
+                        foundEnemy = true;
+                        break;
                     }
-            	}
-            	
-            	if (!foundEnemy) {
-            		socket.moveUnit(tank.getId(), toAttack.getKey().path);  
-            		tank.setMpLeft(tank.getMpLeft() - toAttack.getKey().distance);
+                }
+                
+                if (!foundEnemy) {
+                    socket.moveUnit(tank.getId(), toAttack.getKey().path);  
+                    tank.setMpLeft(tank.getMpLeft() - toAttack.getKey().distance);
                     waitForSocket();
-            		flagForAttackByHeavyTank(toAttack.getValue(), tank);
-            	}
+                    flagForAttackByHeavyTank(toAttack.getValue(), tank);
+                }
             }
         }
     }
@@ -299,7 +299,7 @@ class Nagato extends AI {
             TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
             
             if (attackable.isEmpty()) {
-            	continue;
+                continue;
             }
             
             if (attackable.firstKey().distance <= tank.getMpLeft() / 2) {
@@ -321,7 +321,7 @@ class Nagato extends AI {
 
     @SuppressWarnings ("static-access")
     private int predictDamage(UnitTile target, int hp) {
-    	EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
+        EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
         int fieldDefense = 0;
         
         switch (field.getName()) {
@@ -390,7 +390,7 @@ class Nagato extends AI {
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
             Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
             if (path != null && path.getKey().distance != 0) {
-            	tile.setMpLeft(tile.getMpLeft() - path.getKey().distance);
+                tile.setMpLeft(tile.getMpLeft() - path.getKey().distance);
                 socket.moveUnit(tile.getId(), path.getKey().path);                     
                 waitForSocket();
             }

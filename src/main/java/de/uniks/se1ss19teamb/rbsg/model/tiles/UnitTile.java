@@ -83,11 +83,11 @@ public class UnitTile extends AbstractTile {
         this.position = position;
     }
 
-	public int getMpLeft() {
-		return mpLeft;
-	}
+    public int getMpLeft() {
+        return mpLeft;
+    }
 
-	public void setMpLeft(int mpLeft) {
-		this.mpLeft = mpLeft;
-	}
+    public void setMpLeft(int mpLeft) {
+        this.mpLeft = mpLeft;
+    }
 }
