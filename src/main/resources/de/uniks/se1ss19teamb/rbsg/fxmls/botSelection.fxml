@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="30.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController">
+   <children>
+      <HBox prefHeight="15.0" prefWidth="300.0" AnchorPane.topAnchor="8.0">
+         <children>
+            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#setOnAction" text="NO BOT">
+               <HBox.margin>
+                  <Insets right="8.0" />
+               </HBox.margin></JFXCheckBox>
+            <JFXSlider>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></JFXSlider>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

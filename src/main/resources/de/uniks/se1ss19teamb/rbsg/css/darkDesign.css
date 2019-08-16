@@ -15,6 +15,10 @@ ListView {
     -fx-padding: 0px;
 }
 
+#currentPlayerRED {
+    -fx-text-fill: red;
+}
+
 #inGamePlayerBLUE {
     -fx-text-fill: blue;
 }

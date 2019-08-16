@@ -13,8 +13,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-//TODO: Fix WSIntegrationTests
-@Ignore
 public class WebSocketTestsReal {
 
     @Before
@@ -48,6 +46,8 @@ public class WebSocketTestsReal {
 
         RestRequestTestsReal.createGame();
 
+        RestRequestTestsReal.joinGame();
+
         if (!RequestUtil.request(new DeleteGameRequest(RestRequestTestsReal.gameId, LoginController.getUserToken()))) {
             Assert.fail();
         }
@@ -66,7 +66,7 @@ public class WebSocketTestsReal {
         Assert.assertTrue(msg.contains("userLeft|TeamBTestUser2"));
         Assert.assertTrue(msg.contains("gameCreate|TeamBTestUserGame|" + RestRequestTestsReal.gameId + "|2"));
         Assert.assertTrue(msg.contains("gameDelete|" + RestRequestTestsReal.gameId));
-        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|2"));
+        Assert.assertTrue(msg.contains("playerJoinedGame|" + RestRequestTestsReal.gameId + "|1"));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class WebSocketTestsReal {
 
         System.out.println(msg);
 
-        Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser|false"));
-        Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser|true"));
+        Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser2|false"));
+        Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser2|true"));
     }
 }
