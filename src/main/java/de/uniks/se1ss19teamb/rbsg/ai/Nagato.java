@@ -56,8 +56,8 @@ class Nagato extends AI {
         final int sideLength = (int) Math.sqrt(controller.environmentTiles.size());
         //Calculate HT Position
         
-        int sideDir = -1;
-        boolean sideXY = false;
+        boolean sideDirLow = false; //True if starting at 0 on relevant side
+        boolean sideXY = false; //True if relevant side is on edge of x axis
         
         //Figure out which side of the Board we are on
         //FIXME == 0 / sideLenght geht so nicht. Rather x/y quot
@@ -71,29 +71,24 @@ class Nagato extends AI {
                 }
             }
             
-            if (randomFriendly.getX() == 0 || randomFriendly.getY() == 0) {
-                sideDir = 0;
-                sideXY = randomFriendly.getX() == 0;
-                
-            } else if (randomFriendly.getX() == sideLength || randomFriendly.getY() == sideLength) {
-                sideDir = 1;
-                sideXY = randomFriendly.getX() == sideLength;
-            }
+            float quot = ((float) Math.abs(randomFriendly.getX() - sideLength / 2)) / ((float) Math.abs(randomFriendly.getY() - sideLength / 2));
             
-            assert sideDir != -1;
+            sideXY = (quot > 1);
+            
+            sideDirLow = (sideXY ? randomFriendly.getX() : randomFriendly.getY()) > sideLength / 2;
         }
         
         //Iterate over our Quarter of the Field, and "normalize" it to our direction
         //if Four Players, take Quarter, if two, take half
-        int startShort = sideDir == 1 ? sideLength - 1 : 0;
-        int stopShort = sideLength / 2 - sideDir;
+        int startShort = sideDirLow ? sideLength - 1 : 0;
+        int stopShort = sideLength / 2 - (sideDirLow ? 1 : 0);
         int lineCnt = 0;
         int players = (int) controller.inGameObjects.values().stream().filter(p -> p instanceof InGamePlayer).count();
         
         SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairComperatorXY(sideLength));
         
         //FIXME Somehow inverted for sideDir == 0
-        for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDir == 1 ? 1 : -1)) {
+        for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDirLow ? 1 : -1)) {
             for (int longSide = (players != 2 ? lineCnt : 0);
                     longSide < sideLength - (players != 2 ? lineCnt : 0); longSide++) {
                 mapQuarter.put(new Pair<Integer, Integer>(longSide, lineCnt), controller.environmentTiles.get(
@@ -244,7 +239,9 @@ class Nagato extends AI {
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
             Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
-            socket.moveUnit(tile.getId(), path.getKey().path);     
+            if(path != null) {
+            	socket.moveUnit(tile.getId(), path.getKey().path);                 	
+            }
             waitForSocket();
         }
     }
@@ -286,7 +283,7 @@ class Nagato extends AI {
         
         @Override
         public int compare(Pair<Integer, Integer> pairL, Pair<Integer, Integer> pairR) {
-            int diff = (pairR.getValue() - pairL.getValue()) * sideLength;
+            int diff = (pairL.getValue() - pairR.getValue()) * sideLength;
             diff += pairL.getKey() - pairR.getKey();
                 
             return diff;
