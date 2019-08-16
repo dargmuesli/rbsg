@@ -22,11 +22,6 @@ import org.testfx.util.WaitForAsyncUtils;
 
 public class UiTestsReal extends ApplicationTest {
 
-    @BeforeAll
-    public static void setupHeadlessMode() {
-        TestUtil.setupHeadlessMode();
-    }
-
     @Override
     public void start(Stage stage) throws Exception {
         Main main = new Main();

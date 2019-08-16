@@ -41,7 +41,6 @@ public class SerializeUtilTest {
     @Before
     public void before() {
         NotificationHandler.getInstance().setPopupController(popupControllerMock);
-        TestUtil.setupHeadlessMode();
     }
 
     @Test
