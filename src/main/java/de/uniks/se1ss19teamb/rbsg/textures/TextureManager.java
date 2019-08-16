@@ -77,8 +77,8 @@ public class TextureManager {
         instance.terrainColors.put("Mountain", Color.SLATEGREY);
     }
 
-    public static Pane getTextureInstance(String toFetch) {
-        return instance.fetchTexture(toFetch).instantiate();
+    public static Pane getTextureInstance(String toFetch, String color) {
+        return instance.fetchTexture(toFetch).instantiate(color);
     }
     
     public static Canvas computeMinimap(
