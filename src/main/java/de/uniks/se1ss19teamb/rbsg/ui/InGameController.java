@@ -43,6 +43,7 @@ public class InGameController {
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
     public static Map<String, String> previousTileMapById = new HashMap<>();
+    public static Map<String, String> previousTileAttackMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
@@ -434,6 +435,7 @@ public class InGameController {
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
         previousTileMapById.clear();
+        previousTileAttackMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -486,6 +488,8 @@ public class InGameController {
                             // TODO: for when the gamelobby exists
                             //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
+                            
+                            previousTileAttackMapById.put(neighborId, currentTile.getId());
                         } else if (currentMp > 0 && neighborUnitTile == null) {
                             // currentMp = 0 -> Attackable but not moveable
                             // TODO: for when the gamelobby exists

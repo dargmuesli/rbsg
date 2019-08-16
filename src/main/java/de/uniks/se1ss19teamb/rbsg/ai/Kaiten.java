@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javafx.util.Pair;
-
 class Kaiten extends AI {
 
     /*
@@ -97,14 +95,14 @@ class Kaiten extends AI {
                     continue;
                 }
                 
-                Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
+                Path path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
                 
                 if (path != null) {                    
-                    socket.moveUnit(unit.getId(), path.getKey().path);
+                    socket.moveUnit(unit.getId(), path.path);
                 }
                 
                 //If we land next to the Target, mark for Attacking
-                if (path.getValue() == 1) {
+                if (path.distance == 1) {
                     markedForAttack.put(unit, ingameController.unitTileMapByTileId.get(toAttack.getId()));
                 }
                 

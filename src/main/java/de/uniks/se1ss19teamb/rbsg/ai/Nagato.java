@@ -28,6 +28,9 @@ class Nagato extends AI {
 
     private Map<String, String> tankPositions = new HashMap<>();
     
+    private Map<UnitTile, Integer> projectedHP = new HashMap<>();
+    private Map<String, String> toAttack = new HashMap<>(); //Key: Own, Value: Enemy
+    
     /*
      * Nagato Strategy:
      * 
@@ -39,7 +42,7 @@ class Nagato extends AI {
      * while keeping Clear of Heavy Tanks
      * 
      * Heavy Tanks:
-     * If Enemy in Attack Range/2 of HT -> Attack and retreat
+     * If Enemy in Attack Range/2 of HT -> Attack closest and retreat
      * If Enemy downable with In-Range Tanks and no other enemy HT in Range, attack and retreat next round
      * Focus Order: Heavy Tank > Chopper > Light Tank > Bazooka > Infantry > Jeep
      * 
@@ -214,9 +217,87 @@ class Nagato extends AI {
         
     }
 
-    private void tankMovementAttackSafe() {
-        // TODO Auto-generated method stub
+    @SuppressWarnings ("static-access")
+	private void tankMovementAttackSafe() {
+    	for (Entry<String, String> position : tankPositions.entrySet()) {
+            
+            //Skip repositioning Dead Units
+            UnitTile tank = null;
+            for (UnitTile tiles : ingameController.unitTiles) {
+                if (tiles.getId().equals(position.getKey())) {
+                    tank = tiles;
+                }
+            }
+
+            if (tank == null) {
+                continue;
+            }
+            
+            TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
+            
+            if (attackable.firstKey().distance <= tank.getMp() / 2) {
+            	socket.moveUnit(tank.getId(), attackable.firstKey().path);  
+            	waitForSocket();
+            	flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
+            }
+    	}
         
+    }
+    
+    @SuppressWarnings ("static-access")
+	private void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
+    	toAttack.put(by.getId(), target.getId());
+    	int hp = projectedHP.get(target);
+    	
+    	EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
+    	int fieldDefense = 0;
+    	
+    	switch (field.getName()) {
+    		case "Grass":
+    			fieldDefense = 1;
+    			break;
+    		case "Forest":
+    			fieldDefense = 3;
+    			break;
+    		case "Mountain":
+    			fieldDefense = 4;
+    			break;
+    	}
+    	
+    	assert fieldDefense != 0;
+    	
+    	int defense = hp * fieldDefense;
+    	
+    	int unitDmg = 0;
+    	
+    	switch (target.getType()) {
+    		case "Infantry":
+    			unitDmg = 105;
+    			break;
+    		case "Bazooka":
+    			unitDmg = 95;
+    			break;
+    		case "Jeep":
+    			unitDmg = 105;
+    			break;
+    		case "Light Tank":
+    			unitDmg = 85;
+    			break;
+    		case "Heavy Tank":
+    			unitDmg = 55;
+    			break;
+    		case "Chopper":
+    			unitDmg = 75;
+    			break;
+    	}
+    	
+    	assert unitDmg != 0;
+    	
+    	float damage = ((float)(unitDmg - defense)) / 10.0f;
+    	
+    	hp -= (damage < 1) ? 1 : (int) damage;
+    	
+    	projectedHP.put(target, hp);
     }
 
     @SuppressWarnings ("static-access")
@@ -237,9 +318,9 @@ class Nagato extends AI {
             }
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
-            Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
+            Path path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
             if (path != null) {
-                socket.moveUnit(tile.getId(), path.getKey().path);                     
+            	socket.moveUnit(tile.getId(), path.path);                     
             }
             waitForSocket();
         }

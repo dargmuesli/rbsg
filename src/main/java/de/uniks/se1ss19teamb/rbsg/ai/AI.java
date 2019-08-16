@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javafx.util.Pair;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,7 +79,7 @@ public abstract class AI {
      * accessed anymore.
      */
     @SuppressWarnings ("static-access")
-    protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
+    protected Path findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
                 unit.getPosition()), unit.getMp(), false);
         
@@ -107,6 +105,7 @@ public abstract class AI {
         Path path = new Path();
         path.end = ingameController.environmentTileMapById.get(closest);
         path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
+        path.distance = closestDistance;
         
         LinkedList<String> pathList = new LinkedList<>();
 
@@ -117,7 +116,46 @@ public abstract class AI {
 
         path.path = pathList.toArray(new String[0]);
         
-        return new Pair<Path, Integer>(path, closestDistance);
+        return path;
+    }
+    
+    @SuppressWarnings ("static-access")
+    protected TreeMap<Path, UnitTile> findAllAttackableEnemies(UnitTile unit) {
+    	TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
+    	
+        ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                unit.getPosition()), unit.getMp(), false);
+        
+        if (ingameController.previousTileAttackMapById.isEmpty()) {
+            return attackable;
+        }
+         
+        for (String attackableTile : ingameController.previousTileAttackMapById.keySet()) {
+        	UnitTile toAttack = ingameController.unitTileMapByTileId.get(attackableTile);
+        	EnvironmentTile toAttackFrom = ingameController.environmentTileMapById.get(
+        			ingameController.previousTileAttackMapById.get(attackableTile));
+        	
+        	Path path = new Path();
+            path.end = toAttackFrom;
+            path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
+            path.distance = 0;
+            
+            LinkedList<String> pathList = new LinkedList<>();
+
+            String closest = toAttackFrom.getId();
+            
+            do {
+                pathList.addFirst(closest);
+                path.distance++;
+                closest = ingameController.previousTileMapById.get(closest);
+            } while (!closest.equals(unit.getPosition()));
+
+            path.path = pathList.toArray(new String[0]);
+            
+            attackable.put(path, toAttack);
+        }
+        
+        return attackable;
     }
     
     protected void waitForSocket() {
