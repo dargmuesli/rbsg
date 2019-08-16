@@ -4,7 +4,6 @@ import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,7 +16,6 @@ import javax.swing.*;
 
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.util.reflection.FieldSetter;
@@ -39,11 +37,6 @@ public class SerializeUtilTest {
     private String fileString = "file.json";
     private String testClassString = "{\"name\":\"my name\",\"mtr\":123456}";
     private TestClass testClass = new TestClass();
-
-    @Before
-    public void before() {
-        TestUtil.setupHeadlessMode();
-    }
 
     @Test
     public void chooseFileTest() throws Exception {

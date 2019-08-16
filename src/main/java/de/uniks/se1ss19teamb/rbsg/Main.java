@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.EasterEggKeyEventHandler;
 import javafx.application.Application;
@@ -21,7 +20,6 @@ public class Main extends Application {
         Main.PRIMARY_STAGE = primaryStage;
 
         TextureManager.init();
-        SoundManager.init();
 
         Parent root = FXMLLoader
             .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml"));

@@ -11,15 +11,13 @@ class WinScreenTest {
     private InGamePlayer inGamePlayer2 = new InGamePlayer();
     private WinScreenController winScreenController = new WinScreenController();
 
-
-
     @Test
     void updatePlayersTest()  {
         InGameController.inGameObjects.put("Game", inGameGame);
         InGameController.inGameObjects.put("player1", inGamePlayer1);
         InGameController.inGameObjects.put("player2", inGamePlayer2);
         Assert.assertEquals(0, winScreenController.inGamePlayerList.size());
-        Assert.assertEquals(winScreenController.getInstance(), winScreenController.getInstance());
+        Assert.assertEquals(WinScreenController.getInstance(), WinScreenController.getInstance());
         winScreenController.updatePlayers();
         Assert.assertEquals(2, winScreenController.inGamePlayerList.size());
     }

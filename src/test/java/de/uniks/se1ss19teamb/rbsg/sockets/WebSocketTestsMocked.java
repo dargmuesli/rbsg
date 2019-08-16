@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import de.uniks.se1ss19teamb.rbsg.TestUtil;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.ArrayList;
@@ -15,24 +14,15 @@ import java.util.List;
 
 import org.apache.http.ParseException;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
 
-public class WebSocketTestsMocked {
+@ExtendWith(ApplicationExtension.class)
+class WebSocketTestsMocked {
 
-    private WebSocketClient client;
+    private WebSocketClient client = mock(WebSocketClient.class);
     private GameSocket gameSocket = new GameSocket("54321", "12543", false);
-
-    @BeforeClass
-    public static void beforeClass() throws InterruptedException {
-        TestUtil.initJfx();
-    }
-
-    @Before
-    public void prepareClient() {
-        client = mock(WebSocketClient.class);
-    }
 
     private void setupSocket(String answer, AbstractWebSocket socket) {
         try {
@@ -53,7 +43,7 @@ public class WebSocketTestsMocked {
     }
 
     @Test
-    public void systemSocketTest() throws ParseException {
+    void systemSocketTest() throws ParseException {
         SystemSocket system = new SystemSocket();
 
         List<String> msg = new ArrayList<>();
@@ -106,7 +96,7 @@ public class WebSocketTestsMocked {
     }
 
     @Test
-    public void gameSocketTest() {
+    void gameSocketTest() {
 
         List<String> gameMsg = new ArrayList<>();
 
@@ -236,7 +226,7 @@ public class WebSocketTestsMocked {
     }
 
     @Test
-    public void chatSocketTest() throws ParseException {
+    void chatSocketTest() throws ParseException {
 
         ChatSocket chat = new ChatSocket("TeamBTestUser2", "111111111111111111111111111111111111");
 
@@ -256,7 +246,7 @@ public class WebSocketTestsMocked {
     }
 
     @Test
-    public void gameChatSocketTest() {
+    void gameChatSocketTest() {
 
         List<String> gameMsg = new ArrayList<>();
 

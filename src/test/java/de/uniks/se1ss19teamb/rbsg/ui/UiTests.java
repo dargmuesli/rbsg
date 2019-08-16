@@ -1,38 +1,30 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import de.uniks.se1ss19teamb.rbsg.Main;
+import static java.lang.Thread.sleep;
 
-import de.uniks.se1ss19teamb.rbsg.TestUtil;
+import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import javafx.application.Platform;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.util.WaitForAsyncUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 
 // UI Tests take a lot of time.
 // To load new Scenes and finish actions javaFX needs time. All the sleeping time below is estimated and can
 // probably be reduced if estimated properly.
 
-public class UiTests extends ApplicationTest {
+@ExtendWith(ApplicationExtension.class)
+class UiTests {
 
-    @BeforeAll
-    public static void setupHeadlessMode() {
-        TestUtil.setupHeadlessMode();
-    }
-
-    @Override
+    @Start
     public void start(Stage stage) throws Exception {
         Main main = new Main();
         main.start(stage);
@@ -43,71 +35,45 @@ public class UiTests extends ApplicationTest {
     }
 
     @Test
-    public void clickFullscreenTest() {
-        clickOn("#btnFullscreen");
-        clickOn("#btnFullscreen");
+    void clickFullscreenTest(FxRobot robot) {
+        robot.clickOn("#btnFullscreen");
+        robot.clickOn("#btnFullscreen");
     }
 
     @Test
-    @Disabled
-    public void ticTacToeTest() {
-        push(KeyCode.SHIFT).push(KeyCode.F1);
-        sleep(500); // given some time to open window
-        String[] buttons = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-        for (String s : buttons) {
-            clickOn(String.format("#%s", s));
-        }
-        clickOn("#btnReplay");
-        for (int i = buttons.length - 1; i >= 0; i--) {
-            clickOn(String.format("#%s", buttons[i]));
-        }
-    }
-
-    @Test
-    public void snakeTest() {
-        press(KeyCode.SHIFT).press(KeyCode.F2);
-        sleep(500); // given some time to open window
-        push(KeyCode.LEFT);
-        push(KeyCode.UP);
-        push(KeyCode.RIGHT);
-        push(KeyCode.DOWN);
-    }
-
-    @Test
-    @Disabled
-    public void notificationPopupTest() {
+    void notificationPopupTest(FxRobot robot) throws InterruptedException {
 
         Logger logger = LogManager.getLogger();
-
-        Label el = (Label) lookup("#popup").queryAs(AnchorPane.class).lookup("Label");
 
         try {
             throw new Exception("Test Exception");
         } catch (Exception e) {
             NotificationHandler.sendError("Test ERROR NullPointerException", logger, e);
             sleep(200);
+
+            Label el = (Label) robot.lookup("#apnRoot").queryAs(AnchorPane.class).lookup("#label");
             Assert.assertEquals(el.getText(), "Test ERROR NullPointerException");
-            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.sendError("Test ERROR NullPointerException Without e Exception", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test ERROR NullPointerException Without e Exception");
-            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.sendWarning("Test WARNING", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test WARNING");
-            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.sendInfo("Test INFO", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test INFO");
-            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
 
             NotificationHandler.sendSuccess("Test SUCCESS", logger);
             sleep(200);
             Assert.assertEquals(el.getText(), "Test SUCCESS");
-            Assert.assertTrue(lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
         }
     }
 }
