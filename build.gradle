@@ -11,7 +11,7 @@ if (Jvm.current().javaVersion.java11Compatible) {
     apply plugin: 'org.openjfx.javafxplugin'
 
     javafx {
-        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media']
+        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media', 'javafx.swing']
     }
 }
 

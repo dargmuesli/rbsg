@@ -193,7 +193,7 @@ class Nagato extends AI {
         if (socket.phaseString.equals("Movement Phase")) {
             //FIXME Does not yet work, somehow
             //For now: Manual recommendation
-            NotificationHandler.getInstance().sendInfo("AI wants to concede", logger);
+            NotificationHandler.sendInfo("AI wants to concede", logger);
             //socket.leaveGame();
             //socket.disconnect();
             return;
