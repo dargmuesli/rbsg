@@ -29,6 +29,7 @@ public class BotControl {
     public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
         BotUser botUser = new BotUser();
         botUser.setBotNumber(number);
+        botUser.setGameId(gameId);
         CreateTemporaryUserRequest ctur = new CreateTemporaryUserRequest();
         ctur.sendRequest();
         botUser.setBotUserName(ctur.getData().get(0));
@@ -40,6 +41,7 @@ public class BotControl {
         botUser.setBotUserKey(loginUserRequest.getData());
         botUsers.add(number, botUser);
         botSelectionController.setBot(botUser);
+        botUser.joinGame();
 
         if (GameSocketDistributor.getGameSocket(number + 1) == null) {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
@@ -47,7 +49,7 @@ public class BotControl {
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         botUser.instantiateBotAi(difficulty);
         botUser.setInGameController(inGameController);
-
+        botUser.connectGamesocket();
 
         //Just info for dev. Will be deleted later
         NotificationHandler.getInstance().sendInfo(loginUserRequest.getData(), logger);
