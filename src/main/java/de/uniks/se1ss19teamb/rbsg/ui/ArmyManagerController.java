@@ -92,6 +92,10 @@ public class ArmyManagerController {
         cmbArmies.setOnAction((event) -> {
             army = cmbArmies.getSelectionModel().getSelectedItem();
 
+            updateUnits();
+
+            btnSave.setDisable(true);
+
             if (army == null) {
                 btnRemove.setDisable(true);
                 btnExport.setDisable(true);
@@ -102,7 +106,6 @@ public class ArmyManagerController {
             btnExport.setDisable(false);
 
             txtfldArmyName.setText(army.getName());
-            updateUnits();
 
             if (GameLobbyController.instance != null) {
                 Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).changeArmy(army.getId());
@@ -114,7 +117,8 @@ public class ArmyManagerController {
 
             army.setName(txtfldArmyName.getText());
 
-            if (army.getName() == null || army.getName().equals("") || army.getUnits() == null) {
+            if (army.getName() == null || army.getName().equals("")
+                || army.getUnits() == null || army.getUnits().size() < 10) {
                 btnSave.setDisable(true);
                 btnExport.setDisable(true);
             } else {
@@ -158,6 +162,7 @@ public class ArmyManagerController {
                 btnExport.setDisable(true);
             }
 
+            txtfldArmyName.setText(army.getName());
             labelLeftUnits.setText(String.valueOf(unitsLeft));
             unitObjectControllers.forEach(
                 unitObjectController -> unitObjectController.update(
@@ -205,6 +210,8 @@ public class ArmyManagerController {
         btnAdd.setDisable(false);
         btnRemove.setDisable(true);
         btnEdit.setDisable(true);
+        btnSave.setDisable(true);
+        btnImport.setDisable(false);
         btnExport.setDisable(true);
 
         updateUnits();
@@ -233,6 +240,7 @@ public class ArmyManagerController {
 
             updateUnits();
 
+            txtfldArmyName.setText(army.getName());
             cmbArmies.setDisable(false);
             btnRemove.setDisable(false);
             btnEditIcon.setGlyphName("PENCIL");
@@ -254,6 +262,15 @@ public class ArmyManagerController {
 
         saveToServer();
         loadFromServer();
+
+        for (Army army : cmbArmies.getItems()) {
+            if (army.getId().equals(ArmyManagerController.army.getId())) {
+                cmbArmies.getSelectionModel().select(army);
+                break;
+            }
+        }
+
+        cmbArmies.setDisable(false);
     }
 
     @FXML
