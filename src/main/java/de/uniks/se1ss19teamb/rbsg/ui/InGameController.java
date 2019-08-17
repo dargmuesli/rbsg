@@ -93,6 +93,7 @@ public class InGameController {
     private AI aI = null;
 
     private String playerId;
+    private boolean logout;
 
     public static InGameController getInstance() {
         return instance;
@@ -188,7 +189,8 @@ public class InGameController {
 
     @FXML
     private void logout() {
-        UserInterfaceUtils.logout(apnFade, btnLogout);
+        logout = true;
+        askConcede();
     }
 
     @FXML
@@ -523,23 +525,31 @@ public class InGameController {
 
     public void leaveGame(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
-            leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
-            leaveGame.setLayoutY(head.getHeight());
-            leaveGame.setVisible(true);
-            for (Node node : leaveGame.getChildren()) {
-                node.setVisible(true);
-            }
-
+            logout = false;
+            askConcede();
         } else if (event.getSource().equals(btnYes)) {
             Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
             Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
+            if (logout) {
+                UserInterfaceUtils.logout(apnFade, btnLogout);
+            } else {
+                UserInterfaceUtils.makeFadeOutTransition(
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
+            }
         } else if (event.getSource().equals(btnNo)) {
             leaveGame.setVisible(false);
             for (Node node : leaveGame.getChildren()) {
                 node.setVisible(false);
             }
+        }
+    }
+
+    private void askConcede() {
+        leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
+        leaveGame.setLayoutY(head.getHeight());
+        leaveGame.setVisible(true);
+        for (Node node : leaveGame.getChildren()) {
+            node.setVisible(true);
         }
     }
 
