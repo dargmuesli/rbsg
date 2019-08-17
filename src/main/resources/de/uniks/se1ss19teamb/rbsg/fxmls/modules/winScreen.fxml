@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8.0.999-ea"
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.WinScreenController">
+    <VBox alignment="CENTER" style="-fx-background-color: transparent" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+        <HBox alignment="CENTER" style="-fx-background-color: transparent" VBox.vgrow="ALWAYS">
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+                <ImageView fx:id="trophyPic" fitHeight="600.0" fitWidth="400.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="/de/uniks/se1ss19teamb/rbsg/winScreen/kisspng-trophy-medal-clip-art-golden-cup-5ab5a5777b2d43.png"/>
+                </ImageView>
+                <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0"
+                      style="-fx-background-color: transparent">
+                    <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0"
+                          style="-fx-background-color: transparent">
+                        <VBox.margin>
+                            <Insets/>
+                        </VBox.margin>
+                        <padding>
+                            <Insets top="30.0"/>
+                        </padding>
+                        <VBox prefHeight="200.0" prefWidth="100.0"
+                              style="-fx-background-color: transparent">
+                            <Label fx:id="winnerLabel" alignment="BOTTOM_CENTER"
+                                   style="-fx-text-fill: black" text="Winner">
+                                <VBox.margin>
+                                    <Insets left="30.0" top="5.0"/>
+                                </VBox.margin>
+                            </Label>
+                            <JFXButton fx:id="backBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false"
+                                       onAction="#setOnAction" text="Return" textAlignment="CENTER">
+                                <VBox.margin>
+                                    <Insets left="20.0" top="12.0"/>
+                                </VBox.margin>
+                            </JFXButton>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </StackPane>
+        </HBox>
+    </VBox>
+</AnchorPane>

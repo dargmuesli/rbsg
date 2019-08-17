@@ -51,8 +51,7 @@ public class UserData {
         File userDataFile = UserData.USER_DATA_PATH.toFile();
 
         if (userDataFile.exists() && !userDataFile.delete()) {
-            Platform.runLater(() -> NotificationHandler.getInstance()
-                .sendError("User data file could not be deleted!", logger));
+            Platform.runLater(() -> NotificationHandler.sendError("User data file could not be deleted!", logger));
         }
     }
 

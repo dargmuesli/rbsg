@@ -11,8 +11,7 @@ import org.junit.Test;
 public class ZuendorfMemeTest {
 
     @Before
-    public void prepareTest() throws ExceptionInInitializerError, InterruptedException {
-        TestUtil.initJfx();
+    public void prepareTest() throws ExceptionInInitializerError {
         TestUtil.initRandom();
 
         ZuendorfMeme.QUIET = true;

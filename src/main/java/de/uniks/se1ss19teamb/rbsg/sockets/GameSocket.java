@@ -55,8 +55,7 @@ public class GameSocket extends AbstractMessageWebSocket {
 
         registerWebSocketHandler((response) -> {
             if (response.get("msg") != null) {
-                NotificationHandler.getInstance()
-                    .sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+                NotificationHandler.sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
                 return;
             } else if (StringUtil.checkHasNot(response, "action", logger)) {
                 return;
@@ -89,18 +88,17 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     switch (message) {
                         case "You have no army with the given id.":
-                            NotificationHandler.getInstance().sendError(message, logger);
+                            NotificationHandler.sendError(message, logger);
                             break;
                         case "Initialize game, sending start situation...":
                             firstGameInitObjectReceived = false;
-                            NotificationHandler.getInstance().sendInfo("Game initializes.", logger);
+                            NotificationHandler.sendInfo("Game initializes.", logger);
                             break;
                         case "You already joined a game.":
-                            NotificationHandler.getInstance().sendWarning(message, logger);
+                            NotificationHandler.sendWarning(message, logger);
                             break;
                         default:
-                            NotificationHandler.getInstance()
-                                .sendWarning("Unknown message \"" + message + "\"", logger);
+                            NotificationHandler.sendWarning("Unknown message \"" + message + "\"", logger);
                     }
 
                     break;
@@ -143,14 +141,14 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     SerializeUtil.deserialize(data.toString(), UnitTile.class));
                                 break;
                             default:
-                                NotificationHandler.getInstance().sendWarning(
+                                NotificationHandler.sendWarning(
                                     "Unknown tile type: " + type, logger);
                         }
                     }
                     break;
                 case "gameInitFinished":
 
-                    NotificationHandler.getInstance().sendInfo("Game initialized.", logger);
+                    NotificationHandler.sendInfo("Game initialized.", logger);
                     if (GameLobbyController.instance != null) {
                         GameLobbyController.instance.updatePlayers();
                     }
@@ -177,7 +175,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
 
                             // TODO handle in chat window
-                            NotificationHandler.getInstance().sendInfo("New Player joined! \""
+                            NotificationHandler.sendInfo("New Player joined! \""
                                 + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
                                 + "\"", logger);
                             break;
@@ -186,7 +184,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 SerializeUtil.deserialize(data.toString(), UnitTile.class));
                             break;
                         default:
-                            NotificationHandler.getInstance().sendError(
+                            NotificationHandler.sendError(
                                 "Unknown new game object id: " + data.get("id").getAsString(), logger);
                     }
                     break;
@@ -247,7 +245,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     readyMessage.append("not ready.");
                                 }
 
-                                NotificationHandler.getInstance().sendInfo(readyMessage.toString(), logger);
+                                NotificationHandler.sendInfo(readyMessage.toString(), logger);
                             }
                             break;
                         case "Game":
@@ -330,12 +328,12 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     }
                                     break;
                                 default:
-                                    NotificationHandler.getInstance().sendError(
+                                    NotificationHandler.sendError(
                                         "Unknown fieldName object: " + fieldName, logger);
                             }
                             break;
                         default:
-                            NotificationHandler.getInstance().sendError(
+                            NotificationHandler.sendError(
                                 "Unknown changed game object id: " + data.get("id").getAsString(), logger);
                     }
 
@@ -360,8 +358,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
 
                             // TODO handle in chat window
-                            NotificationHandler.getInstance()
-                                .sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
+                            NotificationHandler.sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
                                     + " has left the game!", logger);
                             SoundManager.playSound("Omae_nani", 0);
                             break;
@@ -383,7 +380,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                             SoundManager.playSound("nani", 0);
                             break;
                         default:
-                            NotificationHandler.getInstance().sendError(
+                            NotificationHandler.sendError(
                                 "Unknown game object id: " + data.get("id").getAsString(), logger);
                     }
 
@@ -411,11 +408,11 @@ public class GameSocket extends AbstractMessageWebSocket {
                         GameLobbyController.instance.denyReadiness();
                     }
 
-                    NotificationHandler.getInstance().sendError("InGameError: "
+                    NotificationHandler.sendError("InGameError: "
                         + response.get("data").getAsString(), logger);
                     break;
                 default:
-                    NotificationHandler.getInstance().sendWarning("Unknown action \"" + action + "\"", logger);
+                    NotificationHandler.sendWarning("Unknown action \"" + action + "\"", logger);
             }
 
             // TODO: receive chat messages

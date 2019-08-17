@@ -39,6 +39,22 @@ ListView {
     -fx-background-color: -fx-primary;
 }
 
+.border-error {
+    -fx-border-color: #ff0000;
+}
+
+.border-info {
+    -fx-border-color: #0000ff;
+}
+
+.border-success {
+    -fx-border-color: #00ff00;
+}
+
+.border-warning {
+    -fx-border-color: #ffff00;
+}
+
 .button {
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
@@ -87,6 +103,22 @@ ListView {
 
 .label {
     -fx-text-fill: -fx-secondary;
+}
+
+.label-error {
+    -fx-text-fill: #ff0000;
+}
+
+.label-info {
+    -fx-text-fill: #0000ff;
+}
+
+.label-success {
+    -fx-text-fill: #00ff00;
+}
+
+.label-warning {
+    -fx-text-fill: #ffff00;
 }
 
 .menu-button {

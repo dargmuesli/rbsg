@@ -21,6 +21,7 @@ version '3.0.0'
 repositories {
     jcenter()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://sandec.bintray.com/repo' }
     mavenCentral()
 }
 
@@ -68,12 +69,10 @@ dependencies {
     integrationImplementation sourceSets.test.output
     integrationRuntimeOnly configurations.testRuntimeOnly
 
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'de.sandec', name: 'openjfx-monocle', version: '8u212'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.2'
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.2'
-    testImplementation group: 'org.testfx', name: 'openjfx-monocle', version: '8u76-b04'
-    testImplementation group: 'org.testfx', name: 'testfx-core', version: '4.0.15-alpha'
     testImplementation group: 'org.testfx', name: 'testfx-junit5', version: '4.0.15-alpha'
     testImplementation group: 'org.junit.jupiter', name:'junit-jupiter-api', version: '5.5.1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.1'
