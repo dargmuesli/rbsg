@@ -28,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -70,10 +71,6 @@ public class InGameController {
     @FXML
     private JFXButton btnYes;
     @FXML
-    private JFXButton btnSmaller;
-    @FXML
-    private StackPane stackPane;
-    @FXML
     private ScrollPane mapScrollPane;
     @FXML
     private JFXHamburger hamburgerMenu;
@@ -96,7 +93,7 @@ public class InGameController {
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private AI aI = null;
 
-    public String playerId;
+    private String playerId;
 
     public static InGameController getInstance() {
         return instance;
@@ -246,8 +243,9 @@ public class InGameController {
                 aI = AI.instantiate(Integer.MAX_VALUE);
                 aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
-            if (GameSocketDistributor.getGameSocket(0).currentPlayer.equals(playerId)) {
-                if (!GameSocketDistributor.getGameSocket(0).phaseString.equals("Movement Phase")) {
+            if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
+                if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                    .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.getInstance()
                         .sendWarning("You can only activate Automode\nin your first Movementphase\n"
@@ -339,8 +337,8 @@ public class InGameController {
                             || (lastSelected.getTop() != null && lastSelected.getTop().equals(source.getId())))
                         ) {
                             // Yes: attack.
-                            GameSocketDistributor.getGameSocket(0).attackUnit(previousUnitTile.getId(),
-                                toAttack.getId());
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .attackUnit(previousUnitTile.getId(), toAttack.getId());
 
                         } else {
                             // No: move.
@@ -355,8 +353,8 @@ public class InGameController {
                                 moveDistance++;
                             }
 
-                            GameSocketDistributor.getGameSocket(0).moveUnit(previousUnitTile.getId(),
-                                path.toArray(new String[0]));
+                            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
+                                .moveUnit(previousUnitTile.getId(), path.toArray(new String[0]));
 
                             UnitTile movedUnitTile = new UnitTile(previousUnitTile);
                             movedUnitTile.setMp(movedUnitTile.getMp() - moveDistance);
@@ -419,13 +417,23 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
+            //adds player color to unitpane
+            Pane pane = generateUnitPane(unitTile);
+
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
+    }
+
+
+    private Pane generateUnitPane(UnitTile unitTile) {
+        InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
+
+        return TextureManager.getTextureInstance(unitTile.getType(),
+            (player != null) ? player.getColor() : null);
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {
@@ -528,8 +536,8 @@ public class InGameController {
             }
 
         } else if (event.getSource().equals(btnYes)) {
-            GameSocketDistributor.getGameSocket(0).leaveGame();
-            GameSocketDistributor.getGameSocket(0).disconnect();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
+            Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else if (event.getSource().equals(btnNo)) {

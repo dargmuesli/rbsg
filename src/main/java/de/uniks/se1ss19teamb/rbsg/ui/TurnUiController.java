@@ -1,13 +1,17 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import com.jfoenix.controls.JFXButton;
+import animatefx.animation.Wobble;
+
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 
 
@@ -20,9 +24,6 @@ public class TurnUiController {
 
     @FXML
     public Label turnLabel;
-
-    @FXML
-    private JFXButton phaseBtn;
     @FXML
     private Label labelOne;
     @FXML
@@ -31,6 +32,8 @@ public class TurnUiController {
     private Label labelThree;
     @FXML
     private Label labelFour;
+    @FXML
+    private HBox lblBox;
 
     private ArrayList<Label> lblList = new ArrayList<>();
 
@@ -60,8 +63,6 @@ public class TurnUiController {
             setTurnLabel(startTurnLabel);
             startTurnLabel = null;
         }
-
-        phaseBtn.setTranslateY(-4);
     }
 
     /**
@@ -89,6 +90,9 @@ public class TurnUiController {
         if (inGamePlayerList.size() == 4) {
             lblList.add(2, labelThree);
             lblList.add(3, labelFour);
+        } else if (inGamePlayerList.size() == 2) {
+            lblBox.getChildren().remove(labelThree);
+            lblBox.getChildren().remove(labelFour);
         }
 
         for (Label label : lblList) {
@@ -102,7 +106,7 @@ public class TurnUiController {
 
     @FXML
     private void nextPhase() {
-        GameSocketDistributor.getGameSocket(0).nextPhase();
+        Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).nextPhase();
     }
 
     public void setTurnLabel(String turn) {
@@ -117,9 +121,11 @@ public class TurnUiController {
                 for (Label label : lblList) {
                     // color the player's label
                     if (label.getText().equals(player.getName())) {
-                        label.setStyle("-fx-text-fill: Red");
+                        new Wobble(label).play();
+                        label.setId("currentPlayerRED");
                     } else {
-                        label.setStyle("-fx-text-fill: #FFFF8d");
+                        // set's the id to the standart label color of our UI
+                        label.setId("label");
                     }
                 }
             }
