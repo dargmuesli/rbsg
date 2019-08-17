@@ -496,7 +496,7 @@ public class MainController {
     private boolean checkInput(String input) {
         if (input.equals("Gib mir ein Meme")) {
             Image image = new Image(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/meme.jpg").toExternalForm());
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/MemeHomer.jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
             Scene scene = new Scene(new VBox(imageView), 450, 375);
             Stage stage = new Stage();

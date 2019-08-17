@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
@@ -27,10 +28,10 @@ import org.testfx.util.WaitForAsyncUtils;
 public class UiTestsReal extends ApplicationTest {
     public static final String TEST_GAME = "TeamBTestGame";
 
-    @BeforeAll
-    public static void setupHeadlessMode() {
-        TestUtil.setupHeadlessMode();
-    }
+//    @BeforeAll
+//    public static void setupHeadlessMode() {
+//        TestUtil.setupHeadlessMode();
+//    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -266,5 +267,36 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#btnColorMode");
         clickOn("#btnLogout");
         sleep(2000); // sleep to finish transition
+    }
+
+    @Test
+    public void MemeTest() {
+        clickOn("#btnRegistration");
+        sleep(2000); // sleep to finish transition
+        clickOn("#username");
+        write("TeamBTestUser").push(KeyCode.ENTER);
+        clickOn("#password");
+        write("qwertz").push(KeyCode.ENTER);
+        clickOn("#passwordRepeat");
+        write("qwert").push(KeyCode.ENTER);
+        sleep(1000);
+        clickOn("#btnCancel");
+        sleep(2000);
+
+        clickOn("#txtUserName");
+        write("TeamBTestUser");
+        clickOn("#password");
+        write("blabla");
+        clickOn("#btnLogin");
+        sleep(2000);// sleep to finish action
+        clickOn("#password").eraseText(6);
+        write("qwertz");
+        clickOn("#btnLogin");
+        sleep(2000);// sleep to finish action
+
+        clickOn("#message");
+        write("Gib mir ein Meme");
+        clickOn("#btnSend");
+        sleep(2000);
     }
 }

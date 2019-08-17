@@ -294,9 +294,14 @@ public class ArmyManagerController {
     @FXML
     private void saveToServer() {
         if (army.getName() == null || army.getName().equals("")) {
+            NotificationHandler.getInstance().sendError("You have to give the army a name!",
+                logger);
+            return;
+        }
 
+        if (army.getUnits() == null || army.getUnits().size() < 10) {
             Image image = new Image(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/meme2.jpg").toExternalForm());
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/MemeToyStorie.jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
             Scene scene = new Scene(new VBox(imageView), 450, 375);
             Stage stage = new Stage();
@@ -306,12 +311,6 @@ public class ArmyManagerController {
             delay.setOnFinished(event -> stage.close());
             delay.play();
 
-            NotificationHandler.getInstance().sendError("You have to give the army a name!",
-                logger);
-            return;
-        }
-
-        if (army.getUnits() == null || army.getUnits().size() < 10) {
             NotificationHandler.getInstance().sendError("You need at least ten units!", logger);
             return;
         }

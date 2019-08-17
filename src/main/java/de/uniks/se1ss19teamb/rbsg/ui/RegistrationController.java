@@ -122,7 +122,7 @@ public class RegistrationController {
         if (!password.getText().equals(passwordRepeat.getText())) {
             NotificationHandler.getInstance().sendWarning("The password do not match!", logger);
             Image image = new Image(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/mem1.jpg").toExternalForm());
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/MemeCopy.jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
             Scene scene = new Scene(new VBox(imageView),250,200);
             Stage stage = new Stage();
