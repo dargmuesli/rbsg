@@ -27,12 +27,12 @@ import javafx.util.Pair;
 
 class Nagato extends AI {
     
-    private static final int AMOUNT_HEAVY_TANKS = 7;
+    protected static int AMOUNT_HEAVY_TANKS = 7;
 
-    private Map<String, String> tankPositions = new HashMap<>();
+    protected Map<String, String> tankPositions = new HashMap<>();
     
-    private Map<UnitTile, Integer> projectedHP = new HashMap<>();
-    private Map<String, String> toAttack = new HashMap<>(); //Key: Own, Value: Enemy
+    protected Map<UnitTile, Integer> projectedHP = new HashMap<>();
+    protected Map<String, String> toAttack = new HashMap<>(); //Key: Own, Value: Enemy
     
     /*
      * Nagato Strategy:
@@ -212,7 +212,7 @@ class Nagato extends AI {
         waitForSocket();      
     }
 
-    private void attackAvailable() {
+    protected void attackAvailable() {
         for (Entry<String, String> attack : toAttack.entrySet()) {
             socket.attackUnit(attack.getKey(), attack.getValue());
             waitForSocket();
@@ -220,7 +220,7 @@ class Nagato extends AI {
     }
 
     @SuppressWarnings ("static-access")
-    private void helicopterMovement() {
+    protected void helicopterMovement() {
         
         for (UnitTile heli : ingameController.unitTiles) {
             //Iterate over own Helis
@@ -346,13 +346,13 @@ class Nagato extends AI {
         }        
     }
     
-    private void tankRetreat() {
+    protected void tankRetreat() {
         // TODO Evaluate if smarter Ideas are found
         tankReposition();
     }
     
     @SuppressWarnings ("static-access")
-    private void tankMovementAttackAdditional() {
+    protected void tankMovementAttackAdditional() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
             
             //Skip repositioning Dead Units or units that already did a safe attack
@@ -406,7 +406,7 @@ class Nagato extends AI {
     }
 
     @SuppressWarnings ("static-access")
-    private void tankMovementAttackSafe() {
+    protected void tankMovementAttackSafe() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
             
             //Skip repositioning Dead Units
@@ -427,7 +427,9 @@ class Nagato extends AI {
                 continue;
             }
             
-            if (attackable.firstKey().distance <= tank.getMpLeft() / 2) {
+            if (attackable.firstKey().distance == 0) {
+                flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
+            } else if (attackable.firstKey().distance <= tank.getMpLeft() / 2) {
                 socket.moveUnit(tank.getId(), attackable.firstKey().path);  
                 tank.setMpLeft(tank.getMpLeft() - attackable.firstKey().distance);
                 waitForSocket();
@@ -437,7 +439,7 @@ class Nagato extends AI {
         
     }
     
-    private void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
+    protected void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
         toAttack.put(by.getId(), target.getId());
         int hp = projectedHP.get(target);
         hp -= predictDamage(target, hp);
@@ -445,7 +447,7 @@ class Nagato extends AI {
     }
 
     @SuppressWarnings ("static-access")
-    private int predictDamage(UnitTile target, int hp) {
+    protected int predictDamage(UnitTile target, int hp) {
         EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
         int fieldDefense = 0;
         
@@ -496,7 +498,7 @@ class Nagato extends AI {
     }
  
     @SuppressWarnings ("static-access")
-    private void tankReposition() {
+    protected void tankReposition() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
             
             //Skip repositioning Dead Units
@@ -551,7 +553,7 @@ class Nagato extends AI {
     
     class PairComperatorXY implements Comparator<Pair<Integer, Integer>> {
 
-        private int sideLength;
+        protected int sideLength;
         
         public PairComperatorXY(int length) {
             sideLength = length;

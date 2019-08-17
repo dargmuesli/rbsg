@@ -151,6 +151,11 @@ public abstract class AI {
 
             String closest = toAttackFrom.getId();
             
+            if (ingameController.previousTileMapById.isEmpty()) {
+                attackable.put(path, ingameController.unitTileMapByTileId.get(attackableTile));
+                return attackable;
+            }
+            
             do {
                 pathList.addFirst(closest);
                 path.distance++;
