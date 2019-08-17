@@ -35,8 +35,6 @@ public class GameLobbyController {
     @FXML
     public VBox vbxMinimap;
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private AnchorPane apnRoot;
     @FXML
     private JFXButton btnBack;
@@ -65,8 +63,7 @@ public class GameLobbyController {
 
     @FXML
     private void initialize() {
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, GameLobbyController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, GameLobbyController.class, btnFullscreen);
 
         GameLobbyController.instance = this;
         GameSocketDistributor
@@ -103,7 +100,7 @@ public class GameLobbyController {
                 .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
                 .forEachOrdered(inGameObjectEntry -> {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                        .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/lobbyPlayer.fxml"));
+                        .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/lobbyPlayer.fxml"));
 
                     try {
                         Parent parent = fxmlLoader.load();

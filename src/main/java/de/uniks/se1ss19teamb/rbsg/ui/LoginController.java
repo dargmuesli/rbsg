@@ -45,8 +45,6 @@ public class LoginController {
     @FXML
     private Button btnRegistration;
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private JFXCheckBox rememberLogin;
     @FXML
     private AnchorPane apnRoot;
@@ -78,7 +76,7 @@ public class LoginController {
         jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
 
-        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen);
 
         // load user data
         userData = UserData.loadUserData();
@@ -122,7 +120,7 @@ public class LoginController {
     @FXML
     private void login() {
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
+            NotificationHandler.sendWarning("Please enter a username and a password.", logger);
             return;
         }
 
@@ -146,7 +144,7 @@ public class LoginController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
-            NotificationHandler.getInstance().sendError("Login Failed, User data doesn't exist! ", logger);
+            NotificationHandler.sendError("Login Failed, User data doesn't exist! ", logger);
         }
     }
 

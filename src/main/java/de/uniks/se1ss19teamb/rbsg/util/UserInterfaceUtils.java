@@ -6,7 +6,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
-import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
+import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -45,8 +45,7 @@ public class UserInterfaceUtils {
             try {
                 node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
             } catch (IOException e) {
-                NotificationHandler.getInstance().sendError(
-                    "Transition to the next scene failed!", logger, e);
+                NotificationHandler.sendError("Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -71,8 +70,7 @@ public class UserInterfaceUtils {
 
                 nodeToFade.getScene().setRoot(nextFxml);
             } catch (IOException e) {
-                NotificationHandler.getInstance().sendError(
-                    "Transition to the next scene failed!", logger, e);
+                NotificationHandler.sendError("Transition to the next scene failed!", logger, e);
             }
         });
         fadeTransition.play();
@@ -117,30 +115,12 @@ public class UserInterfaceUtils {
         });
     }
 
-    public static void initialize(
-        Pane root, Pane rootChild, Class<?> clazz, JFXButton btnFullscreen, Pane errorContainer) {
+    public static void initialize(Pane fade, Pane root, Class<?> clazz, JFXButton btnFullscreen) {
+        UserInterfaceUtils.makeFadeInTransition(fade);
 
-        UserInterfaceUtils.makeFadeInTransition(root);
-
-        Theming.setTheme(Arrays.asList(root, rootChild));
+        Theming.setTheme(Arrays.asList(fade, root));
 
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/popup.fxml"));
-
-        try {
-            Parent parent = fxmlLoader.load();
-            // controller not used yet, but it's good to have it for later purposes.
-            PopupController controller = fxmlLoader.getController();
-            NotificationHandler.getInstance().setPopupController(controller);
-            Platform.runLater(() -> {
-                errorContainer.getChildren().add(parent);
-                errorContainer.toFront();
-            });
-        } catch (IOException e) {
-            NotificationHandler.getInstance()
-                .sendError("Error loading the popup controller's fxml!", logger, e);
-        }
     }
 
     //private void slideNextScene(String path, int value, AnchorPane pane) throws IOException {

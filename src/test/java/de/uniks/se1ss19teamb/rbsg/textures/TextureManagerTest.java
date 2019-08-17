@@ -8,21 +8,24 @@ import java.util.Map;
 import javafx.geometry.Dimension2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Pair;
-
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 
-public class TextureManagerTest {
+@ExtendWith(ApplicationExtension.class)
+class TextureManagerTest {
 
-    @Before
-    public void prepareTest() {
+    @Start
+    public void start(Stage stage) {
         TextureManager.init();
     }
 
     @Test
-    public void checkLoadedTexture() {
+    void checkLoadedTexture() {
         Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("missing"));
         Assert.assertEquals(new Dimension2D(64, 256), TextureManager.getTextureDimensions("panzer"));
 
@@ -35,7 +38,7 @@ public class TextureManagerTest {
     }
 
     @Test
-    public void checkInstancedPanes() {
+    void checkInstancedPanes() {
         Pane pane = TextureManager.getTextureInstance("test", null);
         Assert.assertFalse(pane.getChildren().filtered((node) -> node instanceof ImageView).isEmpty());
         Assert.assertNotNull(((ImageView) pane.getChildren()
