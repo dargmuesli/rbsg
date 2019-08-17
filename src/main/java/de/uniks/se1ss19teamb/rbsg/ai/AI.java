@@ -184,16 +184,31 @@ public abstract class AI {
     //Global AI access Management
     
     private static SortedMap<Integer, Class<? extends AI>> aiModels = new TreeMap<>();
+    private static SortedMap<Integer, Class<? extends AI>> aiModelsStrategic = new TreeMap<>();
+    
     
     static {
         aiModels.put(-1, Kaiten.class);
-        aiModels.put(0, Nagato.class);
+        
+        aiModelsStrategic.put(-1, Kaiten.class);
+        aiModelsStrategic.put(0, Nagato.class);
     }
     
     public static AI instantiate(int difficulty) {
         difficulty = (difficulty == Integer.MAX_VALUE) ? aiModels.lastKey() : difficulty;
         Class<? extends AI> targetAI = aiModels.get(difficulty);
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
+        try {
+            return targetAI.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            return null;
+        }
+    }
+    
+    public static AI instantiateStrategic(int difficulty) {
+        difficulty = (difficulty == Integer.MAX_VALUE) ? aiModelsStrategic.lastKey() : difficulty;
+        Class<? extends AI> targetAI = aiModelsStrategic.get(difficulty);
+        targetAI = (targetAI == null) ? aiModelsStrategic.get(-1) : targetAI;
         try {
             return targetAI.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

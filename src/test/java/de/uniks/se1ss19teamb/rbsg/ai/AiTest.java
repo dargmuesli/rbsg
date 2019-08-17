@@ -391,7 +391,7 @@ public class AiTest {
         controller.inGameObjects.put("unittestplayer", ai);
         controller.inGameObjects.put("enemy", enemy);
         
-        Nagato testInstance = (Nagato)AI.instantiate(0);
+        Nagato testInstance = (Nagato)AI.instantiateStrategic(0);
         
         List<String> request = testInstance.requestArmy();
         Assert.assertTrue(request.contains("tank"));
