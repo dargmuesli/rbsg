@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javafx.util.Pair;
 
@@ -216,11 +219,124 @@ class Nagato extends AI {
         }
     }
 
+    @SuppressWarnings ("static-access")
     private void helicopterMovement() {
-        // TODO Auto-generated method stub
         
-    }
+        for(UnitTile heli : ingameController.unitTiles) {
+            //Iterate over own Helis
+            if (!heli.getLeader().equals(playerID) || !heli.getType().equals("Chopper")) {
+                continue;
+            }
+            
+            ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                    heli.getPosition()), heli.getMpLeft(), false,
+                    ((InGamePlayer)ingameController.inGameObjects
+                    .get(playerID)).getName());
+            
+            Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
+            if (previousTileMapByIdLocal.isEmpty()) {
+                continue;
+            }
+            List<String> possibleDestinations = new ArrayList<>(previousTileMapByIdLocal.keySet());
+            
+            for(UnitTile enemyTank : ingameController.unitTiles) {
+                //Iterate over enemy Heavy Tanks
+                if (enemyTank.getLeader().equals(playerID) || !enemyTank.getType().equals("Heavy Tank")) {
+                    continue;
+                }
+                
+                ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                        enemyTank.getPosition()), enemyTank.getMp(), false,
+                        ((InGamePlayer)ingameController.inGameObjects
+                        .get(enemyTank.getLeader())).getName());
+                
+                possibleDestinations.removeAll(ingameController.previousTileMapById.keySet());
+            }
+            
+            if (possibleDestinations.isEmpty()) {
+                //TODO Heli can't move outside of HT Attack Range. FInd Better solution
+                possibleDestinations.addAll(previousTileMapByIdLocal.keySet());
+            }
+            
+            SortedSet<UnitTile> targets = new TreeSet<>((unitL, unitR) -> {
+                //Focus Bazooka as highest Priority
+                if (unitL.getType().equals("Bazooka") && !unitL.getType().equals(unitR.getType())) {
+                    return -1000;
+                }
+                if (unitR.getType().equals("Bazooka") && !unitL.getType().equals(unitR.getType())) {
+                    return 1000;
+                }
+                
+                //Then Light Tanks
+                if (unitL.getType().equals("Light Tank") && !unitL.getType().equals(unitR.getType())) {
+                    return -500;
+                }
+                if (unitR.getType().equals("Light Tank") && !unitL.getType().equals(unitR.getType())) {
+                    return 500;
+                }
+                
+                EnvironmentTile heliTile = ingameController.environmentTileMapById.get(heli.getPosition());
+                EnvironmentTile tileL = ingameController.environmentTileMapById.get(unitL.getPosition());
+                EnvironmentTile tileR = ingameController.environmentTileMapById.get(unitR.getPosition());
+                
+                int distL = Math.abs(tileL.getX() - heliTile.getX()) + Math.abs(tileL.getY() - heliTile.getY());
+                int distR = Math.abs(tileR.getX() - heliTile.getX()) + Math.abs(tileR.getY() - heliTile.getY());
+                
+                return distL - distR;
+            });
+            
+            for(UnitTile enemy : ingameController.unitTiles) {
+                //Iterate over enemys that are not Tanks
+                if (enemy.getLeader().equals(playerID) || enemy.getType().equals("Heavy Tank")) {
+                    continue;
+                }
+                
+                targets.add(enemy);
+            }
+            
+            UnitTile target = targets.first();
+            EnvironmentTile targetUnitTile = ingameController.environmentTileMapById.get(target.getPosition());
+            
+            String closest = null;
+            int closestDistance = Integer.MAX_VALUE;
+            
+            for (String targetTile : possibleDestinations) {
+                EnvironmentTile current = ingameController.environmentTileMapById.get(targetTile);
+                
+                int currentDistance = Math.abs(targetUnitTile.getX() - current.getX()) 
+                        + Math.abs(targetUnitTile.getY() - current.getY());
+                
+                //Forbid walking onto the target
+                if (currentDistance < closestDistance && currentDistance > 0) {
+                    closestDistance = currentDistance;
+                    closest = current.getId();
+                }
+            }
+            
+            Path path = new Path();
+            path.end = ingameController.environmentTileMapById.get(closest);
+            path.start = ingameController.environmentTileMapById.get(heli.getPosition());        
+            path.distance = 0;
+            
+            LinkedList<String> pathList = new LinkedList<>();
 
+            do {
+                path.distance++;
+                pathList.addFirst(closest);
+                closest = previousTileMapByIdLocal.get(closest);
+            } while (!closest.equals(heli.getPosition()));
+
+            path.path = pathList.toArray(new String[0]);
+            
+            socket.moveUnit(heli.getId(), path.path);
+        
+            //If we land next to the Target, mark for Attacking
+            if (closestDistance == 1) {
+                toAttack.put(heli.getId(), target.getId());
+            }
+        }        
+    }
+    
     private void tankRetreat() {
         // TODO Evaluate if smarter Ideas are found
         tankReposition();
