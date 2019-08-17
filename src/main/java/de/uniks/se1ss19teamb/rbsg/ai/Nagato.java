@@ -222,7 +222,7 @@ class Nagato extends AI {
     @SuppressWarnings ("static-access")
     private void helicopterMovement() {
         
-        for(UnitTile heli : ingameController.unitTiles) {
+        for (UnitTile heli : ingameController.unitTiles) {
             //Iterate over own Helis
             if (!heli.getLeader().equals(playerID) || !heli.getType().equals("Chopper")) {
                 continue;
@@ -239,14 +239,14 @@ class Nagato extends AI {
             }
             List<String> possibleDestinations = new ArrayList<>(previousTileMapByIdLocal.keySet());
             
-            for(UnitTile enemyTank : ingameController.unitTiles) {
+            for (UnitTile enemyTank : ingameController.unitTiles) {
                 //Iterate over enemy Heavy Tanks
                 if (enemyTank.getLeader().equals(playerID) || !enemyTank.getType().equals("Heavy Tank")) {
                     continue;
                 }
                 
                 ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                        enemyTank.getPosition()), enemyTank.getMp(), false,
+                        enemyTank.getPosition()), enemyTank.getMp() + 1, false,
                         ((InGamePlayer)ingameController.inGameObjects
                         .get(enemyTank.getLeader())).getName());
                 
@@ -260,10 +260,10 @@ class Nagato extends AI {
             
             SortedSet<UnitTile> targets = new TreeSet<>((unitL, unitR) -> {
                 //Focus Bazooka as highest Priority
-                if (unitL.getType().equals("Bazooka") && !unitL.getType().equals(unitR.getType())) {
+                if (unitL.getType().equals("Bazooka Trooper") && !unitL.getType().equals(unitR.getType())) {
                     return -1000;
                 }
-                if (unitR.getType().equals("Bazooka") && !unitL.getType().equals(unitR.getType())) {
+                if (unitR.getType().equals("Bazooka Trooper") && !unitL.getType().equals(unitR.getType())) {
                     return 1000;
                 }
                 
@@ -285,13 +285,21 @@ class Nagato extends AI {
                 return distL - distR;
             });
             
-            for(UnitTile enemy : ingameController.unitTiles) {
+            for (UnitTile enemy : ingameController.unitTiles) {
                 //Iterate over enemys that are not Tanks
                 if (enemy.getLeader().equals(playerID) || enemy.getType().equals("Heavy Tank")) {
                     continue;
                 }
                 
                 targets.add(enemy);
+            }
+            
+            if (targets.isEmpty()) {
+                //heli idle to move at least one unit per turn
+                EnvironmentTile heliTile = ingameController.environmentTileMapById.get(heli.getPosition());
+                Pair<Path, Integer> path = findClosestAccessibleField(heli, heliTile.getX(), heliTile.getY(), false);
+                socket.moveUnit(heli.getId(), path.getKey().path);
+                waitForSocket();
             }
             
             UnitTile target = targets.first();
@@ -329,6 +337,7 @@ class Nagato extends AI {
             path.path = pathList.toArray(new String[0]);
             
             socket.moveUnit(heli.getId(), path.path);
+            waitForSocket();
         
             //If we land next to the Target, mark for Attacking
             if (closestDistance == 1) {
