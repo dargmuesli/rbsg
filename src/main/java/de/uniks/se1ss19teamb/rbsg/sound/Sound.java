@@ -1,16 +1,17 @@
 package de.uniks.se1ss19teamb.rbsg.sound;
 
+import javafx.application.Platform;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class Sound {
+class Sound {
 
-    protected boolean keepInRam;
+    boolean keepInRam;
 
-    protected Object sound;
+    private Object sound;
 
-    protected Sound(String classPath, boolean keepInRam) {
+    Sound(String classPath, boolean keepInRam) {
         String url = this.getClass().getResource(classPath).toExternalForm();
         this.keepInRam = keepInRam;
 
@@ -21,15 +22,18 @@ public class Sound {
         }
     }
 
-    public void play(float balance) {
-        if (keepInRam) {
-            ((AudioClip) sound).setBalance(balance);
-            ((AudioClip) sound).play();
-        } else {
-            MediaPlayer player = new MediaPlayer((Media) sound);
-            player.setBalance(balance);
-            player.play();
-        }
+    void play(float volume, float balance) {
+        Platform.runLater(() -> {
+            if (keepInRam) {
+                ((AudioClip) sound).setVolume(volume);
+                ((AudioClip) sound).setBalance(balance);
+                ((AudioClip) sound).play();
+            } else {
+                MediaPlayer player = new MediaPlayer((Media) sound);
+                player.setVolume(volume);
+                player.setBalance(balance);
+                player.play();
+            }
+        });
     }
-
 }

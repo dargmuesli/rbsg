@@ -18,8 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class RegistrationController {
 
     private static final Logger logger = LogManager.getLogger();
-    @FXML
-    AnchorPane errorContainer;
+
     @FXML
     private AnchorPane apnFade;
     @FXML
@@ -39,14 +38,13 @@ public class RegistrationController {
     private UserData userData;
 
     public void initialize() {
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, RegistrationController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, RegistrationController.class, btnFullscreen);
 
         // load user data
         userData = UserData.loadUserData();
 
         if (userData == null) {
-            NotificationHandler.getInstance().sendWarning("User data couldn't be deserialized!", logger);
+            NotificationHandler.sendWarning("User data couldn't be deserialized!", logger);
             return;
         }
 
@@ -108,12 +106,12 @@ public class RegistrationController {
         if (username.getText().isEmpty()
             || password.getText().isEmpty()
             || passwordRepeat.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Please enter everything.", logger);
+            NotificationHandler.sendWarning("Please enter everything.", logger);
             return;
         }
 
         if (!password.getText().equals(passwordRepeat.getText())) {
-            NotificationHandler.getInstance().sendWarning("The password do not match!", logger);
+            NotificationHandler.sendWarning("The password do not match!", logger);
             return;
         }
 
@@ -127,7 +125,7 @@ public class RegistrationController {
 
         SerializeUtil.serialize(UserData.USER_DATA_PATH.toString(), userData);
 
-        NotificationHandler.getInstance().sendSuccess("Registered successfully!", logger);
+        NotificationHandler.sendSuccess("Registered successfully!", logger);
 
         UserInterfaceUtils.makeFadeOutTransition(
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", apnFade);

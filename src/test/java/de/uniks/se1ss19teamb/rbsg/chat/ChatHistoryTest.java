@@ -35,8 +35,7 @@ public class ChatHistoryTest {
 
     @Test
     public void chatTest() throws IOException {
-        Path testChatLogPath = Paths.get("src/test/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
-        Chat chat = new Chat(chatSocket, testChatLogPath);
+        Chat chat = new Chat(chatSocket, Chat.chatLogPath);
 
         chat.deleteHistory();
 
@@ -56,7 +55,7 @@ public class ChatHistoryTest {
         chat.disconnect();
 
         // Open the file
-        FileInputStream fstream = new FileInputStream(String.valueOf(testChatLogPath));
+        FileInputStream fstream = new FileInputStream(String.valueOf(Chat.chatLogPath));
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;

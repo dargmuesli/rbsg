@@ -31,7 +31,7 @@ public class WebSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpoint);
         } catch (Exception e) {
-            NotificationHandler.getInstance().sendError("Creation of the websocket client failed!", logger, e);
+            NotificationHandler.sendError("Creation of the websocket client failed!", logger, e);
         }
     }
 
@@ -40,8 +40,7 @@ public class WebSocketClient {
             try {
                 this.mySession.getBasicRemote().sendText(message.toString());
             } catch (Exception e) {
-                NotificationHandler.getInstance()
-                    .sendError("Message could not be sent to the websocket client!", logger, e);
+                NotificationHandler.sendError("Message could not be sent to the websocket client!", logger, e);
             }
         }
     }
@@ -64,7 +63,7 @@ public class WebSocketClient {
                     try {
                         mySession.getBasicRemote().sendText(NOOP);
                     } catch (Exception e) {
-                        NotificationHandler.getInstance().sendError("Can not send NOOP", logger);
+                        NotificationHandler.sendError("Can not send NOOP", logger);
                     }
                 }
             }

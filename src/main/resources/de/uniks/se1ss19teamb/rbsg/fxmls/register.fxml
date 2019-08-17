@@ -8,7 +8,6 @@
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.RegistrationController">
     <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
         <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <FontAwesomeIconView glyphName="USER_CIRCLE" size="40"/>
