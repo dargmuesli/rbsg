@@ -95,7 +95,6 @@ public class InGameController {
 
     private String playerId;
 
-
     public static InGameController getInstance() {
         return instance;
     }
@@ -180,7 +179,6 @@ public class InGameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -439,9 +437,7 @@ public class InGameController {
         }
 
         NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
-
     }
-
 
     private Pane generateUnitPane(UnitTile unitTile) {
         InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
@@ -574,11 +570,9 @@ public class InGameController {
         //for sounds find the attacking unit
         UnitTile attacker = findAttackingUnit(unit);
 
-
         if (attacker != null) {
             SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
         }
-
     }
 
     public UnitTile findAttackingUnit(UnitTile unit) {
@@ -597,5 +591,4 @@ public class InGameController {
 
         return neighbor;
     }
-
 }
