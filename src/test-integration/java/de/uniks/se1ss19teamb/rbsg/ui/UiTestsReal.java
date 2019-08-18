@@ -28,10 +28,10 @@ import org.testfx.util.WaitForAsyncUtils;
 public class UiTestsReal extends ApplicationTest {
     public static final String TEST_GAME = "TeamBTestGame";
 
-//    @BeforeAll
-//    public static void setupHeadlessMode() {
-//        TestUtil.setupHeadlessMode();
-//    }
+    @BeforeAll
+    public static void setupHeadlessMode() {
+        TestUtil.setupHeadlessMode();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -270,7 +270,7 @@ public class UiTestsReal extends ApplicationTest {
     }
 
     @Test
-    public void MemeTest() {
+    public void memeTest() {
         clickOn("#btnRegistration");
         sleep(2000); // sleep to finish transition
         clickOn("#username");
