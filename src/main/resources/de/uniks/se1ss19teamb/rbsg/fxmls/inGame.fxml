@@ -22,7 +22,6 @@
     <Pane fx:id="miniMap" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
     <AnchorPane fx:id="apnFade" stylesheets="@../css/darkDesign.css" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane fx:id="errorContainer" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0"/>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="5.0" VBox.vgrow="ALWAYS">
             <HBox fx:id="head" alignment="CENTER_RIGHT" spacing="5" AnchorPane.rightAnchor="5.0"
@@ -59,9 +58,9 @@
             <AnchorPane>
                 <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <JFXToggleButton alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" fx:id="autoMode"
-                                     contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#autoMode"
-                                     prefHeight="0.0" prefWidth="56.0" size="5.0">
+                    <JFXToggleButton fx:id="autoMode" alignment="CENTER_LEFT" contentDisplay="RIGHT"
+                                     mnemonicParsing="false" onAction="#autoMode" prefHeight="33.0" prefWidth="108.0"
+                                     size="5.0" text="Automode: " AnchorPane.leftAnchor="5.0">
                     </JFXToggleButton>
                     <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <AnchorPane fx:id="turnUI">

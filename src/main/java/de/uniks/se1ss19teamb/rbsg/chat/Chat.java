@@ -8,10 +8,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -28,7 +25,8 @@ public class Chat {
     /**
      * The path at which the chat log is saved.
      */
-    public static Path chatLogPath = Paths.get("src/java/resources/de/uniks/se1ss19teamb/rbsg/chatLog.txt");
+    public static Path chatLogPath = Paths.get(
+        System.getProperty("java.io.tmpdir") + File.separator + "rbsg_chat-log.txt");
 
     /**
      * Defines that and how received messages are added to the chat history.
@@ -101,8 +99,7 @@ public class Chat {
             try {
                 Files.createDirectories(path.getParent());
             } catch (IOException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Chat directory could not be created!", logger, e);
+                NotificationHandler.sendError("Chat directory could not be created!", logger, e);
             }
         }
 
@@ -113,7 +110,7 @@ public class Chat {
                 out.println(SerializeUtil.serialize(cle));
             }
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Writing to the chat directory failed!", logger, e);
+            NotificationHandler.sendError("Writing to the chat directory failed!", logger, e);
         }
     }
 
@@ -124,7 +121,7 @@ public class Chat {
         try {
             Files.deleteIfExists(path);
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError("Chat log could not be deleted!", logger, e);
+            NotificationHandler.sendError("Chat log could not be deleted!", logger, e);
         }
     }
 }

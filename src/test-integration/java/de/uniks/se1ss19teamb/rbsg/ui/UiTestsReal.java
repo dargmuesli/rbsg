@@ -28,11 +28,6 @@ import org.testfx.util.WaitForAsyncUtils;
 public class UiTestsReal extends ApplicationTest {
     public static final String TEST_GAME = "TeamBTestGame";
 
-    @BeforeAll
-    public static void setupHeadlessMode() {
-        TestUtil.setupHeadlessMode();
-    }
-
     @Override
     public void start(Stage stage) throws Exception {
         Main main = new Main();

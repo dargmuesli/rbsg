@@ -53,8 +53,6 @@ public class LoginController {
     @FXML
     private Button btnRegistration;
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private JFXCheckBox rememberLogin;
     @FXML
     private AnchorPane apnRoot;
@@ -86,7 +84,7 @@ public class LoginController {
         jokeLabel.setTranslateY(jokeLabel.getLayoutY() + 75);
         ChuckNorrisJokeTicker.moveLabel(jokeLabel);
 
-        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, LoginController.class, btnFullscreen);
 
         // load user data
         userData = UserData.loadUserData();
@@ -130,7 +128,7 @@ public class LoginController {
     @FXML
     private void login() {
         if (txtUserName.getText().isEmpty() || password.getText().isEmpty()) {
-            NotificationHandler.getInstance().sendWarning("Please enter a username and a password.", logger);
+            NotificationHandler.sendWarning("Please enter a username and a password.", logger);
             return;
         }
 
@@ -154,7 +152,6 @@ public class LoginController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
-            NotificationHandler.getInstance().sendError("Login Failed, User data doesn't exist! ", logger);
             Image image = new Image(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/memes/joda.jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
@@ -165,6 +162,8 @@ public class LoginController {
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(event -> stage.close());
             delay.play();
+
+            NotificationHandler.sendError("Login Failed, User data doesn't exist! ", logger);
         }
     }
 

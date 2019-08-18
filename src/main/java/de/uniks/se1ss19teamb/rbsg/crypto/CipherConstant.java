@@ -21,7 +21,7 @@ class CipherConstant {
             privateKey = CipherUtils
                 .readPrivateKey("src/main/resources/de/uniks/se1ss19teamb/rbsg/Dummy.der");
         } catch (Exception e) {
-            NotificationHandler.getInstance().sendError("A key could not be read!", logger, e);
+            NotificationHandler.sendError("A key could not be read!", logger, e);
         }
     }
 }

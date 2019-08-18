@@ -28,7 +28,7 @@ public class SerializeUtil {
         try (Reader reader = new FileReader(file)) {
             return new Gson().fromJson(reader, myClass);
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError(
+            NotificationHandler.sendError(
                 "Could not deserialize " + file.getName() + " to " + myClass.getName() + "!", logger, e);
         }
 
@@ -43,7 +43,7 @@ public class SerializeUtil {
         try (FileWriter writer = new FileWriter(fileString)) {
             new Gson().toJson(object, writer);
         } catch (IOException e) {
-            NotificationHandler.getInstance().sendError(
+            NotificationHandler.sendError(
                 "Could not serialize " + object + " to " + fileString + "!", logger, e);
         }
     }

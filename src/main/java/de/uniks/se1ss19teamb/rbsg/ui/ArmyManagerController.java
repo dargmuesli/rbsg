@@ -98,6 +98,10 @@ public class ArmyManagerController {
         cmbArmies.setOnAction((event) -> {
             army = cmbArmies.getSelectionModel().getSelectedItem();
 
+            updateUnits();
+
+            btnSave.setDisable(true);
+
             if (army == null) {
                 btnRemove.setDisable(true);
                 btnExport.setDisable(true);
@@ -108,7 +112,6 @@ public class ArmyManagerController {
             btnExport.setDisable(false);
 
             txtfldArmyName.setText(army.getName());
-            updateUnits();
 
             if (GameLobbyController.instance != null) {
                 Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).changeArmy(army.getId());
@@ -120,7 +123,8 @@ public class ArmyManagerController {
 
             army.setName(txtfldArmyName.getText());
 
-            if (army.getName() == null || army.getName().equals("") || army.getUnits() == null) {
+            if (army.getName() == null || army.getName().equals("")
+                || army.getUnits() == null || army.getUnits().size() < 10) {
                 btnSave.setDisable(true);
                 btnExport.setDisable(true);
             } else {
@@ -136,7 +140,7 @@ public class ArmyManagerController {
     private void setUpUnitObjects() {
         availableUnits.forEach((s, unit) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/unitObject.fxml"));
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/unitObject.fxml"));
 
             try {
                 Parent parent = fxmlLoader.load();
@@ -164,6 +168,7 @@ public class ArmyManagerController {
                 btnExport.setDisable(true);
             }
 
+            txtfldArmyName.setText(army.getName());
             labelLeftUnits.setText(String.valueOf(unitsLeft));
             unitObjectControllers.forEach(
                 unitObjectController -> unitObjectController.update(
@@ -211,6 +216,8 @@ public class ArmyManagerController {
         btnAdd.setDisable(false);
         btnRemove.setDisable(true);
         btnEdit.setDisable(true);
+        btnSave.setDisable(true);
+        btnImport.setDisable(false);
         btnExport.setDisable(true);
 
         updateUnits();
@@ -239,6 +246,7 @@ public class ArmyManagerController {
 
             updateUnits();
 
+            txtfldArmyName.setText(army.getName());
             cmbArmies.setDisable(false);
             btnRemove.setDisable(false);
             btnEditIcon.setGlyphName("PENCIL");
@@ -260,14 +268,22 @@ public class ArmyManagerController {
 
         saveToServer();
         loadFromServer();
+
+        for (Army army : cmbArmies.getItems()) {
+            if (army.getId().equals(ArmyManagerController.army.getId())) {
+                cmbArmies.getSelectionModel().select(army);
+                break;
+            }
+        }
+
+        cmbArmies.setDisable(false);
     }
 
     @FXML
     private void exportArmy() {
         SerializeUtil.chooseFile().ifPresent(file -> {
             SerializeUtil.serialize(file.getAbsolutePath(), army);
-            NotificationHandler.getInstance()
-                .sendSuccess("Exported successfully.", logger);
+            NotificationHandler.sendSuccess("Exported successfully.", logger);
         });
     }
 
@@ -276,8 +292,7 @@ public class ArmyManagerController {
         SerializeUtil.chooseFile().ifPresent(file -> {
             army = SerializeUtil.deserialize(file, Army.class);
 
-            NotificationHandler.getInstance()
-                .sendSuccess("Imported successfully.", logger);
+            NotificationHandler.sendSuccess("Imported successfully.", logger);
 
             btnEdit.setDisable(false);
             txtfldArmyName.setText(army.getName());
@@ -294,12 +309,13 @@ public class ArmyManagerController {
     @FXML
     private void saveToServer() {
         if (army.getName() == null || army.getName().equals("")) {
-            NotificationHandler.getInstance().sendError("You have to give the army a name!",
+            NotificationHandler.sendError("You have to give the army a name!",
                 logger);
             return;
         }
 
         if (army.getUnits() == null || army.getUnits().size() < 10) {
+
             Image image = new Image(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/memes/MemeToyStorie.jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
@@ -310,15 +326,16 @@ public class ArmyManagerController {
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(event -> stage.close());
             delay.play();
+          
+            NotificationHandler.sendError("You need at least ten units!", logger);
 
-            NotificationHandler.getInstance().sendError("You need at least ten units!", logger);
             return;
         }
 
         if (army.getId() == null || army.getId().equals("")) {
             RequestUtil.request(new CreateArmyRequest(army.getName(), army.getUnits(), LoginController.getUserToken()))
                 .ifPresent(s -> {
-                    NotificationHandler.getInstance().sendSuccess("The Army was saved.", logger);
+                    NotificationHandler.sendSuccess("The Army was saved.", logger);
                     army.setId(s);
                 });
         } else {
@@ -326,7 +343,7 @@ public class ArmyManagerController {
                 return;
             }
 
-            NotificationHandler.getInstance().sendSuccess("The Army was updated.", logger);
+            NotificationHandler.sendSuccess("The Army was updated.", logger);
         }
     }
 }

@@ -48,8 +48,6 @@ public class InGameController {
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private AnchorPane apnRoot;
     @FXML
     private AnchorPane apnFade;
@@ -142,8 +140,7 @@ public class InGameController {
     @FXML
     private void initialize() {
         instance = this;
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, InGameController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, InGameController.class, btnFullscreen);
 
         for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {
@@ -160,7 +157,7 @@ public class InGameController {
         apnFade.getChildren().add(miniMap);
 
         FXMLLoader loader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/turnUI.fxml"));
         try {
             Parent parent = loader.load();
             turnUI.getChildren().add(parent);
@@ -171,7 +168,7 @@ public class InGameController {
         selectionOverlay.setId("tile-selected");
 
         FXMLLoader loader1 = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/winScreen.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/winScreen.fxml"));
         try {
             Parent parent = loader1.load();
             winScreenPane.getChildren().add(parent);
@@ -246,8 +243,7 @@ public class InGameController {
                 if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
                     .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
-                    NotificationHandler.getInstance()
-                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
+                    NotificationHandler.sendWarning("You can only activate Automode\nin your first Movementphase\n"
                             + "or on your opponents turn.", logger);
 
                 } else {
@@ -267,14 +263,13 @@ public class InGameController {
                 Thread.sleep(1000);
                 tryCounter++;
                 if (tryCounter == 10) {
-                    NotificationHandler.getInstance().sendError("The matchfield tiles couldn't be loaded.",
+                    NotificationHandler.sendError("The matchfield tiles couldn't be loaded.",
                         logger);
                     break;
                 }
 
             } catch (InterruptedException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Game couldn't be initialized!", logger, e);
+                NotificationHandler.sendError("Game couldn't be initialized!", logger, e);
             }
         }
 
@@ -424,7 +419,7 @@ public class InGameController {
             unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
-        NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
+        NotificationHandler.sendSuccess("Game initialized.", logger);
     }
 
 

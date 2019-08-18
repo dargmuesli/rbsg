@@ -55,8 +55,6 @@ public class MainController {
     private static String sendTo = null;
 
     @FXML
-    private AnchorPane errorContainer;
-    @FXML
     private AnchorPane apnRoot;
     @FXML
     private JFXButton btnArmyManager;
@@ -104,7 +102,7 @@ public class MainController {
     }
 
     public void initialize() {
-        UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen);
 
         MainController.instance = this;
 
@@ -244,7 +242,7 @@ public class MainController {
                 new CreateGameRequest(gameName.getText(), 4, userKey).sendRequest();
             }
         } else {
-            NotificationHandler.getInstance().sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
+            NotificationHandler.sendWarning("Bitte geben Sie einen Namen für das Spiel ein.", logger);
         }
     }
 
@@ -323,7 +321,7 @@ public class MainController {
 
             existingGames.forEach((s, gameMeta) -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainController.class
-                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/gameSelection.fxml"));
+                    .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/gameSelection.fxml"));
 
                 try {
                     Parent parent = fxmlLoader.load();
@@ -331,8 +329,7 @@ public class MainController {
                     controller.setUpGameLabel(gameMeta);
                     gameListView.getItems().add(parent);
                 } catch (IOException e) {
-                    NotificationHandler.getInstance()
-                        .sendError("A game field could not be loaded!", logger, e);
+                    NotificationHandler.sendError("A game field could not be loaded!", logger, e);
                 }
             });
         });
@@ -466,7 +463,8 @@ public class MainController {
                 () -> {
                     try {
                         Tab newTab = FXMLLoader
-                            .load(this.getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/privateTab.fxml"));
+                            .load(this.getClass()
+                                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/privateTab.fxml"));
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
                         if (mymessage) {
@@ -476,8 +474,7 @@ public class MainController {
                         }
                         MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
-                        NotificationHandler.getInstance()
-                            .sendError("A tab could not be loaded!", logger, e);
+                        NotificationHandler.sendError("A tab could not be loaded!", logger, e);
                     }
                 }
             );

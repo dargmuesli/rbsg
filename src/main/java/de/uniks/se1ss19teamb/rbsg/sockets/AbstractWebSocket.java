@@ -32,10 +32,10 @@ public abstract class AbstractWebSocket implements WebSocket {
                     }
                 });
             } catch (URISyntaxException e) {
-                NotificationHandler.getInstance().sendError("The websocket uri syntax is incorrect!", logger, e);
+                NotificationHandler.sendError("The websocket uri syntax is incorrect!", logger, e);
             }
         } else {
-            NotificationHandler.getInstance().sendInfo("A websocket connection already exists!", logger);
+            NotificationHandler.sendInfo("A websocket connection already exists!", logger);
         }
     }
 
@@ -44,8 +44,7 @@ public abstract class AbstractWebSocket implements WebSocket {
         try {
             websocket.stop();
         } catch (Exception e) {
-            NotificationHandler.getInstance()
-                .sendError("The websocket connection couldn't be stopped!", logger, e);
+            NotificationHandler.sendError("The websocket connection couldn't be stopped!", logger, e);
         }
 
         websocket = null;
