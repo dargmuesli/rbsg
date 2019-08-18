@@ -34,7 +34,8 @@ public class EasterEggKeyEventHandler {
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root1, 800, 600));
                     stage.show();
-                    stage.setResizable(false);
+                    stage.setMinHeight(600);
+                    stage.setMinWidth(800);
                 } catch (IOException b) {
                     b.printStackTrace();
                 }
