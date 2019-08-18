@@ -10,4 +10,5 @@ public class Path {
     
     public String[] path;
     
+    public int distance;
 }

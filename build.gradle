@@ -11,7 +11,7 @@ if (Jvm.current().javaVersion.java11Compatible) {
     apply plugin: 'org.openjfx.javafxplugin'
 
     javafx {
-        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media']
+        modules = ['javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media', 'javafx.swing']
     }
 }
 
@@ -62,7 +62,6 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
-    implementation group: 'org.fulib', name: 'fulibYaml', version: '1.0+'
     implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.15'
 
     integrationImplementation configurations.testImplementation
@@ -71,7 +70,6 @@ dependencies {
     integrationRuntimeOnly configurations.testRuntimeOnly
 
     testImplementation group: 'de.sandec', name: 'openjfx-monocle', version: '8u212'
-    testImplementation group: 'org.fulib', name: 'fulib', version: '1.0+'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.2'
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.2'

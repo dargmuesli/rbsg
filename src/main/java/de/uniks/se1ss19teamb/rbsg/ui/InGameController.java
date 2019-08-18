@@ -44,6 +44,7 @@ public class InGameController {
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
     public static Map<String, String> previousTileMapById = new HashMap<>();
+    public static Map<String, String> previousTileAttackMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
@@ -236,8 +237,8 @@ public class InGameController {
                     }
                 }
                 assert playerId != null;
-                aI = AI.instantiate(playerId, GameSocketDistributor.getGameSocket(0),
-                    InGameController.instance, Integer.MAX_VALUE);
+                aI = AI.instantiate(Integer.MAX_VALUE);
+                aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
             if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
                 if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
@@ -431,12 +432,13 @@ public class InGameController {
     }
 
     public void drawOverlay(EnvironmentTile startTile, int mp) {
-        drawOverlay(startTile, mp, true);
+        drawOverlay(startTile, mp, true, LoginController.getUserName());
     }
 
-    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
+    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
         previousTileMapById.clear();
+        previousTileAttackMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -464,7 +466,8 @@ public class InGameController {
 
                     // Limit to existing fields that haven't been checked yet and exclude the selected tile.
                     if (neighborId == null || neighborId.equals(startTile.getId()) 
-                            || previousTileMapById.containsKey(neighborId)) {
+                            || previousTileMapById.containsKey(neighborId)
+                            || previousTileAttackMapById.containsKey(neighborId)) {
                         return;
                     }
 
@@ -477,7 +480,7 @@ public class InGameController {
                         && !overlayedStacks.containsKey(neighborStack)
                         && (unitTileMapByTileId.get(neighborId) == null
                         || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
-                        .getName().equals(LoginController.getUserName()))) {
+                        .getName().equals(playerId))) {
                       
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
@@ -489,6 +492,8 @@ public class InGameController {
                             // TODO: for when the gamelobby exists
                             //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
+                            
+                            previousTileAttackMapById.put(neighborId, currentTile.getId());
                         } else if (currentMp > 0 && neighborUnitTile == null) {
                             // currentMp = 0 -> Attackable but not moveable
                             // TODO: for when the gamelobby exists
