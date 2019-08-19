@@ -35,7 +35,7 @@ public class ZuendorfMeme {
                         ZuendorfMeme.class.getResource("/de/uniks/se1ss19teamb/rbsg/memes/zuendorf_icon.png")
                             .getFile(), "UTF-8")));
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            NotificationHandler.getInstance().sendError("Couldn't load Zuendorf meme image.", LogManager.getLogger());
+            NotificationHandler.sendError("Couldn't load Zuendorf meme image.", LogManager.getLogger());
         }
 
         IMAGE_VIEW = new ImageView(IMAGE);
@@ -104,7 +104,7 @@ public class ZuendorfMeme {
                 IMAGE_VIEW.setY(randomYPos);
                 break;
             default:
-                NotificationHandler.getInstance().sendError(
+                NotificationHandler.sendError(
                     "You really need to check your code!", LogManager.getLogger());
         }
 

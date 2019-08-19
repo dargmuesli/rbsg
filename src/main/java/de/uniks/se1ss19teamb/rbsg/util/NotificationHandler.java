@@ -1,73 +1,73 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
-import de.uniks.se1ss19teamb.rbsg.ui.PopupController;
+import de.uniks.se1ss19teamb.rbsg.Main;
+import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
+import java.io.IOException;
+
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class NotificationHandler {
 
-    private static NotificationHandler notificationHandler;
-    private PopupController popupController;
-
-    private NotificationHandler() {
-    }
-
-    public static NotificationHandler getInstance() {
-        if (notificationHandler == null) {
-            notificationHandler = new NotificationHandler();
-        }
-
-        return notificationHandler;
-    }
-
-    public PopupController getPopupController() {
-        return this.popupController;
-    }
-
-    public void setPopupController(PopupController epc) {
-        this.popupController = epc;
-    }
-
-    public void sendError(String errorMessage, Logger logger) {
+    public static void sendError(String errorMessage, Logger logger) {
         sendError(errorMessage, logger, null);
     }
 
-    public void sendError(String errorMessage, Logger logger, Exception e) {
+    public static void sendError(String errorMessage, Logger logger, Exception e) {
         if (e == null) {
             logger.error(errorMessage);
         } else {
             logger.error(errorMessage, e);
         }
 
-        // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displayError(errorMessage);
-        }
+        send("ERROR", errorMessage);
     }
 
-    public void sendInfo(String infoMessage, Logger logger) {
+    public static void sendInfo(String infoMessage, Logger logger) {
         logger.info(infoMessage);
-
-        // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displayInformation(infoMessage);
-        }
+        send("INFO", infoMessage);
     }
 
-    public void sendSuccess(String successMessage, Logger logger) {
+    public static void sendSuccess(String successMessage, Logger logger) {
         logger.debug(successMessage);
-
-        // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displaySuccess(successMessage);
-        }
+        send("SUCCESS", successMessage);
     }
 
-    public void sendWarning(String warningMessage, Logger logger) {
+    public static void sendWarning(String warningMessage, Logger logger) {
         logger.warn(warningMessage);
+        send("WARNING", warningMessage);
+    }
 
-        // display message only if that's possible (i.e. a screen is loaded)
-        if (popupController != null) {
-            popupController.displayWarning(warningMessage);
+    private static void send(String level, String message) {
+        FXMLLoader fxmlLoader = new FXMLLoader(NotificationHandler.class
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/notification.fxml"));
+
+        try {
+            NotificationController.initLevel = level;
+            NotificationController.initText = message;
+
+            HBox hbxNotification = fxmlLoader.load();
+
+            new Thread(() -> {
+                Platform.runLater(() -> ((AnchorPane) Main.PRIMARY_STAGE.getScene().lookup("#apnFade"))
+                    .getChildren().add(hbxNotification));
+
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Platform.runLater(() -> ((AnchorPane) Main.PRIMARY_STAGE.getScene().lookup("#apnFade"))
+                    .getChildren().remove(hbxNotification));
+            }).start();
+        } catch (IOException e) {
+            LogManager.getLogger().error("Error loading the popup controller's fxml!", e);
         }
     }
 }
