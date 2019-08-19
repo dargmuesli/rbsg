@@ -1,102 +1,30 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-public class CryptoTest {
-    private String dataPath = "src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt";
-    private Charset utf8 = StandardCharsets.UTF_8;
+class CryptoTest {
 
-    @org.junit.Test
-    public void testEncryption() throws IOException {
-        FileWriter fileR = new FileWriter(dataPath);
-        File file = new File(dataPath);
-
-        String encryptedMessage;
-        String msg = "g\u00E5 til helvete!!!";
-        CipherController cip = new CipherController();
-        cip.encryptMessage(msg, dataPath);
-
-        //1.Reads the encrypted message
-        try {
-            FileReader fr = new FileReader(dataPath);
-
-            //2.Constructs the encrypted message
-            int t;
-            char c;
-            StringBuilder recoveredSecret = new StringBuilder();
-
-            while ((t = fr.read()) != -1) {
-                c = (char) t;
-                recoveredSecret.append(c);
-            }
-
-            encryptedMessage = encryptReturn(recoveredSecret.toString());
-            Assert.assertEquals(encryptedMessage, msg, "g\u00E5 til helvete!!!");
-            Assert.assertNotEquals(encryptedMessage, msg);
-
-            fr.close();
-            fileR.close();
-
-            if (!file.delete()) {
-                throw new IOException("Could not delete file!");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @BeforeAll
+    static void beforeAll() throws IOException, URISyntaxException {
+        GenerateKeys.setPublicKey(Files.readAllBytes(Paths.get(
+            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/public_key.der").toURI())));
+        GenerateKeys.setPrivateKey(Files.readAllBytes(Paths.get(
+            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/private_key.der").toURI())));
     }
 
-    @org.junit.Test
-    public void testDecryption() throws IOException {
-        FileWriter fileR = new FileWriter(dataPath);
-        File file = new File(dataPath);
+    @Test
+    void enDecryptTest() {
+        String message = "g\u00E5 til helvete!!!";
+        String encryptedMessage = CipherUtils.encryptMessage(message);
 
-        String msg = "g\u00E5 til helvete!!!";
-        CipherController cip = new CipherController();
-        cip.encryptMessage(msg, dataPath);
-        String decryptedMessage = cip.decryptMessage(dataPath);
-
-        //1.Reads the encrypted message
-        try {
-            FileReader fr = new FileReader(dataPath);
-
-            //2.Constructs the encrypted message
-            int t;
-            char c;
-            StringBuilder recoveredSecret = new StringBuilder();
-
-            while ((t = fr.read()) != -1) {
-                c = (char) t;
-                recoveredSecret.append(c);
-            }
-
-            String encryptedMessage = encryptReturn(recoveredSecret.toString());
-
-            Assert.assertNotEquals(encryptedMessage, msg);
-            Assert.assertEquals(decryptedMessage, msg);
-
-            fr.close();
-            fileR.close();
-
-            if (!file.delete()) {
-                throw new IOException("Could not delete file!");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String encryptReturn(String m) {
-        byte[] recSecret = Base64.decodeBase64(m);
-        return new String(recSecret, utf8);
+        Assert.assertNotEquals(message, encryptedMessage);
+        Assert.assertEquals(message, CipherUtils.decryptMessage(encryptedMessage));
     }
 }
