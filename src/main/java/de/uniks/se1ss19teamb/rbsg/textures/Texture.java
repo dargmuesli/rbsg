@@ -42,8 +42,7 @@ public class Texture {
         iv.setFitWidth(width);
         return new Pane(iv);
     }
-
-
+    
     void setImageView(ImageView iv, String colorName) {
         Color color;
         try {
@@ -87,5 +86,4 @@ public class Texture {
         g.dispose();
         return b;
     }
-
 }
