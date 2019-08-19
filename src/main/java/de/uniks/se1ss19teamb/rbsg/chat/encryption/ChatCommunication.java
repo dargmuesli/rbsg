@@ -1,6 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.chat.encryption;
 
-import de.uniks.se1ss19teamb.rbsg.crypto.CipherController;
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,7 +11,6 @@ public class ChatCommunication {
     String myPublicKey;
     BufferedReader stdIn;
 
-    private CipherController cp;
     private String privateKeyFilename;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -27,13 +26,12 @@ public class ChatCommunication {
         this.in = in;
         this.privateKeyFilename = privateKeyFilename;
 
-        cp = new CipherController();
         stdIn = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void sendMessage(String inputString) {
-        cp.encryptMessage(inputString, privateKeyFilename);
-        anotherPublic = GenerateKeys.getPublicKey().toString();
+        CipherUtils.encryptMessage(inputString);
+        //anotherPublic = GenerateKeys.getPublicKey().toString();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(privateKeyFilename));
@@ -53,7 +51,7 @@ public class ChatCommunication {
 
     String receiveMessage() throws IOException, ClassNotFoundException {
         String encryptedMessage = (String) in.readObject();
-        String decryptedMessage = cp.decryptMessage(encryptedMessage);
+        String decryptedMessage = CipherUtils.decryptMessage(encryptedMessage);
 
         if (type.equalsIgnoreCase("Client")) {
             System.out.println("Server: ");
@@ -65,15 +63,5 @@ public class ChatCommunication {
         System.out.println("Decrypted Message " + decryptedMessage);
 
         return encryptedMessage;
-    }
-
-    void endChat() {
-        try {
-            socket.close();
-            in.close();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
