@@ -22,7 +22,7 @@ public class ChatReceiver extends Thread {
             while ((received = chat.receiveMessage()) != null) {
                 if (count == 0) {
                     publicKey = received;
-                    chat.anotherPulbic = publicKey;
+                    chat.anotherPublic = publicKey;
                 } else if (count == 1) {
                     if (!(prompt.equalsIgnoreCase("Client : "))) {
                         System.out.println("Connected to Server: " + serverAdd

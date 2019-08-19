@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class ChatCommunication {
 
-    String anotherPulbic;
+    String anotherPublic;
     String myPublicKey;
     BufferedReader stdIn;
 
@@ -33,7 +33,7 @@ public class ChatCommunication {
 
     public void sendMessage(String inputString) {
         cp.encryptMessage(inputString, privateKeyFilename);
-        anotherPulbic = GenerateKeys.getPublicKey().toString();
+        anotherPublic = GenerateKeys.getPublicKey().toString();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(privateKeyFilename));
