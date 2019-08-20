@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import de.uniks.se1ss19teamb.rbsg.features.Pong;
 import de.uniks.se1ss19teamb.rbsg.features.Snake;
 import de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController;
 
@@ -18,6 +19,7 @@ public class EasterEggKeyEventHandler {
 
     private static final KeyCodeCombination snake = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHIFT_ANY);
     private static final KeyCodeCombination tictactoe = new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY);
+    private static final KeyCodeCombination pong = new KeyCodeCombination(KeyCode.F3, KeyCodeCombination.SHIFT_ANY);
 
     public static void setEvents(Scene scene) {
 
@@ -25,6 +27,14 @@ public class EasterEggKeyEventHandler {
             if (snake.match(e)) {
                 Snake game = new Snake();
                 game.start(Snake.classStage);
+            }
+            if (pong.match(e)) {
+                Pong game = new Pong();
+                try {
+                    game.start(Pong.classStage);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
             if (tictactoe.match(e)) {
                 try {
