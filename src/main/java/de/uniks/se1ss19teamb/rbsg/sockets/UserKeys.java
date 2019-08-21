@@ -1,7 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
-import java.util.ArrayList;
-
 public class UserKeys {
 
     static String currentUserKey;

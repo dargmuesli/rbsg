@@ -1,15 +1,16 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
-import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.UserKeys;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+
+import org.apache.logging.log4j.Logger;
+
 
 public class BotUser {
 
@@ -81,7 +82,7 @@ public class BotUser {
     void joinGame() {
         JoinGameRequest request = new JoinGameRequest(gameId, botUserKey);
         request.sendRequest();
-        NotificationHandler.getInstance().sendInfo(request.getResponse().toString(), logger);
+        NotificationHandler.sendInfo(request.getResponse().toString(), logger);
     }
 
     void connectGamesocket() {
