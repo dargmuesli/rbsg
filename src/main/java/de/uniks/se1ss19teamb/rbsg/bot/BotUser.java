@@ -2,14 +2,17 @@ package de.uniks.se1ss19teamb.rbsg.bot;
 
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.request.CreateArmyRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.UserKeys;
+import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 
@@ -52,8 +55,15 @@ public class BotUser {
 
             ArrayList<Unit> units = new ArrayList<>();
             if (neededArmy != null) {
-                for (String unit : neededArmy) {
-                    
+                for (String unitId : neededArmy) {
+                    units.add(new Unit(unitId));
+                }
+                CreateArmyRequest car = new CreateArmyRequest(botUserName + "'s Army", units, botUserKey);
+                car.sendRequest();
+            } else {
+                Map<String, Unit> availableUnitTypes = ArmyManagerController.availableUnits;
+                for (int i = 0; i < 10; i++) {
+                    int j = (int)Math.random();
                 }
             }
 
