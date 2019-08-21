@@ -47,14 +47,18 @@ public class BotControl {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
+        botUser.connectGamesocket();
         botUser.instantiateBotAi(difficulty);
         botUser.setInGameController(inGameController);
-        botUser.connectGamesocket();
+
 
         //Just info for dev. Will be deleted later
         NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
         NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
             + "\nBot Password: " + botUser.getBotUserPassword(), logger);
+        // end info
+
+        botUser.setReady();
     }
 
     public static void setInGameController(InGameController inGameControllerInput) {

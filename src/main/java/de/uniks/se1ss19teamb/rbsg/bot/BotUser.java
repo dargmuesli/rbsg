@@ -25,6 +25,7 @@ public class BotUser {
     private String botUserName;
     private String botUserPassword;
     private String gameId;
+    private String armyId;
 
     public void setGameId(String gameId) {
         this.gameId = gameId;
@@ -86,10 +87,11 @@ public class BotUser {
                     }
                     units.add(new Unit(unitId));
                 }
-
-                CreateArmyRequest car = new CreateArmyRequest(botUserName + "'s Army", units, botUserKey);
-                car.sendRequest();
             }
+            CreateArmyRequest car = new CreateArmyRequest(botUserName + "'s Army", units, botUserKey);
+            car.sendRequest();
+            armyId = car.getData();
+            gameSocket.changeArmy(armyId);
 
             // TODO: Initialize has to be done when the game starts.
             // botAi.initialize(botUserKey, gameSocket, inGameController);
@@ -132,5 +134,9 @@ public class BotUser {
         UserKeys.setBotUserKey(botUserKey);
         gameSocket.connect();
         UserKeys.revertUserKey();
+    }
+
+    void setReady() {
+        gameSocket.readyToPlay();
     }
 }
