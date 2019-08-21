@@ -4,13 +4,23 @@ import java.util.ArrayList;
 
 public class UserKeys {
 
-    ArrayList<String> userKeys = new ArrayList<>();
+    static String currentUserKey;
+    static String originalUserKey;
 
-    void addUserKey(int position, String userKey) {
-        userKeys.add(position, userKey);
+    public static void addUserKey(String userKey) {
+        currentUserKey = userKey;
     }
 
-    String getUserKey(int position) {
-        return userKeys.get(position);
+    public static String getUserKey() {
+        return currentUserKey;
+    }
+
+    public static void setBotUserKey(String botUserKey) {
+        originalUserKey = currentUserKey;
+        currentUserKey = botUserKey;
+    }
+
+    public static void revertUserKey() {
+        currentUserKey = originalUserKey;
     }
 }

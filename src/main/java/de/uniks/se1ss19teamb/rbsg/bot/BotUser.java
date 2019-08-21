@@ -4,6 +4,7 @@ import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.UserKeys;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import org.apache.logging.log4j.Logger;
@@ -84,6 +85,8 @@ public class BotUser {
     }
 
     void connectGamesocket() {
+        UserKeys.setBotUserKey(botUserKey);
         gameSocket.connect();
+        UserKeys.revertUserKey();
     }
 }

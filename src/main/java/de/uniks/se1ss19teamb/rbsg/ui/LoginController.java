@@ -9,6 +9,7 @@ import de.uniks.se1ss19teamb.rbsg.features.ChuckNorrisJokeTicker;
 import de.uniks.se1ss19teamb.rbsg.features.ZuendorfMeme;
 import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.UserKeys;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.util.Arrays;
@@ -67,6 +68,7 @@ public class LoginController {
 
     public static void setUserToken(String key) {
         userToken = key;
+        UserKeys.addUserKey(key);
     }
 
     public void initialize() {
