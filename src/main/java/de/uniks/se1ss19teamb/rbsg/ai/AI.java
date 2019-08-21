@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -53,7 +54,7 @@ public abstract class AI {
             aiThread.start();
             
             try {
-                Thread.sleep(20000);
+                Thread.sleep(200000);
             } catch (InterruptedException e) {
                 return;
             }
@@ -83,7 +84,13 @@ public abstract class AI {
     @SuppressWarnings ("static-access")
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMp(), false);
+                unit.getPosition()), unit.getMpLeft(), false,
+                ((InGamePlayer)ingameController.inGameObjects
+                .get(unit.getLeader())).getName());
+        
+        if (ingameController.previousTileMapById.isEmpty()) {
+            return null;
+        }
         
         String closest = null;
         int closestDistance = Integer.MAX_VALUE;
@@ -103,17 +110,64 @@ public abstract class AI {
         Path path = new Path();
         path.end = ingameController.environmentTileMapById.get(closest);
         path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
+        path.distance = 0;
         
         LinkedList<String> pathList = new LinkedList<>();
 
         do {
+            path.distance++;
             pathList.addFirst(closest);
             closest = ingameController.previousTileMapById.get(closest);
         } while (!closest.equals(unit.getPosition()));
 
         path.path = pathList.toArray(new String[0]);
         
-        return new Pair<Path, Integer>(path, closestDistance);
+        return new Pair<>(path, closestDistance);
+    }
+    
+    @SuppressWarnings ("static-access")
+    protected TreeMap<Path, UnitTile> findAllAttackableEnemies(UnitTile unit) {
+        TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
+        
+        ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                unit.getPosition()), unit.getMpLeft(), false,
+                ((InGamePlayer)ingameController.inGameObjects
+                .get(unit.getLeader())).getName());
+        
+        if (ingameController.previousTileAttackMapById.isEmpty()) {
+            return attackable;
+        }
+         
+        for (String attackableTile : ingameController.previousTileAttackMapById.keySet()) {
+            EnvironmentTile toAttackFrom = ingameController.environmentTileMapById.get(
+                    ingameController.previousTileAttackMapById.get(attackableTile));
+            
+            Path path = new Path();
+            path.end = toAttackFrom;
+            path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
+            path.distance = 0;
+            
+            LinkedList<String> pathList = new LinkedList<>();
+
+            String closest = toAttackFrom.getId();
+            
+            if (ingameController.previousTileMapById.isEmpty()) {
+                attackable.put(path, ingameController.unitTileMapByTileId.get(attackableTile));
+                return attackable;
+            }
+            
+            do {
+                pathList.addFirst(closest);
+                path.distance++;
+                closest = ingameController.previousTileMapById.get(closest);
+            } while (!closest.equals(unit.getPosition()));
+
+            path.path = pathList.toArray(new String[0]);
+            
+            attackable.put(path, ingameController.unitTileMapByTileId.get(attackableTile));
+        }
+        
+        return attackable;
     }
     
     protected void waitForSocket() {
@@ -130,16 +184,31 @@ public abstract class AI {
     //Global AI access Management
     
     private static SortedMap<Integer, Class<? extends AI>> aiModels = new TreeMap<>();
+    private static SortedMap<Integer, Class<? extends AI>> aiModelsStrategic = new TreeMap<>();
+    
     
     static {
         aiModels.put(-1, Kaiten.class);
-        aiModels.put(0, Nagato.class);
+        
+        aiModelsStrategic.put(-1, Kaiten.class);
+        aiModelsStrategic.put(0, Nagato.class);
     }
     
     public static AI instantiate(int difficulty) {
         difficulty = (difficulty == Integer.MAX_VALUE) ? aiModels.lastKey() : difficulty;
         Class<? extends AI> targetAI = aiModels.get(difficulty);
         targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
+        try {
+            return targetAI.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            return null;
+        }
+    }
+    
+    public static AI instantiateStrategic(int difficulty) {
+        difficulty = (difficulty == Integer.MAX_VALUE) ? aiModelsStrategic.lastKey() : difficulty;
+        Class<? extends AI> targetAI = aiModelsStrategic.get(difficulty);
+        targetAI = (targetAI == null) ? aiModelsStrategic.get(-1) : targetAI;
         try {
             return targetAI.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

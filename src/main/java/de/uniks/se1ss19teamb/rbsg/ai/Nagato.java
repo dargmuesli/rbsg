@@ -12,21 +12,27 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javafx.util.Pair;
 
 
 class Nagato extends AI {
     
-    private static final int AMOUNT_HEAVY_TANKS = 7;
+    protected static int AMOUNT_HEAVY_TANKS = 7;
 
-    private Map<String, String> tankPositions = new HashMap<>();
+    protected Map<String, String> tankPositions = new HashMap<>();
+    
+    protected Map<UnitTile, Integer> projectedHP = new HashMap<>();
+    protected Map<String, String> toAttack = new HashMap<>(); //Key: Own, Value: Enemy
     
     /*
      * Nagato Strategy:
@@ -39,7 +45,7 @@ class Nagato extends AI {
      * while keeping Clear of Heavy Tanks
      * 
      * Heavy Tanks:
-     * If Enemy in Attack Range/2 of HT -> Attack and retreat
+     * If Enemy in Attack Range/2 of HT -> Attack closest and retreat
      * If Enemy downable with In-Range Tanks and no other enemy HT in Range, attack and retreat next round
      * Focus Order: Heavy Tank > Chopper > Light Tank > Bazooka > Infantry > Jeep
      * 
@@ -56,11 +62,10 @@ class Nagato extends AI {
         final int sideLength = (int) Math.sqrt(controller.environmentTiles.size());
         //Calculate HT Position
         
-        int sideDir = -1;
-        boolean sideXY = false;
+        boolean sideDirLow = false; //True if starting at 0 on relevant side
+        boolean sideXY = false; //True if relevant side is on edge of x axis
         
         //Figure out which side of the Board we are on
-        //FIXME == 0 / sideLenght geht so nicht. Rather x/y quot
         {
             EnvironmentTile randomFriendly = null;
         
@@ -71,29 +76,24 @@ class Nagato extends AI {
                 }
             }
             
-            if (randomFriendly.getX() == 0 || randomFriendly.getY() == 0) {
-                sideDir = 0;
-                sideXY = randomFriendly.getX() == 0;
-                
-            } else if (randomFriendly.getX() == sideLength || randomFriendly.getY() == sideLength) {
-                sideDir = 1;
-                sideXY = randomFriendly.getX() == sideLength;
-            }
+            float quot = ((float) Math.abs(randomFriendly.getX() - sideLength / 2))
+                    / ((float) Math.abs(randomFriendly.getY() - sideLength / 2));
             
-            assert sideDir != -1;
+            sideXY = (quot > 1);
+            
+            sideDirLow = (sideXY ? randomFriendly.getX() : randomFriendly.getY()) > sideLength / 2;
         }
         
         //Iterate over our Quarter of the Field, and "normalize" it to our direction
         //if Four Players, take Quarter, if two, take half
-        int startShort = sideDir == 1 ? sideLength - 1 : 0;
-        int stopShort = sideLength / 2 - sideDir;
+        int startShort = sideDirLow ? sideLength - 1 : 0;
+        int stopShort = sideLength / 2 - (sideDirLow ? 1 : 0);
         int lineCnt = 0;
         int players = (int) controller.inGameObjects.values().stream().filter(p -> p instanceof InGamePlayer).count();
         
         SortedMap<Pair<Integer, Integer>, EnvironmentTile> mapQuarter = new TreeMap<>(new PairComperatorXY(sideLength));
         
-        //FIXME Somehow inverted for sideDir == 0
-        for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDir == 1 ? 1 : -1)) {
+        for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDirLow ? 1 : -1)) {
             for (int longSide = (players != 2 ? lineCnt : 0);
                     longSide < sideLength - (players != 2 ? lineCnt : 0); longSide++) {
                 mapQuarter.put(new Pair<Integer, Integer>(longSide, lineCnt), controller.environmentTiles.get(
@@ -161,8 +161,20 @@ class Nagato extends AI {
         }
     }
 
+    @SuppressWarnings ("static-access")
     @Override
     protected void doTurnInternal() {
+        projectedHP.clear();
+        toAttack.clear();
+        for (UnitTile tile : ingameController.unitTiles) {
+            tile.setMpLeft(tile.getMp());
+            
+            if (tile.getLeader().equals(playerID)) {
+                continue;
+            }
+            projectedHP.put(tile, tile.getHp());
+        }
+        
         //Move Tanks to Forest Edge
         tankReposition();
         //Move Tanks to Attack if they have enough MP to return
@@ -181,7 +193,7 @@ class Nagato extends AI {
         if (socket.phaseString.equals("Movement Phase")) {
             //FIXME Does not yet work, somehow
             //For now: Manual recommendation
-            NotificationHandler.getInstance().sendInfo("AI wants to concede", logger);
+            NotificationHandler.sendInfo("AI wants to concede", logger);
             //socket.leaveGame();
             //socket.disconnect();
             return;
@@ -200,33 +212,293 @@ class Nagato extends AI {
         waitForSocket();      
     }
 
-    private void attackAvailable() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private void helicopterMovement() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private void tankRetreat() {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    private void tankMovementAttackAdditional() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private void tankMovementAttackSafe() {
-        // TODO Auto-generated method stub
-        
+    protected void attackAvailable() {
+        for (Entry<String, String> attack : toAttack.entrySet()) {
+            socket.attackUnit(attack.getKey(), attack.getValue());
+            waitForSocket();
+        }
     }
 
     @SuppressWarnings ("static-access")
-    private void tankReposition() {
+    protected void helicopterMovement() {
+        
+        for (UnitTile heli : ingameController.unitTiles) {
+            //Iterate over own Helis
+            if (!heli.getLeader().equals(playerID) || !heli.getType().equals("Chopper")) {
+                continue;
+            }
+            
+            ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                    heli.getPosition()), heli.getMpLeft(), false,
+                    ((InGamePlayer)ingameController.inGameObjects
+                    .get(playerID)).getName());
+            
+            Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
+            if (previousTileMapByIdLocal.isEmpty()) {
+                continue;
+            }
+            List<String> possibleDestinations = new ArrayList<>(previousTileMapByIdLocal.keySet());
+            
+            for (UnitTile enemyTank : ingameController.unitTiles) {
+                //Iterate over enemy Heavy Tanks
+                if (enemyTank.getLeader().equals(playerID) || !enemyTank.getType().equals("Heavy Tank")) {
+                    continue;
+                }
+                
+                ingameController.drawOverlay(ingameController.environmentTileMapById.get(
+                        enemyTank.getPosition()), enemyTank.getMp() + 1, false,
+                        ((InGamePlayer)ingameController.inGameObjects
+                        .get(enemyTank.getLeader())).getName());
+                
+                possibleDestinations.removeAll(ingameController.previousTileMapById.keySet());
+            }
+            
+            if (possibleDestinations.isEmpty()) {
+                //TODO Heli can't move outside of HT Attack Range. FInd Better solution
+                possibleDestinations.addAll(previousTileMapByIdLocal.keySet());
+            }
+            
+            SortedSet<UnitTile> targets = new TreeSet<>((unitL, unitR) -> {
+                //Focus Bazooka as highest Priority
+                if (unitL.getType().equals("Bazooka Trooper") && !unitL.getType().equals(unitR.getType())) {
+                    return -1000;
+                }
+                if (unitR.getType().equals("Bazooka Trooper") && !unitL.getType().equals(unitR.getType())) {
+                    return 1000;
+                }
+                
+                //Then Light Tanks
+                if (unitL.getType().equals("Light Tank") && !unitL.getType().equals(unitR.getType())) {
+                    return -500;
+                }
+                if (unitR.getType().equals("Light Tank") && !unitL.getType().equals(unitR.getType())) {
+                    return 500;
+                }
+                
+                EnvironmentTile heliTile = ingameController.environmentTileMapById.get(heli.getPosition());
+                EnvironmentTile tileL = ingameController.environmentTileMapById.get(unitL.getPosition());
+                EnvironmentTile tileR = ingameController.environmentTileMapById.get(unitR.getPosition());
+                
+                int distL = Math.abs(tileL.getX() - heliTile.getX()) + Math.abs(tileL.getY() - heliTile.getY());
+                int distR = Math.abs(tileR.getX() - heliTile.getX()) + Math.abs(tileR.getY() - heliTile.getY());
+                
+                return distL - distR;
+            });
+            
+            for (UnitTile enemy : ingameController.unitTiles) {
+                //Iterate over enemys that are not Tanks
+                if (enemy.getLeader().equals(playerID) || enemy.getType().equals("Heavy Tank")) {
+                    continue;
+                }
+                
+                targets.add(enemy);
+            }
+            
+            if (targets.isEmpty()) {
+                //heli idle to move at least one unit per turn
+                EnvironmentTile heliTile = ingameController.environmentTileMapById.get(heli.getPosition());
+                Pair<Path, Integer> path = findClosestAccessibleField(heli, heliTile.getX(), heliTile.getY(), false);
+                socket.moveUnit(heli.getId(), path.getKey().path);
+                waitForSocket();
+            }
+            
+            UnitTile target = targets.first();
+            EnvironmentTile targetUnitTile = ingameController.environmentTileMapById.get(target.getPosition());
+            
+            String closest = null;
+            int closestDistance = Integer.MAX_VALUE;
+            
+            for (String targetTile : possibleDestinations) {
+                EnvironmentTile current = ingameController.environmentTileMapById.get(targetTile);
+                
+                int currentDistance = Math.abs(targetUnitTile.getX() - current.getX()) 
+                        + Math.abs(targetUnitTile.getY() - current.getY());
+                
+                //Forbid walking onto the target
+                if (currentDistance < closestDistance && currentDistance > 0) {
+                    closestDistance = currentDistance;
+                    closest = current.getId();
+                }
+            }
+            
+            Path path = new Path();
+            path.end = ingameController.environmentTileMapById.get(closest);
+            path.start = ingameController.environmentTileMapById.get(heli.getPosition());        
+            path.distance = 0;
+            
+            LinkedList<String> pathList = new LinkedList<>();
+
+            do {
+                path.distance++;
+                pathList.addFirst(closest);
+                closest = previousTileMapByIdLocal.get(closest);
+            } while (!closest.equals(heli.getPosition()));
+
+            path.path = pathList.toArray(new String[0]);
+            
+            socket.moveUnit(heli.getId(), path.path);
+            waitForSocket();
+        
+            //If we land next to the Target, mark for Attacking
+            if (closestDistance == 1) {
+                toAttack.put(heli.getId(), target.getId());
+            }
+        }        
+    }
+    
+    protected void tankRetreat() {
+        // TODO Evaluate if smarter Ideas are found
+        tankReposition();
+    }
+    
+    @SuppressWarnings ("static-access")
+    protected void tankMovementAttackAdditional() {
+        for (Entry<String, String> position : tankPositions.entrySet()) {
+            
+            //Skip repositioning Dead Units or units that already did a safe attack
+            UnitTile tank = null;
+            for (UnitTile tiles : ingameController.unitTiles) {
+                if (tiles.getId().equals(position.getKey())) {
+                    tank = tiles;
+                }
+            }
+
+            if (tank == null || toAttack.containsKey(tank.getId())) {
+                continue;
+            }
+            
+            TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
+            
+            for (Entry<Path, UnitTile> toAttack : attackable.entrySet()) {
+                int hp = projectedHP.get(toAttack.getValue());
+                //Target has too much HP, don't leave cover to attack
+                if (hp <= 0 || hp > predictDamage(toAttack.getValue(), hp)) {
+                    continue;
+                }
+                
+                boolean foundEnemy = false;
+                
+                for (UnitTile enemy : ingameController.unitTiles) {
+                    if (enemy.getLeader().equals(playerID) || toAttack.getValue().getId().equals(enemy.getId())) {
+                        continue;
+                    }
+                    
+                    EnvironmentTile enemyTile = ingameController.environmentTileMapById.get(enemy.getPosition());
+                    EnvironmentTile friendly = attackable.firstKey().start;
+                    
+                    int distance = Math.abs(friendly.getX() - enemyTile.getX())
+                            + Math.abs(friendly.getY() - enemyTile.getY());
+                    
+                    if (distance < enemy.getMp()) {
+                        foundEnemy = true;
+                        break;
+                    }
+                }
+                
+                if (!foundEnemy) {
+                    socket.moveUnit(tank.getId(), toAttack.getKey().path);  
+                    tank.setMpLeft(tank.getMpLeft() - toAttack.getKey().distance);
+                    waitForSocket();
+                    flagForAttackByHeavyTank(toAttack.getValue(), tank);
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings ("static-access")
+    protected void tankMovementAttackSafe() {
+        for (Entry<String, String> position : tankPositions.entrySet()) {
+            
+            //Skip repositioning Dead Units
+            UnitTile tank = null;
+            for (UnitTile tiles : ingameController.unitTiles) {
+                if (tiles.getId().equals(position.getKey())) {
+                    tank = tiles;
+                }
+            }
+
+            if (tank == null) {
+                continue;
+            }
+            
+            TreeMap<Path, UnitTile> attackable = findAllAttackableEnemies(tank);
+            
+            if (attackable.isEmpty()) {
+                continue;
+            }
+            
+            if (attackable.firstKey().distance == 0) {
+                flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
+            } else if (attackable.firstKey().distance <= tank.getMpLeft() / 2) {
+                socket.moveUnit(tank.getId(), attackable.firstKey().path);  
+                tank.setMpLeft(tank.getMpLeft() - attackable.firstKey().distance);
+                waitForSocket();
+                flagForAttackByHeavyTank(attackable.firstEntry().getValue(), tank);
+            }
+        }
+        
+    }
+    
+    protected void flagForAttackByHeavyTank(UnitTile target, UnitTile by) {
+        toAttack.put(by.getId(), target.getId());
+        int hp = projectedHP.get(target);
+        hp -= predictDamage(target, hp);
+        projectedHP.put(target, hp);
+    }
+
+    @SuppressWarnings ("static-access")
+    protected int predictDamage(UnitTile target, int hp) {
+        EnvironmentTile field = ingameController.environmentTileMapById.get(target.getPosition());
+        int fieldDefense = 0;
+        
+        switch (field.getName()) {
+            case "Grass":
+                fieldDefense = 1;
+                break;
+            case "Forest":
+                fieldDefense = 3;
+                break;
+            case "Mountain":
+                fieldDefense = 4;
+                break;
+            default:
+                assert true;
+        }
+        
+        int defense = hp * fieldDefense;
+        
+        int unitDmg = 0;
+        
+        switch (target.getType()) {
+            case "Infantry":
+                unitDmg = 105;
+                break;
+            case "Bazooka":
+                unitDmg = 95;
+                break;
+            case "Jeep":
+                unitDmg = 105;
+                break;
+            case "Light Tank":
+                unitDmg = 85;
+                break;
+            case "Heavy Tank":
+                unitDmg = 55;
+                break;
+            case "Chopper":
+                unitDmg = 75;
+                break;
+            default:
+                assert true;
+        }
+        
+        float damage = ((float)(unitDmg - defense)) / 10.0f;
+        
+        return (damage < 1) ? 1 : (int) damage;
+    }
+ 
+    @SuppressWarnings ("static-access")
+    protected void tankReposition() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
             
             //Skip repositioning Dead Units
@@ -244,8 +516,11 @@ class Nagato extends AI {
             
             EnvironmentTile target = ingameController.environmentTileMapById.get(position.getValue());
             Pair<Path, Integer> path = findClosestAccessibleField(tile, target.getX(), target.getY(), true);
-            socket.moveUnit(tile.getId(), path.getKey().path);     
-            waitForSocket();
+            if (path != null && path.getKey().distance != 0) {
+                tile.setMpLeft(tile.getMpLeft() - path.getKey().distance);
+                socket.moveUnit(tile.getId(), path.getKey().path);                     
+                waitForSocket();
+            }
         }
     }
 
@@ -278,7 +553,7 @@ class Nagato extends AI {
     
     class PairComperatorXY implements Comparator<Pair<Integer, Integer>> {
 
-        private int sideLength;
+        protected int sideLength;
         
         public PairComperatorXY(int length) {
             sideLength = length;
@@ -286,7 +561,7 @@ class Nagato extends AI {
         
         @Override
         public int compare(Pair<Integer, Integer> pairL, Pair<Integer, Integer> pairR) {
-            int diff = (pairR.getValue() - pairL.getValue()) * sideLength;
+            int diff = (pairL.getValue() - pairR.getValue()) * sideLength;
             diff += pairL.getKey() - pairR.getKey();
                 
             return diff;

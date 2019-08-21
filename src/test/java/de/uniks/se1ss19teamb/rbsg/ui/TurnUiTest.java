@@ -12,8 +12,6 @@ class TurnUiTest {
     private InGamePlayer inGamePlayer2 = new InGamePlayer();
     private TurnUiController turnUiController = new TurnUiController();
 
-
-
     @Test
     void updatePlayersTest()  {
         Assert.assertEquals(0, turnUiController.inGamePlayerList.size());

@@ -33,6 +33,10 @@ class Kaiten extends AI {
     @SuppressWarnings ("static-access")
     @Override
     protected void doTurnInternal() {
+        for (UnitTile tile : ingameController.unitTiles) {
+            tile.setMpLeft(tile.getMp());
+        }
+        
         
         Map<UnitTile, UnitTile> markedForAttack = new HashMap<>();
         
@@ -96,10 +100,13 @@ class Kaiten extends AI {
                 if (!unit.getLeader().equals(playerID) || !unit.getType().equals(unitType.getType())) {
                     continue;
                 }
-                
+              
+                assert toAttack != null;
                 Pair<Path, Integer> path = findClosestAccessibleField(unit, toAttack.getX(), toAttack.getY(), false);
                 
-                socket.moveUnit(unit.getId(), path.getKey().path);
+                if (path != null) {                    
+                    socket.moveUnit(unit.getId(), path.getKey().path);
+                }
                 
                 //If we land next to the Target, mark for Attacking
                 if (path.getValue() == 1) {

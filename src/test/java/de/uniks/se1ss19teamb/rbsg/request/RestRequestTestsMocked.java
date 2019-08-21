@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.request;
 
 import static org.mockito.Mockito.*;
 
+import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
@@ -13,21 +14,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.apache.http.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 
 
-public class RestRequestTestsMocked {
+@ExtendWith(ApplicationExtension.class)
+class RestRequestTestsMocked {
 
-    private HttpManager httpManager;
+    private HttpManager httpManager = mock(HttpManager.class);
     private String fakeUserKey = "dca2a697-ecfb-4987-ae95-2fdfe9f4a731";
     private String fakeArmyId = "5d11fad12c945100017660ee";
 
-    @Before
-    public void setupTests() {
-        httpManager = mock(HttpManager.class);
+    @Start
+    public void start(Stage stage) {
+        AnchorPane apn = new AnchorPane();
+        apn.setId("apnFade");
+        stage.setScene(new Scene(apn));
+        Main.PRIMARY_STAGE = stage;
+
         AbstractRestRequest.httpManager = httpManager;
         ArmyManagerController.availableUnits.put("5cc051bd62083600017db3b6",
             new Unit("5cc051bd62083600017db3b6", "Infantry", 3, 3, new ArrayList<>()));
@@ -53,7 +66,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void createArmyRequestTest() {
+    void createArmyRequestTest() {
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getCreateArmyRequestResponse());
         } catch (Exception e) {
@@ -78,7 +91,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void createGameTest() throws ParseException {
+    void createGameTest() throws ParseException {
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getCreateGameResponse());
         } catch (Exception e) {
@@ -114,7 +127,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void deleteArmyRequestTest() {
+    void deleteArmyRequestTest() {
         try {
             when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteArmyRequestResponse());
         } catch (Exception e) {
@@ -139,7 +152,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void deleteGameTest() throws ParseException {
+    void deleteGameTest() throws ParseException {
         try {
             when(httpManager.delete(any(), any(), any())).thenReturn(getDeleteGameResponse());
         } catch (Exception e) {
@@ -168,7 +181,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void getSpecificArmyRequestTest() {
+    void getSpecificArmyRequestTest() {
         try {
             when(httpManager.get(any(), any())).thenReturn(getGetSpecificArmyResponse());
         } catch (Exception e) {
@@ -196,7 +209,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void joinGameTest() throws ParseException {
+    void joinGameTest() throws ParseException {
         try {
             when(httpManager.get(any(), any())).thenReturn(getJoinGameResponse());
         } catch (Exception e) {
@@ -223,7 +236,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void loginUserTest() {
+    void loginUserTest() {
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getLoginUserResponse());
         } catch (Exception e) {
@@ -247,7 +260,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void logoutUserTest() throws ParseException {
+    void logoutUserTest() throws ParseException {
         try {
             when(httpManager.get(any(), any())).thenReturn(getLogoutUserResponse());
         } catch (Exception e) {
@@ -279,7 +292,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void queryArmiesRequestTest() {
+    void queryArmiesRequestTest() {
         try {
             when(httpManager.get(any(), any())).thenReturn(getQueryArmiesRequestResponse());
         } catch (Exception e) {
@@ -316,7 +329,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void queryGamesTest() throws ParseException {
+    void queryGamesTest() throws ParseException {
         try {
             when(httpManager.get(any(), any())).thenReturn(getQueryGamesResponse());
         } catch (Exception e) {
@@ -355,7 +368,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void queryUnitsRequestTest() {
+    void queryUnitsRequestTest() {
         try {
             when(httpManager.get(any(), any())).thenReturn(getQueryUnitsRequestTestResponse());
         } catch (Exception e) {
@@ -381,7 +394,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void queryUsersInLobbyTest() throws ParseException {
+    void queryUsersInLobbyTest() throws ParseException {
         try {
             when(httpManager.get(any(), any())).thenReturn(getQueryUsersResponse());
         } catch (Exception e) {
@@ -406,7 +419,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void registerUserTest() {
+    void registerUserTest() {
         try {
             when(httpManager.post(any(), any(), any())).thenReturn(getRegisterUserResponse());
         } catch (Exception e) {
@@ -435,7 +448,7 @@ public class RestRequestTestsMocked {
     }
 
     @Test
-    public void updateArmyRequestTest() {
+    void updateArmyRequestTest() {
         try {
             when(httpManager.put(any(), any(), any())).thenReturn(getUpdateArmyRequestResponse());
         } catch (Exception e) {

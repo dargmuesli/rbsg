@@ -1,6 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg;
 
-import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.EasterEggKeyEventHandler;
 import javafx.application.Application;
@@ -9,8 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
+    public static Stage PRIMARY_STAGE;
 
     public static void main(String[] args) {
         launch(args);
@@ -18,8 +17,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Main.PRIMARY_STAGE = primaryStage;
+
         TextureManager.init();
-        SoundManager.init();
 
         Parent root = FXMLLoader
             .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml"));

@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class UnitTile extends AbstractTile {
     private String type;
     private int mp;
+    private int mpLeft;
     private int hp;
     private String[] canAttack;
     private String game;
@@ -23,6 +24,7 @@ public class UnitTile extends AbstractTile {
         this.game = unitTile.getGame();
         this.leader = unitTile.getLeader();
         this.position = unitTile.getPosition();
+        this.mpLeft = unitTile.getMpLeft();
     }
 
     public String getType() {
@@ -79,5 +81,13 @@ public class UnitTile extends AbstractTile {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public int getMpLeft() {
+        return mpLeft;
+    }
+
+    public void setMpLeft(int mpLeft) {
+        this.mpLeft = mpLeft;
     }
 }

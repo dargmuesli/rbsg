@@ -52,8 +52,8 @@ public class BotControl {
         botUser.connectGamesocket();
 
         //Just info for dev. Will be deleted later
-        NotificationHandler.getInstance().sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.getInstance().sendInfo("Bot Username: " + botUser.getBotUserName()
+        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
+        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
             + "\nBot Password: " + botUser.getBotUserPassword(), logger);
     }
 

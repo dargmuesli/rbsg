@@ -28,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -43,11 +44,10 @@ public class InGameController {
     public static Map<String, InGameObject> inGameObjects = new HashMap<>();
     public static Map<String, UnitTile> movedUnitTiles = new HashMap<>();
     public static Map<String, String> previousTileMapById = new HashMap<>();
+    public static Map<String, String> previousTileAttackMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
 
-    @FXML
-    private AnchorPane errorContainer;
     @FXML
     private AnchorPane apnRoot;
     @FXML
@@ -92,6 +92,7 @@ public class InGameController {
     private AI aI = null;
 
     private String playerId;
+    private boolean logout;
 
     public static InGameController getInstance() {
         return instance;
@@ -141,8 +142,7 @@ public class InGameController {
     @FXML
     private void initialize() {
         instance = this;
-        UserInterfaceUtils.initialize(
-            apnFade, apnRoot, InGameController.class, btnFullscreen, errorContainer);
+        UserInterfaceUtils.initialize(apnFade, apnRoot, InGameController.class, btnFullscreen);
 
         for (Node node : head.getChildren()) {
             if (node.getClass().equals(JFXButton.class)) {
@@ -159,7 +159,7 @@ public class InGameController {
         apnFade.getChildren().add(miniMap);
 
         FXMLLoader loader = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/turnUI.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/turnUI.fxml"));
         try {
             Parent parent = loader.load();
             turnUI.getChildren().add(parent);
@@ -170,7 +170,7 @@ public class InGameController {
         selectionOverlay.setId("tile-selected");
 
         FXMLLoader loader1 = new FXMLLoader(getClass()
-            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/winScreen.fxml"));
+            .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/winScreen.fxml"));
         try {
             Parent parent = loader1.load();
             winScreenPane.getChildren().add(parent);
@@ -187,7 +187,8 @@ public class InGameController {
 
     @FXML
     private void logout() {
-        UserInterfaceUtils.logout(apnFade, btnLogout);
+        logout = true;
+        askConcede();
     }
 
     @FXML
@@ -245,8 +246,7 @@ public class InGameController {
                 if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
                     .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
-                    NotificationHandler.getInstance()
-                        .sendWarning("You can only activate Automode\nin your first Movementphase\n"
+                    NotificationHandler.sendWarning("You can only activate Automode\nin your first Movementphase\n"
                             + "or on your opponents turn.", logger);
 
                 } else {
@@ -266,14 +266,13 @@ public class InGameController {
                 Thread.sleep(1000);
                 tryCounter++;
                 if (tryCounter == 10) {
-                    NotificationHandler.getInstance().sendError("The matchfield tiles couldn't be loaded.",
+                    NotificationHandler.sendError("The matchfield tiles couldn't be loaded.",
                         logger);
                     break;
                 }
 
             } catch (InterruptedException e) {
-                NotificationHandler.getInstance()
-                    .sendError("Game couldn't be initialized!", logger, e);
+                NotificationHandler.sendError("Game couldn't be initialized!", logger, e);
             }
         }
 
@@ -415,22 +414,33 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            Pane pane = TextureManager.getTextureInstance(unitTile.getType());
+            //adds player color to unitpane
+            Pane pane = generateUnitPane(unitTile);
+
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
                 .add(pane);
             unitPaneMapbyUnitTile.put(unitTile, pane);
         }
 
-        NotificationHandler.getInstance().sendSuccess("Game initialized.", logger);
+        NotificationHandler.sendSuccess("Game initialized.", logger);
     }
 
-    private void drawOverlay(EnvironmentTile startTile, int mp) {
-        drawOverlay(startTile, mp, true);
+
+    private Pane generateUnitPane(UnitTile unitTile) {
+        InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
+
+        return TextureManager.getTextureInstance(unitTile.getType(),
+            (player != null) ? player.getColor() : null);
     }
 
-    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw) {
+    public void drawOverlay(EnvironmentTile startTile, int mp) {
+        drawOverlay(startTile, mp, true, LoginController.getUserName());
+    }
+
+    public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
         previousTileMapById.clear();
+        previousTileAttackMapById.clear();
 
         // Create a queue for breadth search.
         Queue<Pair<EnvironmentTile, Integer>> queue = new LinkedList<>();
@@ -458,7 +468,8 @@ public class InGameController {
 
                     // Limit to existing fields that haven't been checked yet and exclude the selected tile.
                     if (neighborId == null || neighborId.equals(startTile.getId()) 
-                            || previousTileMapById.containsKey(neighborId)) {
+                            || previousTileMapById.containsKey(neighborId)
+                            || previousTileAttackMapById.containsKey(neighborId)) {
                         return;
                     }
 
@@ -471,7 +482,7 @@ public class InGameController {
                         && !overlayedStacks.containsKey(neighborStack)
                         && (unitTileMapByTileId.get(neighborId) == null
                         || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
-                        .getName().equals(LoginController.getUserName()))) {
+                        .getName().equals(playerId))) {
                       
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
@@ -483,6 +494,8 @@ public class InGameController {
                             // TODO: for when the gamelobby exists
                             //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
+                            
+                            previousTileAttackMapById.put(neighborId, currentTile.getId());
                         } else if (currentMp > 0 && neighborUnitTile == null) {
                             // currentMp = 0 -> Attackable but not moveable
                             // TODO: for when the gamelobby exists
@@ -512,23 +525,31 @@ public class InGameController {
 
     public void leaveGame(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
-            leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
-            leaveGame.setLayoutY(head.getHeight());
-            leaveGame.setVisible(true);
-            for (Node node : leaveGame.getChildren()) {
-                node.setVisible(true);
-            }
-
+            logout = false;
+            askConcede();
         } else if (event.getSource().equals(btnYes)) {
             Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).leaveGame();
             Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).disconnect();
-            UserInterfaceUtils.makeFadeOutTransition(
-                "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
+            if (logout) {
+                UserInterfaceUtils.logout(apnFade, btnLogout);
+            } else {
+                UserInterfaceUtils.makeFadeOutTransition(
+                    "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
+            }
         } else if (event.getSource().equals(btnNo)) {
             leaveGame.setVisible(false);
             for (Node node : leaveGame.getChildren()) {
                 node.setVisible(false);
             }
+        }
+    }
+
+    private void askConcede() {
+        leaveGame.setLayoutX(head.getWidth() - leaveGame.getWidth());
+        leaveGame.setLayoutY(head.getHeight());
+        leaveGame.setVisible(true);
+        for (Node node : leaveGame.getChildren()) {
+            node.setVisible(true);
         }
     }
 
