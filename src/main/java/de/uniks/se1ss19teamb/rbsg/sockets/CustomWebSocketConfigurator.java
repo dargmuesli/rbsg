@@ -9,9 +9,6 @@ import javax.websocket.ClientEndpointConfig;
 
 public class CustomWebSocketConfigurator extends ClientEndpointConfig.Configurator {
 
-    //UserKey needs to be changed for the bots.
-    static String userKey;
-
     @Override
     public void beforeRequest(Map<String, List<String>> headers) {
         super.beforeRequest(headers);
