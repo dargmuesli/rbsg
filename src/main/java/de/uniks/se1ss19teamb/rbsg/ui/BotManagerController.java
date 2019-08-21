@@ -38,9 +38,9 @@ public class BotManagerController {
     }
 
     public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
+        BotControl.setInGameController(InGameController.getInstance());
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
         BotControl.createBotUser(numberOfBot, difficulty, botSelectionController);
-        BotControl.setInGameController(InGameController.getInstance());
     }
 
     public BotSelectionController getBotSelectionController(int number) {

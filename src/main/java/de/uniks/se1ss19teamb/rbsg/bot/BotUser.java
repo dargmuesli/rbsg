@@ -45,7 +45,8 @@ public class BotUser {
     void instantiateBotAi(int difficulty) {
         if (botAi == null) {
             botAi = AI.instantiateStrategic(Integer.MAX_VALUE);
-            botAi.initialize(botUserKey, gameSocket, inGameController);
+            // Initialize has to be done when the game starts.
+            // botAi.initialize(botUserKey, gameSocket, inGameController);
         }
     }
 
