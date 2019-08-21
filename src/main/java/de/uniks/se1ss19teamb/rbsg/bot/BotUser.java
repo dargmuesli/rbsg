@@ -58,13 +58,37 @@ public class BotUser {
                 for (String unitId : neededArmy) {
                     units.add(new Unit(unitId));
                 }
-                CreateArmyRequest car = new CreateArmyRequest(botUserName + "'s Army", units, botUserKey);
-                car.sendRequest();
+
             } else {
                 Map<String, Unit> availableUnitTypes = ArmyManagerController.availableUnits;
                 for (int i = 0; i < 10; i++) {
-                    int j = (int)Math.random();
+                    int j = (int) (Math.random() * 6);
+                    String unitId;
+                    switch (j) {
+                        case 0:
+                            unitId = availableUnitTypes.get("bazooka trooper").getId();
+                            break;
+                        case 1:
+                            unitId = availableUnitTypes.get("jeep").getId();
+                            break;
+                        case 2:
+                            unitId = availableUnitTypes.get("infantry").getId();
+                            break;
+                        case 3:
+                            unitId = availableUnitTypes.get("chopper").getId();
+                            break;
+                        case 4:
+                            unitId = availableUnitTypes.get("light tank").getId();
+                            break;
+                        default:
+                            unitId = availableUnitTypes.get("heavy tank").getId();
+                            break;
+                    }
+                    units.add(new Unit(unitId));
                 }
+
+                CreateArmyRequest car = new CreateArmyRequest(botUserName + "'s Army", units, botUserKey);
+                car.sendRequest();
             }
 
             // TODO: Initialize has to be done when the game starts.
