@@ -90,6 +90,7 @@ public class BotUser {
             }
             CreateArmyRequest car = new CreateArmyRequest(botUserName + "'s Army", units, botUserKey);
             car.sendRequest();
+            System.out.println(car.getSuccessful());
             armyId = car.getData();
             gameSocket.changeArmy(armyId);
 
