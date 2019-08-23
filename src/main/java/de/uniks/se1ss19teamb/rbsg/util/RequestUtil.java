@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
+import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.request.AbstractDataRestRequest;
 import de.uniks.se1ss19teamb.rbsg.request.AbstractRestRequest;
 import java.util.Optional;
@@ -10,7 +11,10 @@ public class RequestUtil {
         request.sendRequest();
 
         if (!request.getSuccessful()) {
-            NotificationHandler.sendError(request.getErrorMessage(), LogManager.getLogger());
+            if (Main.PRIMARY_STAGE != null) {
+                NotificationHandler.sendError(request.getErrorMessage(), LogManager.getLogger());
+
+            }
             return false;
         }
 
