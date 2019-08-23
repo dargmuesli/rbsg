@@ -13,6 +13,7 @@ class WinScreenTest {
 
     @Test
     void updatePlayersTest()  {
+        InGameController.inGameObjects.clear();
         InGameController.inGameObjects.put("Game", inGameGame);
         InGameController.inGameObjects.put("player1", inGamePlayer1);
         InGameController.inGameObjects.put("player2", inGamePlayer2);

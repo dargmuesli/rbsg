@@ -2,12 +2,6 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXComboBox;
 import de.uniks.se1ss19teamb.rbsg.Main;
-import de.uniks.se1ss19teamb.rbsg.TestUtil;
-import de.uniks.se1ss19teamb.rbsg.model.Army;
-import de.uniks.se1ss19teamb.rbsg.request.*;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
-import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -208,21 +202,27 @@ public class UiTestsReal extends ApplicationTest {
     @Test
     public void registerTest() {
         clickOn("#btnRegistration");
-        sleep(2000); // sleep to finish transition
+        sleep(3000); // sleep to finish transition
         clickOn("#username");
+        clickOn("#username");
+        type(KeyCode.DELETE);
         write("TeamBTestUser").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#password");
+        clickOn("#password");
+        type(KeyCode.DELETE);
         write("qwertz").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#passwordRepeat");
+        clickOn("#passwordRepeat");
+        type(KeyCode.DELETE);
         write("qwert").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#passwordRepeat");
         write("z").push(KeyCode.ENTER);
         clickOn("#btnConfirm");
         clickOn("#btnCancel");
-        sleep(2000); // sleep to finish transition
+        sleep(3000); // sleep to finish transition
     }
 
     @Test
@@ -232,7 +232,11 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#password");
         write("qwertz");
         clickOn("#btnLogin");
-        sleep(2000); // sleep to finish action
+        sleep(4000); // sleep to finish action
+        //fullscreen
+        clickOn("#hamburgerMenu");
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOn("#btnFullscreen");
         // chat
         clickOn("#message");
         write("/all ");
@@ -255,11 +259,9 @@ public class UiTestsReal extends ApplicationTest {
             }
         }
         // logout
-        clickOn("#hamburgerMenu");
-        WaitForAsyncUtils.waitForFxEvents();
         clickOn("#btnColorMode");
         clickOn("#btnColorMode");
         clickOn("#btnLogout");
-        sleep(2000); // sleep to finish transition
+        sleep(2500); // sleep to finish transition
     }
 }
