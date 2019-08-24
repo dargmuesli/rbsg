@@ -35,44 +35,52 @@ public class GenerateKeys {
         privateKey = kp.getPrivate();
     }
 
+    static PrivateKey getPrivateKey() {
+        init();
+        return privateKey;
+    }
+
     private static void init() {
+        String sanitizedUsername = SerializeUtil.sanitizeFilename(LoginController.getUserName());
+        Path privateKeyPath = SerializeUtil.getAppDataPath().resolve("private-key_" + sanitizedUsername + ".der");
+        Path publicKeyPath = SerializeUtil.getAppDataPath().resolve("public-key_" + sanitizedUsername + ".der");
+
         if (publicKey == null && privateKey == null) {
-            createKeys();
+            if (Files.exists(privateKeyPath) && Files.exists(publicKeyPath)) {
+                try {
+                    Optional<PrivateKey> optionalPrivateKey = readPrivateKey(Files.readAllBytes(privateKeyPath));
+                    Optional<PublicKey> optionalPublicKey = readPublicKey(Files.readAllBytes(publicKeyPath));
 
-            try {
-                String sanitizedUsername = SerializeUtil.sanitizeFilename(LoginController.getUserName());
+                    if (optionalPrivateKey.isPresent() && optionalPublicKey.isPresent()) {
+                        privateKey = optionalPrivateKey.get();
+                        publicKey = optionalPublicKey.get();
+                    }
+                } catch (IOException e) {
+                    NotificationHandler.sendError("Could not save crypto keys to file!", LogManager.getLogger(), e);
+                }
+            } else {
+                createKeys();
 
-                Files.write(SerializeUtil.getAppDataPath()
-                    .resolve("private-key_" + sanitizedUsername + ".der"), privateKey.getEncoded());
-                Files.write(SerializeUtil.getAppDataPath()
-                    .resolve("public-key_" + sanitizedUsername + ".der"), publicKey.getEncoded());
-            } catch (IOException e) {
-                NotificationHandler.sendError("Could not save crypto keys to file!", LogManager.getLogger(), e);
+                try {
+                    Files.write(privateKeyPath, privateKey.getEncoded());
+                    Files.write(publicKeyPath, publicKey.getEncoded());
+                } catch (IOException e) {
+                    NotificationHandler.sendError("Could not save crypto keys to file!", LogManager.getLogger(), e);
+                }
             }
         } else if (publicKey == null || privateKey == null) {
             throw new IllegalStateException("Only one key is set!");
         }
     }
 
-    public static PublicKey readPublicKey() {
-        init();
-        return publicKey;
-    }
+    private static Optional<PrivateKey> readPrivateKey(byte[] privateKey) {
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privateKey);
 
-    static Optional<PublicKey> readPublicKey(String username) {
-        Path publicKeyPath = SerializeUtil.getAppDataPath().resolve(
-            "private-key_" + SerializeUtil.sanitizeFilename(username) + ".der");
-
-        if (Files.exists(publicKeyPath)) {
-            try {
-                return readPublicKey(Files.readAllBytes(publicKeyPath));
-            } catch (IOException e) {
-                NotificationHandler.sendError(
-                    "Could not read " + username + "'s public key!", LogManager.getLogger(), e);
-                return Optional.empty();
-            }
-        } else {
-            NotificationHandler.sendError("The user's public key does not exist locally!", LogManager.getLogger());
+        try {
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            return Optional.of(kf.generatePrivate(spec));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
             return Optional.empty();
         }
     }
@@ -89,31 +97,42 @@ public class GenerateKeys {
         }
     }
 
+    public static Optional<PublicKey> readPublicKey(String username) {
+        Path publicKeyPath = SerializeUtil.getAppDataPath().resolve(
+            "public-key_" + SerializeUtil.sanitizeFilename(username) + ".der");
+
+        if (Files.exists(publicKeyPath)) {
+            try {
+                return readPublicKey(Files.readAllBytes(publicKeyPath));
+            } catch (IOException e) {
+                NotificationHandler.sendError(
+                    "Could not read " + username + "'s public key!", LogManager.getLogger(), e);
+                return Optional.empty();
+            }
+        } else {
+            if (LoginController.getUserName().equals(username)) {
+                init();
+                return Optional.of(publicKey);
+            } else {
+                NotificationHandler.sendError("The user's public key does not exist locally!", LogManager.getLogger());
+                return Optional.empty();
+            }
+        }
+    }
+
+    public static void setPrivateKey(byte[] privateKeyBytes) {
+        readPrivateKey(privateKeyBytes).ifPresent(GenerateKeys::setPrivateKey);
+    }
+
+    private static void setPrivateKey(PrivateKey privateKey) {
+        GenerateKeys.privateKey = privateKey;
+    }
+
     public static void setPublicKey(byte[] publicKeyBytes) {
         readPublicKey(publicKeyBytes).ifPresent(GenerateKeys::setPublicKey);
     }
 
     private static void setPublicKey(PublicKey publicKey) {
         GenerateKeys.publicKey = publicKey;
-    }
-
-    static PrivateKey getPrivateKey() {
-        init();
-        return privateKey;
-    }
-
-    public static void setPrivateKey(byte[] privateKey) {
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privateKey);
-
-        try {
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            setPrivateKey(kf.generatePrivate(spec));
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void setPrivateKey(PrivateKey privateKey) {
-        GenerateKeys.privateKey = privateKey;
     }
 }
