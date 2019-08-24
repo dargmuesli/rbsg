@@ -14,9 +14,9 @@ class CryptoTest {
     @BeforeAll
     static void beforeAll() throws IOException, URISyntaxException {
         GenerateKeys.setPublicKey(Files.readAllBytes(Paths.get(
-            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/public_key.der").toURI())));
+            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/public-key.der").toURI())));
         GenerateKeys.setPrivateKey(Files.readAllBytes(Paths.get(
-            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/private_key.der").toURI())));
+            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/private-key.der").toURI())));
     }
 
     @Test
