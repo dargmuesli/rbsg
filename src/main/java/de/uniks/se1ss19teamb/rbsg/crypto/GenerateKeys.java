@@ -1,6 +1,8 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -32,6 +34,17 @@ public class GenerateKeys {
     private static void init() {
         if (publicKey == null && privateKey == null) {
             createKeys();
+
+            try {
+                String sanitizedUsername = SerializeUtil.sanitizeFilename(LoginController.getUserName());
+
+                Files.write(SerializeUtil.getAppDataPath()
+                    .resolve("private-key_" + sanitizedUsername + ".der"), privateKey.getEncoded());
+                Files.write(SerializeUtil.getAppDataPath()
+                    .resolve("public-key_" + sanitizedUsername + ".der"), publicKey.getEncoded());
+            } catch (IOException e) {
+                NotificationHandler.sendError("Could not save crypto keys to file!", LogManager.getLogger(), e);
+            }
         } else if (publicKey == null || privateKey == null) {
             throw new IllegalStateException("Only one key is set!");
         }
