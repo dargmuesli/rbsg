@@ -22,7 +22,7 @@ class CryptoTest {
     @Test
     void enDecryptTest() {
         String message = "g\u00E5 til helvete!!!";
-        String encryptedMessage = CipherUtils.encryptMessage(message);
+        String encryptedMessage = CipherUtils.encryptMessage(message, "myself");
 
         Assert.assertNotEquals(message, encryptedMessage);
         Assert.assertEquals(message, CipherUtils.decryptMessage(encryptedMessage));
