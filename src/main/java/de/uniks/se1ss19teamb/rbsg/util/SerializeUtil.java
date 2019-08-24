@@ -10,10 +10,30 @@ import org.apache.logging.log4j.Logger;
 public class SerializeUtil {
     private static final Logger logger = LogManager.getLogger();
 
-    public static Optional<File> chooseFile() {
+    // Source: https://stackoverflow.com/a/10055962/4682621
+    private static class FolderFilter extends javax.swing.filechooser.FileFilter {
+        @Override
+        public boolean accept(File file) {
+            return file.isDirectory();
+        }
+
+        @Override
+        public String getDescription() {
+            return "Directories";
+        }
+    }
+
+    public static Optional<File> chooseFile(boolean foldersOnly) {
         JFrame parentFrame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select a file");
+
+        if (foldersOnly) {
+            fileChooser.setDialogTitle("Select a folder");
+            fileChooser.setFileFilter(new FolderFilter());
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        } else {
+            fileChooser.setDialogTitle("Select a file");
+        }
 
         int userSelection = fileChooser.showSaveDialog(parentFrame);
 
