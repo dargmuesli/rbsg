@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
+import de.uniks.se1ss19teamb.rbsg.crypto.GenerateKeys;
 import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.AbstractMessageWebSocket;
@@ -14,6 +16,7 @@ import java.nio.file.Path;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +35,13 @@ public class Chat {
      * Defines that and how received messages are added to the chat history.
      */
     public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
-        -> addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
+        -> {
+        if (message.startsWith("[tbe]")) {
+            message = CipherUtils.decryptMessage(message.substring(5));
+        }
+
+        addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
+    };
 
     private static final Logger logger = LogManager.getLogger();
     private ArrayList<ChatHistoryEntry> history = new ArrayList<>();
@@ -66,7 +75,8 @@ public class Chat {
      * @param message The textual content.
      */
     public void sendMessage(String message) {
-        this.messageWebSocket.sendMessage(message);
+        executeCommandsOnMessage(message, null).ifPresent(s
+            -> this.messageWebSocket.sendMessage(message));
     }
 
     /**
@@ -77,7 +87,8 @@ public class Chat {
      */
     public void sendMessage(String message, String receiver) {
         addToHistory(message, LoginController.getUserName(), receiver);
-        this.messageWebSocket.sendPrivateMessage(message, receiver);
+        executeCommandsOnMessage(message, receiver).ifPresent(s
+            -> this.messageWebSocket.sendPrivateMessage(message, receiver));
     }
 
     /**
@@ -89,6 +100,37 @@ public class Chat {
      */
     private void addToHistory(String message, String sender, String receiver) {
         history.add(new ChatHistoryEntry(message, sender, receiver));
+    }
+
+    private Optional<String> executeCommandsOnMessage(String message, String receiver) {
+
+        // Export the public key only.
+        if (message.equals("/enc_export")) {
+            SerializeUtil.chooseFile(true).ifPresent(file
+                -> {
+                try {
+                    Files.write(file.toPath().resolve(
+                        "public-key_" + SerializeUtil.sanitizeFilename(LoginController.getUserName()) + ".der"),
+                        GenerateKeys.readPublicKey().getEncoded());
+                    NotificationHandler.sendSuccess("Public key exported successfully.", LogManager.getLogger());
+                } catch (IOException e) {
+                    NotificationHandler.sendError("Could not export public key!", LogManager.getLogger(), e);
+                }
+            });
+
+            return Optional.empty();
+        }
+
+        if (receiver != null) {
+
+            // Encrypt the message.
+            // tbe = team b encrypted
+            if (message.startsWith("/enc ")) {
+                message = "[tbe]" + CipherUtils.encryptMessage(message, receiver);
+            }
+        }
+
+        return Optional.of(message);
     }
 
     /**
