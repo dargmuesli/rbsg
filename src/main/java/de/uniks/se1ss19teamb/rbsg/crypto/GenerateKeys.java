@@ -2,11 +2,15 @@ package de.uniks.se1ss19teamb.rbsg.crypto;
 
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 
 public class GenerateKeys {
@@ -50,20 +54,43 @@ public class GenerateKeys {
         }
     }
 
-    static PublicKey getPublicKey() {
+    public static PublicKey readPublicKey() {
         init();
         return publicKey;
     }
 
-    public static void setPublicKey(byte[] publicKey) {
+    static Optional<PublicKey> readPublicKey(String username) {
+        Path publicKeyPath = SerializeUtil.getAppDataPath().resolve(
+            "private-key_" + SerializeUtil.sanitizeFilename(username) + ".der");
+
+        if (Files.exists(publicKeyPath)) {
+            try {
+                return readPublicKey(Files.readAllBytes(publicKeyPath));
+            } catch (IOException e) {
+                NotificationHandler.sendError(
+                    "Could not read " + username + "'s public key!", LogManager.getLogger(), e);
+                return Optional.empty();
+            }
+        } else {
+            NotificationHandler.sendError("The user's public key does not exist locally!", LogManager.getLogger());
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<PublicKey> readPublicKey(byte[] publicKey) {
         X509EncodedKeySpec spec = new X509EncodedKeySpec(publicKey);
 
         try {
             KeyFactory kf = KeyFactory.getInstance("RSA");
-            setPublicKey(kf.generatePublic(spec));
+            return Optional.of(kf.generatePublic(spec));
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
+            return Optional.empty();
         }
+    }
+
+    public static void setPublicKey(byte[] publicKeyBytes) {
+        readPublicKey(publicKeyBytes).ifPresent(GenerateKeys::setPublicKey);
     }
 
     private static void setPublicKey(PublicKey publicKey) {
