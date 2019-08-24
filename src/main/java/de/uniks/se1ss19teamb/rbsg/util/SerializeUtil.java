@@ -59,6 +59,10 @@ public class SerializeUtil {
         return new Gson().fromJson(jsonString, clazz);
     }
 
+    public static String sanitizeFilename(String string) {
+        return string.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+    }
+
     public static <T> void serialize(String fileString, T object) {
         try (FileWriter writer = new FileWriter(fileString)) {
             new Gson().toJson(object, writer);
