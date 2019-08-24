@@ -9,15 +9,13 @@ import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import java.nio.file.Paths;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -106,17 +104,19 @@ public class Chat {
 
         // Export the public key only.
         if (message.equals("/enc_export")) {
-            SerializeUtil.chooseFile(true).ifPresent(file
-                -> {
+            Optional<File> optionalFile = SerializeUtil.chooseFile(true);
+            Optional<PublicKey> optionalPublicKey = GenerateKeys.readPublicKey(LoginController.getUserName());
+
+            if (optionalFile.isPresent() && optionalPublicKey.isPresent()) {
                 try {
-                    Files.write(file.toPath().resolve(
+                    Files.write(optionalFile.get().toPath().resolve(
                         "public-key_" + SerializeUtil.sanitizeFilename(LoginController.getUserName()) + ".der"),
-                        GenerateKeys.readPublicKey().getEncoded());
+                        optionalPublicKey.get().getEncoded());
                     NotificationHandler.sendSuccess("Public key exported successfully.", LogManager.getLogger());
                 } catch (IOException e) {
                     NotificationHandler.sendError("Could not export public key!", LogManager.getLogger(), e);
                 }
-            });
+            }
 
             return Optional.empty();
         }
