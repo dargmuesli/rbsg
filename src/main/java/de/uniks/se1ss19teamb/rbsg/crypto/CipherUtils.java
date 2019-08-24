@@ -3,6 +3,7 @@ package de.uniks.se1ss19teamb.rbsg.crypto;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.Optional;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -12,20 +13,26 @@ import org.apache.logging.log4j.LogManager;
 
 public class CipherUtils {
 
-    private static byte[] encrypt(byte[] plaintext) throws NoSuchAlgorithmException,
+    private static byte[] encrypt(byte[] plaintext, PublicKey publicKey) throws NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, GenerateKeys.getPrivateKey());
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         return cipher.doFinal(plaintext);
     }
 
-    public static String encryptMessage(String message) {
+    public static String encryptMessage(String message, String username) {
         try {
-            return Base64.encodeBase64String(
-                CipherUtils.encrypt(
-                    message.getBytes(StandardCharsets.UTF_8)));
+            Optional<PublicKey> optionalPublicKey = GenerateKeys.readPublicKey(username);
+
+            if (optionalPublicKey.isPresent()) {
+                return Base64.encodeBase64String(
+                    CipherUtils.encrypt(
+                        message.getBytes(StandardCharsets.UTF_8), optionalPublicKey.get()));
+            } else {
+                return null;
+            }
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException
             | BadPaddingException | IllegalBlockSizeException e) {
             NotificationHandler.sendError("Encryption of a message failed!", LogManager.getLogger(), e);
@@ -38,7 +45,7 @@ public class CipherUtils {
         BadPaddingException {
 
         Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.DECRYPT_MODE, GenerateKeys.getPublicKey());
+        cipher.init(Cipher.DECRYPT_MODE, GenerateKeys.getPrivateKey());
 
         return cipher.doFinal(ciphertext);
     }
