@@ -529,6 +529,7 @@ class Nagato extends AI {
         String idChopper = "";
         String idHeavyTank = "";
         
+        //unit.getType() == .. doesn't work and therefore doesn't return any usable ids.
         for (Unit unit : availableUnitTypes.values()) {
             if (unit.getType() == "Chopper") {
                 idChopper = unit.getId();

@@ -92,6 +92,7 @@ public class BotUser {
             car.sendRequest();
             System.out.println(car.getSuccessful());
             armyId = car.getData();
+            System.out.println("Bot army Id: " + armyId);
             gameSocket.changeArmy(armyId);
 
             // TODO: Initialize has to be done when the game starts.

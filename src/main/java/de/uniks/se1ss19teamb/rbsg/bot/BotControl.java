@@ -39,6 +39,13 @@ public class BotControl {
             botUser.getBotUserPassword());
         loginUserRequest.sendRequest();
         botUser.setBotUserKey(loginUserRequest.getData());
+
+        //Just info for dev. Will be deleted later
+        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
+        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
+            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
+        // end info
+
         botUsers.add(number, botUser);
         botSelectionController.setBot(botUser);
         botUser.joinGame();
@@ -52,11 +59,7 @@ public class BotControl {
         botUser.setInGameController(inGameController);
 
 
-        //Just info for dev. Will be deleted later
-        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
-            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
-        // end info
+
 
         botUser.setReady();
     }
