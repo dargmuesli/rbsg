@@ -2,6 +2,9 @@ package de.uniks.se1ss19teamb.rbsg.util;
 
 import com.google.gson.Gson;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import javax.swing.*;
 import org.apache.logging.log4j.LogManager;
@@ -57,6 +60,26 @@ public class SerializeUtil {
 
     public static <T> T deserialize(String jsonString, Class<T> clazz) {
         return new Gson().fromJson(jsonString, clazz);
+    }
+
+    public static Path getAppDataPath() {
+        Path appDataPath;
+
+        if (System.getProperty("os.name").toUpperCase().equals("WIN")) {
+            appDataPath = Paths.get(System.getenv("AppData"), "de.uniks.se1ss19teamb.rbsg");
+        } else {
+            appDataPath = Paths.get(System.getenv("HOME"), ".local", "share", "de.uniks.se1ss19teamb.rbsg");
+        }
+
+        if (!Files.exists(appDataPath)) {
+            try {
+                Files.createDirectories(appDataPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return appDataPath;
     }
 
     public static String sanitizeFilename(String string) {
