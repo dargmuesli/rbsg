@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
@@ -261,5 +262,36 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#btnColorMode");
         clickOn("#btnLogout");
         sleep(2000); // sleep to finish transition
+    }
+
+    @Test
+    public void memeTest() {
+        clickOn("#btnRegistration");
+        sleep(2000); // sleep to finish transition
+        clickOn("#username");
+        write("TeamBTestUser").push(KeyCode.ENTER);
+        clickOn("#password");
+        write("qwertz").push(KeyCode.ENTER);
+        clickOn("#passwordRepeat");
+        write("qwert").push(KeyCode.ENTER);
+        sleep(1000);
+        clickOn("#btnCancel");
+        sleep(2000);
+
+        clickOn("#txtUserName");
+        write("TeamBTestUser");
+        clickOn("#password");
+        write("blabla");
+        clickOn("#btnLogin");
+        sleep(2000);// sleep to finish action
+        clickOn("#password").eraseText(6);
+        write("qwertz");
+        clickOn("#btnLogin");
+        sleep(2000);// sleep to finish action
+
+        clickOn("#message");
+        write("Gib mir ein Meme");
+        clickOn("#btnSend");
+        sleep(2000);
     }
 }
