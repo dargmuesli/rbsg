@@ -9,9 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
- * Child class of Texture
+ * Child class of Texture.
  * A class that gives you an AnimatedPane with the animation of the texture
- * and makes a colored border around the animation
+ * and makes a colored border around the animation.
  */
 public class AnimatedTexture extends Texture {
 
@@ -19,10 +19,10 @@ public class AnimatedTexture extends Texture {
     private float periodTime;
 
     /**
-     * Constructor of AnimatedTexture
+     * Constructor of AnimatedTexture.
      *
-     * @param classPath The path of the texture
-     * @param periodTime The period between the change of the pectures in nano seconds
+     * @param classPath The path of the texture.
+     * @param periodTime The period between the change of the pectures in nano seconds.
      */
     AnimatedTexture(String classPath, float periodTime) {
         super(classPath);
@@ -30,9 +30,8 @@ public class AnimatedTexture extends Texture {
     }
 
     /**
-     * Animation Updater
-     *
-     * updateds the animations
+     * Animation Updater.
+     * updates the animations.
      */
     static void registerAnimUpdates() {
         new AnimationTimer() {
@@ -55,12 +54,12 @@ public class AnimatedTexture extends Texture {
     }
 
     /**
-     * The Animated Pane getter
+     * The Animated Pane getter.
      *
      * @param colorName String of the name of the color like "red", "blue" etc.
-     * @return An AnimatedPane with the texture as animation
-     *      * The texture has a border around the visible parts of the pictures
-     *      * The color of the border is changed by colorName
+     * @return An AnimatedPane with the texture as animation.
+     *      * The texture has a border around the visible parts of the pictures.
+     *      * The color of the border is changed by colorName.
      */
     @Override
     public Pane instantiate(String colorName) {

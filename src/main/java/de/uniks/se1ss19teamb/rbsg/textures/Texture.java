@@ -14,8 +14,8 @@ import javafx.scene.layout.Pane;
 import javax.imageio.ImageIO;
 
 /**
- * A texture class that can give you a pane of a picture
- * and makes a dynamic border around the visible parts of the picture
+ * A texture class that can give you a pane of a picture.
+ * and makes a dynamic border around the visible parts of the picture.
  */
 
 public class Texture {
@@ -24,10 +24,10 @@ public class Texture {
     Image image;
 
     /**
-     * Constructor of a normal Texture
-     * should be used for Units
+     * Constructor of a normal Texture.
+     * should be used for Units.
      *
-     * @param classPath The path of the picture of the texture
+     * @param classPath The path of the picture of the texture.
      */
     Texture(String classPath) {
 
@@ -41,12 +41,12 @@ public class Texture {
     }
 
     /**
-     * The pane getter
+     * The pane getter.
      *
      * @param colorName String of the name of the color like "red", "blue" etc.
-     * @return A pane with the texture as Imageview
-     * The texture has a border around the visible parts of the picture
-     * The color of the border is changed by colorName
+     * @return A pane with the texture as Imageview.
+     *      * The texture has a border around the visible parts of the picture.
+     *      * The color of the border is changed by colorName.
      */
     public Pane instantiate(String colorName) {
         ImageView iv = new ImageView();
@@ -55,10 +55,10 @@ public class Texture {
     }
 
     /**
-     * ImageView Setter
+     * ImageView Setter.
      *
-     * @param iv The ImageView that should contain the texture
-     * @param colorName Color of the border around the visible parts of the texture
+     * @param iv The ImageView that should contain the texture.
+     * @param colorName Color of the border around the visible parts of the texture.
      */
     void setImageView(ImageView iv, String colorName) {
         Color color;
@@ -97,10 +97,10 @@ public class Texture {
     }
 
     /**
-     * BufferedImage deep copy
+     * BufferedImage deep copy.
      *
-     * @param source The BufferedImage that should be copied
-     * @return A new BufferedImage that contains the same information as the source
+     * @param source The BufferedImage that should be copied.
+     * @return A new BufferedImage that contains the same information as the source.
      */
     public static BufferedImage copyImage(BufferedImage source) {
         BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
