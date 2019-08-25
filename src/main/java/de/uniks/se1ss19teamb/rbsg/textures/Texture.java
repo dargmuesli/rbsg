@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 
 /**
  * A texture class that can give you a pane of a picture
- * and make a dynamic border around the visible parts of the picture
+ * and makes a dynamic border around the visible parts of the picture
  */
 
 public class Texture {
@@ -27,7 +27,7 @@ public class Texture {
      * Constructor of a normal Texture
      * should be used for Units
      *
-     * @param classPath The path of the picture of the unit
+     * @param classPath The path of the picture of the texture
      */
     Texture(String classPath) {
 
