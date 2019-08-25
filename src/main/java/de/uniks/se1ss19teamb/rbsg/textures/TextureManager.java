@@ -21,6 +21,11 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
+/**
+ * Manager of the textures
+ * All requetsts of textures are send to this class
+ */
+
 public class TextureManager {
 
     private static TextureManager instance = null;
@@ -28,9 +33,19 @@ public class TextureManager {
     private Map<String, TextureFancy> texturesTerrain = new HashMap<>();
     private Map<String, Color> terrainColors = new HashMap<>();
 
+    /**
+     * Constructor of TextureManager
+     */
     private TextureManager() {
     }
 
+    /**
+     * Initializer of TextureManager
+     *
+     * Sets the usable instance of the manager
+     * Adds the picures as Textures to the programm
+     * Sets colors of the textures for the minimap
+     */
     public static void init() {
         instance = new TextureManager();
         AnimatedTexture.registerAnimUpdates();
@@ -77,10 +92,25 @@ public class TextureManager {
         instance.terrainColors.put("Mountain", Color.SLATEGREY);
     }
 
+    /**
+     * Texture pane getter
+     *
+     * @param toFetch String of the name of the Texture that is requested
+     * @param color String of the name of the color around the border of the visible parts of the texture
+     * @return Pane with the requested texture
+     */
     public static Pane getTextureInstance(String toFetch, String color) {
         return instance.fetchTexture(toFetch).instantiate(color);
     }
-    
+
+    /**
+     * The Minimap getter
+     *
+     * @param map the map for the requested minimap
+     * @param size Size the minimap should have
+     * @param unitTileMapByTileId Hashmap of the units that are on the Tiles of the map
+     * @return A canvas that represents the textures of the map including the units. In short: a minimap
+     */
     public static Canvas computeMinimap(
         Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {
 
@@ -117,7 +147,15 @@ public class TextureManager {
 
         return canvas;
     }
-    
+
+    /**
+     * Terrain Texture getter
+     *
+     * @param map Map of the gamefield
+     * @param x x value of the GridPane of the gamefield
+     * @param y y value of the GridPane of the gamefield
+     * @return A Pane with the fitting Terrain Texture for the x and y values and fitting overlays
+     */
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, EnvironmentTile> map, int x, int y) {
         TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getName());
         
@@ -183,11 +221,23 @@ public class TextureManager {
         return base;
     }
 
+    /**
+     * Texture Dimension getter
+     *
+     * @param toFetch String of the Name of the Texture
+     * @return A new Dimension2D with the Textures sizes
+     */
     public static Dimension2D getTextureDimensions(String toFetch) {
         Texture texture = instance.fetchTexture(toFetch);
         return new Dimension2D(texture.image.getWidth(), texture.image.getHeight());
     }
 
+    /**
+     * Texture getter
+     *
+     * @param toFetch String of the name of the texture
+     * @return the texture with the given name if it exists or a standart texture if it doesnt
+     */
     private Texture fetchTexture(String toFetch) {
         Texture texture = textures.get(toFetch);
 
