@@ -148,8 +148,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                                         "Unknown tile type: " + type, logger);
                             }
                         }
-                        break;
                     }
+                    break;
+
                 case "gameInitFinished":
                     if (!botGameSocket) {
 
@@ -173,7 +174,8 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                         switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
                             case "Player":
-                                InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
+                                InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(),
+                                    InGamePlayer.class);
 
                                 InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
 
@@ -375,22 +377,26 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
 
                             // TODO handle in chat window
-                            NotificationHandler.sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
+                            NotificationHandler.sendInfo(data.get("id").getAsString()
+                                .replaceFirst("@.+", "")
                                 + " has left the game!", logger);
                             SoundManager.playSound("Omae_nani", 0);
                             break;
                         case "Unit":
                             if (!botGameSocket) {
                                 for (int i = 0; i < InGameController.unitTiles.size(); i++) {
-                                    if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                    if (InGameController.unitTiles.get(i).getId().equals(data.get("id")
+                                        .getAsString())) {
                                         UnitTile attacker = InGameController.getInstance()
                                             .findAttackingUnit(InGameController.unitTiles.get(i));
 
                                         if (attacker != null) {
-                                            SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                            SoundManager.playSound(attacker.getType()
+                                                .replaceAll(" ", ""), 0);
                                         }
 
-                                        InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
+                                        InGameController.getInstance().changeUnitPos(data.get("id")
+                                            .getAsString(), null);
                                         InGameController.unitTiles.remove(i);
                                     }
                                 }
