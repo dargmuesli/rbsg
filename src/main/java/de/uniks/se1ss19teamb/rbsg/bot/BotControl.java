@@ -57,10 +57,6 @@ public class BotControl {
         botUser.connectGamesocket();
         botUser.instantiateBotAi(difficulty);
         botUser.setInGameController(inGameController);
-
-
-
-
         botUser.setReady();
     }
 
