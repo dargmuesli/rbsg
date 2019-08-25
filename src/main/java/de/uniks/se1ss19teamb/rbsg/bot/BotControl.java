@@ -59,12 +59,14 @@ public class BotControl {
         GameSocketDistributor.getGameSocket(number + 1).setBotGameSocket();
         botUser.connectGamesocket();
         botUser.instantiateBotAi(difficulty);
-        botUser.setInGameController(inGameController);
         botUser.setReady();
     }
 
-    public static void setInGameController(InGameController inGameControllerInput) {
+    public static void initializeBotAi(InGameController inGameControllerInput) {
         inGameController = inGameControllerInput;
+        for (BotUser botUser : botUsers) {
+            botUser.initializeBotAi(inGameControllerInput);
+        }
     }
 
     public static void checkForBotsTurn(String playerId) {

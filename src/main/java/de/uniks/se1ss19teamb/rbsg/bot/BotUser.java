@@ -35,9 +35,10 @@ public class BotUser {
 
     private AI botAi = null;
 
-    //ingameController always null?
-    void setInGameController(InGameController inGameController) {
+    void initializeBotAi(InGameController inGameController) {
         this.inGameController = inGameController;
+        botAi.initialize(botUserKey, gameSocket, inGameController);
+
     }
 
     private InGameController inGameController;
@@ -95,8 +96,7 @@ public class BotUser {
             System.out.println("Bot army Id: " + armyId);
             gameSocket.changeArmy(armyId);
 
-            // TODO: Initialize has to be done when the game starts.
-            // botAi.initialize(botUserKey, gameSocket, inGameController);
+
 
         }
     }
@@ -145,5 +145,4 @@ public class BotUser {
     void doAiTurn() {
         botAi.doTurn();
     }
-    
 }
