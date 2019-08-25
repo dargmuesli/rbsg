@@ -63,4 +63,12 @@ public class BotControl {
     public static void setInGameController(InGameController inGameControllerInput) {
         inGameController = inGameControllerInput;
     }
+
+    public static void checkForBotsTurn(String name) {
+        for (BotUser botUser : botUsers) {
+            if (botUser.getBotUserName().equals(name)) {
+                botUser.doAiTurn();
+            }
+        }
+    }
 }

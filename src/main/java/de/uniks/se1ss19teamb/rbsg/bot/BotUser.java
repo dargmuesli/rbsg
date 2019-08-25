@@ -141,4 +141,8 @@ public class BotUser {
     void setReady() {
         gameSocket.readyToPlay();
     }
+
+    public void doAiTurn() {
+        botAi.doTurn();
+    }
 }
