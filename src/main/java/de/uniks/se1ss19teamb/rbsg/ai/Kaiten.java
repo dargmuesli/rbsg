@@ -93,6 +93,10 @@ class Kaiten extends AI {
                 }
             }
             
+            if (toAttack == null) {
+                continue;
+            }
+            
             //Iterate over Friendlies to Move towards enemy
             for (UnitTile unit : ingameController.unitTiles) {
                 
@@ -106,11 +110,10 @@ class Kaiten extends AI {
                 
                 if (path != null) {                    
                     socket.moveUnit(unit.getId(), path.getKey().path);
-                }
-                
-                //If we land next to the Target, mark for Attacking
-                if (path.getValue() == 1) {
-                    markedForAttack.put(unit, ingameController.unitTileMapByTileId.get(toAttack.getId()));
+                    //If we land next to the Target, mark for Attacking
+                    if (path.getValue() == 1) {
+                        markedForAttack.put(unit, ingameController.unitTileMapByTileId.get(toAttack.getId()));
+                    }
                 }
                 
                 waitForSocket();
