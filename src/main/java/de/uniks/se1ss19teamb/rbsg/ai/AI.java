@@ -127,6 +127,7 @@ public abstract class AI {
             path.distance++;
             pathList.addFirst(closest);
             closest = ingameController.previousTileMapById.get(closest);
+        // NullPointerException is thrown here.
         } while (!closest.equals(unit.getPosition()));
 
         path.path = pathList.toArray(new String[0]);
