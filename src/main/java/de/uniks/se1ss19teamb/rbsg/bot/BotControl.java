@@ -64,15 +64,15 @@ public class BotControl {
 
     public static void initializeBotAi(InGameController inGameControllerInput) {
         inGameController = inGameControllerInput;
-        for (BotUser botUser : botUsers) {
-            botUser.initializeBotAi(inGameControllerInput);
-        }
         for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
             for (BotUser botUser : botUsers) {
                 if (botUser.getBotUserName().equals(player.getName())) {
                     botUser.setBotPlayerId(player.getId());
                 }
             }
+        }
+        for (BotUser botUser : botUsers) {
+            botUser.initializeBotAi(inGameControllerInput);
         }
     }
 
