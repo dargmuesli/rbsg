@@ -280,24 +280,26 @@ public class GameSocket extends AbstractMessageWebSocket {
                                             GameLobbyController.instance.gameInitFinished = true;
                                             GameLobbyController.instance.startGameTransition();
                                         }
+                                    }
 
-                                        switch (data.get("newValue").getAsString()) {
-                                            case "movePhase":
-                                                phaseString = "Movement Phase";
-                                                if (InGameController.getInstance() != null) {
-                                                    InGameController.instance.autoMode();
-                                                }
-                                                break;
-                                            case "attackPhase":
-                                                phaseString = "Attack Phase";
-                                                break;
-                                            case "lastMovePhase":
-                                                phaseString = "Last Movement Phase";
-                                                break;
-                                            default:
-                                                phaseString = "Unknown phase!";
-                                        }
+                                    switch (data.get("newValue").getAsString()) {
+                                        case "movePhase":
+                                            phaseString = "Movement Phase";
+                                            if (InGameController.getInstance() != null) {
+                                                InGameController.instance.autoMode();
+                                            }
+                                            break;
+                                        case "attackPhase":
+                                            phaseString = "Attack Phase";
+                                            break;
+                                        case "lastMovePhase":
+                                            phaseString = "Last Movement Phase";
+                                            break;
+                                        default:
+                                            phaseString = "Unknown phase!";
+                                    }
 
+                                    if (!botGameSocket) {
                                         if (TurnUiController.getInstance() == null) {
                                             TurnUiController.startTurnLabel = phaseString;
                                         } else {

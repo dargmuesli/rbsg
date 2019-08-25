@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -8,6 +10,7 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -232,8 +235,12 @@ class Nagato extends AI {
                     heli.getPosition()), heli.getMpLeft(), false,
                     ((InGamePlayer)ingameController.inGameObjects
                     .get(playerID)).getName());
-            
-            Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
+
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(ingameController.previousTileMapById);
+            Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+            HashMap<String, String> previousTileMapByIdLocal = gson.fromJson(jsonString, type);
+
             if (previousTileMapByIdLocal.isEmpty()) {
                 continue;
             }
