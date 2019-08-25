@@ -44,6 +44,7 @@ public class GameSocket extends AbstractMessageWebSocket {
     private boolean ignoreOwn = false;
     public String currentPlayer;
     public String phaseString;
+    private boolean botGameSocket = false;
 
     public GameSocket(String gameId) {
         this(gameId, null, false);
@@ -61,7 +62,7 @@ public class GameSocket extends AbstractMessageWebSocket {
             } else if (StringUtil.checkHasNot(response, "action", logger)) {
                 return;
             }
-            
+
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
@@ -104,89 +105,95 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     break;
                 case "gameInitObject":
-                    if (!firstGameInitObjectReceived) {
-                        firstGameInitObjectReceived = true;
+                    if (!botGameSocket) {
+                        if (!firstGameInitObjectReceived) {
+                            firstGameInitObjectReceived = true;
 
-                        assert data != null;
-                        InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
+                            assert data != null;
+                            InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
 
-                        InGameController.inGameObjects.clear();
-                        InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
-                    } else {
+                            InGameController.inGameObjects.clear();
+                            InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
+                        } else {
+                            assert data != null;
+                            if (StringUtil.checkHasNot(data, "id", logger)) {
+                                return;
+                            }
+
+                            String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                            switch (type) {
+                                case "Forest":
+                                case "Sand":
+                                case "Grass":
+                                case "Water":
+                                case "Mountain":
+                                    EnvironmentTile environmentTile =
+                                        SerializeUtil.deserialize(data.toString(), EnvironmentTile.class);
+                                    InGameController.environmentTiles.put(new Pair<>(
+                                        environmentTile.getX(), environmentTile.getY()), environmentTile);
+                                    break;
+                                case "Player":
+                                    InGamePlayer inGamePlayer =
+                                        SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
+                                    InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+                                    break;
+                                case "Unit":
+                                    //TODO does this case exist?
+                                    InGameController.unitTiles.add(
+                                        SerializeUtil.deserialize(data.toString(), UnitTile.class));
+                                    break;
+                                default:
+                                    NotificationHandler.sendWarning(
+                                        "Unknown tile type: " + type, logger);
+                            }
+                        }
+                        break;
+                    }
+                case "gameInitFinished":
+                    if (!botGameSocket) {
+
+                        NotificationHandler.sendInfo("Game initialized.", logger);
+                        if (GameLobbyController.instance != null) {
+                            GameLobbyController.instance.updatePlayers();
+                        }
+
+                        Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
+                            .add(TextureManager.computeMinimap(
+                                InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
+
+                    }
+                    break;
+                case "gameNewObject":
+                    if (!botGameSocket) {
                         assert data != null;
                         if (StringUtil.checkHasNot(data, "id", logger)) {
                             return;
                         }
 
-                        String type = data.get("id").getAsString().replaceFirst("@.+", "");
-
-                        switch (type) {
-                            case "Forest":
-                            case "Sand":
-                            case "Grass":
-                            case "Water":
-                            case "Mountain":
-                                EnvironmentTile environmentTile =
-                                    SerializeUtil.deserialize(data.toString(), EnvironmentTile.class);
-                                InGameController.environmentTiles.put(new Pair<>(
-                                    environmentTile.getX(), environmentTile.getY()), environmentTile);
-                                break;
+                        switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
                             case "Player":
-                                InGamePlayer inGamePlayer =
-                                    SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
+                                InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
+
                                 InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+
+                                if (GameLobbyController.instance != null) {
+                                    GameLobbyController.instance.updatePlayers();
+                                }
+
+                                // TODO handle in chat window
+                                NotificationHandler.sendInfo("New Player joined! \""
+                                    + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
+                                    + "\"", logger);
                                 break;
                             case "Unit":
-                                //TODO does this case exist?
                                 InGameController.unitTiles.add(
                                     SerializeUtil.deserialize(data.toString(), UnitTile.class));
                                 break;
                             default:
-                                NotificationHandler.sendWarning(
-                                    "Unknown tile type: " + type, logger);
+                                NotificationHandler.sendError(
+                                    "Unknown new game object id: " + data.get("id").getAsString(), logger);
                         }
-                    }
-                    break;
-                case "gameInitFinished":
-
-                    NotificationHandler.sendInfo("Game initialized.", logger);
-                    if (GameLobbyController.instance != null) {
-                        GameLobbyController.instance.updatePlayers();
-                    }
-
-                    Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
-                        .add(TextureManager.computeMinimap(
-                            InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
-
-                    break;
-                case "gameNewObject":
-                    assert data != null;
-                    if (StringUtil.checkHasNot(data, "id", logger)) {
-                        return;
-                    }
-
-                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
-                        case "Player":
-                            InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
-
-                            InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
-
-                            if (GameLobbyController.instance != null) {
-                                GameLobbyController.instance.updatePlayers();
-                            }
-
-                            // TODO handle in chat window
-                            NotificationHandler.sendInfo("New Player joined! \""
-                                + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
-                                + "\"", logger);
-                            break;
-                        case "Unit":
-                            InGameController.unitTiles.add(
-                                SerializeUtil.deserialize(data.toString(), UnitTile.class));
-                            break;
-                        default:
-                            NotificationHandler.sendError(
-                                "Unknown new game object id: " + data.get("id").getAsString(), logger);
                     }
                     break;
                 case "gameChangeObject":
@@ -266,72 +273,80 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     }
                                     break;
                                 case "phase":
-                                    if (!GameLobbyController.instance.gameInitFinished) {
-                                        GameLobbyController.instance.gameInitFinished = true;
-                                        GameLobbyController.instance.startGameTransition();
-                                    }
+                                    if (!botGameSocket) {
+                                        if (!GameLobbyController.instance.gameInitFinished) {
+                                            GameLobbyController.instance.gameInitFinished = true;
+                                            GameLobbyController.instance.startGameTransition();
+                                        }
 
-                                    switch (data.get("newValue").getAsString()) {
-                                        case "movePhase":
-                                            phaseString = "Movement Phase";
-                                            if (InGameController.getInstance() != null) {
-                                                InGameController.instance.autoMode();
-                                            }
-                                            break;
-                                        case "attackPhase":
-                                            phaseString = "Attack Phase";
-                                            break;
-                                        case "lastMovePhase":
-                                            phaseString = "Last Movement Phase";
-                                            break;
-                                        default:
-                                            phaseString = "Unknown phase!";
-                                    }
+                                        switch (data.get("newValue").getAsString()) {
+                                            case "movePhase":
+                                                phaseString = "Movement Phase";
+                                                if (InGameController.getInstance() != null) {
+                                                    InGameController.instance.autoMode();
+                                                }
+                                                break;
+                                            case "attackPhase":
+                                                phaseString = "Attack Phase";
+                                                break;
+                                            case "lastMovePhase":
+                                                phaseString = "Last Movement Phase";
+                                                break;
+                                            default:
+                                                phaseString = "Unknown phase!";
+                                        }
 
-                                    if (TurnUiController.getInstance() == null) {
-                                        TurnUiController.startTurnLabel = phaseString;
-                                    } else {
-                                        TurnUiController.getInstance().setTurnLabel(phaseString);
+                                        if (TurnUiController.getInstance() == null) {
+                                            TurnUiController.startTurnLabel = phaseString;
+                                        } else {
+                                            TurnUiController.getInstance().setTurnLabel(phaseString);
+                                        }
                                     }
 
                                     break;
                                 case "winner":
-                                    WinScreenController.getInstance().setWinningScreen(data.get("newValue")
+                                    if (!botGameSocket) {
+                                        WinScreenController.getInstance().setWinningScreen(data.get("newValue")
                                             .getAsString());
+                                    }
                                     break;
                                 default:
                                     logger.error("Unknown field name \"" + fieldName + "\"");
                             }
                             break;
                         case "Unit":
-                            if (StringUtil.checkHasNot(data, "fieldName", logger)) {
-                                return;
-                            }
 
-                            fieldName = data.get("fieldName").getAsString();
+                            if (!botGameSocket) {
 
-                            if (StringUtil.checkHasNot(data, "newValue", logger)) {
-                                return;
-                            }
+                                if (StringUtil.checkHasNot(data, "fieldName", logger)) {
+                                    return;
+                                }
 
-                            newValue = data.get("newValue").getAsString();
-                            String id = data.get("id").getAsString();
+                                fieldName = data.get("fieldName").getAsString();
 
-                            switch (fieldName) {
-                                case "position":
-                                    if (InGameController.getInstance() != null) {
-                                        InGameController.getInstance().changeUnitPos(id, newValue);
-                                    }
-                                    break;
-                                case "hp":
-                                    //SoundManager.playSound("Omae", 0);
-                                    if (InGameController.getInstance() != null) {
-                                        InGameController.getInstance().changeUnitHp(id, newValue);
-                                    }
-                                    break;
-                                default:
-                                    NotificationHandler.sendError(
-                                        "Unknown fieldName object: " + fieldName, logger);
+                                if (StringUtil.checkHasNot(data, "newValue", logger)) {
+                                    return;
+                                }
+
+                                newValue = data.get("newValue").getAsString();
+                                String id = data.get("id").getAsString();
+
+                                switch (fieldName) {
+                                    case "position":
+                                        if (InGameController.getInstance() != null) {
+                                            InGameController.getInstance().changeUnitPos(id, newValue);
+                                        }
+                                        break;
+                                    case "hp":
+                                        //SoundManager.playSound("Omae", 0);
+                                        if (InGameController.getInstance() != null) {
+                                            InGameController.getInstance().changeUnitHp(id, newValue);
+                                        }
+                                        break;
+                                    default:
+                                        NotificationHandler.sendError(
+                                            "Unknown fieldName object: " + fieldName, logger);
+                                }
                             }
                             break;
                         default:
@@ -361,25 +376,27 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                             // TODO handle in chat window
                             NotificationHandler.sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
-                                    + " has left the game!", logger);
+                                + " has left the game!", logger);
                             SoundManager.playSound("Omae_nani", 0);
                             break;
                         case "Unit":
-                            for (int i = 0; i < InGameController.unitTiles.size(); i++) {
-                                if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
-                                    UnitTile attacker = InGameController.getInstance()
-                                        .findAttackingUnit(InGameController.unitTiles.get(i));
+                            if (!botGameSocket) {
+                                for (int i = 0; i < InGameController.unitTiles.size(); i++) {
+                                    if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
+                                        UnitTile attacker = InGameController.getInstance()
+                                            .findAttackingUnit(InGameController.unitTiles.get(i));
 
-                                    if (attacker != null) {
-                                        SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                        if (attacker != null) {
+                                            SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                        }
+
+                                        InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
+                                        InGameController.unitTiles.remove(i);
                                     }
-
-                                    InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
-                                    InGameController.unitTiles.remove(i);
                                 }
-                            }
 
-                            SoundManager.playSound("nani", 0);
+                                SoundManager.playSound("nani", 0);
+                            }
                             break;
                         default:
                             NotificationHandler.sendError(
@@ -537,5 +554,9 @@ public class GameSocket extends AbstractMessageWebSocket {
     public void registerGameChangeObject(GameSocketMessageHandler
                                              .GameSocketGameChangeObject handler) {
         handlersChangeObject.add(handler);
+    }
+
+    public void setBotGameSocket() {
+        botGameSocket = true;
     }
 }

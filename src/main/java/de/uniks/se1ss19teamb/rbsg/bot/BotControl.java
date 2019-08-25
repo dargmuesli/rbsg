@@ -1,10 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class BotControl {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
+        GameSocketDistributor.getGameSocket(number + 1).setBotGameSocket();
         botUser.connectGamesocket();
         botUser.instantiateBotAi(difficulty);
         botUser.setInGameController(inGameController);
@@ -64,11 +67,16 @@ public class BotControl {
         inGameController = inGameControllerInput;
     }
 
-    public static void checkForBotsTurn(String name) {
-        for (BotUser botUser : botUsers) {
-            if (botUser.getBotUserName().equals(name)) {
-                botUser.doAiTurn();
+    public static void checkForBotsTurn(String playerId) {
+        for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
+            if (player.getId().equals(playerId)) {
+                for (BotUser botUser : botUsers) {
+                    if (botUser.getBotUserName().equals(player.getName())) {
+                        botUser.doAiTurn();
+                    }
+                }
             }
         }
+
     }
 }

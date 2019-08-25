@@ -142,7 +142,8 @@ public class BotUser {
         gameSocket.readyToPlay();
     }
 
-    public void doAiTurn() {
+    void doAiTurn() {
         botAi.doTurn();
     }
+    
 }
