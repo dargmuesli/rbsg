@@ -24,6 +24,7 @@ public class BotUser {
     private String botUserKey;
     private String botUserName;
     private String botUserPassword;
+    private String botPlayerId;
     private String gameId;
     private String armyId;
 
@@ -35,11 +36,7 @@ public class BotUser {
 
     private AI botAi = null;
 
-    void initializeBotAi(InGameController inGameController) {
-        this.inGameController = inGameController;
-        botAi.initialize(botUserKey, gameSocket, inGameController);
 
-    }
 
     private InGameController inGameController;
 
@@ -144,5 +141,15 @@ public class BotUser {
 
     void doAiTurn() {
         botAi.doTurn();
+    }
+
+    public void setBotPlayerId(String id) {
+        botPlayerId = id;
+    }
+
+    void initializeBotAi(InGameController inGameController) {
+        this.inGameController = inGameController;
+        botAi.initialize(botPlayerId, gameSocket, inGameController);
+
     }
 }

@@ -67,6 +67,13 @@ public class BotControl {
         for (BotUser botUser : botUsers) {
             botUser.initializeBotAi(inGameControllerInput);
         }
+        for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
+            for (BotUser botUser : botUsers) {
+                if (botUser.getBotUserName().equals(player.getName())) {
+                    botUser.setBotPlayerId(player.getId());
+                }
+            }
+        }
     }
 
     public static void checkForBotsTurn(String playerId) {
