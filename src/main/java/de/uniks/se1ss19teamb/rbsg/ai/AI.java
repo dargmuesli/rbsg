@@ -1,5 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -8,11 +10,8 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.lang.reflect.Type;
+import java.util.*;
 
 import javafx.util.Pair;
 
@@ -94,9 +93,19 @@ public abstract class AI {
         
         String closest = null;
         int closestDistance = Integer.MAX_VALUE;
-        
-        for (String targetTile : ingameController.previousTileMapById.keySet()) {
-            EnvironmentTile current = ingameController.environmentTileMapById.get(targetTile);
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(ingameController.previousTileMapById);
+        Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+        HashMap<String, String> clonedPreviousTileMap = gson.fromJson(jsonString, type);
+
+        jsonString = gson.toJson(ingameController.environmentTileMapById);
+        type = new TypeToken<HashMap<String, EnvironmentTile>>(){}.getType();
+        HashMap<String, EnvironmentTile> clonedEnvironmentTileMap = gson.fromJson(jsonString, type);
+
+
+        for (String targetTile : clonedPreviousTileMap.keySet()) {
+            EnvironmentTile current = clonedEnvironmentTileMap.get(targetTile);
             
             int currentDistance = Math.abs(x - current.getX()) + Math.abs(y - current.getY());
             
