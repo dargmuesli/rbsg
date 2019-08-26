@@ -44,7 +44,7 @@ public class ChatSocket extends AbstractMessageWebSocket {
         Chat.executeCommandsOnMessage(message, null).ifPresent(s -> {
             JsonObject json = new JsonObject();
             json.addProperty("channel", "all");
-            json.addProperty("message", message);
+            json.addProperty("message", s);
             sendToWebsocket(json);
         });
     }
@@ -55,7 +55,7 @@ public class ChatSocket extends AbstractMessageWebSocket {
             JsonObject json = new JsonObject();
             json.addProperty("channel", "private");
             json.addProperty("to", target);
-            json.addProperty("message", message);
+            json.addProperty("message", s);
             sendToWebsocket(json);
 
             LogManager.getLogger().info("Sent \"" + s + "\"");
