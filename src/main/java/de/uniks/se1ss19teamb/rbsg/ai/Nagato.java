@@ -65,7 +65,7 @@ class Nagato extends AI {
             assert randomFriendly != null;
 
             float quot = ((float) Math.abs(randomFriendly.getX() - sideLength / 2))
-                / ((float) Math.abs(randomFriendly.getY() - sideLength / 2));
+                    / ((float) Math.abs(randomFriendly.getY() - sideLength / 2));
 
             sideXY = (quot > 1);
 
@@ -100,7 +100,7 @@ class Nagato extends AI {
 
             // Skip those tiles that are not a forest/mountain edge.
             if (above == null || tile.getValue().getName().equals("Grass")
-                || tile.getValue().getName().equals("Water")) {
+                    || tile.getValue().getName().equals("Water")) {
                 continue;
             }
 
@@ -219,8 +219,8 @@ class Nagato extends AI {
             }
 
             ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                heli.getPosition()), heli.getMpLeft(), false,
-                ((InGamePlayer) ingameController.inGameObjects
+                    heli.getPosition()), heli.getMpLeft(), false,
+                    ((InGamePlayer) ingameController.inGameObjects
                     .get(playerID)).getName());
 
             Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
@@ -236,8 +236,8 @@ class Nagato extends AI {
                 }
 
                 ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                    enemyTank.getPosition()), enemyTank.getMp() + 1, false,
-                    ((InGamePlayer) ingameController.inGameObjects
+                        enemyTank.getPosition()), enemyTank.getMp() + 1, false,
+                        ((InGamePlayer) ingameController.inGameObjects
                         .get(enemyTank.getLeader())).getName());
 
                 possibleDestinations.removeAll(ingameController.previousTileMapById.keySet());
@@ -303,7 +303,7 @@ class Nagato extends AI {
                 EnvironmentTile current = ingameController.environmentTileMapById.get(targetTile);
 
                 int currentDistance = Math.abs(targetUnitTile.getX() - current.getX())
-                    + Math.abs(targetUnitTile.getY() - current.getY());
+                        + Math.abs(targetUnitTile.getY() - current.getY());
 
                 // Forbid walking onto the target.
                 if (currentDistance < closestDistance && currentDistance > 0) {
