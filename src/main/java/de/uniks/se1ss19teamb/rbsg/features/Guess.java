@@ -24,16 +24,19 @@ public class Guess extends Application {
         vBox.setSpacing(20);
         numberField.setPromptText("Press Button");
         numberField.setAlignment(Pos.CENTER);
+        numberField.setId("numberField");
 
         Button btnNewGame = new Button("Start New Game");
         btnNewGame.setOnAction(event -> {
             initalGame();
         });
+        btnNewGame.setId("btnNewGame");
 
         Button btnStart = new Button("Start Guessing");
         btnStart.setOnAction(event -> {
             gameStart();
         });
+        btnStart.setId("btnStart");
 
         vBox.getChildren().add(numberField);
         hBox.getChildren().add(btnNewGame);

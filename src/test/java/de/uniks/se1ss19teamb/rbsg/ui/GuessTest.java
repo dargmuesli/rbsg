@@ -19,14 +19,27 @@ public class GuessTest {
 
     @Test
     void guessTest(FxRobot robot) {
-        robot.sleep(2000);
+        robot.sleep(200);
         robot.clickOn("#btnNewGame");
         robot.sleep(200);
         robot.clickOn("#numberField");
         robot.write("1");
         robot.clickOn("#btnStart");
         robot.sleep(200);
+        robot.clickOn("#numberField");
+        robot.sleep(200);
         robot.write("2");
+        robot.clickOn("#btnStart");
+        robot.sleep(200);
+        robot.clickOn("#numberField");
+        robot.sleep(200);
+        robot.write("3");
+        robot.clickOn("#btnStart");
+        robot.sleep(200);
+        robot.clickOn("#numberField");
+        robot.sleep(200);
+        robot.write("4");
+        robot.clickOn("#btnStart");
         robot.sleep(200);
     }
 }
