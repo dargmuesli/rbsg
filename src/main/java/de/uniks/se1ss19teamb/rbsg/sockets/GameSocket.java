@@ -391,7 +391,7 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChat":
-                    Chat.defaultMessageHandler(response, this.ignoreOwn, LoginController.getUserName(), handlersChat);
+                    Chat.defaultMessageHandler(response.getAsJsonObject("data"), this.ignoreOwn, LoginController.getUserName(), handlersChat);
                     break;
                 case "inGameError":
                     if (response.get("data").getAsString().equals("You need to select an army to be ready.")) {
