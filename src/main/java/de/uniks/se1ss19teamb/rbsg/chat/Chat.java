@@ -128,7 +128,7 @@ public class Chat {
         history.add(new ChatHistoryEntry(message, sender, receiver));
     }
 
-    private Optional<String> executeCommandsOnMessage(String message, String receiver) {
+    public static Optional<String> executeCommandsOnMessage(String message, String receiver) {
 
         // Export the public key only.
         if (message.equals("/enc_export")) {
