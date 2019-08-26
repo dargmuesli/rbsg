@@ -1,11 +1,12 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,12 @@ public class BotControl {
         gameId = id;
     }
 
+    /**
+     * Creates a temporary user that is run by an {@link AI}.
+     *
+     * @param number                 The bot's number that is used for {@link GameSocket} creation.
+     * @param botSelectionController The controller on which the bot will be selected.
+     */
     public static void createBotUser(int number, BotSelectionController botSelectionController) {
         BotUser botUser = new BotUser();
         botUser.setBotNumber(number);
@@ -44,15 +51,11 @@ public class BotControl {
         if (GameSocketDistributor.getGameSocket(number + 1) == null) {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
+
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         //TODO: inGameController and GameSocket have to be set.
         botUser.instantiateBotAi();
         botUser.setInGameController(inGameController);
-
-        //Just info for dev. Will be deleted later
-        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
-            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
     }
 
     public static void setInGameController(InGameController inGameControllerInput) {
