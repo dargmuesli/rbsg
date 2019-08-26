@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 
 /**
  * A texture class for textures with multiple layers.
- * User here mainly for Terrain Textures.
+ * Mainly used for terrain textures.
  */
 class TextureFancy {
 
@@ -17,31 +17,31 @@ class TextureFancy {
     private int depth;
 
     /**
-     * Constructor of TextureFancy.
+     * The constructor.
      *
-     * @param classPathBase String of the path of the base, the lowest layer for the texture
-     * @param classPathOverlay String of the path of the overlay.
-     * @param depth The amount of overlays.
+     * @param texturePathBase The path of the base texture's picture.
+     * @param texturePathOverlay The path of the overlay texture's picture.
+     * @param depth The overlay count.
      */
-    TextureFancy(String classPathBase, String classPathOverlay, int depth) {
-        base = new Texture(classPathBase);
-        overlay = new Texture(classPathOverlay);
+    TextureFancy(String texturePathBase, String texturePathOverlay, int depth) {
+        base = new Texture(texturePathBase);
+        overlay = new Texture(texturePathOverlay);
         this.depth = depth;
     }
 
     /**
-     * Base Pane getter.
-     * @return Pane of the base.
+     * Instantiates the base texture.
+     * @return Pane of the base texture.
      */
     Pane instantiateBase() {
         return base.instantiate(null);
     }
 
     /**
-     * Overlay Pane getter.
-     * @param position The position of the overlay fitting for the position of base.
-     * @param type Type of the base.
-     * @return Pane of the overlay.
+     * Instantiate the overlay texture.
+     * @param position The overlay's position related to the base's position.
+     * @param type Type of the base texture.
+     * @return Pane of the overlay texture.
      */
     Pane instantiateOverlay(TextureFancyOverlayPosition position, TextureFancyOverlayType type) {
         int x = position.px;
@@ -55,9 +55,9 @@ class TextureFancy {
     }
 
     /**
-     * Standart getter.
+     * Standard getter.
      *
-     * @return The amount of overlays.
+     * @return The overlay count.
      */
     int getDepth() {
         return depth;
