@@ -9,9 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
- * Child class of Texture.
- * A class that gives you an AnimatedPane with the animation of the texture
- * and makes a colored border around the animation.
+ * A class that creates {@link AnimatedPane}s of animated textures
+ * with a colored border around the non-transparent parts.
  */
 public class AnimatedTexture extends Texture {
 
@@ -19,10 +18,10 @@ public class AnimatedTexture extends Texture {
     private float periodTime;
 
     /**
-     * Constructor of AnimatedTexture.
+     * The constructor.
      *
-     * @param classPath The path of the texture.
-     * @param periodTime The period between the change of the pectures in nano seconds.
+     * @param classPath The texture resource's path.
+     * @param periodTime The time period between picture changes in nanoseconds.
      */
     AnimatedTexture(String classPath, float periodTime) {
         super(classPath);
@@ -30,8 +29,7 @@ public class AnimatedTexture extends Texture {
     }
 
     /**
-     * Animation Updater.
-     * updates the animations.
+     * Creates a new {@link AnimationTimer} for the texture.
      */
     static void registerAnimUpdates() {
         new AnimationTimer() {
@@ -54,12 +52,10 @@ public class AnimatedTexture extends Texture {
     }
 
     /**
-     * The Animated Pane getter.
+     * Creates an animated pane.
      *
-     * @param colorName String of the name of the color like "red", "blue" etc.
-     * @return An AnimatedPane with the texture as animation.
-     *      * The texture has a border around the visible parts of the pictures.
-     *      * The color of the border is changed by colorName.
+     * @param colorName The color's name like "red", "blue" etc.
+     * @return A pane where a contained ImageView will have a border around the visible parts of the animation.
      */
     @Override
     public Pane instantiate(String colorName) {
@@ -72,5 +68,4 @@ public class AnimatedTexture extends Texture {
 
         return textured;
     }
-
 }
