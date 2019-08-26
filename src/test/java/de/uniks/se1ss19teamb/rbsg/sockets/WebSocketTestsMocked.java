@@ -232,7 +232,7 @@ class WebSocketTestsMocked {
 
         List<String> msg = new ArrayList<>();
 
-        chat.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> msg.add(message + '|' + from + '|' + isPrivate));
 
         setupSocket("{\"channel\":\"all\",\"from\":\"TeamBTestUser\",\"message\":\"Hello World!\"}", chat);
         chat.sendMessage("Hello World!");
@@ -250,7 +250,7 @@ class WebSocketTestsMocked {
 
         List<String> gameMsg = new ArrayList<>();
 
-        gameSocket.registerMessageHandler((message, from, isPrivate) -> gameMsg.add(message + '|' + from + '|'
+        gameSocket.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> gameMsg.add(message + '|' + from + '|'
             + isPrivate));
 
         setupSocket("{\"action\":\"gameChat\",\"data\":{\"channel\":\"all\",\"message\":\"Hello World!\",\""

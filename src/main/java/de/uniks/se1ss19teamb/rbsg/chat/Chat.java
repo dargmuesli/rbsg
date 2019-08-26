@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
+import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
 import de.uniks.se1ss19teamb.rbsg.crypto.GenerateKeys;
 import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
@@ -15,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,14 +34,8 @@ public class Chat {
     /**
      * Defines that and how received messages are added to the chat history.
      */
-    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
-        -> {
-        if (message.startsWith("[tbe]")) {
-            message = CipherUtils.decryptMessage(message.substring(5));
-        }
-
-        addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
-    };
+    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate, wasEncrypted)
+        -> addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
 
     private static final Logger logger = LogManager.getLogger();
     private ArrayList<ChatHistoryEntry> history = new ArrayList<>();
@@ -112,9 +108,12 @@ public class Chat {
      * @param receiver The receiver's name.
      */
     public void sendMessage(String message, String receiver) {
-        addToHistory(message, LoginController.getUserName(), receiver);
         executeCommandsOnMessage(message, receiver).ifPresent(s
-            -> this.messageWebSocket.sendPrivateMessage(message, receiver));
+            -> {
+            addToHistory(s, LoginController.getUserName(), receiver);
+            this.messageWebSocket.sendPrivateMessage(s, receiver);
+        });
+
     }
 
     /**

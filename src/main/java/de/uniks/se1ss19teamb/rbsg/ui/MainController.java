@@ -110,12 +110,12 @@ public class MainController {
         SystemSocket.instance.registerUserJoinHandler(
             (name) -> {
                 updatePlayerView();
-                addElement(name, " joined.", textArea, false);
+                addElement(name, " joined.", textArea, false, false);
             });
 
         SystemSocket.instance.registerUserLeftHandler(
             (name) -> {
-                addElement(name, " left.", textArea, false);
+                addElement(name, " left.", textArea, false, false);
                 if (!name.equals(LoginController.getUserName())) {
                     updatePlayerView();
                 }
@@ -125,7 +125,7 @@ public class MainController {
             (gameName, id, neededPlayers) -> {
                 updateGameView();
                 addElement(null, "Game \"" + gameName + "\" was created for " + neededPlayers + " players.",
-                    textArea, false);
+                    textArea, false, false);
             });
 
         SystemSocket.instance.registerGameDeleteHandler(
@@ -133,7 +133,7 @@ public class MainController {
                 String deletedGameName = existingGames.get(id).getName();
                 Platform.runLater(() -> {
                     addElement(null, "Game \"" + deletedGameName + "\" was deleted.",
-                        textArea, false);
+                        textArea, false, false);
                     updateGameView();
                 });
             });
@@ -153,11 +153,11 @@ public class MainController {
             ChatSocket.instance = new ChatSocket(LoginController.getUserName(), LoginController.getUserToken());
         }
 
-        ChatSocket.instance.registerMessageHandler((message, from, isPrivate) -> {
+        ChatSocket.instance.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> {
             if (isPrivate) {
-                addNewPane(from, message, false, chatPane);
+                addNewPane(from, message, false, chatPane, wasEncrypted);
             } else {
-                addElement(from, message, textArea, false);
+                addElement(from, message, textArea, false, false);
             }
         });
 
@@ -288,7 +288,12 @@ public class MainController {
                     chat.sendMessage(message.getText());
                 } else {
                     chat.sendMessage(message.getText(), sendTo);
-                    addNewPane(sendTo, message.getText(), true, chatPane);
+
+                    if (message.getText().startsWith("/enc ")) {
+                        addNewPane(sendTo, message.getText().substring(5), true, chatPane, true);
+                    } else {
+                        addNewPane(sendTo, message.getText(), true, chatPane, false);
+                    }
                 }
             } else {
                 chat.sendMessage(message.getText());
@@ -402,9 +407,15 @@ public class MainController {
                     }
                 }
             });
+
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
+
+            if (wasEncrypted) {
+                text.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCK));
+            }
+
             setChatStyle(text);
 
             Platform.runLater(() -> {
@@ -417,8 +428,8 @@ public class MainController {
             Label text = new Label(message);
             text.setPadding(new Insets(5));
             text.setWrapText(true);
-            setChatStyle(text);
 
+            setChatStyle(text);
             container.getChildren().add(text);
         }
 
@@ -443,22 +454,25 @@ public class MainController {
             + "-fx-background-radius: 10px;");
     }
 
-    void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane) {
+    void addNewPane(String from, String message, boolean mymessage, JFXTabPane pane, boolean wasEncrypted) {
         boolean createTab = true;
+
         for (Tab t : pane.getTabs()) {
             if (t.getText().equals(from)) {
                 if (!t.isSelected()) {
                     Platform.runLater(() -> t.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE)));
                 }
+
                 if (mymessage) {
-                    getPrivate(LoginController.getUserName(), message, t);
+                    getPrivate(LoginController.getUserName(), message, t, wasEncrypted);
                     createTab = false;
                 } else {
-                    getPrivate(from, message, t);
+                    getPrivate(from, message, t, wasEncrypted);
                     createTab = false;
                 }
             }
         }
+
         if (createTab) {
             Platform.runLater(
                 () -> {
@@ -468,11 +482,13 @@ public class MainController {
                                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/privateTab.fxml"));
                         newTab.setText(from);
                         pane.getTabs().add(newTab);
+
                         if (mymessage) {
-                            getPrivate(LoginController.getUserName(), message, newTab);
+                            getPrivate(LoginController.getUserName(), message, newTab, wasEncrypted);
                         } else {
-                            getPrivate(from, message, newTab);
+                            getPrivate(from, message, newTab, wasEncrypted);
                         }
+
                         MainController.selectionModel.select(newTab);
                     } catch (IOException e) {
                         NotificationHandler.sendError("A tab could not be loaded!", logger, e);
@@ -482,12 +498,14 @@ public class MainController {
         }
     }
 
-    private void getPrivate(String from, String message, Tab tab) {
+    private void getPrivate(String from, String message, Tab tab, boolean wasEncrypted) {
         ScrollPane scrollPane = (ScrollPane) tab.getContent();
         VBox area = (VBox) scrollPane.getContent();
+
         if (message != null) {
-            addElement(from, message, area, true);
+            addElement(from, message, area, true, wasEncrypted);
         }
+
         MainController.selectionModel.select(tab);
     }
 
@@ -529,8 +547,9 @@ public class MainController {
         } else {
             MainController.sendTo = input.substring(3, count);
         }
+
         Platform.runLater(() -> {
-            addNewPane(MainController.sendTo, null, true, chatPane);
+            addNewPane(MainController.sendTo, null, true, chatPane, false);
             message.clear();
             message.setStyle("-fx-text-fill: -fx-privatetext;"
                 + "-jfx-focus-color: -fx-privatetext;");
