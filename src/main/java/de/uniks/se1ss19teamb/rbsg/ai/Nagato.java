@@ -7,11 +7,9 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
-import javafx.util.Pair;
-
 import java.util.*;
 import java.util.Map.Entry;
-
+import javafx.util.Pair;
 
 class Nagato extends AI {
 
