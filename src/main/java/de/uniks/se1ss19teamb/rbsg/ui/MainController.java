@@ -350,25 +350,28 @@ public class MainController {
     }
 
     private Label addPlayerlabel(String player) {
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem whisperMenuItem = new MenuItem("whisper");
-        contextMenu.getItems().add(whisperMenuItem);
-        contextMenu.setOnAction(e -> setPrivate(player, -1));
-
-        contextMenu.setStyle("-fx-background-color:transparent;");
-        contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
-            + "-fx-padding: 0px;");
-
         Label plabel = new Label(player);
-        plabel.setContextMenu(contextMenu);
         plabel.setMaxWidth(Double.MAX_VALUE);
         plabel.setMaxHeight(Double.MAX_VALUE);
 
+        if (!player.equals(LoginController.getUserName())) {
+            MenuItem whisperMenuItem = new MenuItem("whisper");
+            ContextMenu contextMenu = new ContextMenu();
+            contextMenu.getItems().add(whisperMenuItem);
+            contextMenu.setOnAction(e -> setPrivate(player, -1));
+            // TODO move to css file
+            contextMenu.setStyle("-fx-background-color:transparent;");
+            contextMenu.setStyle("-fx-control-inner-background: #2A2E37;" + "-fx-background-insets: 0 ;"
+                + "-fx-padding: 0px;");
+            plabel.setContextMenu(contextMenu);
+        }
+
         plabel.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                if (mouseEvent.getClickCount() == 2) {
-                    setPrivate(player, -1);
-                }
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
+                && mouseEvent.getClickCount() == 2
+                && !player.equals(LoginController.getUserName())) {
+
+                setPrivate(player, -1);
             }
         });
 
@@ -376,7 +379,7 @@ public class MainController {
     }
 
     // ChatTabController
-    void addElement(String player, String message, VBox box, boolean whisper) {
+    void addElement(String player, String message, VBox box, boolean whisper, boolean wasEncrypted) {
 
         VBox container = new VBox();
 
@@ -384,11 +387,13 @@ public class MainController {
             Label name = new Label(player + ":");
             name.setPadding(new Insets(5));
             name.setWrapText(true);
+
             if (whisper) {
                 name.setStyle("-fx-text-fill: -fx-privatetext;");
             } else {
                 name.setStyle("-fx-text-fill: black;");
             }
+
             // whisper on double click
             name.setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
