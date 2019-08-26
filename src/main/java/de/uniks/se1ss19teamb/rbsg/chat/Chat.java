@@ -154,7 +154,7 @@ public class Chat {
             // Encrypt the message.
             // tbe = team b encrypted
             if (message.startsWith("/enc ")) {
-                message = "[tbe]" + CipherUtils.encryptMessage(message, receiver);
+                message = "[tbe]" + CipherUtils.encryptMessage(message.substring(5), receiver);
             }
         }
 
