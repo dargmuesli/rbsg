@@ -10,6 +10,11 @@ import org.apache.logging.log4j.Logger;
 public class SerializeUtil {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * A file choosing dialog.
+     *
+     * @return Optionally the selected file.
+     */
     public static Optional<File> chooseFile() {
         JFrame parentFrame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
@@ -24,6 +29,14 @@ public class SerializeUtil {
         }
     }
 
+    /**
+     * Deserializes a JSON from a file to an object instance.
+     *
+     * @param file    The file to read the data from.
+     * @param myClass Indicates which object the data is to be serialized to.
+     * @param <T>     The object type the data is to be serialized to.
+     * @return        The deserialized object.
+     */
     public static <T> T deserialize(File file, Class<T> myClass) {
         try (Reader reader = new FileReader(file)) {
             return new Gson().fromJson(reader, myClass);
@@ -39,6 +52,13 @@ public class SerializeUtil {
         return new Gson().fromJson(jsonString, clazz);
     }
 
+    /**
+     * Serializes an object to a JSON file.
+     *
+     * @param fileString The file to save to.
+     * @param object     The object that is to be serialized.
+     * @param <T>        The object type that is to be serialized.
+     */
     public static <T> void serialize(String fileString, T object) {
         try (FileWriter writer = new FileWriter(fileString)) {
             new Gson().toJson(object, writer);
