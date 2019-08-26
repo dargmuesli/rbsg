@@ -128,6 +128,10 @@ public class RestRequestTestsReal {
         }
     }
 
+    /**
+     * Sends an {@link JoinGameRequest} using the {@link #gameId} and the {@link LoginController#getUserToken()}.
+     * Fails {@link Assert} if unsuccessful.
+     */
     public static void joinGame() {
         if (!RequestUtil.request(new JoinGameRequest(gameId, LoginController.getUserToken()))) {
             Assert.fail();
