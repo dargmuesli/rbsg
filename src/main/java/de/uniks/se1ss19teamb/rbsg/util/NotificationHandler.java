@@ -18,6 +18,13 @@ public class NotificationHandler {
         sendError(errorMessage, logger, null);
     }
 
+    /**
+     * Logs and displays an error.
+     *
+     * @param errorMessage The user readable message that is shown on the UI.
+     * @param logger       The logger to log the error to.
+     * @param e            The exception that caused the error.
+     */
     public static void sendError(String errorMessage, Logger logger, Exception e) {
         if (e == null) {
             logger.error(errorMessage);
