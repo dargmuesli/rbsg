@@ -30,13 +30,14 @@ public class BotSelectionController {
         this.botNumber = botNumber;
     }
 
-    public void setOnAction(ActionEvent event) {
-        if (event.getSource().equals(botCheckbox)) {
-            if (botCheckbox.isSelected()) {
-                if (!botCreated) {
-                    createBot();
-                    botCreated = true;
-                }
+    /**
+     * Creates a bot when the checkbox is selected and a bot does not exist already.
+     */
+    public void check() {
+        if (botCheckbox.isSelected()) {
+            if (!botCreated) {
+                createBot();
+                botCreated = true;
             }
         }
     }
