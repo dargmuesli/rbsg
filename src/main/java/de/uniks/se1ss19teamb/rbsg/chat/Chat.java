@@ -58,6 +58,34 @@ public class Chat {
         this.path = path;
     }
 
+    public static void defaultMessageHandler(
+        JsonObject response, boolean ignoreOwn, String userName, List<ChatMessageHandler> handlersChat) {
+
+        if (response.get("msg") != null) {
+            NotificationHandler.sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+            return;
+        }
+
+        String from = response.get("from").getAsString();
+
+        if (ignoreOwn && from.equals(userName)) {
+            return;
+        }
+
+        String msg = response.get("message").getAsString();
+        boolean isPrivate = response.get("channel").getAsString().equals("private");
+        boolean wasEncrypted = false;
+
+        if (msg.startsWith("[tbe]")) {
+            wasEncrypted = true;
+            msg = CipherUtils.decryptMessage(msg.substring(5));
+        }
+
+        for (ChatMessageHandler handler : handlersChat) {
+            handler.handle(msg, from, isPrivate, wasEncrypted);
+        }
+    }
+
     /**
      * Disconnects the chat socket, writes the chat history to file and logs the user out.
      */
