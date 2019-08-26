@@ -41,18 +41,22 @@ public class ChatSocket extends AbstractMessageWebSocket {
 
     @Override
     public void sendMessage(String message) {
-        JsonObject json = new JsonObject();
-        json.addProperty("channel", "all");
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, null).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("channel", "all");
+            json.addProperty("message", message);
+            sendToWebsocket(json);
+        });
     }
 
     @Override
     public void sendPrivateMessage(String message, String target) {
-        JsonObject json = new JsonObject();
-        json.addProperty("channel", "private");
-        json.addProperty("to", target);
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, target).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("channel", "private");
+            json.addProperty("to", target);
+            json.addProperty("message", message);
+            sendToWebsocket(json);
+        });
     }
 }

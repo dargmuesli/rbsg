@@ -97,8 +97,7 @@ public class Chat {
      * @param message The textual content.
      */
     public void sendMessage(String message) {
-        executeCommandsOnMessage(message, null).ifPresent(s
-            -> this.messageWebSocket.sendMessage(message));
+        this.messageWebSocket.sendMessage(message);
     }
 
     /**
@@ -108,12 +107,8 @@ public class Chat {
      * @param receiver The receiver's name.
      */
     public void sendMessage(String message, String receiver) {
-        executeCommandsOnMessage(message, receiver).ifPresent(s
-            -> {
-            addToHistory(s, LoginController.getUserName(), receiver);
-            this.messageWebSocket.sendPrivateMessage(s, receiver);
-        });
-
+        addToHistory(message, LoginController.getUserName(), receiver);
+        this.messageWebSocket.sendPrivateMessage(message, receiver);
     }
 
     /**
