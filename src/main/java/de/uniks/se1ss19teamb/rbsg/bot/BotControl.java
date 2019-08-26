@@ -5,16 +5,11 @@ import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.Logger;
-
 
 public class BotControl {
-
-    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
     private static ArrayList<BotUser> botUsers = new ArrayList<>();
 
@@ -44,15 +39,11 @@ public class BotControl {
         if (GameSocketDistributor.getGameSocket(number + 1) == null) {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
+
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         //TODO: inGameController and GameSocket have to be set.
         botUser.instantiateBotAi();
         botUser.setInGameController(inGameController);
-
-        //Just info for dev. Will be deleted later
-        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
-            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
     }
 
     public static void setInGameController(InGameController inGameControllerInput) {
