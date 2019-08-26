@@ -84,9 +84,9 @@ class Nagato extends AI {
 
         for (int shortSide = startShort; shortSide != stopShort; shortSide -= (sideDirLow ? 1 : -1)) {
             for (int longSide = (players != 2 ? lineCnt : 0);
-                 longSide < sideLength - (players != 2 ? lineCnt : 0); longSide++) {
+                    longSide < sideLength - (players != 2 ? lineCnt : 0); longSide++) {
                 mapQuarter.put(new Pair<>(longSide, lineCnt), controller.environmentTiles.get(
-                    new Pair<>(sideXY ? shortSide : longSide, sideXY ? longSide : shortSide)));
+                        new Pair<>(sideXY ? shortSide : longSide, sideXY ? longSide : shortSide)));
             }
 
             lineCnt++;
@@ -379,7 +379,7 @@ class Nagato extends AI {
                     EnvironmentTile friendly = attackable.firstKey().start;
 
                     int distance = Math.abs(friendly.getX() - enemyTile.getX())
-                        + Math.abs(friendly.getY() - enemyTile.getY());
+                            + Math.abs(friendly.getY() - enemyTile.getY());
 
                     if (distance < enemy.getMp()) {
                         foundEnemy = true;
