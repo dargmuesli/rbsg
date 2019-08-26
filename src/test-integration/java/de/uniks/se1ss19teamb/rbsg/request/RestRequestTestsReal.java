@@ -177,7 +177,7 @@ public class RestRequestTestsReal {
         }
 
         optional = RequestUtil.request(
-            new CreateGameRequest("TeamBTestUserGame", 2, LoginController.getUserToken(), 123));
+            new CreateGameRequest("TeamBTestUserGame", 2, 123, LoginController.getUserToken()));
 
         if (optional.isPresent()) {
             Assert.assertEquals(24, optional.get().length());
