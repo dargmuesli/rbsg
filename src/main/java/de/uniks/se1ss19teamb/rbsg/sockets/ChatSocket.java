@@ -57,6 +57,8 @@ public class ChatSocket extends AbstractMessageWebSocket {
             json.addProperty("to", target);
             json.addProperty("message", message);
             sendToWebsocket(json);
+
+            LogManager.getLogger().info("Sent \"" + s + "\"");
         });
     }
 }

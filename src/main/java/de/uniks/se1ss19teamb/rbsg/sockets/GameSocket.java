@@ -517,6 +517,8 @@ public class GameSocket extends AbstractMessageWebSocket {
             json.addProperty("to", target);
             json.addProperty("message", s);
             sendToWebsocket(json);
+
+            LogManager.getLogger().info("Sent \"" + s + "\"");
         });
     }
 
