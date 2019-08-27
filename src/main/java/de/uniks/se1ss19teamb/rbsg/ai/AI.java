@@ -124,19 +124,25 @@ public abstract class AI {
             }
         }
         
+        ThreadLocks.getReadEnvironmentTileMapById().lock();
+
         Path path = new Path();
         path.end = ingameController.environmentTileMapById.get(closest);
         path.start = ingameController.environmentTileMapById.get(unit.getPosition());        
         path.distance = 0;
+
+        ThreadLocks.getReadEnvironmentTileMapById().unlock();
         
         LinkedList<String> pathList = new LinkedList<>();
 
+        ThreadLocks.getReadLockPreviousTileMapById().lock();
         do {
             path.distance++;
             pathList.addFirst(closest);
             closest = ingameController.previousTileMapById.get(closest);
         // NullPointerException is thrown here.
         } while (!closest.equals(unit.getPosition()));
+        ThreadLocks.getReadLockPreviousTileMapById().unlock();
 
         path.path = pathList.toArray(new String[0]);
         

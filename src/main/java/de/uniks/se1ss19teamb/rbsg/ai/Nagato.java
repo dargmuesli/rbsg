@@ -335,9 +335,11 @@ class Nagato extends AI {
             }
             
             Path path = new Path();
+            ThreadLocks.getReadEnvironmentTileMapById().lock();
             path.end = ingameController.environmentTileMapById.get(closest);
             path.start = ingameController.environmentTileMapById.get(heli.getPosition());        
             path.distance = 0;
+            ThreadLocks.getReadEnvironmentTileMapById().unlock();
             
             LinkedList<String> pathList = new LinkedList<>();
 

@@ -270,7 +270,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     if (TurnUiController.getInstance() == null) {
                                         TurnUiController.startShowTurn = data.get("newValue").getAsString();
                                     } else {
-                                        TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                                        if (!botGameSocket) {
+                                            TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                                        }
                                         BotControl.checkForBotsTurn(data.get("newValue").getAsString());
                                     }
                                     break;

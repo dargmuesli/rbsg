@@ -387,7 +387,9 @@ public class InGameController {
                     // All overlays and saved path parts are cleared.
                     overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
                     overlayedStacks.clear();
+                    ThreadLocks.getWriteLockPreviousTileMapById().lock();
                     previousTileMapById.clear();
+                    ThreadLocks.getWriteLockPreviousTileMapById().unlock();
 
                     // Draw new path and attack overlays if a unit was selected.
                     // TODO: for when the gamelobby exists
@@ -408,8 +410,10 @@ public class InGameController {
 
                 gameGrid.add(stack, j, i);
                 stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
+                ThreadLocks.getWriteEnvironmentTileMapById().lock();
                 environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),
                     environmentTiles.get(new Pair<>(j, i)));
+                ThreadLocks.getWriteEnvironmentTileMapById().unlock();
             }
         }
 
@@ -441,7 +445,9 @@ public class InGameController {
 
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        ThreadLocks.getWriteLockPreviousTileMapById().lock();
         previousTileMapById.clear();
+        ThreadLocks.getWriteLockPreviousTileMapById().unlock();
         previousTileAttackMapById.clear();
 
         // Create a queue for breadth search.
