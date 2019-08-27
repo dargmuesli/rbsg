@@ -1,6 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ThreadLocks {
@@ -12,6 +13,8 @@ public class ThreadLocks {
     private static final ReentrantReadWriteLock lockEnvironmentTileMapById = new ReentrantReadWriteLock();
     private static final Lock readEnvironmentTileMapById = lockEnvironmentTileMapById.readLock();
     private static final Lock writeEnvironmentTileMapById = lockEnvironmentTileMapById.writeLock();
+
+    private static final Lock unitTilesLock = new ReentrantLock();
 
     public static Lock getReadLockPreviousTileMapById() {
         return readLockPreviousTileMapById;
@@ -29,4 +32,7 @@ public class ThreadLocks {
         return writeEnvironmentTileMapById;
     }
 
+    public static Lock getUnitTilesLock() {
+        return unitTilesLock;
+    }
 }

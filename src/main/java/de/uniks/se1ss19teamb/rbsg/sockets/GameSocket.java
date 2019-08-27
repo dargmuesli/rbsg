@@ -21,6 +21,7 @@ import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import javafx.application.Platform;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -140,8 +141,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     break;
                                 case "Unit":
                                     //TODO does this case exist?
+                                    ThreadLocks.getUnitTilesLock().lock();
                                     InGameController.unitTiles.add(
                                         SerializeUtil.deserialize(data.toString(), UnitTile.class));
+                                    ThreadLocks.getUnitTilesLock().unlock();
                                     break;
                                 default:
                                     NotificationHandler.sendWarning(
@@ -189,8 +192,10 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     + "\"", logger);
                                 break;
                             case "Unit":
+                                ThreadLocks.getUnitTilesLock().lock();
                                 InGameController.unitTiles.add(
                                     SerializeUtil.deserialize(data.toString(), UnitTile.class));
+                                ThreadLocks.getUnitTilesLock().unlock();
                                 break;
                             default:
                                 NotificationHandler.sendError(
@@ -401,7 +406,9 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                                         InGameController.getInstance().changeUnitPos(data.get("id")
                                             .getAsString(), null);
+                                        ThreadLocks.getUnitTilesLock().lock();
                                         InGameController.unitTiles.remove(i);
+                                        ThreadLocks.getUnitTilesLock().unlock();
                                     }
                                 }
 
