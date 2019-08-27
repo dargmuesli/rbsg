@@ -25,6 +25,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import javafx.util.Pair;
 
 
@@ -236,10 +237,15 @@ class Nagato extends AI {
                     ((InGamePlayer)ingameController.inGameObjects
                     .get(playerID)).getName());
 
-            Gson gson = new Gson();
+            /* Gson gson = new Gson();
             String jsonString = gson.toJson(ingameController.previousTileMapById);
             Type type = new TypeToken<HashMap<String, String>>(){}.getType();
             HashMap<String, String> previousTileMapByIdLocal = gson.fromJson(jsonString, type);
+
+             */
+            ThreadLocks.getReadLockPreviousTileMapById().lock();
+            Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
+            ThreadLocks.getReadLockPreviousTileMapById().unlock();
 
             if (previousTileMapByIdLocal.isEmpty()) {
                 continue;

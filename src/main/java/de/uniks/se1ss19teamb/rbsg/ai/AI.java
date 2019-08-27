@@ -1,7 +1,5 @@
 package de.uniks.se1ss19teamb.rbsg.ai;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -10,9 +8,9 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import javafx.util.Pair;
 
 import org.apache.logging.log4j.LogManager;
@@ -94,7 +92,7 @@ public abstract class AI {
         String closest = null;
         int closestDistance = Integer.MAX_VALUE;
 
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         String jsonString = gson.toJson(ingameController.previousTileMapById);
         Type type = new TypeToken<HashMap<String, String>>(){}.getType();
         HashMap<String, String> clonedPreviousTileMap = gson.fromJson(jsonString, type);
@@ -102,6 +100,16 @@ public abstract class AI {
         jsonString = gson.toJson(ingameController.environmentTileMapById);
         type = new TypeToken<HashMap<String, EnvironmentTile>>(){}.getType();
         HashMap<String, EnvironmentTile> clonedEnvironmentTileMap = gson.fromJson(jsonString, type);
+
+         */
+
+        ThreadLocks.getReadLockPreviousTileMapById().lock();
+        Map<String, String> clonedPreviousTileMap = new HashMap<>(ingameController.previousTileMapById);
+        ThreadLocks.getReadLockPreviousTileMapById().unlock();
+
+        ThreadLocks.getReadEnvironmentTileMapById().lock();
+        Map<String, EnvironmentTile> clonedEnvironmentTileMap = new HashMap<>(ingameController.environmentTileMapById);
+        ThreadLocks.getReadEnvironmentTileMapById().unlock();
 
 
         for (String targetTile : clonedPreviousTileMap.keySet()) {

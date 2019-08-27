@@ -14,6 +14,7 @@ import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -506,7 +507,9 @@ public class InGameController {
                             
                             // Save the tile from which the tile that received an overlay was reached so that a path can
                             // be reconstructed for server requests. But only if it's a move not an attack tile
+                            ThreadLocks.getWriteLockPreviousTileMapById().lock();
                             previousTileMapById.put(neighborId, currentTile.getId());
+                            ThreadLocks.getWriteLockPreviousTileMapById().unlock();
                             
                             // Add the tile that received an overlay to the quere so that its neighbors are checked too.
                             // But only if movement, as we can't pass through attackable units
