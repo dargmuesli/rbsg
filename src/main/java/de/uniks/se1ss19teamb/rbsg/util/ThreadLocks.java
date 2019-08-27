@@ -11,8 +11,6 @@ public class ThreadLocks {
 
     private static final ReentrantReadWriteLock lockEnvironmentTileMapById = new ReentrantReadWriteLock();
     private static final Lock readEnvironmentTileMapById = lockEnvironmentTileMapById.readLock();
-
-
     private static final Lock writeEnvironmentTileMapById = lockEnvironmentTileMapById.writeLock();
 
     public static Lock getReadLockPreviousTileMapById() {

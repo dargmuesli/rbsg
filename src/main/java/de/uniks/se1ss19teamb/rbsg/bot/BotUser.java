@@ -49,7 +49,7 @@ public class BotUser {
     // TODO: use the real difficulty
     void instantiateBotAi(int difficulty) {
         if (botAi == null) {
-            botAi = AI.instantiateStrategic(Integer.MAX_VALUE);
+            botAi = AI.instantiateStrategic(-1);
             List<String> neededArmy = botAi.requestArmy();
 
             ArrayList<Unit> units = new ArrayList<>();
@@ -63,26 +63,30 @@ public class BotUser {
                 for (int i = 0; i < 10; i++) {
                     int j = (int) (Math.random() * 6);
                     String unitId;
-                    switch (j) {
+                    ArrayList<Unit> unitArrayList = new ArrayList<>(availableUnitTypes.values());
+                    unitId = unitArrayList.get(j).getId();
+
+                    /*switch (j) {
                         case 0:
-                            unitId = availableUnitTypes.get("bazooka trooper").getId();
+                            unitId = availableUnitTypes.get("Bazooka Trooper").getId();
                             break;
                         case 1:
-                            unitId = availableUnitTypes.get("jeep").getId();
+                            unitId = availableUnitTypes.get("Jeep").getId();
                             break;
                         case 2:
-                            unitId = availableUnitTypes.get("infantry").getId();
+                            unitId = availableUnitTypes.get("Infantry").getId();
                             break;
                         case 3:
-                            unitId = availableUnitTypes.get("chopper").getId();
+                            unitId = availableUnitTypes.get("Chopper").getId();
                             break;
                         case 4:
-                            unitId = availableUnitTypes.get("light tank").getId();
+                            unitId = availableUnitTypes.get("Light Tank").getId();
                             break;
                         default:
-                            unitId = availableUnitTypes.get("heavy tank").getId();
+                            unitId = availableUnitTypes.get("Heavy Tank").getId();
                             break;
                     }
+                    */
                     units.add(new Unit(unitId));
                 }
             }
