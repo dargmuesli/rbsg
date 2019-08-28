@@ -129,7 +129,7 @@ public class Chat {
             Optional<File> optionalFile = SerializeUtil.chooseFile(true);
             Optional<PublicKey> optionalPublicKey = GenerateKeys.readPublicKey(LoginController.getUserName());
 
-            if (optionalFile.isPresent() && optionalPublicKey.isPresent()) {
+            if (optionalFile.isPresent() && optionalFile.get().exists() && optionalPublicKey.isPresent()) {
                 try {
                     Files.write(optionalFile.get().toPath().resolve(
                         "public-key_" + SerializeUtil.sanitizeFilename(LoginController.getUserName()) + ".der"),
