@@ -68,17 +68,17 @@ public class Chat {
             return;
         }
 
-        String msg = response.get("message").getAsString();
+        String message = response.get("message").getAsString();
         boolean isPrivate = response.get("channel").getAsString().equals("private");
         boolean wasEncrypted = false;
 
-        if (msg.startsWith("[tbe]")) {
+        if (message.startsWith("[tbe]")) {
             wasEncrypted = true;
-            msg = CipherUtils.decryptMessage(msg.substring(5));
+            message = CipherUtils.decryptMessage(message.substring(5));
         }
 
         for (ChatMessageHandler handler : handlersChat) {
-            handler.handle(msg, from, isPrivate, wasEncrypted);
+            handler.handle(message, from, isPrivate, wasEncrypted);
         }
     }
 
