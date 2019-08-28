@@ -14,6 +14,7 @@ class TurnUiTest {
 
     @Test
     void updatePlayersTest()  {
+        InGameController.inGameObjects.clear();
         Assert.assertEquals(0, turnUiController.inGamePlayerList.size());
         InGameController.inGameObjects.put("Game", inGameGame);
         turnUiController.updatePlayers();

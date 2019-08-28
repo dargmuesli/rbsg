@@ -10,12 +10,8 @@ import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.Logger;
-
 
 public class BotControl {
-
-    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
     private static ArrayList<BotUser> botUsers = new ArrayList<>();
 

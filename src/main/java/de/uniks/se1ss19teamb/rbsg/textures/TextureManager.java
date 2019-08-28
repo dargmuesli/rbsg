@@ -124,7 +124,10 @@ public class TextureManager {
         for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : map.entrySet()) {
             Pair<Integer, Integer> pos = tile.getKey();
 
-            UnitTile possibleUnit = unitTileMapByTileId.get(tile.getValue().getId());
+            UnitTile possibleUnit = null;
+            if (unitTileMapByTileId != null) {
+                possibleUnit = unitTileMapByTileId.get(tile.getValue().getId());
+            }
 
             if (possibleUnit != null) {
                 InGamePlayer player = (InGamePlayer) InGameController.inGameObjects.get(possibleUnit.getLeader());

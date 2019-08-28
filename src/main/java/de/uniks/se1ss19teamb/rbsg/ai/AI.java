@@ -20,9 +20,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public abstract class AI {
-
-    //AI Attributes
-
+    
+    // AI attributes
+    
     protected static final Logger logger = LogManager.getLogger();
 
     protected String playerID;
@@ -87,12 +87,11 @@ public abstract class AI {
     }
 
     public abstract List<String> requestArmy();
-
-    //Helper Functions
-
+    
+    // Helper functions
+    
     /*
-     * Suppress warning, because in near future the relevant fields can't be statically
-     * accessed anymore.
+     * Suppress warning, because in the near future relevant fields can't be statically accessed anymore.
      */
     @SuppressWarnings ("static-access")
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
@@ -193,9 +192,9 @@ public abstract class AI {
             logger.warn("Waiting for Socket failed");
         }
     }
-
-    //Global AI access Management
-
+    
+    // Global AI access management
+    
     private static SortedMap<Integer, Class<? extends AI>> aiModels = new TreeMap<>();
     private static SortedMap<Integer, Class<? extends AI>> aiModelsStrategic = new TreeMap<>();
 

@@ -171,6 +171,7 @@ class WebSocketTestsMocked {
         gameSocket.sendToWebsocket(null);
 
         //gameChangeObject
+
         setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Unit@1923617\",\"fieldName\":\"hp\",\""
             + "newValue\":\"5\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
@@ -191,11 +192,23 @@ class WebSocketTestsMocked {
 
         setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\", "
             + "\"fieldName\":\"currentPlayer\",\"newValue\":\"Player@7c047350\"}}", gameSocket);
-        gameSocket.sendToWebsocket(null);*/
+        gameSocket.sendToWebsocket(null);
 
         setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"OtherOther@29f70a3b\","
             + "\"fieldName\":\"position\",\"newValue\":\"5\"}}", gameSocket);
         gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\","
+            + "\"fieldName\":\"phase\",\"newValue\":\"attackPhase\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\","
+            + "\"fieldName\":\"phase\",\"newValue\":\"lastMovePhase\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);
+
+        setupSocket("{\"action\":\"gameChangeObject\",\"data\":{\"id\":\"Game@29f70a3b\","
+            + "\"fieldName\":\"phase\",\"newValue\":\"somePhase\"}}", gameSocket);
+        gameSocket.sendToWebsocket(null);*/
 
         //gameRemoveObject
 
