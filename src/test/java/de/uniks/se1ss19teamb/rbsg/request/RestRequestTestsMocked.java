@@ -110,7 +110,7 @@ class RestRequestTestsMocked {
         }
 
         optional = RequestUtil.request(
-            new CreateGameRequest("TeamBTestUserGame", 2, "111111111111111111111111111111111111", 123));
+            new CreateGameRequest("TeamBTestUserGame", 2, 123, "111111111111111111111111111111111111"));
 
         if (optional.isPresent()) {
             Assert.assertEquals(24, optional.get().length());

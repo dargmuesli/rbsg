@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -38,8 +40,13 @@ public class HttpManagerTests {
         }
     }
 
+    /**
+     * Mocks the {@link HttpClient} and defines return values.
+     *
+     * @throws IOException In case of problems with {@link HttpClient#execute} or {@link HttpEntity}.
+     */
     @Before
-    public void setupTests() throws Exception {
+    public void setupTests() throws IOException {
         HttpClient httpClient = mock(HttpClient.class);
         httpManager = new HttpManager(httpClient);
         HttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1,

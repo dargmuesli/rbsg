@@ -18,6 +18,12 @@ public class Theming {
     public static final File cssModeFile =
         Paths.get(System.getProperty("java.io.tmpdir") + File.separator + "rgsb_dark-mode-active.json").toFile();
 
+    /**
+     * Sets the applications theme.
+     * Currently dark and white mode are available, but white mode is not supported by every developer.
+     *
+     * @param panes All panes to set the theme for.
+     */
     public static void setTheme(List<Pane> panes) {
         String darkDesignCssPath = Theming.class.getResource("/de/uniks/se1ss19teamb/rbsg/css/darkDesign.css")
             .toExternalForm();
@@ -38,6 +44,11 @@ public class Theming {
         }
     }
 
+    /**
+     * Indicates whether the dark mode is currently active.
+     *
+     * @return True for an active dark mode, false otherwise.
+     */
     public static boolean darkModeActive() {
         if (!cssModeFile.exists()) {
             SerializeUtil.serialize(cssModeFile.getAbsolutePath(), true);
@@ -54,6 +65,12 @@ public class Theming {
         return cssMode;
     }
 
+    /**
+     * Adds a slide in and out animation to a JFX hamburger menu.
+     *
+     * @param ham    The hamburger menu to add the animation for.
+     * @param button The hamburger menu's button.
+     */
     public static void hamburgerMenuTransition(JFXHamburger ham, JFXButton button) {
         HamburgerSlideCloseTransition transition = new HamburgerSlideCloseTransition(ham);
         transition.setRate(-1);

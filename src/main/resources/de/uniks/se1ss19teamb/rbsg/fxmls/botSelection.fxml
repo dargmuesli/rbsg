@@ -10,7 +10,7 @@
    <children>
       <HBox prefHeight="15.0" prefWidth="300.0" AnchorPane.topAnchor="8.0">
          <children>
-            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#setOnAction" text="NO BOT">
+            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#check" text="NO BOT">
                <HBox.margin>
                   <Insets right="8.0" />
                </HBox.margin></JFXCheckBox>

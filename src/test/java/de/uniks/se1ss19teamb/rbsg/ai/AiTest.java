@@ -29,10 +29,13 @@ public class AiTest {
     private GameSocket socket;
 
     private InGameController controller;
-    
+
     /*
      * Suppress warning, because in near future the relevant fields can't be statically
      * accessed anymore.
+     */
+    /**
+     * Mocks socket functions.
      */
     @SuppressWarnings ("static-access")
     @Before
@@ -44,20 +47,20 @@ public class AiTest {
             public Void answer(InvocationOnMock invocation) throws Throwable {
 
                 String targetUnit = invocation.getArgument(0);
-                
+
                 String[] path = invocation.getArgument(1);
-                
+
                 for (UnitTile tile : controller.unitTiles) {
                     if (tile.getId().equals(targetUnit)) {
                         controller.unitTileMapByTileId.remove(tile.getPosition());
-                        
+
                         tile.setPosition(path[path.length - 1]);
 
                         controller.unitTileMapByTileId.put(path[path.length - 1], tile);
                         break;
                     }
                 }
-                
+
                 return null;
             }
         }).when(socket).moveUnit(any(), any());
@@ -81,10 +84,13 @@ public class AiTest {
         
         //Mocking GameSocket to interact with Mock Map
     }
-    
+
     /*
      * Suppress warning, because in near future the relevant fields can't be statically
      * accessed anymore.
+     */
+    /**
+     * Clears the collections that are dependent on a game.
      */
     @SuppressWarnings ("static-access")
     @After
