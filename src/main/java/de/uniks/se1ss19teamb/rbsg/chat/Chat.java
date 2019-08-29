@@ -54,6 +54,14 @@ public class Chat {
         this.path = path;
     }
 
+    /**
+     * Commonly used incoming message processing, like message decryption.
+     *
+     * @param response     The message to process.
+     * @param ignoreOwn    Indicates whether to ignore messages from the same username as the currently logged in one.
+     * @param userName     The username from which the message was sent.
+     * @param handlersChat The handler to further process this message with.
+     */
     public static void defaultMessageHandler(
         JsonObject response, boolean ignoreOwn, String userName, List<ChatMessageHandler> handlersChat) {
 
@@ -122,6 +130,13 @@ public class Chat {
         history.add(new ChatHistoryEntry(message, sender, receiver));
     }
 
+    /**
+     * Executes commands contained in chat messages, like encryption.
+     *
+     * @param message  The message to process.
+     * @param receiver The receiver's username.
+     * @return         Optionally, the processed message.
+     */
     public static Optional<String> executeCommandsOnMessage(String message, String receiver) {
 
         // Export the public key only.
