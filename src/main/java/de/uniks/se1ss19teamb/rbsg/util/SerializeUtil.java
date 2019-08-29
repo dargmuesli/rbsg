@@ -32,7 +32,7 @@ public class SerializeUtil {
      * @param foldersOnly Indicates whether only folders are acceptable.
      * @return            Optionally the selected file.
      */
-        public static Optional<File> chooseFile(boolean foldersOnly) {
+    public static Optional<File> chooseFile(boolean foldersOnly) {
         JFrame parentFrame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
 
@@ -76,6 +76,11 @@ public class SerializeUtil {
         return new Gson().fromJson(jsonString, clazz);
     }
 
+    /**
+     * Getter for the application's data directory.
+     *
+     * @return The application's data directory.
+     */
     public static Path getAppDataPath() {
         Path appDataPath;
 
