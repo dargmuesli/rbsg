@@ -70,11 +70,11 @@ public class GameLobbyController {
             .setGameSocket(0, GameSelectionController.joinedGame.getId());
         gameSocket = GameSocketDistributor.getGameSocket(0);
         assert gameSocket != null;
-        gameSocket.registerMessageHandler((message, from, isPrivate) -> {
+        gameSocket.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> {
             if (isPrivate) {
-                MainController.instance.addNewPane(from, message, false, chatPane);
+                MainController.instance.addNewPane(from, message, false, chatPane, wasEncrypted);
             } else {
-                MainController.instance.addElement(from, message, textArea, false);
+                MainController.instance.addElement(from, message, textArea, false, false);
             }
         });
         gameSocket.connect();

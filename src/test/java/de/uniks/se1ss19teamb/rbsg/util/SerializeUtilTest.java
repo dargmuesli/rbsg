@@ -49,10 +49,10 @@ public class SerializeUtilTest {
         whenNew(JFileChooser.class).withNoArguments().thenReturn(fileChooserMock);
         when(fileChooserMock.showSaveDialog(any())).thenReturn(0);
         when(fileChooserMock.getSelectedFile()).thenReturn(file);
-        Assert.assertEquals(Optional.of(file), SerializeUtil.chooseFile());
+        Assert.assertEquals(Optional.of(file), SerializeUtil.chooseFile(false));
 
         when(fileChooserMock.showSaveDialog(any())).thenReturn(1);
-        Assert.assertEquals(Optional.empty(), SerializeUtil.chooseFile());
+        Assert.assertEquals(Optional.empty(), SerializeUtil.chooseFile(false));
     }
 
     @Test

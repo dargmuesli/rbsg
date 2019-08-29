@@ -2,6 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -396,19 +398,8 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChat":
-                    assert data != null;
-                    String from = data.get("from").getAsString();
-
-                    if (this.ignoreOwn && from.equals(LoginController.getUserName())) {
-                        return;
-                    }
-
-                    String msg = data.get("message").getAsString();
-                    boolean isPrivate = data.get("channel").getAsString().equals("private");
-
-                    for (ChatMessageHandler handler : handlersChat) {
-                        handler.handle(msg, from, isPrivate);
-                    }
+                    Chat.defaultMessageHandler(
+                        response.getAsJsonObject("data"), this.ignoreOwn, LoginController.getUserName(), handlersChat);
                     break;
                 case "inGameError":
                     if (response.get("data").getAsString().equals("You need to select an army to be ready.")) {
@@ -544,21 +535,27 @@ public class GameSocket extends AbstractMessageWebSocket {
 
     @Override
     public void sendMessage(String message) {
-        JsonObject json = new JsonObject();
-        json.addProperty("messageType", "chat");
-        json.addProperty("channel", "all");
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, null).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("messageType", "chat");
+            json.addProperty("channel", "all");
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+        });
     }
 
     @Override
     public void sendPrivateMessage(String message, String target) {
-        JsonObject json = new JsonObject();
-        json.addProperty("messageType", "chat");
-        json.addProperty("channel", "private");
-        json.addProperty("to", target);
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, target).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("messageType", "chat");
+            json.addProperty("channel", "private");
+            json.addProperty("to", target);
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+
+            LogManager.getLogger().info("Sent \"" + s + "\"");
+        });
     }
 
     //Custom Helpers

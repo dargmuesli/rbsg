@@ -2,6 +2,9 @@ package de.uniks.se1ss19teamb.rbsg.util;
 
 import com.google.gson.Gson;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import javax.swing.*;
 import org.apache.logging.log4j.LogManager;
@@ -10,15 +13,36 @@ import org.apache.logging.log4j.Logger;
 public class SerializeUtil {
     private static final Logger logger = LogManager.getLogger();
 
+    // Source: https://stackoverflow.com/a/10055962/4682621
+    private static class FolderFilter extends javax.swing.filechooser.FileFilter {
+        @Override
+        public boolean accept(File file) {
+            return file.isDirectory();
+        }
+
+        @Override
+        public String getDescription() {
+            return "Directories";
+        }
+    }
+
     /**
      * A file choosing dialog.
      *
-     * @return Optionally the selected file.
+     * @param foldersOnly Indicates whether only folders are acceptable.
+     * @return            Optionally the selected file.
      */
-    public static Optional<File> chooseFile() {
+    public static Optional<File> chooseFile(boolean foldersOnly) {
         JFrame parentFrame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select a file");
+
+        if (foldersOnly) {
+            fileChooser.setDialogTitle("Select a folder");
+            fileChooser.setFileFilter(new FolderFilter());
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        } else {
+            fileChooser.setDialogTitle("Select a file");
+        }
 
         int userSelection = fileChooser.showSaveDialog(parentFrame);
 
@@ -50,6 +74,35 @@ public class SerializeUtil {
 
     public static <T> T deserialize(String jsonString, Class<T> clazz) {
         return new Gson().fromJson(jsonString, clazz);
+    }
+
+    /**
+     * Getter for the application's data directory.
+     *
+     * @return The application's data directory.
+     */
+    public static Path getAppDataPath() {
+        Path appDataPath;
+
+        if (System.getProperty("os.name").toUpperCase().equals("WIN")) {
+            appDataPath = Paths.get(System.getenv("AppData"), "de.uniks.se1ss19teamb.rbsg");
+        } else {
+            appDataPath = Paths.get(System.getenv("HOME"), ".local", "share", "de.uniks.se1ss19teamb.rbsg");
+        }
+
+        if (!Files.exists(appDataPath)) {
+            try {
+                Files.createDirectories(appDataPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return appDataPath;
+    }
+
+    public static String sanitizeFilename(String string) {
+        return string.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
     }
 
     /**
