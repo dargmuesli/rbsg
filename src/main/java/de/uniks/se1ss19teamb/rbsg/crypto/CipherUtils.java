@@ -22,6 +22,13 @@ public class CipherUtils {
         return cipher.doFinal(plaintext);
     }
 
+    /**
+     * Encrypts a message.
+     *
+     * @param message  The message to encrypt.
+     * @param username The username that is used to find the correct public key.
+     * @return         An encrypted message that only the targeted user can decrypt.
+     */
     public static String encryptMessage(String message, String username) {
         try {
             Optional<PublicKey> optionalPublicKey = GenerateKeys.readPublicKey(username);
@@ -50,6 +57,12 @@ public class CipherUtils {
         return cipher.doFinal(ciphertext);
     }
 
+    /**
+     * Decrypts a message.
+     *
+     * @param message The message to decrypt.
+     * @return        The decrypted message.
+     */
     public static String decryptMessage(String message) {
         try {
             return new String(
