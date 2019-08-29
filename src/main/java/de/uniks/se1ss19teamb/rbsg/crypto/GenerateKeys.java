@@ -97,6 +97,12 @@ public class GenerateKeys {
         }
     }
 
+    /**
+     * Reads a user's public key from a file.
+     *
+     * @param username The username to find the public key file with.
+     * @return         Optionally, the user's public key.
+     */
     public static Optional<PublicKey> readPublicKey(String username) {
         Path publicKeyPath = SerializeUtil.getAppDataPath().resolve(
             "public-key_" + SerializeUtil.sanitizeFilename(username) + ".der");
