@@ -75,8 +75,8 @@ public class LoginController {
         userToken = key;
     }
 
-    public void initialize() {
-
+    @FXML
+    private void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 

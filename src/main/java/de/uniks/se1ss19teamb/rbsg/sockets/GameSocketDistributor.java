@@ -1,10 +1,13 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
 
-// Distributes the GameSocket instances so any class can take the GameSocket that it needs. Whether it's the
-// GameSocket for the main player or for one of the up to 3 extra players that are bots.
-// The main GameSocket should be on place 0.
+/**
+ * Distributes the GameSocket instances so any class can take the GameSocket that it needs. Whether it's the
+ * GameSocket for the main player or for one of the up to 3 extra players that are bots.
+ * The main GameSocket should be on place 0.
+ */
 public class GameSocketDistributor {
 
     private static ArrayList<GameSocket> gameSockets = new ArrayList<>();
@@ -25,11 +28,18 @@ public class GameSocketDistributor {
         return getGameSocket(number, gameId, null, false);
     }
 
+    /**
+     * The game socket getter.
+     *
+     * @param number The game socket's number.
+     * @return       The game socket that has the given number.
+     */
     public static GameSocket getGameSocket(int number) {
         if (gameSockets.size() <= number) {
-            //new Exception("Wrong gameSockets ArrayList size!").printStackTrace();
+            LogManager.getLogger().error("Number out of range!", new Exception("Wrong gameSockets ArrayList size!"));
             return null;
         }
+
         return gameSockets.get(0);
     }
 }

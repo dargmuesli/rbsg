@@ -1,7 +1,9 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
@@ -21,6 +23,12 @@ public class BotControl {
         gameId = id;
     }
 
+    /**
+     * Creates a temporary user that is run by an {@link AI}.
+     *
+     * @param number                 The bot's number that is used for {@link GameSocket} creation.
+     * @param botSelectionController The controller on which the bot will be selected.
+     */
     public static void createBotUser(int number, BotSelectionController botSelectionController) {
         BotUser botUser = new BotUser();
         botUser.setBotNumber(number);

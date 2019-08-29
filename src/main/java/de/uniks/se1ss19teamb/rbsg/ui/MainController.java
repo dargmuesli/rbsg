@@ -101,7 +101,8 @@ public class MainController {
         return RequestUtil.request(new QueryGamesRequest(LoginController.getUserToken())).orElse(null);
     }
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         UserInterfaceUtils.initialize(apnFade, apnRoot, MainController.class, btnFullscreen);
 
         MainController.instance = this;

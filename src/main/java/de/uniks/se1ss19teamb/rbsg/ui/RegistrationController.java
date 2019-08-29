@@ -44,7 +44,8 @@ public class RegistrationController {
     private AnchorPane apnRoot;
     private UserData userData;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         UserInterfaceUtils.initialize(apnFade, apnRoot, RegistrationController.class, btnFullscreen);
 
         // load user data
@@ -98,7 +99,8 @@ public class RegistrationController {
         register();
     }
 
-    public void keyEventHandler(KeyEvent keyEvent) {
+    @FXML
+    private void keyEventHandler(KeyEvent keyEvent) {
         if (keyEvent.getSource().equals(btnConfirm) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             register();
         }
