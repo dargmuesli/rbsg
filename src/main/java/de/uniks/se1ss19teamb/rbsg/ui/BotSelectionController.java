@@ -39,13 +39,13 @@ public class BotSelectionController {
     public void check() {
         if (botCheckbox.isSelected()) {
             if (!botCreated) {
-                    double difficulty = diffSlider.getValue();
-                    createBot((int) difficulty);
-                    botCreated = true;
-                }
+                double difficulty = diffSlider.getValue();
+                createBot((int) difficulty);
+                botCreated = true;
             }
         }
     }
+
 
     private void setCheckBoxName(String botName) {
         botCheckbox.setText(botName);
