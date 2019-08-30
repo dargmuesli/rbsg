@@ -278,7 +278,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                                         if (!botGameSocket) {
                                             TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
                                         }
-                                        BotControl.checkForBotsTurn(data.get("newValue").getAsString());
+                                        if (!botGameSocket) {
+                                            BotControl.checkForBotsTurn(data.get("newValue").getAsString());
+                                        }
                                     }
                                     break;
                                 case "phase":
