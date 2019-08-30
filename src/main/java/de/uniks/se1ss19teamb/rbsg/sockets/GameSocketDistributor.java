@@ -36,7 +36,7 @@ public class GameSocketDistributor {
      */
     public static GameSocket getGameSocket(int number) {
         if (gameSockets.size() <= number) {
-            LogManager.getLogger().error("Number out of range!", new Exception("Wrong gameSockets ArrayList size!"));
+            //LogManager.getLogger().error("Number out of range!", new Exception("Wrong gameSockets ArrayList size!"));
             return null;
         }
         return gameSockets.get(number);
