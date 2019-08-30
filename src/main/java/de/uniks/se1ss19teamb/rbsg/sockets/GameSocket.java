@@ -17,11 +17,11 @@ import de.uniks.se1ss19teamb.rbsg.ui.WinScreenController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import javafx.application.Platform;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;

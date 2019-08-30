@@ -3,13 +3,13 @@ package de.uniks.se1ss19teamb.rbsg.ai;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import javafx.util.Pair;
 
 class Kaiten extends AI {

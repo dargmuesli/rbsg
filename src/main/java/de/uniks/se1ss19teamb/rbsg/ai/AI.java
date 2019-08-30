@@ -7,10 +7,10 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 
 import java.util.*;
 
-import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import javafx.util.Pair;
 
 import org.apache.logging.log4j.LogManager;
