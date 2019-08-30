@@ -49,7 +49,7 @@ public class BotUser {
     // TODO: use the real difficulty
     void instantiateBotAi(int difficulty) {
         if (botAi == null) {
-            botAi = AI.instantiateStrategic(-1);
+            botAi = AI.instantiateStrategic(difficulty - 1);
             List<String> neededArmy = botAi.requestArmy();
 
             ArrayList<Unit> units = new ArrayList<>();

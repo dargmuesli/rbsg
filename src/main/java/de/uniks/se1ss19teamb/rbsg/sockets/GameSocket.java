@@ -67,6 +67,7 @@ public class GameSocket extends AbstractMessageWebSocket {
             String action = response.get("action").getAsString();
             JsonObject data = null;
 
+
             if (action.equals("gameStarts")) {
                 logger.info("The game is starting!");
                 return;
@@ -246,21 +247,23 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 }
                             }
 
-                            if (inGamePlayer != null) {
-                                StringBuilder readyMessage = new StringBuilder("Player \"")
-                                    .append(inGamePlayer.getName())
-                                    .append(" (")
-                                    .append(inGamePlayer.getColor())
-                                    .append(") is ");
+                            if (!botGameSocket) {
+                                if (inGamePlayer != null) {
+                                    StringBuilder readyMessage = new StringBuilder("Player \"")
+                                        .append(inGamePlayer.getName())
+                                        .append(" (")
+                                        .append(inGamePlayer.getColor())
+                                        .append(") is ");
 
-                                if (inGamePlayer.isReady()) {
-                                    // TODO maybe handler to chat window
-                                    readyMessage.append("now ready.");
-                                } else {
-                                    readyMessage.append("not ready.");
+                                    if (inGamePlayer.isReady()) {
+                                        // TODO maybe handler to chat window
+                                        readyMessage.append("now ready.");
+                                    } else {
+                                        readyMessage.append("not ready.");
+                                    }
+
+                                    NotificationHandler.sendInfo(readyMessage.toString(), logger);
                                 }
-
-                                NotificationHandler.sendInfo(readyMessage.toString(), logger);
                             }
                             break;
                         case "Game":

@@ -1,33 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.BotManagerController">
-   <children>
-      <VBox fx:id="botSelectionVBox" prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="PLUS" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="MINUS" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="8.0" />
-                     </HBox.margin>
-                  </JFXButton>
-               </children>
-            </HBox>
-         </children></VBox>
-   </children>
+<?import java.net.URL?>
+<AnchorPane prefHeight="100.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.999-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.BotManagerController">
+    <stylesheets>
+        <URL value="@../css/whiteDesign.css"/>
+        <URL value="@../css/darkDesign.css"/>
+    </stylesheets>
+    <children>
+        <VBox fx:id="botSelectionVBox"/>
+    </children>
 </AnchorPane>

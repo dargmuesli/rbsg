@@ -38,8 +38,6 @@ public class BotManagerController {
     }
 
     public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
-        // Not working here.
-        // BotControl.initializeBotAi(InGameController.getInstance());
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
         BotControl.createBotUser(numberOfBot, difficulty, botSelectionController);
     }
