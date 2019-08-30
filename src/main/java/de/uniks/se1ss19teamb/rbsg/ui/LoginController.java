@@ -15,14 +15,22 @@ import de.uniks.se1ss19teamb.rbsg.util.*;
 import java.util.Arrays;
 import java.util.Random;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 
 public class LoginController {
@@ -69,8 +77,8 @@ public class LoginController {
         UserKeys.addUserKey(key);
     }
 
-    public void initialize() {
-
+    @FXML
+    private void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{apnFade, apnRoot}));
         UserInterfaceUtils.updateBtnFullscreen(btnFullscreen);
 
@@ -146,6 +154,17 @@ public class LoginController {
             UserInterfaceUtils.makeFadeOutTransition(
                 "/de/uniks/se1ss19teamb/rbsg/fxmls/main.fxml", apnFade);
         } else {
+            Image image = new Image(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/joda.jpg").toExternalForm());
+            ImageView imageView = new ImageView(image);
+            Scene scene = new Scene(new VBox(imageView),510,375);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(event -> stage.close());
+            delay.play();
+
             NotificationHandler.sendError("Login Failed, User data doesn't exist! ", logger);
         }
     }

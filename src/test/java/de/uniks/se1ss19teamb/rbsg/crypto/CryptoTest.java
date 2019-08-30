@@ -1,102 +1,49 @@
 package de.uniks.se1ss19teamb.rbsg.crypto;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.codec.binary.Base64;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.junit.Assert;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({GenerateKeys.class, LoginController.class, SerializeUtil.class})
+@PowerMockIgnore({"javax.management.*", "javax.script.*", "javax.swing.*", "javax.crypto.*"})
 public class CryptoTest {
-    private String dataPath = "src/main/resources/de/uniks/se1ss19teamb/rbsg/data.txt";
-    private Charset utf8 = StandardCharsets.UTF_8;
 
-    @org.junit.Test
-    public void testEncryption() throws IOException {
-        FileWriter fileR = new FileWriter(dataPath);
-        File file = new File(dataPath);
-
-        String encryptedMessage;
-        String msg = "g\u00E5 til helvete!!!";
-        CipherController cip = new CipherController();
-        cip.encryptMessage(msg, dataPath);
-
-        //1.Reads the encrypted message
-        try {
-            FileReader fr = new FileReader(dataPath);
-
-            //2.Constructs the encrypted message
-            int t;
-            char c;
-            StringBuilder recoveredSecret = new StringBuilder();
-
-            while ((t = fr.read()) != -1) {
-                c = (char) t;
-                recoveredSecret.append(c);
-            }
-
-            encryptedMessage = encryptReturn(recoveredSecret.toString());
-            Assert.assertEquals(encryptedMessage, msg, "g\u00E5 til helvete!!!");
-            Assert.assertNotEquals(encryptedMessage, msg);
-
-            fr.close();
-            fileR.close();
-
-            if (!file.delete()) {
-                throw new IOException("Could not delete file!");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @BeforeAll
+    static void beforeAll() throws IOException, URISyntaxException {
+        GenerateKeys.setPublicKey(Files.readAllBytes(Paths.get(
+            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/public-key_myself.der").toURI())));
+        GenerateKeys.setPrivateKey(Files.readAllBytes(Paths.get(
+            CryptoTest.class.getResource("/de/uniks/se1ss19teamb/rbsg/crypto/private-key_myself.der").toURI())));
     }
 
-    @org.junit.Test
-    public void testDecryption() throws IOException {
-        FileWriter fileR = new FileWriter(dataPath);
-        File file = new File(dataPath);
+    @Test
+    public void enDecryptTest() throws Exception {
+        PowerMockito.spy(GenerateKeys.class);
+        PowerMockito.spy(LoginController.class);
+        PowerMockito.spy(SerializeUtil.class);
+        Mockito.when(LoginController.getUserName())
+            .thenReturn("myself");
+        Mockito.when(SerializeUtil.getAppDataPath())
+            .thenReturn(Paths.get(CryptoTest.class.getResource(
+                "/de/uniks/se1ss19teamb/rbsg/crypto/private-key_myself.der").toURI()).getParent());
 
-        String msg = "g\u00E5 til helvete!!!";
-        CipherController cip = new CipherController();
-        cip.encryptMessage(msg, dataPath);
-        String decryptedMessage = cip.decryptMessage(dataPath);
+        String message = "g\u00E5 til helvete!!!";
+        String encryptedMessage = CipherUtils.encryptMessage(message, "myself");
 
-        //1.Reads the encrypted message
-        try {
-            FileReader fr = new FileReader(dataPath);
-
-            //2.Constructs the encrypted message
-            int t;
-            char c;
-            StringBuilder recoveredSecret = new StringBuilder();
-
-            while ((t = fr.read()) != -1) {
-                c = (char) t;
-                recoveredSecret.append(c);
-            }
-
-            String encryptedMessage = encryptReturn(recoveredSecret.toString());
-
-            Assert.assertNotEquals(encryptedMessage, msg);
-            Assert.assertEquals(decryptedMessage, msg);
-
-            fr.close();
-            fileR.close();
-
-            if (!file.delete()) {
-                throw new IOException("Could not delete file!");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String encryptReturn(String m) {
-        byte[] recSecret = Base64.decodeBase64(m);
-        return new String(recSecret, utf8);
+        Assert.assertNotEquals(message, encryptedMessage);
+        Assert.assertEquals(message, CipherUtils.decryptMessage(encryptedMessage));
     }
 }

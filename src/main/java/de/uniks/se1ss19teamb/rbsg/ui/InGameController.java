@@ -99,6 +99,12 @@ public class InGameController {
         return instance;
     }
 
+    /**
+     * Removes the unit from its current position on the map and readds it at the new position.
+     *
+     * @param unitId The unit to move.
+     * @param newPos The position to move to.
+     */
     public void changeUnitPos(String unitId, String newPos) {
         UnitTile currentUnit = null;
 
@@ -230,27 +236,32 @@ public class InGameController {
         }
     }
 
+    /**
+     * Runs an AI bot.
+     */
     @FXML
     public void autoMode() {
         if (autoMode.isSelected()) {
             if (aI == null) {
                 String userName = LoginController.getUserName();
+
                 for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
                     if (userName.equals(player.getName())) {
                         playerId = player.getId();
                     }
                 }
+
                 assert playerId != null;
                 aI = AI.instantiate(Integer.MAX_VALUE);
                 aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
+
             if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
                 if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
                     .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.sendWarning("You can only activate Automode\nin your first Movementphase\n"
                             + "or on your opponents turn.", logger);
-
                 } else {
                     Objects.requireNonNull(aI).doTurn();
                 }
@@ -443,6 +454,14 @@ public class InGameController {
         drawOverlay(startTile, mp, true, LoginController.getUserName());
     }
 
+    /**
+     * Draws an overlay onto the map, showing tiles to possibly move to and to attack.
+     *
+     * @param startTile The tile from which the paths are calculated.
+     * @param mp        The available movement points.
+     * @param draw      Indicates whether the overlay should be actually drawn or just calculated.
+     * @param playerId  The id of the player currently interacts.
+     */
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
         ThreadLocks.getWriteLockPreviousTileMapById().lock();
@@ -532,7 +551,12 @@ public class InGameController {
         }
     }
 
-
+    /**
+     * (Optionally) leaves the game, differentiating between three ways: click on "back", on "concede > yes"
+     * or "concede > no".
+     *
+     * @param event The click's source.
+     */
     public void leaveGame(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
             logout = false;
@@ -563,6 +587,12 @@ public class InGameController {
         }
     }
 
+    /**
+     * Updates the health points of a unit.
+     *
+     * @param unitId The id of the unit that is to be updated.
+     * @param newHp  The health points that are to be set.
+     */
     public void changeUnitHp(String unitId, String newHp) {
         UnitTile unit = null;
 
@@ -584,6 +614,12 @@ public class InGameController {
         }
     }
 
+    /**
+     * Returns the attacking unit by checking the field's neighbors.
+     *
+     * @param unit The unit that is attacked.
+     * @return     The unit that attacks.
+     */
     public UnitTile findAttackingUnit(UnitTile unit) {
         UnitTile neighbor = null;
         EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());

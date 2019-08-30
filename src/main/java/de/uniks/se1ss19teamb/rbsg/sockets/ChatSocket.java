@@ -1,6 +1,8 @@
 package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
@@ -22,23 +24,9 @@ public class ChatSocket extends AbstractMessageWebSocket {
 
     private ChatSocket(String userName, String userKey, boolean ignoreOwn) {
         this.ignoreOwn = ignoreOwn;
-        registerWebSocketHandler((response) -> {
-            if (response.get("msg") != null) {
-                NotificationHandler.sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
-                return;
-            }
 
-            String from = response.get("from").getAsString();
-            if (this.ignoreOwn && from.equals(userName)) {
-                return;
-            }
-
-            String msg = response.get("message").getAsString();
-            boolean isPrivate = response.get("channel").getAsString().equals("private");
-            for (ChatMessageHandler handler : handlersChat) {
-                handler.handle(msg, from, isPrivate);
-            }
-        });
+        registerWebSocketHandler((response)
+            -> Chat.defaultMessageHandler(response, this.ignoreOwn, userName, handlersChat));
     }
 
     @Override
@@ -53,18 +41,24 @@ public class ChatSocket extends AbstractMessageWebSocket {
 
     @Override
     public void sendMessage(String message) {
-        JsonObject json = new JsonObject();
-        json.addProperty("channel", "all");
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, null).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("channel", "all");
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+        });
     }
 
     @Override
     public void sendPrivateMessage(String message, String target) {
-        JsonObject json = new JsonObject();
-        json.addProperty("channel", "private");
-        json.addProperty("to", target);
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, target).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("channel", "private");
+            json.addProperty("to", target);
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+
+            LogManager.getLogger().info("Sent \"" + s + "\"");
+        });
     }
 }

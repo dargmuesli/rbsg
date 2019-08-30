@@ -17,9 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public abstract class AI {
-
-    //AI Attributes
-
+    
+    // AI attributes
+    
     protected static final Logger logger = LogManager.getLogger();
 
     protected String playerID;
@@ -32,6 +32,13 @@ public abstract class AI {
         this.availableUnitTypes = ArmyManagerController.availableUnits;
     }
 
+    /**
+     * Initializes an AI.
+     *
+     * @param playerID   The AI's player id.
+     * @param socket     The socket for the AI to connect to.
+     * @param controller The source for ingame functions, like overlay drawing.
+     */
     public void initialize(String playerID, GameSocket socket, InGameController controller) {
         this.playerID = playerID;
         this.socket = socket;
@@ -40,6 +47,9 @@ public abstract class AI {
 
     protected abstract void doTurnInternal();
 
+    /**
+     * Starts an {@link #aiObsThread}.
+     */
     public void doTurn() {
         aiObsThread = new Thread(() -> {
             Thread aiThread = new Thread(() -> {
@@ -62,6 +72,9 @@ public abstract class AI {
         aiObsThread.start();
     }
 
+    /**
+     * Waits for {@link #aiObsThread} to die.
+     */
     public void waitForTurn() {
         try {
             aiObsThread.join();
@@ -71,12 +84,11 @@ public abstract class AI {
     }
 
     public abstract List<String> requestArmy();
-
-    //Helper Functions
-
+    
+    // Helper functions
+    
     /*
-     * Suppress warning, because in near future the relevant fields can't be statically
-     * accessed anymore.
+     * Suppress warning, because in the near future relevant fields can't be statically accessed anymore.
      */
     @SuppressWarnings("static-access")
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
@@ -133,7 +145,7 @@ public abstract class AI {
         return new Pair<>(path, closestDistance);
     }
 
-    @SuppressWarnings("static-access")
+    @SuppressWarnings ("static-access")
     protected TreeMap<Path, UnitTile> findAllAttackableEnemies(UnitTile unit) {
         TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
 
@@ -148,7 +160,7 @@ public abstract class AI {
 
         for (String attackableTile : ingameController.previousTileAttackMapById.keySet()) {
             EnvironmentTile toAttackFrom = ingameController.environmentTileMapById.get(
-                ingameController.previousTileAttackMapById.get(attackableTile));
+                    ingameController.previousTileAttackMapById.get(attackableTile));
 
             Path path = new Path();
             path.end = toAttackFrom;
@@ -188,9 +200,9 @@ public abstract class AI {
             logger.warn("Waiting for Socket failed");
         }
     }
-
-    //Global AI access Management
-
+    
+    // Global AI access management
+    
     private static SortedMap<Integer, Class<? extends AI>> aiModels = new TreeMap<>();
     private static SortedMap<Integer, Class<? extends AI>> aiModelsStrategic = new TreeMap<>();
 
@@ -202,10 +214,11 @@ public abstract class AI {
         aiModelsStrategic.put(0, Nagato.class);
     }
 
-    public static AI instantiate(int difficulty) {
-        difficulty = (difficulty == Integer.MAX_VALUE) ? aiModels.lastKey() : difficulty;
-        Class<? extends AI> targetAI = aiModels.get(difficulty);
-        targetAI = (targetAI == null) ? aiModels.get(-1) : targetAI;
+    private static AI instantiate(int strength, SortedMap<Integer, Class<? extends AI>> map) {
+        strength = (strength == Integer.MAX_VALUE) ? map.lastKey() : strength;
+        Class<? extends AI> targetAI = map.get(strength);
+        targetAI = (targetAI == null) ? map.get(-1) : targetAI;
+
         try {
             return targetAI.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
@@ -213,15 +226,24 @@ public abstract class AI {
         }
     }
 
-    public static AI instantiateStrategic(int difficulty) {
-        difficulty = (difficulty == Integer.MAX_VALUE) ? aiModelsStrategic.lastKey() : difficulty;
-        Class<? extends AI> targetAI = aiModelsStrategic.get(difficulty);
-        targetAI = (targetAI == null) ? aiModelsStrategic.get(-1) : targetAI;
-        try {
-            return targetAI.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            return null;
-        }
+    /**
+     * Retrieves an AI instance with the given strength or the one closest to it.
+     *
+     * @param strength The desired AI strength.
+     * @return The AI instance of desired strength.
+     */
+    public static AI instantiate(int strength) {
+        return instantiate(strength, aiModels);
+    }
+
+    /**
+     * Retrieves an strategic AI instance with the given strength or the one closest to it.
+     *
+     * @param strength The desired strategic AI strength.
+     * @return The strategic AI instance of desired strength.
+     */
+    public static AI instantiateStrategic(int strength) {
+        return instantiate(strength, aiModelsStrategic);
     }
 
     public static int getHighestDifficulty() {

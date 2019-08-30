@@ -20,7 +20,7 @@ public class BotManagerController {
         this.maxPlayers = (int) maxPlayers;
     }
 
-    public void setBotSelections() {
+    void setBotSelections() {
         for (int i = 0; i < maxPlayers - 1; i++) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botSelection.fxml"));

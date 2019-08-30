@@ -1,8 +1,10 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
+import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
@@ -11,12 +13,8 @@ import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.Logger;
-
 
 public class BotControl {
-
-    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
     private static ArrayList<BotUser> botUsers = new ArrayList<>();
 
@@ -29,6 +27,12 @@ public class BotControl {
     }
 
     public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
+    /**
+     * Creates a temporary user that is run by an {@link AI}.
+     *
+     * @param number                 The bot's number that is used for {@link GameSocket} creation.
+     * @param botSelectionController The controller on which the bot will be selected.
+     */
         BotUser botUser = new BotUser();
         botUser.setBotNumber(number);
         botUser.setGameId(gameId);
@@ -55,6 +59,7 @@ public class BotControl {
         if (GameSocketDistributor.getGameSocket(number + 1) == null) {
             GameSocketDistributor.setGameSocket(number + 1, gameId);
         }
+
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
         GameSocketDistributor.getGameSocket(number + 1).setBotGameSocket();
         botUser.connectGamesocket();

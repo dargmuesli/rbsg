@@ -38,6 +38,9 @@ public class WinScreenController {
         gameSocket = GameSocketDistributor.getGameSocket(number);
     }
 
+    /**
+     * Fills the list of ingame players by filtering the list of ingame objects for players.
+     */
     public void updatePlayers() {
         // fills inGamePlayerList with InGamePlayers
         InGameController.inGameObjects.entrySet().stream()
@@ -45,6 +48,11 @@ public class WinScreenController {
             .forEachOrdered(inGameObjectEntry -> inGamePlayerList.add((InGamePlayer)inGameObjectEntry.getValue()));
     }
 
+    /**
+     * Selects the winner from all ingame players.
+     *
+     * @param winner The winner's id.
+     */
     public void calculateWinner(String winner) {
         for (InGamePlayer player: inGamePlayerList) {
             if (player.getId().equals(winner)) {
@@ -53,6 +61,11 @@ public class WinScreenController {
         }
     }
 
+    /**
+     * Displays the winscreen.
+     *
+     * @param winner The winner's id.
+     */
     public void setWinningScreen(String winner) {
         Platform.runLater(() -> {
             InGameController.instance.vBoxWinScreen.setVisible(true);

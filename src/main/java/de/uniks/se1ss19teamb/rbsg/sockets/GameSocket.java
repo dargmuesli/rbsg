@@ -2,6 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
 import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
@@ -51,6 +53,13 @@ public class GameSocket extends AbstractMessageWebSocket {
         this(gameId, null, false);
     }
 
+    /**
+     * The constructor that registers the websocket handler.
+     *
+     * @param gameId    The game's id.
+     * @param armyId    The army's id.
+     * @param spectator The indicator whether one joins as a spectator.
+     */
     public GameSocket(String gameId, String armyId, boolean spectator) {
         this.gameId = gameId;
         this.armyId = armyId;
@@ -430,19 +439,8 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChat":
-                    assert data != null;
-                    String from = data.get("from").getAsString();
-
-                    if (this.ignoreOwn && from.equals(LoginController.getUserName())) {
-                        return;
-                    }
-
-                    String msg = data.get("message").getAsString();
-                    boolean isPrivate = data.get("channel").getAsString().equals("private");
-
-                    for (ChatMessageHandler handler : handlersChat) {
-                        handler.handle(msg, from, isPrivate);
-                    }
+                    Chat.defaultMessageHandler(
+                        response.getAsJsonObject("data"), this.ignoreOwn, LoginController.getUserName(), handlersChat);
                     break;
                 case "inGameError":
                     if (response.get("data").getAsString().equals("You need to select an army to be ready.")) {
@@ -478,6 +476,11 @@ public class GameSocket extends AbstractMessageWebSocket {
         return stringBuilder.toString();
     }
 
+    /**
+     * Sends the "changeArmy" command to the websocket.
+     *
+     * @param armyId The id of the army to change to.
+     */
     public void changeArmy(String armyId) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -486,6 +489,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "leaveGame" command to the websocket.
+     */
     public void leaveGame() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -493,6 +499,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "readyToPlay" command to the websocket.
+     */
     public void readyToPlay() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -500,6 +509,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "startGame" command to the websocket.
+     */
     public void startGame() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -507,6 +519,12 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Sends the "moveUnit" command to the websocket.
+     *
+     * @param unitId The id of the unit to move.
+     * @param path   The path to move the unit along.
+     */
     public void moveUnit(String unitId, String[] path) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -524,6 +542,12 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "attackUnit" command to the websocket".
+     *
+     * @param unitId     The id of the unit to attack with.
+     * @param toAttackId The id of the unit to attack
+     */
     public void attackUnit(String unitId, String toAttackId) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -535,6 +559,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "nextPhase" command to the websocket.
+     */
     public void nextPhase() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -549,21 +576,27 @@ public class GameSocket extends AbstractMessageWebSocket {
 
     @Override
     public void sendMessage(String message) {
-        JsonObject json = new JsonObject();
-        json.addProperty("messageType", "chat");
-        json.addProperty("channel", "all");
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, null).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("messageType", "chat");
+            json.addProperty("channel", "all");
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+        });
     }
 
     @Override
     public void sendPrivateMessage(String message, String target) {
-        JsonObject json = new JsonObject();
-        json.addProperty("messageType", "chat");
-        json.addProperty("channel", "private");
-        json.addProperty("to", target);
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, target).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("messageType", "chat");
+            json.addProperty("channel", "private");
+            json.addProperty("to", target);
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+
+            LogManager.getLogger().info("Sent \"" + s + "\"");
+        });
     }
 
     //Custom Helpers
