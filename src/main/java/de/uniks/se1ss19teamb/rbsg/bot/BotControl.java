@@ -1,7 +1,7 @@
 package de.uniks.se1ss19teamb.rbsg.bot;
 
-import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
+import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -10,10 +10,11 @@ import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
+
 
 
 public class BotControl {
@@ -30,13 +31,14 @@ public class BotControl {
         gameId = id;
     }
 
-    public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
     /**
      * Creates a temporary user that is run by an {@link AI}.
      *
      * @param number                 The bot's number that is used for {@link GameSocket} creation.
      * @param botSelectionController The controller on which the bot will be selected.
      */
+    public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
+
         BotUser botUser = new BotUser();
         botUser.setBotNumber(number);
         botUser.setGameId(gameId);
@@ -71,6 +73,12 @@ public class BotControl {
         botUser.setReady();
     }
 
+    //TODO: fix javadoc
+    /**
+     * Only for checkstyle.
+     * Initializes the Bot.
+     * @param inGameControllerInput input
+     */
     public static void initializeBotAi(InGameController inGameControllerInput) {
         inGameController = inGameControllerInput;
         for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
@@ -85,6 +93,12 @@ public class BotControl {
         }
     }
 
+    //TODO: fix javadoc
+    /**
+     * Only for checkstyle.
+     * Checks if bot has its turn.
+     * @param playerId playerid
+     */
     public static void checkForBotsTurn(String playerId) {
         for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
             if (player.getId().equals(playerId)) {

@@ -2,9 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import de.uniks.se1ss19teamb.rbsg.chat.Chat;
-import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
 import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;

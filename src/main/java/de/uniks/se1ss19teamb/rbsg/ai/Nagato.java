@@ -225,6 +225,7 @@ class Nagato extends AI {
                     ((InGamePlayer) ingameController.inGameObjects
                     .get(playerID)).getName());
 
+            ThreadLocks.getReadLockPreviousTileMapById().lock();
             Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
             ThreadLocks.getReadLockPreviousTileMapById().unlock();
 
