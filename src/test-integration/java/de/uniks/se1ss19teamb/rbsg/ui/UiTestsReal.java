@@ -1,14 +1,17 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import de.uniks.se1ss19teamb.rbsg.Main;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -48,7 +51,6 @@ public class UiTestsReal extends ApplicationTest {
 
     // username and password: junit
     @Test
-    @Disabled
     public void testInGame() {
         // player with UI
         clickOn("#txtUserName");
@@ -86,7 +88,11 @@ public class UiTestsReal extends ApplicationTest {
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
 
-        //TODO select a bot
+        clickOn("#btnBots");
+        clickOn("#botCheckbox");
+
+        push(KeyCode.ALT, KeyCode.F4);
+        sleep(500);
 
         sleep(1000);
         clickOn("#tglReadiness");
@@ -112,6 +118,15 @@ public class UiTestsReal extends ApplicationTest {
             .press(MouseButton.PRIMARY)
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
             .drop();
+
+        clickOn("#btnBigger");
+        sleep(500);
+        clickOn("#btnSmaller");
+        sleep(500);
+
+        clickOn("#autoMode");
+
+        sleep(10000);
 
         //leaves game
         leaveGameTest();
@@ -179,8 +194,9 @@ public class UiTestsReal extends ApplicationTest {
 
         clickOn("#cmbArmies");
         sleep(1000);
-        type(KeyCode.DOWN);
-        type(KeyCode.DOWN);
+        for (int i = 0; i < nodeCounter; i++) {
+            type(KeyCode.DOWN);
+        }
         type(KeyCode.ENTER);
 
         clickOn("#btnRemove");
