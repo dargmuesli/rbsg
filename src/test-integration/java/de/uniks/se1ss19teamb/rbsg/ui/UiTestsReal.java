@@ -297,38 +297,4 @@ public class UiTestsReal extends ApplicationTest {
         clickOn("#btnSend");
         sleep(2000);
     }
-
-    @Test
-    public void botTest() {
-        clickOn("#txtUserName");
-        clickOn("#txtUserName");
-        type(KeyCode.DELETE);
-        write("TeamBTestUser");
-        clickOn("#password");
-        clickOn("#password");
-        type(KeyCode.DELETE);
-        write("qwertz");
-        clickOn("#btnLogin");
-        sleep(4000);
-        clickOn("#gameName");
-        write("TestGameTeamB");
-        clickOn("#btnCreate");
-        sleep(500); // sleep to finish action
-        ListView list = lookup("#gameListView").queryAs(ListView.class);
-        HBox box;
-        for (int i = 0; i < list.getItems().size(); i++) {
-            box = (HBox) list.getItems().get(i);
-            Label label = (Label) box.lookup("Label");
-            if (label.getText().equals("TestGameTeamB")) {
-                Button button = (Button) box.lookup("#join");
-                clickOn(button);
-                sleep(500); // sleep to finish action
-            }
-        }
-        sleep(4000);
-        clickOn("#botMenu");
-        sleep(400);
-
-
-    }
 }
