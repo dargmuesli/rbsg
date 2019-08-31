@@ -130,9 +130,4 @@ public class WebSocketTestsReal {
         GameSocket testGameSocketTwo = GameSocketDistributor.getGameSocket(0);
         Assert.assertNotNull(testGameSocketTwo);
     }
-
-    @Test
-    public void botTest() {
-
-    }
 }
