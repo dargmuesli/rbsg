@@ -328,7 +328,7 @@ public class UiTestsReal extends ApplicationTest {
         sleep(4000);
         clickOn("#botMenu");
         sleep(400);
-        
+
 
     }
 }
