@@ -9,6 +9,9 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+
+import java.util.Objects;
+
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,6 +24,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -28,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
-import java.util.Objects;
 
 public class UiTestsReal extends ApplicationTest {
     public static final String TEST_GAME = "TeamBTestGame";
@@ -69,7 +72,7 @@ public class UiTestsReal extends ApplicationTest {
         sleep(3000); // sleep to finish action
 
         //tests ui of armymanager
-        //armyManagerTest();
+        armyManagerTest();
 
         //createGame
         clickOn("#gameName");
@@ -156,14 +159,14 @@ public class UiTestsReal extends ApplicationTest {
         }
 
         if (stack != null && tile != null) {
-           for (int i = 0; i < utile.getMp(); i++) {
-               EnvironmentTile neighbor = InGameController.environmentTileMapById.get(tile.getBottom());
-               if (neighbor.getName().equals("Grass") || neighbor.getName().equals("Forest")
-                   || neighbor.getName().equals("Mountain")) {
-                   clickOn(InGameController.stackPaneMapByEnvironmentTileId.get(neighbor.getId()));
-                   break;
-               }
-           }
+            for (int i = 0; i < utile.getMp(); i++) {
+                EnvironmentTile neighbor = InGameController.environmentTileMapById.get(tile.getBottom());
+                if (neighbor.getName().equals("Grass") || neighbor.getName().equals("Forest")
+                    || neighbor.getName().equals("Mountain")) {
+                    clickOn(InGameController.stackPaneMapByEnvironmentTileId.get(neighbor.getId()));
+                    break;
+                }
+            }
         }
 
         //autoMode test
