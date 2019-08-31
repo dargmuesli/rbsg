@@ -21,7 +21,7 @@ public class BotControl {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static ArrayList<BotUser> botUsers = new ArrayList<>();
+    public static ArrayList<BotUser> botUsers = new ArrayList<>();
 
     private static InGameController inGameController;
 
