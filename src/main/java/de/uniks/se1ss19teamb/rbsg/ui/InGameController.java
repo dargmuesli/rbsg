@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -13,6 +14,7 @@ import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -28,7 +30,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -183,6 +184,7 @@ public class InGameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        BotControl.initializeBotAi(instance);
     }
 
     @FXML
@@ -396,7 +398,9 @@ public class InGameController {
                     // All overlays and saved path parts are cleared.
                     overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
                     overlayedStacks.clear();
+                    ThreadLocks.getWriteLockPreviousTileMapById().lock();
                     previousTileMapById.clear();
+                    ThreadLocks.getWriteLockPreviousTileMapById().unlock();
 
                     // Draw new path and attack overlays if a unit was selected.
                     // TODO: for when the gamelobby exists
@@ -417,8 +421,10 @@ public class InGameController {
 
                 gameGrid.add(stack, j, i);
                 stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
+                ThreadLocks.getWriteEnvironmentTileMapById().lock();
                 environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),
                     environmentTiles.get(new Pair<>(j, i)));
+                ThreadLocks.getWriteEnvironmentTileMapById().unlock();
             }
         }
 
@@ -458,7 +464,9 @@ public class InGameController {
      */
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        ThreadLocks.getWriteLockPreviousTileMapById().lock();
         previousTileMapById.clear();
+        ThreadLocks.getWriteLockPreviousTileMapById().unlock();
         previousTileAttackMapById.clear();
 
         // Create a queue for breadth search.
@@ -524,7 +532,9 @@ public class InGameController {
                             
                             // Save the tile from which the tile that received an overlay was reached so that a path can
                             // be reconstructed for server requests. But only if it's a move not an attack tile
+                            ThreadLocks.getWriteLockPreviousTileMapById().lock();
                             previousTileMapById.put(neighborId, currentTile.getId());
+                            ThreadLocks.getWriteLockPreviousTileMapById().unlock();
                             
                             // Add the tile that received an overlay to the quere so that its neighbors are checked too.
                             // But only if movement, as we can't pass through attackable units

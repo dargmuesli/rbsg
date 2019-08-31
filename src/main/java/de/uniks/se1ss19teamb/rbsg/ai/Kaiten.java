@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ai;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,9 @@ class Kaiten extends AI {
     @SuppressWarnings("static-access")
     @Override
     protected void doTurnInternal() {
+
+        ThreadLocks.getUnitTilesLock().lock();
+        ThreadLocks.getReadEnvironmentTileMapById().lock();
         for (UnitTile tile : ingameController.unitTiles) {
             tile.setMpLeft(tile.getMp());
         }
@@ -117,8 +122,10 @@ class Kaiten extends AI {
             }
 
         }
-
-        // Move to attack phase.
+        ThreadLocks.getUnitTilesLock().unlock();
+        ThreadLocks.getReadEnvironmentTileMapById().unlock();
+        
+        //Move To Attack Phase
         socket.nextPhase();
         waitForSocket();
 

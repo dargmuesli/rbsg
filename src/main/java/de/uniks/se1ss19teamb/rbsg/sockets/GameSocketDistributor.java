@@ -13,7 +13,7 @@ public class GameSocketDistributor {
     private static ArrayList<GameSocket> gameSockets = new ArrayList<>();
 
     public static void setGameSocket(int number, String gameId, String armyId, boolean spectator) {
-        gameSockets.add(new GameSocket(gameId, armyId, spectator));
+        gameSockets.add(number, new GameSocket(gameId, armyId, spectator));
     }
 
     public static void setGameSocket(int number, String gameId) {
@@ -21,7 +21,7 @@ public class GameSocketDistributor {
     }
 
     public static GameSocket getGameSocket(int number, String gameId, String armyId, boolean spectator) {
-        return gameSockets.get(0);
+        return gameSockets.get(number);
     }
 
     public static GameSocket getGameSocket(int number, String gameId) {
@@ -36,10 +36,9 @@ public class GameSocketDistributor {
      */
     public static GameSocket getGameSocket(int number) {
         if (gameSockets.size() <= number) {
-            LogManager.getLogger().error("Number out of range!", new Exception("Wrong gameSockets ArrayList size!"));
+            //LogManager.getLogger().error("Number out of range!", new Exception("Wrong gameSockets ArrayList size!"));
             return null;
         }
-
-        return gameSockets.get(0);
+        return gameSockets.get(number);
     }
 }

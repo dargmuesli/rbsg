@@ -7,12 +7,9 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import javafx.util.Pair;
 
@@ -93,11 +90,12 @@ public abstract class AI {
     /*
      * Suppress warning, because in the near future relevant fields can't be statically accessed anymore.
      */
-    @SuppressWarnings ("static-access")
+    @SuppressWarnings("static-access")
     protected Pair<Path, Integer> findClosestAccessibleField(UnitTile unit, int x, int y, boolean onTop) {
+
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMpLeft(), false,
-                ((InGamePlayer)ingameController.inGameObjects
+            unit.getPosition()), unit.getMpLeft(), false,
+            ((InGamePlayer) ingameController.inGameObjects
                 .get(unit.getLeader())).getName());
 
         if (ingameController.previousTileMapById.isEmpty()) {
@@ -107,8 +105,14 @@ public abstract class AI {
         String closest = null;
         int closestDistance = Integer.MAX_VALUE;
 
-        for (String targetTile : ingameController.previousTileMapById.keySet()) {
-            EnvironmentTile current = ingameController.environmentTileMapById.get(targetTile);
+        ThreadLocks.getReadLockPreviousTileMapById().lock();
+        Map<String, String> clonedPreviousTileMap = new HashMap<>(ingameController.previousTileMapById);
+
+        ThreadLocks.getReadEnvironmentTileMapById().lock();
+        Map<String, EnvironmentTile> clonedEnvironmentTileMap = new HashMap<>(ingameController.environmentTileMapById);
+
+        for (String targetTile : clonedPreviousTileMap.keySet()) {
+            EnvironmentTile current = clonedEnvironmentTileMap.get(targetTile);
 
             int currentDistance = Math.abs(x - current.getX()) + Math.abs(y - current.getY());
 
@@ -130,9 +134,13 @@ public abstract class AI {
             path.distance++;
             pathList.addFirst(closest);
             closest = ingameController.previousTileMapById.get(closest);
+            // NullPointerException is thrown here.
         } while (!closest.equals(unit.getPosition()));
 
         path.path = pathList.toArray(new String[0]);
+
+        ThreadLocks.getReadLockPreviousTileMapById().unlock();
+        ThreadLocks.getReadEnvironmentTileMapById().unlock();
 
         return new Pair<>(path, closestDistance);
     }
@@ -142,8 +150,8 @@ public abstract class AI {
         TreeMap<Path, UnitTile> attackable = new TreeMap<>((pathL, pathR) -> (pathL.distance - pathR.distance));
 
         ingameController.drawOverlay(ingameController.environmentTileMapById.get(
-                unit.getPosition()), unit.getMpLeft(), false,
-                ((InGamePlayer)ingameController.inGameObjects
+            unit.getPosition()), unit.getMpLeft(), false,
+            ((InGamePlayer) ingameController.inGameObjects
                 .get(unit.getLeader())).getName());
 
         if (ingameController.previousTileAttackMapById.isEmpty()) {

@@ -7,6 +7,8 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
+
 import java.util.*;
 import java.util.Map.Entry;
 import javafx.util.Pair;
@@ -100,7 +102,7 @@ class Nagato extends AI {
 
             // Skip those tiles that are not a forest/mountain edge.
             if (above == null || tile.getValue().getName().equals("Grass")
-                    || tile.getValue().getName().equals("Water")) {
+                || tile.getValue().getName().equals("Water")) {
                 continue;
             }
 
@@ -223,7 +225,10 @@ class Nagato extends AI {
                     ((InGamePlayer) ingameController.inGameObjects
                     .get(playerID)).getName());
 
+            ThreadLocks.getReadLockPreviousTileMapById().lock();
             Map<String, String> previousTileMapByIdLocal = new HashMap<>(ingameController.previousTileMapById);
+            ThreadLocks.getReadLockPreviousTileMapById().unlock();
+
             if (previousTileMapByIdLocal.isEmpty()) {
                 continue;
             }
@@ -313,9 +318,11 @@ class Nagato extends AI {
             }
 
             Path path = new Path();
+            ThreadLocks.getReadEnvironmentTileMapById().lock();
             path.end = ingameController.environmentTileMapById.get(closest);
             path.start = ingameController.environmentTileMapById.get(heli.getPosition());
             path.distance = 0;
+            ThreadLocks.getReadEnvironmentTileMapById().unlock();
 
             LinkedList<String> pathList = new LinkedList<>();
 
@@ -330,7 +337,7 @@ class Nagato extends AI {
             socket.moveUnit(heli.getId(), path.path);
             waitForSocket();
 
-            // If we land next to the target, mark it for attack.
+            //If we land next to the Target, mark for Attacking
             if (closestDistance == 1) {
                 toAttack.put(heli.getId(), target.getId());
             }
@@ -346,7 +353,7 @@ class Nagato extends AI {
     protected void tankMovementAttackAdditional() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
 
-            // Skip repositioning dead units or units that already did a safe attack.
+            //Skip repositioning Dead Units or units that already did a safe attack
             UnitTile tank = null;
             for (UnitTile tiles : ingameController.unitTiles) {
                 if (tiles.getId().equals(position.getKey())) {
@@ -379,7 +386,7 @@ class Nagato extends AI {
                     EnvironmentTile friendly = attackable.firstKey().start;
 
                     int distance = Math.abs(friendly.getX() - enemyTile.getX())
-                            + Math.abs(friendly.getY() - enemyTile.getY());
+                        + Math.abs(friendly.getY() - enemyTile.getY());
 
                     if (distance < enemy.getMp()) {
                         foundEnemy = true;
@@ -401,7 +408,7 @@ class Nagato extends AI {
     protected void tankMovementAttackSafe() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
 
-            // Skip repositioning dead units.
+            //Skip repositioning Dead Units
             UnitTile tank = null;
             for (UnitTile tiles : ingameController.unitTiles) {
                 if (tiles.getId().equals(position.getKey())) {
@@ -493,7 +500,7 @@ class Nagato extends AI {
     protected void tankReposition() {
         for (Entry<String, String> position : tankPositions.entrySet()) {
 
-            // Skip repositioning dead units.
+            //Skip repositioning Dead Units
             UnitTile tile = null;
             for (UnitTile tiles : ingameController.unitTiles) {
                 if (tiles.getId().equals(position.getKey())) {
@@ -501,7 +508,7 @@ class Nagato extends AI {
                 }
             }
 
-            // Skip correctly positioned units.
+            //Skip correctly positioned Units
             if (tile == null || tile.getPosition().equals(position.getValue())) {
                 continue;
             }
