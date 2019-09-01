@@ -121,8 +121,16 @@ public class BotControl {
         botUsers.remove(number);
     }
 
+    //TODO: fix javadoc
+    /**
+     * Only for checkstyle.
+     *
+     */
     public static BotUser getBotUser(int number) {
-        if (number >= botUsers.size()) return null;
-        else return botUsers.get(number);
+        if (number >= botUsers.size()) {
+            return null;
+        } else {
+            return botUsers.get(number);
+        }
     }
 }

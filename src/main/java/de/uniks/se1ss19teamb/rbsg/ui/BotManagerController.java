@@ -1,11 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +23,7 @@ public class BotManagerController {
 
     void setMaxPlayers(long maxPlayers) {
         this.maxPlayers = (int) maxPlayers;
-        botSelectorContrainsBot = new boolean[(int)maxPlayers];
+        botSelectorContrainsBot = new boolean[(int) maxPlayers];
     }
 
     void setBotSelections() {
@@ -52,6 +52,11 @@ public class BotManagerController {
             }
         }
     }
+    //TODO: fix javadoc
+    /**
+     * Javadoc for checkstyle.
+     *
+     */
 
     public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
@@ -63,9 +68,12 @@ public class BotManagerController {
         }
     }
 
-    public BotSelectionController getBotSelectionController(int number) {
-        return botSelectionControllers.get(number);
-    }
+    //TODO: fix checkstyle
+
+    /**
+     * javadoc for checkstyle.
+     *
+     */
 
     public void deactivateBot(int number) {
         botSelectorContrainsBot[number] = false;
