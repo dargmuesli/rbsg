@@ -5,6 +5,7 @@ import static java.lang.Thread.sleep;
 import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -51,29 +52,42 @@ class UiTests {
             NotificationHandler.sendError("Test ERROR NullPointerException", logger, e);
             sleep(200);
 
-            Label el = (Label) robot.lookup("#apnRoot").queryAs(AnchorPane.class).lookup("#label");
+            Label el = (Label) robot.lookup("#apnFade").queryAs(AnchorPane.class).lookup("#label");
+            Assert.assertTrue(robot.lookup("#apnFade").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(el.isVisible());
             Assert.assertEquals(el.getText(), "Test ERROR NullPointerException");
-            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            sleep(2500);
 
             NotificationHandler.sendError("Test ERROR NullPointerException Without e Exception", logger);
             sleep(200);
+            el = (Label) robot.lookup("#apnFade").queryAs(AnchorPane.class).lookup("#label");
+            Assert.assertTrue(robot.lookup("#apnFade").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(el.isVisible());
             Assert.assertEquals(el.getText(), "Test ERROR NullPointerException Without e Exception");
-            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            sleep(2500);
 
             NotificationHandler.sendWarning("Test WARNING", logger);
             sleep(200);
+            el = (Label) robot.lookup("#apnFade").queryAs(AnchorPane.class).lookup("#label");
+            Assert.assertTrue(robot.lookup("#apnFade").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(el.isVisible());
             Assert.assertEquals(el.getText(), "Test WARNING");
-            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            sleep(2500);
 
             NotificationHandler.sendInfo("Test INFO", logger);
             sleep(200);
+            el = (Label) robot.lookup("#apnFade").queryAs(AnchorPane.class).lookup("#label");
+            Assert.assertTrue(robot.lookup("#apnFade").queryAs(AnchorPane.class).isVisible());
+            Assert.assertTrue(el.isVisible());
             Assert.assertEquals(el.getText(), "Test INFO");
-            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
+            sleep(2500);
 
             NotificationHandler.sendSuccess("Test SUCCESS", logger);
             sleep(200);
+            el = (Label) robot.lookup("#apnFade").queryAs(AnchorPane.class).lookup("#label");
+            Assert.assertTrue(el.isVisible());
+            Assert.assertTrue(robot.lookup("#apnFade").queryAs(AnchorPane.class).isVisible());
             Assert.assertEquals(el.getText(), "Test SUCCESS");
-            Assert.assertTrue(robot.lookup("#errorContainer").queryAs(AnchorPane.class).isVisible());
         }
     }
 }

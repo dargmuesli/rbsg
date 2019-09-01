@@ -35,6 +35,11 @@ public class WebSocketClient {
         }
     }
 
+    /**
+     * Sends a message to the websocket.
+     *
+     * @param message The message to send.
+     */
     public void sendMessage(JsonObject message) {
         if (this.mySession != null && this.mySession.isOpen()) {
             try {
@@ -52,6 +57,11 @@ public class WebSocketClient {
         }
     }
 
+    /**
+     * Sends a NOOP regularly to keep the websocket connection alive.
+     *
+     * @param session The now open session.
+     */
     @OnOpen
     public void onOpen(Session session) {
         this.mySession = session;
@@ -73,6 +83,11 @@ public class WebSocketClient {
         this.noopTimer.schedule(task, 0, 1000 * 30);
     }
 
+    /**
+     * Parses the message from JSON and calls the message handler.
+     *
+     * @param message The message that was received.
+     */
     @OnMessage
     public void onMessage(String message) {
         JsonParser parser = new JsonParser();
@@ -85,6 +100,13 @@ public class WebSocketClient {
         e.printStackTrace();
     }
 
+    /**
+     * Resets the websocket configuration when it closes and prints the reason if possible.
+     *
+     * @param session     The session that is closed.
+     *                    Currently not used.
+     * @param closeReason The reason why the connection was closed.
+     */
     @SuppressWarnings("unused")
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {

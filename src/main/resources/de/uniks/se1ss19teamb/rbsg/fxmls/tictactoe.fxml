@@ -10,32 +10,30 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="apnRoot" prefHeight="600.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TicTacToeController">
-    <JFXButton fx:id="one" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.topAnchor="0.0"/>
-    <JFXButton fx:id="two" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0"
-               AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0"/>
-    <JFXButton fx:id="three" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="400.0"
-               AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0"/>
-    <JFXButton fx:id="four" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: white"
-               AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0"/>
-    <JFXButton fx:id="five" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0"
-               AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="200.0"/>
-    <JFXButton fx:id="six" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="400.0"
-               AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="200.0"/>
-    <JFXButton fx:id="seven" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.topAnchor="400.0"/>
-    <JFXButton fx:id="eight" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0"
-               AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="400.0"/>
-    <JFXButton fx:id="nine" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="400.0"
-               AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="400.0"/>
-    <VBox prefHeight="600.0" prefWidth="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <HBox alignment="CENTER">
-            <VBox alignment="TOP_CENTER" spacing="20.0">
+    <HBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0">
+        <VBox alignment="CENTER_LEFT">
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="one" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="four" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="seven" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+        </VBox>
+        <VBox alignment="CENTER">
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="two" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="five" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="eight" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+        </VBox>
+        <VBox alignment="CENTER_RIGHT">
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="three" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="six" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+            <JFXButton VBox.vgrow="ALWAYS" fx:id="nine" onAction="#fieldClick" prefHeight="200.0" prefWidth="200.0"/>
+        </VBox>
+        <VBox prefWidth="200.0" alignment="CENTER_RIGHT">
+            <VBox alignment="CENTER" spacing="20.0">
                 <JFXButton fx:id="btnReplay" onAction="#replay" prefWidth="150.0" text="Replay"/>
-                <Label fx:id="label" alignment="BASELINE_CENTER"/>
+                <Label fx:id="label"/>
             </VBox>
-        </HBox>
-    </VBox>
+        </VBox>
+    </HBox>
     <stylesheets>
         <URL value="@../css/whiteDesign.css"/>
         <URL value="@../css/darkDesign.css"/>

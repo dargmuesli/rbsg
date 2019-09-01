@@ -5,6 +5,7 @@ import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
+import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
@@ -17,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
 
 public class GameSelectionController {
 
@@ -47,6 +49,9 @@ public class GameSelectionController {
         spaces.setText(s);
     }
 
+    /**
+     * Joins the game.
+     */
     public void joinGame() {
         join();
         join.setDisable(true);
@@ -80,12 +85,18 @@ public class GameSelectionController {
         chatWindow.setPrefWidth(400);
     }
 
+    /**
+     * Deletes the game.
+     */
     public void deleteGame() {
         if (!RequestUtil.request(new DeleteGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
-            return;
+            NotificationHandler.sendError("Could not delete game!", LogManager.getLogger());
         }
     }
 
+    /**
+     * Joins a game in spectator mode.
+     */
     public void spectate() {
         ArmyManagerController.spectator = true;
         join();

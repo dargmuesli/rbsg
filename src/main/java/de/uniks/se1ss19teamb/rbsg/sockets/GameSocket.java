@@ -2,6 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.sockets;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameGame;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -16,6 +18,7 @@ import de.uniks.se1ss19teamb.rbsg.ui.WinScreenController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +46,19 @@ public class GameSocket extends AbstractMessageWebSocket {
     private boolean ignoreOwn = false;
     public String currentPlayer;
     public String phaseString;
+    private boolean botGameSocket = false;
 
     public GameSocket(String gameId) {
         this(gameId, null, false);
     }
 
+    /**
+     * The constructor that registers the websocket handler.
+     *
+     * @param gameId    The game's id.
+     * @param armyId    The army's id.
+     * @param spectator The indicator whether one joins as a spectator.
+     */
     public GameSocket(String gameId, String armyId, boolean spectator) {
         this.gameId = gameId;
         this.armyId = armyId;
@@ -60,9 +71,10 @@ public class GameSocket extends AbstractMessageWebSocket {
             } else if (StringUtil.checkHasNot(response, "action", logger)) {
                 return;
             }
-            
+
             String action = response.get("action").getAsString();
             JsonObject data = null;
+
 
             if (action.equals("gameStarts")) {
                 logger.info("The game is starting!");
@@ -103,89 +115,101 @@ public class GameSocket extends AbstractMessageWebSocket {
 
                     break;
                 case "gameInitObject":
-                    if (!firstGameInitObjectReceived) {
-                        firstGameInitObjectReceived = true;
+                    if (!botGameSocket) {
+                        if (!firstGameInitObjectReceived) {
+                            firstGameInitObjectReceived = true;
 
-                        assert data != null;
-                        InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
+                            assert data != null;
+                            InGameGame inGameGame = SerializeUtil.deserialize(data.toString(), InGameGame.class);
 
-                        InGameController.inGameObjects.clear();
-                        InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
-                    } else {
+                            InGameController.inGameObjects.clear();
+                            InGameController.inGameObjects.put(inGameGame.getId(), inGameGame);
+                        } else {
+                            assert data != null;
+                            if (StringUtil.checkHasNot(data, "id", logger)) {
+                                return;
+                            }
+
+                            String type = data.get("id").getAsString().replaceFirst("@.+", "");
+
+                            switch (type) {
+                                case "Forest":
+                                case "Sand":
+                                case "Grass":
+                                case "Water":
+                                case "Mountain":
+                                    EnvironmentTile environmentTile =
+                                        SerializeUtil.deserialize(data.toString(), EnvironmentTile.class);
+                                    InGameController.environmentTiles.put(new Pair<>(
+                                        environmentTile.getX(), environmentTile.getY()), environmentTile);
+                                    break;
+                                case "Player":
+                                    InGamePlayer inGamePlayer =
+                                        SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
+                                    InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+                                    break;
+                                case "Unit":
+                                    //TODO does this case exist?
+                                    ThreadLocks.getUnitTilesLock().lock();
+                                    InGameController.unitTiles.add(
+                                        SerializeUtil.deserialize(data.toString(), UnitTile.class));
+                                    ThreadLocks.getUnitTilesLock().unlock();
+                                    break;
+                                default:
+                                    NotificationHandler.sendWarning(
+                                        "Unknown tile type: " + type, logger);
+                            }
+                        }
+                    }
+                    break;
+
+                case "gameInitFinished":
+                    if (!botGameSocket) {
+
+                        NotificationHandler.sendInfo("Game initialized.", logger);
+                        if (GameLobbyController.instance != null) {
+                            GameLobbyController.instance.updatePlayers();
+                        }
+
+                        Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
+                            .add(TextureManager.computeMinimap(
+                                InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
+
+                    }
+                    break;
+                case "gameNewObject":
+                    if (!botGameSocket) {
                         assert data != null;
                         if (StringUtil.checkHasNot(data, "id", logger)) {
                             return;
                         }
 
-                        String type = data.get("id").getAsString().replaceFirst("@.+", "");
-
-                        switch (type) {
-                            case "Forest":
-                            case "Sand":
-                            case "Grass":
-                            case "Water":
-                            case "Mountain":
-                                EnvironmentTile environmentTile =
-                                    SerializeUtil.deserialize(data.toString(), EnvironmentTile.class);
-                                InGameController.environmentTiles.put(new Pair<>(
-                                    environmentTile.getX(), environmentTile.getY()), environmentTile);
-                                break;
+                        switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
                             case "Player":
-                                InGamePlayer inGamePlayer =
-                                    SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
+                                InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(),
+                                    InGamePlayer.class);
+
                                 InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
+
+                                if (GameLobbyController.instance != null) {
+                                    GameLobbyController.instance.updatePlayers();
+                                }
+
+                                // TODO handle in chat window
+                                NotificationHandler.sendInfo("New Player joined! \""
+                                    + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
+                                    + "\"", logger);
                                 break;
                             case "Unit":
-                                //TODO does this case exist?
+                                ThreadLocks.getUnitTilesLock().lock();
                                 InGameController.unitTiles.add(
                                     SerializeUtil.deserialize(data.toString(), UnitTile.class));
+                                ThreadLocks.getUnitTilesLock().unlock();
                                 break;
                             default:
-                                NotificationHandler.sendWarning(
-                                    "Unknown tile type: " + type, logger);
+                                NotificationHandler.sendError(
+                                    "Unknown new game object id: " + data.get("id").getAsString(), logger);
                         }
-                    }
-                    break;
-                case "gameInitFinished":
-
-                    NotificationHandler.sendInfo("Game initialized.", logger);
-                    if (GameLobbyController.instance != null) {
-                        GameLobbyController.instance.updatePlayers();
-                    }
-
-                    Platform.runLater(() -> GameLobbyController.instance.vbxMinimap.getChildren()
-                        .add(TextureManager.computeMinimap(
-                            InGameController.environmentTiles, -1, InGameController.unitTileMapByTileId)));
-
-                    break;
-                case "gameNewObject":
-                    assert data != null;
-                    if (StringUtil.checkHasNot(data, "id", logger)) {
-                        return;
-                    }
-
-                    switch (data.get("id").getAsString().replaceFirst("@.+", "")) {
-                        case "Player":
-                            InGamePlayer inGamePlayer = SerializeUtil.deserialize(data.toString(), InGamePlayer.class);
-
-                            InGameController.inGameObjects.put(inGamePlayer.getId(), inGamePlayer);
-
-                            if (GameLobbyController.instance != null) {
-                                GameLobbyController.instance.updatePlayers();
-                            }
-
-                            // TODO handle in chat window
-                            NotificationHandler.sendInfo("New Player joined! \""
-                                + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
-                                + "\"", logger);
-                            break;
-                        case "Unit":
-                            InGameController.unitTiles.add(
-                                SerializeUtil.deserialize(data.toString(), UnitTile.class));
-                            break;
-                        default:
-                            NotificationHandler.sendError(
-                                "Unknown new game object id: " + data.get("id").getAsString(), logger);
                     }
                     break;
                 case "gameChangeObject":
@@ -231,21 +255,23 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 }
                             }
 
-                            if (inGamePlayer != null) {
-                                StringBuilder readyMessage = new StringBuilder("Player \"")
-                                    .append(inGamePlayer.getName())
-                                    .append(" (")
-                                    .append(inGamePlayer.getColor())
-                                    .append(") is ");
+                            if (!botGameSocket) {
+                                if (inGamePlayer != null) {
+                                    StringBuilder readyMessage = new StringBuilder("Player \"")
+                                        .append(inGamePlayer.getName())
+                                        .append(" (")
+                                        .append(inGamePlayer.getColor())
+                                        .append(") is ");
 
-                                if (inGamePlayer.isReady()) {
-                                    // TODO maybe handler to chat window
-                                    readyMessage.append("now ready.");
-                                } else {
-                                    readyMessage.append("not ready.");
+                                    if (inGamePlayer.isReady()) {
+                                        // TODO maybe handler to chat window
+                                        readyMessage.append("now ready.");
+                                    } else {
+                                        readyMessage.append("not ready.");
+                                    }
+
+                                    NotificationHandler.sendInfo(readyMessage.toString(), logger);
                                 }
-
-                                NotificationHandler.sendInfo(readyMessage.toString(), logger);
                             }
                             break;
                         case "Game":
@@ -260,13 +286,20 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     if (TurnUiController.getInstance() == null) {
                                         TurnUiController.startShowTurn = data.get("newValue").getAsString();
                                     } else {
-                                        TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                                        if (!botGameSocket) {
+                                            TurnUiController.getInstance().showTurn(data.get("newValue").getAsString());
+                                        }
+                                        if (!botGameSocket) {
+                                            BotControl.checkForBotsTurn(data.get("newValue").getAsString());
+                                        }
                                     }
                                     break;
                                 case "phase":
-                                    if (!GameLobbyController.instance.gameInitFinished) {
-                                        GameLobbyController.instance.gameInitFinished = true;
-                                        GameLobbyController.instance.startGameTransition();
+                                    if (!botGameSocket) {
+                                        if (!GameLobbyController.instance.gameInitFinished) {
+                                            GameLobbyController.instance.gameInitFinished = true;
+                                            GameLobbyController.instance.startGameTransition();
+                                        }
                                     }
 
                                     switch (data.get("newValue").getAsString()) {
@@ -286,50 +319,58 @@ public class GameSocket extends AbstractMessageWebSocket {
                                             phaseString = "Unknown phase!";
                                     }
 
-                                    if (TurnUiController.getInstance() == null) {
-                                        TurnUiController.startTurnLabel = phaseString;
-                                    } else {
-                                        TurnUiController.getInstance().setTurnLabel(phaseString);
+                                    if (!botGameSocket) {
+                                        if (TurnUiController.getInstance() == null) {
+                                            TurnUiController.startTurnLabel = phaseString;
+                                        } else {
+                                            TurnUiController.getInstance().setTurnLabel(phaseString);
+                                        }
                                     }
 
                                     break;
                                 case "winner":
-                                    WinScreenController.getInstance().setWinningScreen(data.get("newValue")
+                                    if (!botGameSocket) {
+                                        WinScreenController.getInstance().setWinningScreen(data.get("newValue")
                                             .getAsString());
+                                    }
                                     break;
                                 default:
                                     logger.error("Unknown field name \"" + fieldName + "\"");
                             }
                             break;
                         case "Unit":
-                            if (StringUtil.checkHasNot(data, "fieldName", logger)) {
-                                return;
-                            }
 
-                            fieldName = data.get("fieldName").getAsString();
+                            if (!botGameSocket) {
 
-                            if (StringUtil.checkHasNot(data, "newValue", logger)) {
-                                return;
-                            }
+                                if (StringUtil.checkHasNot(data, "fieldName", logger)) {
+                                    return;
+                                }
 
-                            newValue = data.get("newValue").getAsString();
-                            String id = data.get("id").getAsString();
+                                fieldName = data.get("fieldName").getAsString();
 
-                            switch (fieldName) {
-                                case "position":
-                                    if (InGameController.getInstance() != null) {
-                                        InGameController.getInstance().changeUnitPos(id, newValue);
-                                    }
-                                    break;
-                                case "hp":
-                                    //SoundManager.playSound("Omae", 0);
-                                    if (InGameController.getInstance() != null) {
-                                        InGameController.getInstance().changeUnitHp(id, newValue);
-                                    }
-                                    break;
-                                default:
-                                    NotificationHandler.sendError(
-                                        "Unknown fieldName object: " + fieldName, logger);
+                                if (StringUtil.checkHasNot(data, "newValue", logger)) {
+                                    return;
+                                }
+
+                                newValue = data.get("newValue").getAsString();
+                                String id = data.get("id").getAsString();
+
+                                switch (fieldName) {
+                                    case "position":
+                                        if (InGameController.getInstance() != null) {
+                                            InGameController.getInstance().changeUnitPos(id, newValue);
+                                        }
+                                        break;
+                                    case "hp":
+                                        //SoundManager.playSound("Omae", 0);
+                                        if (InGameController.getInstance() != null) {
+                                            InGameController.getInstance().changeUnitHp(id, newValue);
+                                        }
+                                        break;
+                                    default:
+                                        NotificationHandler.sendError(
+                                            "Unknown fieldName object: " + fieldName, logger);
+                                }
                             }
                             break;
                         default:
@@ -358,26 +399,34 @@ public class GameSocket extends AbstractMessageWebSocket {
                             }
 
                             // TODO handle in chat window
-                            NotificationHandler.sendInfo(data.get("id").getAsString().replaceFirst("@.+", "")
-                                    + " has left the game!", logger);
+                            NotificationHandler.sendInfo(data.get("id").getAsString()
+                                .replaceFirst("@.+", "")
+                                + " has left the game!", logger);
                             SoundManager.playSound("Omae_nani", 0);
                             break;
                         case "Unit":
-                            for (int i = 0; i < InGameController.unitTiles.size(); i++) {
-                                if (InGameController.unitTiles.get(i).getId().equals(data.get("id").getAsString())) {
-                                    UnitTile attacker = InGameController.getInstance()
-                                        .findAttackingUnit(InGameController.unitTiles.get(i));
+                            if (!botGameSocket) {
+                                for (int i = 0; i < InGameController.unitTiles.size(); i++) {
+                                    if (InGameController.unitTiles.get(i).getId().equals(data.get("id")
+                                        .getAsString())) {
+                                        UnitTile attacker = InGameController.getInstance()
+                                            .findAttackingUnit(InGameController.unitTiles.get(i));
 
-                                    if (attacker != null) {
-                                        SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
+                                        if (attacker != null) {
+                                            SoundManager.playSound(attacker.getType()
+                                                .replaceAll(" ", ""), 0);
+                                        }
+
+                                        InGameController.getInstance().changeUnitPos(data.get("id")
+                                            .getAsString(), null);
+                                        ThreadLocks.getUnitTilesLock().lock();
+                                        InGameController.unitTiles.remove(i);
+                                        ThreadLocks.getUnitTilesLock().unlock();
                                     }
-
-                                    InGameController.getInstance().changeUnitPos(data.get("id").getAsString(), null);
-                                    InGameController.unitTiles.remove(i);
                                 }
-                            }
 
-                            SoundManager.playSound("nani", 0);
+                                SoundManager.playSound("nani", 0);
+                            }
                             break;
                         default:
                             NotificationHandler.sendError(
@@ -389,19 +438,8 @@ public class GameSocket extends AbstractMessageWebSocket {
                     }
                     break;
                 case "gameChat":
-                    assert data != null;
-                    String from = data.get("from").getAsString();
-
-                    if (this.ignoreOwn && from.equals(LoginController.getUserName())) {
-                        return;
-                    }
-
-                    String msg = data.get("message").getAsString();
-                    boolean isPrivate = data.get("channel").getAsString().equals("private");
-
-                    for (ChatMessageHandler handler : handlersChat) {
-                        handler.handle(msg, from, isPrivate);
-                    }
+                    Chat.defaultMessageHandler(
+                        response.getAsJsonObject("data"), this.ignoreOwn, LoginController.getUserName(), handlersChat);
                     break;
                 case "inGameError":
                     if (response.get("data").getAsString().equals("You need to select an army to be ready.")) {
@@ -437,6 +475,11 @@ public class GameSocket extends AbstractMessageWebSocket {
         return stringBuilder.toString();
     }
 
+    /**
+     * Sends the "changeArmy" command to the websocket.
+     *
+     * @param armyId The id of the army to change to.
+     */
     public void changeArmy(String armyId) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -445,6 +488,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "leaveGame" command to the websocket.
+     */
     public void leaveGame() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -452,6 +498,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "readyToPlay" command to the websocket.
+     */
     public void readyToPlay() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -459,6 +508,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "startGame" command to the websocket.
+     */
     public void startGame() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -466,6 +518,12 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Sends the "moveUnit" command to the websocket.
+     *
+     * @param unitId The id of the unit to move.
+     * @param path   The path to move the unit along.
+     */
     public void moveUnit(String unitId, String[] path) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -483,6 +541,12 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "attackUnit" command to the websocket".
+     *
+     * @param unitId     The id of the unit to attack with.
+     * @param toAttackId The id of the unit to attack
+     */
     public void attackUnit(String unitId, String toAttackId) {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -494,6 +558,9 @@ public class GameSocket extends AbstractMessageWebSocket {
         sendToWebsocket(json);
     }
 
+    /**
+     * Send the "nextPhase" command to the websocket.
+     */
     public void nextPhase() {
         JsonObject json = new JsonObject();
         json.addProperty("messageType", "command");
@@ -508,21 +575,27 @@ public class GameSocket extends AbstractMessageWebSocket {
 
     @Override
     public void sendMessage(String message) {
-        JsonObject json = new JsonObject();
-        json.addProperty("messageType", "chat");
-        json.addProperty("channel", "all");
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, null).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("messageType", "chat");
+            json.addProperty("channel", "all");
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+        });
     }
 
     @Override
     public void sendPrivateMessage(String message, String target) {
-        JsonObject json = new JsonObject();
-        json.addProperty("messageType", "chat");
-        json.addProperty("channel", "private");
-        json.addProperty("to", target);
-        json.addProperty("message", message);
-        sendToWebsocket(json);
+        Chat.executeCommandsOnMessage(message, target).ifPresent(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("messageType", "chat");
+            json.addProperty("channel", "private");
+            json.addProperty("to", target);
+            json.addProperty("message", s);
+            sendToWebsocket(json);
+
+            LogManager.getLogger().info("Sent \"" + s + "\"");
+        });
     }
 
     //Custom Helpers
@@ -535,5 +608,9 @@ public class GameSocket extends AbstractMessageWebSocket {
     public void registerGameChangeObject(GameSocketMessageHandler
                                              .GameSocketGameChangeObject handler) {
         handlersChangeObject.add(handler);
+    }
+
+    public void setBotGameSocket() {
+        botGameSocket = true;
     }
 }

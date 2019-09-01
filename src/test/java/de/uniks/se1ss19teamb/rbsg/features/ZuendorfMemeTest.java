@@ -10,8 +10,11 @@ import org.junit.Test;
 
 public class ZuendorfMemeTest {
 
+    /**
+     * Inits the randomness generator with a seed and turns the meme's sound off.
+     */
     @Before
-    public void prepareTest() throws ExceptionInInitializerError {
+    public void prepareTest() {
         TestUtil.initRandom();
 
         ZuendorfMeme.QUIET = true;

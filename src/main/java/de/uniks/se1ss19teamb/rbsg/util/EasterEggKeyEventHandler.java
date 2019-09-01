@@ -21,8 +21,12 @@ public class EasterEggKeyEventHandler {
     private static final KeyCodeCombination tictactoe = new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY);
     private static final KeyCodeCombination pong = new KeyCodeCombination(KeyCode.F3, KeyCodeCombination.SHIFT_ANY);
 
+    /**
+     * Sets a scene's key combinations which open easter eggs.
+     *
+     * @param scene The screne to set the key combinations for.
+     */
     public static void setEvents(Scene scene) {
-
         scene.setOnKeyPressed(e -> {
             if (snake.match(e)) {
                 Snake game = new Snake();
@@ -36,6 +40,7 @@ public class EasterEggKeyEventHandler {
                     ex.printStackTrace();
                 }
             }
+
             if (tictactoe.match(e)) {
                 try {
                     Parent root1 = FXMLLoader
@@ -44,7 +49,8 @@ public class EasterEggKeyEventHandler {
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root1, 800, 600));
                     stage.show();
-                    stage.setResizable(false);
+                    stage.setMinHeight(600);
+                    stage.setMinWidth(800);
                 } catch (IOException b) {
                     b.printStackTrace();
                 }

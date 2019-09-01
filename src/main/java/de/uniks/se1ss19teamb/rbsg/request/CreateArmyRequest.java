@@ -12,6 +12,13 @@ public class CreateArmyRequest extends AbstractDataRestRequest<String> {
     private String armyName;
     private List<Unit> units;
 
+    /**
+     * Constructor for an army creation request with individual field values.
+     *
+     * @param armyName  The army's name.
+     * @param units     The army's units.
+     * @param userToken The token to authenticate with.
+     */
     public CreateArmyRequest(String armyName, List<Unit> units, String userToken) {
         this.userToken = userToken;
         this.units = units;

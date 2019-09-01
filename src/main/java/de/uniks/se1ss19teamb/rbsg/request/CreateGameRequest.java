@@ -10,10 +10,18 @@ public class CreateGameRequest extends AbstractDataRestRequest<String> {
     private long seed;
 
     public CreateGameRequest(String gameName, int neededPlayers, String userToken) {
-        this(gameName, neededPlayers, userToken, -1);
+        this(gameName, neededPlayers, -1, userToken);
     }
 
-    public CreateGameRequest(String gameName, int neededPlayers, String userToken, long seed) {
+    /**
+     * Constructor for a game creation request with individual field values.
+     *
+     * @param gameName      The game's name.
+     * @param neededPlayers The game's count of needed players.
+     * @param seed          The game's seed.
+     * @param userToken     The token to authenticate with.
+     */
+    public CreateGameRequest(String gameName, int neededPlayers, long seed, String userToken) {
         this.userToken = userToken;
         this.neededPlayers = neededPlayers;
         this.gameName = gameName;

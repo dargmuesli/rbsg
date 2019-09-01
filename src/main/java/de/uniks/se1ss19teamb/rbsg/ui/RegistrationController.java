@@ -7,11 +7,18 @@ import de.uniks.se1ss19teamb.rbsg.model.UserData;
 import de.uniks.se1ss19teamb.rbsg.request.RegisterUserRequest;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +44,8 @@ public class RegistrationController {
     private AnchorPane apnRoot;
     private UserData userData;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         UserInterfaceUtils.initialize(apnFade, apnRoot, RegistrationController.class, btnFullscreen);
 
         // load user data
@@ -91,7 +99,8 @@ public class RegistrationController {
         register();
     }
 
-    public void keyEventHandler(KeyEvent keyEvent) {
+    @FXML
+    private void keyEventHandler(KeyEvent keyEvent) {
         if (keyEvent.getSource().equals(btnConfirm) && keyEvent.getCode().equals(KeyCode.ENTER)) {
             register();
         }
@@ -111,7 +120,19 @@ public class RegistrationController {
         }
 
         if (!password.getText().equals(passwordRepeat.getText())) {
+            Image image = new Image(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/MemeCopy.jpg").toExternalForm());
+            ImageView imageView = new ImageView(image);
+            Scene scene = new Scene(new VBox(imageView),250,200);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(event -> stage.close());
+            delay.play();
+          
             NotificationHandler.sendWarning("The password do not match!", logger);
+
             return;
         }
 
