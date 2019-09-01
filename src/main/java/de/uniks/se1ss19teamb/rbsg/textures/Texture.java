@@ -50,6 +50,21 @@ public class Texture {
     }
 
     /**
+    *Creates a pane that has variable size.
+    *
+    * @param heigth The heigth of the pane.
+    * @param width The width of the pane.
+    * @return A pane with size that is defined be the user.
+     */
+    public Pane instantiate(double heigth, double width) {
+        ImageView iv = new ImageView();
+        iv.setImage(image);
+        iv.setFitHeight(heigth);
+        iv.setFitWidth(width);
+        return new Pane(iv);
+    }
+    
+    /**
      * ImageView setter.
      *
      * @param iv The ImageView that contains the texture.

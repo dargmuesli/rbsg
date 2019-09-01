@@ -34,6 +34,7 @@ import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.rolling.action.IfAll;
 
 public class InGameController {
 
@@ -94,6 +95,8 @@ public class InGameController {
 
     private String playerId;
     private boolean logout;
+    private UnitTile unitHealth = new UnitTile();
+    private ArrayList<Pane> unitPanes = new ArrayList<>();
 
     public static InGameController getInstance() {
         return instance;
@@ -431,17 +434,27 @@ public class InGameController {
         // Add the unitTiles to a map and their texture to their game fields.
         for (UnitTile unitTile : unitTiles) {
             unitTileMapByTileId.put(unitTile.getPosition(), unitTile);
-            //adds player color to unitpane
-            Pane pane = generateUnitPane(unitTile);
+            //adds player color to unitpane and adds healthBar
+            Pane unitPane = new Pane();
+            unitPanes.add(unitPane);
+
+            unitPane.getChildren().add(generateUnitPane(unitTile));
+            unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder", 6, 50));
+            unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground", 6, 50));
+            unitPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, 50));
+
+            for (int i = 1; i < unitPane.getChildren().size(); i++) {
+                unitPane.getChildren().get(i).setLayoutY(55);
+            }
 
             stackPaneMapByEnvironmentTileId.get(unitTile.getPosition()).getChildren()
-                .add(pane);
-            unitPaneMapbyUnitTile.put(unitTile, pane);
+                .add(unitPane);
+            unitPaneMapbyUnitTile.put(unitTile, unitPane);
+
         }
 
         NotificationHandler.sendSuccess("Game initialized.", logger);
     }
-
 
     private Pane generateUnitPane(UnitTile unitTile) {
         InGamePlayer player = (InGamePlayer) inGameObjects.get(unitTile.getLeader());
@@ -494,9 +507,11 @@ public class InGameController {
                 currentTile.getLeft()).forEach((neighborId) -> {
 
                     // Limit to existing fields that haven't been checked yet and exclude the selected tile.
-                    if (neighborId == null || neighborId.equals(startTile.getId()) 
-                            || previousTileMapById.containsKey(neighborId)
-                            || previousTileAttackMapById.containsKey(neighborId)) {
+
+                    if (neighborId == null || neighborId.equals(startTile.getId())
+                        || previousTileMapById.containsKey(neighborId)
+                        || previousTileAttackMapById.containsKey(neighborId)) {
+
                         return;
                     }
 
@@ -508,9 +523,10 @@ public class InGameController {
                     if (neighborTile.isPassable()
                         && !overlayedStacks.containsKey(neighborStack)
                         && (unitTileMapByTileId.get(neighborId) == null
-                        || !((InGamePlayer)inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
+
+                        || !((InGamePlayer) inGameObjects.get(unitTileMapByTileId.get(neighborId).getLeader()))
                         .getName().equals(playerId))) {
-                      
+
                         Pane overlay = new Pane();
                         UnitTile neighborUnitTile = unitTileMapByTileId.get(neighborId);
 
@@ -521,7 +537,7 @@ public class InGameController {
                             // TODO: for when the gamelobby exists
                             //  Only allow this for own units.
                             overlay.getStyleClass().add("tile-attack");
-                            
+
                             previousTileAttackMapById.put(neighborId, currentTile.getId());
                         } else if (currentMp > 0 && neighborUnitTile == null) {
                             // currentMp = 0 -> Attackable but not moveable
@@ -529,7 +545,7 @@ public class InGameController {
                             //  Is it possible to have two units on the same field?
                             //  Is it possible to walk across a field on which a unit is already present?
                             overlay.getStyleClass().add("tile-path");
-                            
+
                             // Save the tile from which the tile that received an overlay was reached so that a path can
                             // be reconstructed for server requests. But only if it's a move not an attack tile
                             ThreadLocks.getWriteLockPreviousTileMapById().lock();
@@ -605,6 +621,7 @@ public class InGameController {
 
         assert unit != null;
         unit.setHp(Integer.parseInt(newHp));
+        setUnitHealth(unit.getHp());
 
         //for sounds find the attacking unit
         UnitTile attacker = findAttackingUnit(unit);
@@ -612,6 +629,8 @@ public class InGameController {
         if (attacker != null) {
             SoundManager.playSound(attacker.getType().replaceAll(" ", ""), 0);
         }
+
+        updateHealth(unitId);
     }
 
     /**
@@ -635,5 +654,27 @@ public class InGameController {
         }
 
         return neighbor;
+    }
+
+    private void setUnitHealth(int health) {
+        unitHealth.setHp(health);
+    }
+
+    private int getUnitHealth() {
+        return unitHealth.getHp();
+    }
+
+    private void updateHealth(String id) {
+        Platform.runLater(() -> {
+            for (int i = 0; i < unitPanes.size(); i++) {
+                if (unitTiles.get(i).getId().equals(id)) {
+                    unitPanes.get(i).getChildren().remove(3);
+                    unitPanes.get(i).getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
+                        6, getUnitHealth() * 5));
+                    unitPanes.get(i).getChildren().get(3).setLayoutY(55);
+                }
+            }
+        });
+
     }
 }

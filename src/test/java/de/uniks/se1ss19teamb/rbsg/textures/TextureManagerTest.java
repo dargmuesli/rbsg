@@ -40,6 +40,10 @@ class TextureManagerTest {
         Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("jeep"));
         Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("lightTank"));
         Assert.assertEquals(new Dimension2D(64, 64), TextureManager.getTextureDimensions("helicopter"));
+
+        Assert.assertEquals(new Dimension2D(32, 8), TextureManager.getTextureDimensions("HealthBarBorder"));
+        Assert.assertEquals(new Dimension2D(32, 8), TextureManager.getTextureDimensions("HealthBarBackground"));
+        Assert.assertEquals(new Dimension2D(32, 8), TextureManager.getTextureDimensions("HealthBarForeground"));
     }
 
     @Test
