@@ -16,12 +16,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -275,7 +281,7 @@ public class ArmyManagerController {
 
     @FXML
     private void exportArmy() {
-        SerializeUtil.chooseFile().ifPresent(file -> {
+        SerializeUtil.chooseFile(false).ifPresent(file -> {
             SerializeUtil.serialize(file.getAbsolutePath(), army);
             NotificationHandler.sendSuccess("Exported successfully.", logger);
         });
@@ -283,7 +289,7 @@ public class ArmyManagerController {
 
     @FXML
     private void importArmy() {
-        SerializeUtil.chooseFile().ifPresent(file -> {
+        SerializeUtil.chooseFile(false).ifPresent(file -> {
             army = SerializeUtil.deserialize(file, Army.class);
 
             NotificationHandler.sendSuccess("Imported successfully.", logger);
@@ -309,7 +315,20 @@ public class ArmyManagerController {
         }
 
         if (army.getUnits() == null || army.getUnits().size() < 10) {
+
+            Image image = new Image(getClass()
+                .getResource("/de/uniks/se1ss19teamb/rbsg/memes/MemeToyStorie.jpg").toExternalForm());
+            ImageView imageView = new ImageView(image);
+            Scene scene = new Scene(new VBox(imageView), 450, 375);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(event -> stage.close());
+            delay.play();
+          
             NotificationHandler.sendError("You need at least ten units!", logger);
+
             return;
         }
 

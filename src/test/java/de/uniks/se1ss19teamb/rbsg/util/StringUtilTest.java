@@ -25,6 +25,9 @@ public class StringUtilTest {
     private JsonObject hasStatusObject = new JsonObject();
     private Logger logger = mock(Logger.class);
 
+    /**
+     * Initializes the JSON objects that are used for these tests.
+     */
     @Before
     public void before() {
         hasObject.addProperty("key", "value");

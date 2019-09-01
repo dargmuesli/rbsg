@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -13,6 +14,7 @@ import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
+import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
 import de.uniks.se1ss19teamb.rbsg.util.UserInterfaceUtils;
 
 import java.io.IOException;
@@ -28,7 +30,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -47,6 +48,7 @@ public class InGameController {
     public static Map<String, String> previousTileAttackMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
+    public static Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
 
     @FXML
     private AnchorPane apnRoot;
@@ -86,7 +88,6 @@ public class InGameController {
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
-    private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private int zoomCounter = 0;
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private AI aI = null;
@@ -98,6 +99,12 @@ public class InGameController {
         return instance;
     }
 
+    /**
+     * Removes the unit from its current position on the map and readds it at the new position.
+     *
+     * @param unitId The unit to move.
+     * @param newPos The position to move to.
+     */
     public void changeUnitPos(String unitId, String newPos) {
         UnitTile currentUnit = null;
 
@@ -177,6 +184,7 @@ public class InGameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        BotControl.initializeBotAi(instance);
     }
 
     @FXML
@@ -228,27 +236,32 @@ public class InGameController {
         }
     }
 
+    /**
+     * Runs an AI bot.
+     */
     @FXML
     public void autoMode() {
         if (autoMode.isSelected()) {
             if (aI == null) {
                 String userName = LoginController.getUserName();
+
                 for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
                     if (userName.equals(player.getName())) {
                         playerId = player.getId();
                     }
                 }
+
                 assert playerId != null;
                 aI = AI.instantiate(Integer.MAX_VALUE);
                 aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
+
             if (Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer.equals(playerId)) {
                 if (!Objects.requireNonNull(GameSocketDistributor.getGameSocket(0))
                     .phaseString.equals("Movement Phase")) {
                     autoMode.setSelected(false);
                     NotificationHandler.sendWarning("You can only activate Automode\nin your first Movementphase\n"
                             + "or on your opponents turn.", logger);
-
                 } else {
                     Objects.requireNonNull(aI).doTurn();
                 }
@@ -385,7 +398,9 @@ public class InGameController {
                     // All overlays and saved path parts are cleared.
                     overlayedStacks.forEach((stackPane, pane) -> stackPane.getChildren().remove(pane));
                     overlayedStacks.clear();
+                    ThreadLocks.getWriteLockPreviousTileMapById().lock();
                     previousTileMapById.clear();
+                    ThreadLocks.getWriteLockPreviousTileMapById().unlock();
 
                     // Draw new path and attack overlays if a unit was selected.
                     // TODO: for when the gamelobby exists
@@ -406,8 +421,10 @@ public class InGameController {
 
                 gameGrid.add(stack, j, i);
                 stackPaneMapByEnvironmentTileId.put(environmentTiles.get(new Pair<>(j, i)).getId(), stack);
+                ThreadLocks.getWriteEnvironmentTileMapById().lock();
                 environmentTileMapById.put(environmentTiles.get(new Pair<>(j, i)).getId(),
                     environmentTiles.get(new Pair<>(j, i)));
+                ThreadLocks.getWriteEnvironmentTileMapById().unlock();
             }
         }
 
@@ -437,9 +454,19 @@ public class InGameController {
         drawOverlay(startTile, mp, true, LoginController.getUserName());
     }
 
+    /**
+     * Draws an overlay onto the map, showing tiles to possibly move to and to attack.
+     *
+     * @param startTile The tile from which the paths are calculated.
+     * @param mp        The available movement points.
+     * @param draw      Indicates whether the overlay should be actually drawn or just calculated.
+     * @param playerId  The id of the player currently interacts.
+     */
     public void drawOverlay(EnvironmentTile startTile, int mp, boolean draw, String playerId) {
         UnitTile startUnitTile = unitTileMapByTileId.get(startTile.getId());
+        ThreadLocks.getWriteLockPreviousTileMapById().lock();
         previousTileMapById.clear();
+        ThreadLocks.getWriteLockPreviousTileMapById().unlock();
         previousTileAttackMapById.clear();
 
         // Create a queue for breadth search.
@@ -505,7 +532,9 @@ public class InGameController {
                             
                             // Save the tile from which the tile that received an overlay was reached so that a path can
                             // be reconstructed for server requests. But only if it's a move not an attack tile
+                            ThreadLocks.getWriteLockPreviousTileMapById().lock();
                             previousTileMapById.put(neighborId, currentTile.getId());
+                            ThreadLocks.getWriteLockPreviousTileMapById().unlock();
                             
                             // Add the tile that received an overlay to the quere so that its neighbors are checked too.
                             // But only if movement, as we can't pass through attackable units
@@ -522,7 +551,12 @@ public class InGameController {
         }
     }
 
-
+    /**
+     * (Optionally) leaves the game, differentiating between three ways: click on "back", on "concede > yes"
+     * or "concede > no".
+     *
+     * @param event The click's source.
+     */
     public void leaveGame(ActionEvent event) {
         if (event.getSource().equals(btnBack)) {
             logout = false;
@@ -553,6 +587,12 @@ public class InGameController {
         }
     }
 
+    /**
+     * Updates the health points of a unit.
+     *
+     * @param unitId The id of the unit that is to be updated.
+     * @param newHp  The health points that are to be set.
+     */
     public void changeUnitHp(String unitId, String newHp) {
         UnitTile unit = null;
 
@@ -574,6 +614,12 @@ public class InGameController {
         }
     }
 
+    /**
+     * Returns the attacking unit by checking the field's neighbors.
+     *
+     * @param unit The unit that is attacked.
+     * @return     The unit that attacks.
+     */
     public UnitTile findAttackingUnit(UnitTile unit) {
         UnitTile neighbor = null;
         EnvironmentTile unitPos = environmentTileMapById.get(unit.getPosition());

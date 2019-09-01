@@ -17,7 +17,7 @@ public class NotificationController {
     private Label label;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         switch (initLevel) {
             case "ERROR":
                 label.getStyleClass().add("label-error");

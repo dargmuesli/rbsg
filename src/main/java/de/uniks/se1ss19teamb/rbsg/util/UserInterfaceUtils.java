@@ -27,6 +27,12 @@ import org.apache.logging.log4j.Logger;
 public class UserInterfaceUtils {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Logs the user out and resets dependent classes.
+     *
+     * @param pane      The pane to fade out.
+     * @param btnLogout The logout button to temporarily disable.
+     */
     public static void logout(Pane pane, JFXButton btnLogout) {
         btnLogout.setDisable(true);
 
@@ -39,11 +45,17 @@ public class UserInterfaceUtils {
             "/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml", pane);
     }
 
-    public static void makeFadeOutTransition(String path, Node node) {
-        FadeTransition fadeTransition = setTransition(node);
+    /**
+     * Fade the current screen out.
+     *
+     * @param nextFxmlPath The path to the next scene's fxml.
+     * @param nodeToFade The node to fade out.
+     */
+    public static void makeFadeOutTransition(String nextFxmlPath, Node nodeToFade) {
+        FadeTransition fadeTransition = setTransition(nodeToFade);
         fadeTransition.setOnFinished(event -> {
             try {
-                node.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(path)));
+                nodeToFade.getScene().setRoot(FXMLLoader.load(UserInterfaceUtils.class.getResource(nextFxmlPath)));
             } catch (IOException e) {
                 NotificationHandler.sendError("Transition to the next scene failed!", logger, e);
             }
@@ -55,6 +67,14 @@ public class UserInterfaceUtils {
         makeFadeOutTransition(nextFxmlPath, nodeToFade, chatNode, true);
     }
 
+    /**
+     * Fade the current screen out.
+     *
+     * @param nextFxmlPath The path to the next scene's fxml.
+     * @param nodeToFade   The node to fade out.
+     * @param chatNode     The chat node to transfer / keep.
+     * @param chatMovable  Indicates whether the chat node should be movable on the next screen.
+     */
     public static void makeFadeOutTransition(String nextFxmlPath, Node nodeToFade, Node chatNode, boolean chatMovable) {
         FadeTransition fadeTransition = setTransition(nodeToFade);
         fadeTransition.setOnFinished(event -> {
@@ -95,6 +115,11 @@ public class UserInterfaceUtils {
         fadeTransition.play();
     }
 
+    /**
+     * Toggle fullscreen.
+     *
+     * @param btnFullscreen The fullscreen toggle button to update the icon for.
+     */
     public static void toggleFullscreen(JFXButton btnFullscreen) {
         Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
 
@@ -103,6 +128,11 @@ public class UserInterfaceUtils {
         updateBtnFullscreen(btnFullscreen);
     }
 
+    /**
+     * Sets the correct icon for a fullscreen toggle button.
+     *
+     * @param btnFullscreen The button to set the correct icon for.
+     */
     public static void updateBtnFullscreen(JFXButton btnFullscreen) {
         Platform.runLater(() -> {
             Stage stage = ((Stage) btnFullscreen.getScene().getWindow());
@@ -115,6 +145,14 @@ public class UserInterfaceUtils {
         });
     }
 
+    /**
+     * Fades into the new screen, sets its theme and initializes its fullscreen button.
+     *
+     * @param fade          The next screen's pane to fade.
+     * @param root          The next screen's root pane.
+     * @param clazz         Unused.
+     * @param btnFullscreen The fullscreen toggle button to set the correct icon for.
+     */
     public static void initialize(Pane fade, Pane root, Class<?> clazz, JFXButton btnFullscreen) {
         UserInterfaceUtils.makeFadeInTransition(fade);
 

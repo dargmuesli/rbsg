@@ -28,7 +28,7 @@ public class ChatHistoryTest {
 
     private void setupSocket(Chat chat, String msg, String from) {
         doAnswer(invocation -> {
-            chat.chatMessageHandler.handle(msg, from, false);
+            chat.chatMessageHandler.handle(msg, from, false, false);
             return null;
         }).when(chatSocket).sendMessage(any());
     }

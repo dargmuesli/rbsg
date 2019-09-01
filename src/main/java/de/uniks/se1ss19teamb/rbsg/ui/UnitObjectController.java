@@ -44,12 +44,18 @@ public class UnitObjectController {
         return this.unit;
     }
 
+    /**
+     * Adds this controller's unit to the army and updates the application's state.
+     */
     public void increaseCount() {
         ArmyManagerController.getInstance().discardConfirmation = false;
         ArmyManagerController.army.getUnits().add(0, unit);
         ArmyManagerController.getInstance().updateUnits();
     }
 
+    /**
+     * Removes this controller's unit to the army and updates the application's state.
+     */
     public void decreaseCount() {
         ArmyManagerController.getInstance().discardConfirmation = false;
         ArmyManagerController.army.getUnits().remove(unit);

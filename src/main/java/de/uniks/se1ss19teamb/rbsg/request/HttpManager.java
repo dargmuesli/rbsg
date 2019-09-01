@@ -1,5 +1,6 @@
 package de.uniks.se1ss19teamb.rbsg.request;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.apache.http.Header;
@@ -26,8 +27,15 @@ public class HttpManager {
         this.httpClient = httpClient;
     }
 
-    public HttpRequestResponse get(URI uri, Header[] headers) throws
-        Exception {
+    /**
+     * Forms a GET request to the specified URI with given headers.
+     *
+     * @param uri          The request's endpoint.
+     * @param headers      The request's headers.
+     * @return             The server's response.
+     * @throws IOException In case the request fails or the response body could not be retrieved.
+     */
+    public HttpRequestResponse get(URI uri, Header[] headers) throws IOException {
         assert (uri != null);
         assert (!uri.toString().equals(""));
 
@@ -44,6 +52,15 @@ public class HttpManager {
         return responseBody;
     }
 
+    /**
+     * Forms a POST request to the specified URI with given headers.
+     *
+     * @param uri          The request's endpoint.
+     * @param headers      The request's headers.
+     * @param body         The request's body.
+     * @return             The server's response.
+     * @throws IOException In case the request fails or the response body could not be retrieved.
+     */
     public HttpRequestResponse post(URI uri, Header[] headers, HttpEntity body) throws
         Exception {
         assert (uri != null);
@@ -63,6 +80,15 @@ public class HttpManager {
         return responseBody;
     }
 
+    /**
+     * Forms a PUT request to the specified URI with given headers.
+     *
+     * @param uri          The request's endpoint.
+     * @param headers      The request's headers.
+     * @param body         The request's body.
+     * @return             The server's response.
+     * @throws IOException In case the request fails or the response body could not be retrieved.
+     */
     public HttpRequestResponse put(URI uri, Header[] headers, HttpEntity body) throws
         Exception {
         assert (uri != null);
@@ -82,7 +108,16 @@ public class HttpManager {
         return responseBody;
     }
 
-
+    /**
+     * Forms a DELETE request to the specified URI with given headers.
+     *
+     * @param uri          The request's endpoint.
+     * @param headers      The request's headers.
+     * @param body         The request's body.
+     *                     Exists just in case the server suddenly demands one.
+     * @return             The server's response.
+     * @throws IOException In case the request fails or the response body could not be retrieved.
+     */
     public HttpRequestResponse delete(URI uri, Header[] headers, HttpEntity body) throws
         Exception {
         assert (uri != null);
@@ -102,13 +137,12 @@ public class HttpManager {
         return responseBody;
     }
 
-    private HttpRequestResponse getResponseBody(HttpResponse httpResponse) throws Exception {
+    private HttpRequestResponse getResponseBody(HttpResponse httpResponse) throws IOException {
         int status = httpResponse.getStatusLine().getStatusCode();
         String errorMessage = httpResponse.getStatusLine().getReasonPhrase();
         String response = httpResponse.getEntity() != null
             ? EntityUtils.toString(httpResponse.getEntity(), "UTF-8") : null;
 
         return new HttpRequestResponse(response, status, errorMessage);
-
     }
 }
