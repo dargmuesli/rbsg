@@ -44,6 +44,7 @@ public class BotSelectionController {
             }
         } else {
             deactivateBot();
+            botCreated = false;
         }
     }
 
