@@ -1,22 +1,22 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
-import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
+import static org.junit.Assert.assertEquals;
+
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
-import javafx.scene.layout.Pane;
-import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.layout.Pane;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
 
 public class HealthBarTest {
     private EnvironmentTile eT = new EnvironmentTile();
     private InGamePlayer player = new InGamePlayer();
     private UnitTile uT = new UnitTile();
-    private List<UnitTile> unitTiles = new ArrayList<>();
+    private ArrayList<UnitTile> unitTiles = new ArrayList<>();
     private List<Pane> unitPanes = new ArrayList<>();
     private InGameController inGameController = new InGameController();
 
@@ -31,7 +31,7 @@ public class HealthBarTest {
     
     //InGamePlayer
     private String playerName = "Player";
-    private String color = "GREEN";
+    private String color = "red";
 
     @Test
     void addHealthBars() {
@@ -46,22 +46,31 @@ public class HealthBarTest {
         uT.setPosition(posiontion);
         uT.setGame(game);
         uT.setLeader(playerName);
-//        unitTiles.add(uT);
-//        System.out.println(unitTiles.get(0).getType());
+
+        unitTiles.add(uT);
+        System.out.println(unitTiles.get(0).getType());
 
         for (int j = 0; j < unitTiles.size(); j++) {
             Pane testPane = new Pane();
             unitPanes.add(testPane);
 
-            testPane.getChildren().add(TextureManager.getTextureInstance(unitTiles.get(j).getType(), player.getColor()));
-            testPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBorder", 6, 50));
-            testPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarBackground", 6, 50));
-            testPane.getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, 50));
+            testPane.getChildren().add(TextureManager.getTextureInstance(
+                unitTiles.get(j).getType(), player.getColor()));
+            testPane.getChildren().add(TextureManager.getTextureInstanceWithSize(
+                "HealthBarBorder", 6, 50));
+            testPane.getChildren().add(TextureManager.getTextureInstanceWithSize(
+                "HealthBarBackground", 6, 50));
+            testPane.getChildren().add(TextureManager.getTextureInstanceWithSize(
+                "HealthBarForeground", 6, 50));
 
-            assertEquals(testPane.getChildren().get(0), TextureManager.getTextureInstance(unitTiles.get(j).getType(), player.getColor()));
-            assertEquals(testPane.getChildren().get(1), TextureManager.getTextureInstanceWithSize("HealthBarBorder", 6, 50));
-            assertEquals(testPane.getChildren().get(2), TextureManager.getTextureInstanceWithSize("HealthBarBackground", 6, 50));
-            assertEquals(testPane.getChildren().get(3), TextureManager.getTextureInstanceWithSize("HealthBarForeground", 6, 50));
+            assertEquals(testPane.getChildren().get(0), TextureManager.getTextureInstance(
+                unitTiles.get(j).getType(), player.getColor()));
+            assertEquals(testPane.getChildren().get(1), TextureManager.getTextureInstanceWithSize(
+                "HealthBarBorder", 6, 50));
+            assertEquals(testPane.getChildren().get(2), TextureManager.getTextureInstanceWithSize(
+                "HealthBarBackground", 6, 50));
+            assertEquals(testPane.getChildren().get(3), TextureManager.getTextureInstanceWithSize(
+                "HealthBarForeground", 6, 50));
 
             for (int i = 1; i < testPane.getChildren().size(); i++) {
                 testPane.getChildren().get(i).setLayoutY(55);
@@ -75,13 +84,15 @@ public class HealthBarTest {
         for (int i = 0; i < unitPanes.size(); i++) {
             if (unitTiles.get(i).getId().equals(testId)) {
                 unitPanes.get(i).getChildren().remove(3);
-                unitPanes.get(i).getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
+                unitPanes.get(i).getChildren().add(TextureManager.getTextureInstanceWithSize(
+                    "HealthBarForeground",
                     6, 3 * 5));
                 unitPanes.get(i).getChildren().get(3).setLayoutY(55);
             }
         }
 
-        assertEquals(unitPanes.get(0).getChildren().get(3), TextureManager.getTextureInstanceWithSize("HealthBarForeground",
+        assertEquals(unitPanes.get(0).getChildren().get(3), TextureManager.getTextureInstanceWithSize(
+            "HealthBarForeground",
             6, 3 * 5));
     }
 }
