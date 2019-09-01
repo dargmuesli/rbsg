@@ -70,12 +70,12 @@ public class Guess extends Application {
                 numberField.setText("");
             } else if (yourNumber > number) {
                 System.out.println("Your number is too high.");
-                numberField.setPromptText("Your number is too high, " + (counter-1) + " tries left");
+                numberField.setPromptText("Your number is too high, " + (counter - 1) + " tries left");
                 numberField.setText("");
                 counter--;
             } else {
                 System.out.println("Your number is to low");
-                numberField.setPromptText("Your number is too low, " + (counter-1) + " tries left");
+                numberField.setPromptText("Your number is too low, " + (counter - 1) + " tries left");
                 numberField.setText("");
                 counter--;
             }
