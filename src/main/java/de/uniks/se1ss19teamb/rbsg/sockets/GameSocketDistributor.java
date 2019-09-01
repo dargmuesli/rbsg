@@ -20,6 +20,9 @@ public class GameSocketDistributor {
         setGameSocket(number, gameId, null, false);
     }
 
+    // TODO: Check if code can be deleted.
+
+    /*
     public static GameSocket getGameSocket(int number, String gameId, String armyId, boolean spectator) {
         return gameSockets.get(number);
     }
@@ -27,6 +30,8 @@ public class GameSocketDistributor {
     public static GameSocket getGameSocket(int number, String gameId) {
         return getGameSocket(number, gameId, null, false);
     }
+
+     */
 
     /**
      * The game socket getter.
