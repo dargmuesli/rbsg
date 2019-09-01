@@ -6,11 +6,11 @@ import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+import java.util.Map;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 
-import java.util.Map;
-import java.util.logging.Logger;
+
 
 public class BotSelectionController {
 

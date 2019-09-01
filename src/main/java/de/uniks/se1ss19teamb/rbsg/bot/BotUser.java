@@ -135,6 +135,10 @@ public class BotUser {
 
     }
 
+    //TODO: fix javadoc
+    /**
+     * for checkstyle.
+     */
     public void deactivate() {
         UserKeys.setBotUserKey(botUserKey);
         gameSocket.leaveGame();
