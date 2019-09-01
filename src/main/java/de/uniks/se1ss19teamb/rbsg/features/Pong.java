@@ -39,7 +39,6 @@ public class Pong extends Application {
     private int scoreP2 = 0;
     private boolean gameStarted;
     private VBox mainScreen = new VBox();
-    private Button twoPlayer = new Button("2 - Player");
     private Button onePlayer = new Button("1 - Player");
 
     public static Stage classStage = new Stage();
@@ -49,43 +48,20 @@ public class Pong extends Application {
         primaryStage.setTitle("P_O_N_G");
 
         Canvas canvas = new Canvas(WIDTH, HEIGTH);
+        canvas.setId("canvas");
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc)));
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         onePlayer.setStyle(style());
-        twoPlayer.setStyle(style());
+        onePlayer.setId("onePlayer");
 
         mainScreen.getChildren().add(onePlayer);
-        mainScreen.getChildren().add(twoPlayer);
         mainScreen.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         mainScreen.setAlignment(Pos.CENTER);
         mainScreen.setSpacing(50);
 
         onePlayer.setOnMouseClicked(event ->  classStage.setScene(new Scene(new StackPane(canvas))));
-        twoPlayer.setOnMouseClicked(event -> {
-            Canvas canvas1 = new Canvas(WIDTH, HEIGTH);
-            GraphicsContext gc1 = canvas1.getGraphicsContext2D();
-            Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(10), e1 -> run2(gc1)));
-            timeline1.setCycleCount(Timeline.INDEFINITE);
-
-            canvas1.setOnKeyTyped(new EventHandler<KeyEvent>() {
-                @Override
-                public void handle(KeyEvent event) {
-                    if (event.getCode().equals(KeyCode.UP)) {
-                        setPlayerOneYpos(getPlayerOneYpos() + 100);
-                    }
-                    if (event.getCode().equals(KeyCode.DOWN)) {
-                        setPlayerOneYpos(getPlayerOneYpos() - 100);
-                    }
-                }
-            });
-
-            canvas1.setOnMouseClicked(event1 -> gameStarted = true);
-
-            classStage.setScene(new Scene(new StackPane(canvas1)));
-            timeline1.play();
-        });
 
         canvas.setOnMouseMoved(event -> playerOneYPos = event.getY() >= 500
             ? event.getY() - PLAYER_HEIGTH : event.getY());
@@ -164,67 +140,6 @@ public class Pong extends Application {
         gc.fillRect(playerTwoXPos, playerTwoYPos, PLAYER_WIDTH, PLAYER_HEIGTH);
     }
 
-    private void run2(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0,0, WIDTH, HEIGTH);
-
-        gc.setFill(Color.WHITE);
-        gc.setFont(Font.font(25));
-
-        if (gameStarted) {
-            ballXPos += ballXSpeed;
-            ballYPos += ballYSpeed;
-
-            gc.fillOval(ballXPos, ballYPos, BALL_R, BALL_R);
-        } else {
-
-            if (scoreP1 == 0 && scoreP2 == 0) {
-                gc.setStroke(Color.WHITE);
-                gc.setTextAlign(TextAlignment.CENTER);
-                gc.strokeText("Click to Play", WIDTH / 2, HEIGTH / 2);
-            } else {
-                gc.setStroke(Color.WHITE);
-                gc.setTextAlign(TextAlignment.CENTER);
-                String point1 = String.valueOf(scoreP1);
-                String point2 = String.valueOf(scoreP2);
-
-                gc.strokeText(point1 + " - " + point2,WIDTH / 2, HEIGTH / 2);
-            }
-
-            ballXPos = WIDTH / 2;
-            ballYPos = HEIGTH / 2;
-
-            ballXSpeed = new Random().nextInt(2) == 0 ? 1 : -1;
-            ballYSpeed = new Random().nextInt(2) == 0 ? 1 : -1;
-        }
-
-        if (ballYPos > HEIGTH || ballYPos < 0) {
-            ballYSpeed *= -1;
-        }
-
-        if (ballXPos < playerOneXPos - PLAYER_WIDTH) {
-            scoreP2++;
-            gameStarted = false;
-        }
-
-        if (ballXPos > playerTwoXPos + PLAYER_WIDTH) {
-            scoreP1++;
-            gameStarted = false;
-        }
-
-        if ((ballXPos + BALL_R > playerTwoXPos) && ballYPos >= playerTwoYPos && ballYPos
-            <= playerTwoYPos + PLAYER_HEIGTH || ((ballXPos < playerOneXPos + PLAYER_WIDTH)
-            && ballYPos >= playerOneYPos && ballYPos <= playerOneYPos + PLAYER_HEIGTH)) {
-            ballYSpeed += 1 * Math.signum(ballYSpeed);
-            ballXSpeed += 1 * Math.signum(ballXSpeed);
-            ballXSpeed *= -1;
-            ballYSpeed *= -1;
-        }
-
-        gc.fillText(scoreP1 + "\t\t\t\t\t\t\t\t\t\t\t" + scoreP2,WIDTH / 2,100);
-        gc.fillRect(playerOneXPos, playerOneYPos, PLAYER_WIDTH, PLAYER_HEIGTH);
-        gc.fillRect(playerTwoXPos, playerTwoYPos, PLAYER_WIDTH, PLAYER_HEIGTH);
-    }
 
     private String style() {
         return "-fx-padding: 8 15 15 15;\n"

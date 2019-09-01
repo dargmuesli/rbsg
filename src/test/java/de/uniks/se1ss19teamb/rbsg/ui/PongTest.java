@@ -26,10 +26,12 @@ public class PongTest {
     @Test
     void pongTest(FxRobot robot) {
         robot.sleep(100);
-        robot.clickOn("#twoPlayer");
+        robot.clickOn("#onePlayer");
         robot.sleep(200);
         robot.clickOn("#canvas");
         robot.sleep(100);
-        robot.moveTo(0,100, Motion.VERTICAL_FIRST);
+        robot.moveTo(0,50, Motion.DEFAULT);
+        robot.moveTo(0, 0, Motion.DEFAULT);
+        robot.moveTo(0, -50, Motion.DEFAULT);
     }
 }
