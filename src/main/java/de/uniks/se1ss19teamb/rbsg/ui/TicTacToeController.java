@@ -41,7 +41,7 @@ public class TicTacToeController {
     private JFXButton btnReplay;
     @FXML
     private Label label;
-    private Boolean turn = false;
+    private boolean turn = false;
 
     public void initialize() {
         buttons.add(0, one);
