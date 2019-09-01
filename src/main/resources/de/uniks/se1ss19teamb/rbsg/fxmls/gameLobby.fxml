@@ -22,8 +22,7 @@
             <URL value="@../css/whiteDesign.css" />
             <URL value="@../css/darkDesign.css" />
         </stylesheets>
-        <VBox layoutY="5.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox layoutY="5.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <HBox alignment="TOP_RIGHT" spacing="5.0">
                 <JFXButton fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" onAction="#goBack">
                     <graphic>
@@ -31,7 +30,7 @@
                     </graphic>
                 </JFXButton>
                 <Pane HBox.hgrow="ALWAYS" />
-            <JFXButton mnemonicParsing="false" onMouseClicked="#openBotWindow" text="Bots" />
+            <JFXButton fx:id="botMenu" mnemonicParsing="false" onMouseClicked="#openBotWindow" text="Bots" />
                 <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
                     <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="15" />
@@ -82,10 +81,10 @@
                     <VBox fx:id="vbxMinimap" alignment="CENTER" spacing="5.0">
                         <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Minimap" textAlignment="CENTER">
                             <font>
-                                <Font name="System Bold" size="15.0"/>
+                                <Font name="System Bold" size="15.0" />
                             </font>
                             <padding>
-                                <Insets left="5.0"/>
+                                <Insets left="5.0" />
                             </padding>
                         </Label>
                     </VBox>
