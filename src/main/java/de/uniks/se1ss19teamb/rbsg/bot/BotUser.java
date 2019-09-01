@@ -65,28 +65,6 @@ public class BotUser {
                     String unitId;
                     ArrayList<Unit> unitArrayList = new ArrayList<>(availableUnitTypes.values());
                     unitId = unitArrayList.get(j).getId();
-
-                    /*switch (j) {
-                        case 0:
-                            unitId = availableUnitTypes.get("Bazooka Trooper").getId();
-                            break;
-                        case 1:
-                            unitId = availableUnitTypes.get("Jeep").getId();
-                            break;
-                        case 2:
-                            unitId = availableUnitTypes.get("Infantry").getId();
-                            break;
-                        case 3:
-                            unitId = availableUnitTypes.get("Chopper").getId();
-                            break;
-                        case 4:
-                            unitId = availableUnitTypes.get("Light Tank").getId();
-                            break;
-                        default:
-                            unitId = availableUnitTypes.get("Heavy Tank").getId();
-                            break;
-                    }
-                    */
                     units.add(new Unit(unitId));
                 }
             }
@@ -155,5 +133,16 @@ public class BotUser {
         this.inGameController = inGameController;
         botAi.initialize(botPlayerId, gameSocket, inGameController);
 
+    }
+
+    //TODO: fix javadoc
+    /**
+     * for checkstyle.
+     */
+    public void deactivate() {
+        UserKeys.setBotUserKey(botUserKey);
+        gameSocket.leaveGame();
+        gameSocket.disconnect();
+        UserKeys.revertUserKey();
     }
 }
