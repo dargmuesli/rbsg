@@ -6,6 +6,13 @@ public class HttpRequestResponse {
     private int status;
     private String errorMsg;
 
+    /**
+     * Constructor for a http request's respnse with individual field values.
+     *
+     * @param body     The response's body.
+     * @param status   The response's status code.
+     * @param errorMsg The response's error message.
+     */
     public HttpRequestResponse(String body, int status, String errorMsg) {
         this.body = body;
         this.status = status;
@@ -19,5 +26,4 @@ public class HttpRequestResponse {
     public String getErrorMsg() {
         return errorMsg;
     }
-
 }

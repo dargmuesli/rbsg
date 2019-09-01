@@ -83,7 +83,8 @@ public class WebSocketTestsReal {
 
         List<String> msg = new ArrayList<>();
 
-        chat2.registerMessageHandler((message, from, isPrivate) -> msg.add(message + '|' + from + '|' + isPrivate));
+        chat2.registerMessageHandler((message, from, isPrivate, wasEncrypted)
+            -> msg.add(message + '|' + from + '|' + isPrivate));
 
         chat.connect();
         chat2.connect();
@@ -108,5 +109,25 @@ public class WebSocketTestsReal {
 
         Assert.assertTrue(msg.contains("Hello World!|TeamBTestUser2|false"));
         Assert.assertTrue(msg.contains("Hello World! Private|TeamBTestUser2|true"));
+    }
+
+    @Test
+    public void gameSocketDistributorTest() {
+        String userKey;
+        LoginUserRequest lur = new LoginUserRequest("TeamBTestUser", "qwertz");
+        lur.sendRequest();
+        userKey = lur.getData();
+
+        //Check for wrong GameSocket request
+        GameSocket testGameSocketOne = GameSocketDistributor.getGameSocket(2);
+        Assert.assertNull(testGameSocketOne);
+
+        //Create new GameSocket
+        CreateGameRequest cgr = new CreateGameRequest("TestGameB", 2, userKey);
+        cgr.sendRequest();
+        String gameId = cgr.getData();
+        GameSocketDistributor.setGameSocket(0, gameId);
+        GameSocket testGameSocketTwo = GameSocketDistributor.getGameSocket(0);
+        Assert.assertNotNull(testGameSocketTwo);
     }
 }

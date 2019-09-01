@@ -14,6 +14,13 @@ public class UpdateArmyRequest extends AbstractRestRequest {
     private String armyName;
     private List<Unit> units;
 
+    /**
+     * Constructor for an army update request.
+     *
+     * @param army      The army to update.
+     *                  Id, name and units are taken from it.
+     * @param userToken The token to authenticate with.
+     */
     public UpdateArmyRequest(Army army, String userToken) {
         this.userToken = userToken;
         armyId = army.getId();

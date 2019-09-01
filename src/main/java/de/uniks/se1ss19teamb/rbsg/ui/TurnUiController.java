@@ -50,7 +50,7 @@ public class TurnUiController {
     }
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         instance = this;
         updatePlayers();
 
@@ -113,6 +113,11 @@ public class TurnUiController {
         Platform.runLater(() -> turnLabel.setText(turn));
     }
 
+    /**
+     * Updates the player name labels' colors.
+     *
+     * @param currentPlayer The current turn's player name.
+     */
     public void showTurn(String currentPlayer) {
         // iterate over all players
         for (InGamePlayer player : inGamePlayerList) {

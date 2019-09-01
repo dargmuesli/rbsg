@@ -70,11 +70,11 @@ public class GameLobbyController {
             .setGameSocket(0, GameSelectionController.joinedGame.getId());
         gameSocket = GameSocketDistributor.getGameSocket(0);
         assert gameSocket != null;
-        gameSocket.registerMessageHandler((message, from, isPrivate) -> {
+        gameSocket.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> {
             if (isPrivate) {
-                MainController.instance.addNewPane(from, message, false, chatPane);
+                MainController.instance.addNewPane(from, message, false, chatPane, wasEncrypted);
             } else {
-                MainController.instance.addElement(from, message, textArea, false);
+                MainController.instance.addElement(from, message, textArea, false, false);
             }
         });
         gameSocket.connect();
@@ -92,6 +92,9 @@ public class GameLobbyController {
         gameName.setText(GameSelectionController.joinedGame.getName());
     }
 
+    /**
+     * Updates the player list by clearing it and readding all players from the {@link InGameController#inGameObjects}.
+     */
     public void updatePlayers() {
         Platform.runLater(() -> {
             playerList.getChildren().clear();
@@ -144,6 +147,9 @@ public class GameLobbyController {
         gameSocket.startGame();
     }
 
+    /**
+     * Sets the player as ready.
+     */
     public void confirmReadiness() {
         Platform.runLater(() -> {
             tglReadiness.setText("Ready");
@@ -151,6 +157,9 @@ public class GameLobbyController {
         });
     }
 
+    /**
+     * Resets the readiness control.
+     */
     public void denyReadiness() {
         Platform.runLater(() -> {
             tglReadiness.setSelected(false);
@@ -158,6 +167,9 @@ public class GameLobbyController {
         });
     }
 
+    /**
+     * Fades out to ingame and minimizes the chat, making it movable at the same time.
+     */
     public void startGameTransition() {
         VBox chatWindow = (VBox) apnFade.getScene().lookup("#chatWindow");
         JFXButton btnMinimize = (JFXButton) chatWindow.lookup("#btnMinimize");
@@ -186,6 +198,9 @@ public class GameLobbyController {
         return btnMinimize;
     }
 
+    /**
+     * Opens the bot manager.
+     */
     public void openBotWindow() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
             .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botManager.fxml"));

@@ -41,7 +41,8 @@ public class TicTacToeController {
     @FXML
     private Label label;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         buttons.add(0, one);
         buttons.add(1, two);
         buttons.add(2, three);

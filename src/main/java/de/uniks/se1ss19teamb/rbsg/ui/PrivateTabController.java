@@ -18,7 +18,7 @@ public class PrivateTabController {
     }
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         Label start = new Label("Private Chat started!");
         start.setStyle("-fx-text-fill: -fx-privatetext;");
         textArea.getChildren().add(start);

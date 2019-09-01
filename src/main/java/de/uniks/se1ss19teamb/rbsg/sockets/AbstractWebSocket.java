@@ -58,5 +58,5 @@ public abstract class AbstractWebSocket implements WebSocket {
     public void sendToWebsocket(JsonObject msg) {
         websocket.sendMessage(msg);
     }
-
 }
+

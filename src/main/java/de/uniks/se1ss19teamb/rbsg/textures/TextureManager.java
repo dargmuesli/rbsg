@@ -4,13 +4,11 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-
 import javafx.geometry.Dimension2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,6 +19,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
+/**
+ * Manages all texture creations including additional features like minimap computation.
+ */
 public class TextureManager {
 
     private static TextureManager instance = null;
@@ -28,9 +29,19 @@ public class TextureManager {
     private Map<String, TextureFancy> texturesTerrain = new HashMap<>();
     private Map<String, Color> terrainColors = new HashMap<>();
 
+    /**
+     * The constructor.
+     */
     private TextureManager() {
     }
 
+    /**
+     * Initializes the texture manager.
+     * Sets the class's instance.
+     * Calls {@link AnimatedTexture#registerAnimUpdates}.
+     * Creates instances for all game textures.
+     * Sets the textures' colors for the minimap.
+     */
     public static void init() {
         instance = new TextureManager();
         AnimatedTexture.registerAnimUpdates();
@@ -67,25 +78,32 @@ public class TextureManager {
 
         Texture missing = new Texture("Missing.png");
         instance.textures.put("missing", missing);
-        
-        
+
+
         TextureFancy water = new TextureFancy("water.png", "water.png", 0);
         instance.texturesTerrain.put("Water", water);
         instance.terrainColors.put("Water", Color.CYAN);
-        
+
         TextureFancy sand = new TextureFancy("grass.png", "grassOverlay.png", 1);
         instance.texturesTerrain.put("Grass", sand);
         instance.terrainColors.put("Grass", Color.LIME);
-        
+
         TextureFancy grass = new TextureFancy("forest.png", "grassOverlay.png", 2);
         instance.texturesTerrain.put("Forest", grass);
         instance.terrainColors.put("Forest", Color.SEAGREEN);
-        
+
         TextureFancy mountain = new TextureFancy("mountain.png", "mountainOverlay.png", 3);
         instance.texturesTerrain.put("Mountain", mountain);
         instance.terrainColors.put("Mountain", Color.SLATEGREY);
     }
 
+    /**
+     * Texture pane getter.
+     *
+     * @param toFetch Texture name that is requested.
+     * @param color   Name of the color around the border of the non-transparent parts of the texture.
+     * @return Pane with the requested texture.
+     */
     public static Pane getTextureInstance(String toFetch, String color) {
         return instance.fetchTexture(toFetch).instantiate(color);
     }
@@ -94,6 +112,15 @@ public class TextureManager {
         return instance.fetchTexture(toFetch).instantiate(heigth, width);
     }
     
+
+    /**
+     * Creates the game's minimap.
+     *
+     * @param map                 Source of the environment data.
+     * @param size                The minimap's target size.
+     * @param unitTileMapByTileId Source of the unit data.
+     * @return A canvas that represents the map's textures, including units.
+     */
     public static Canvas computeMinimap(
         Map<Pair<Integer, Integer>, EnvironmentTile> map, double size, Map<String, UnitTile> unitTileMapByTileId) {
 
@@ -107,11 +134,14 @@ public class TextureManager {
 
         Canvas canvas = new Canvas(squareSide * size, squareSide * size);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        
+
         for (Entry<Pair<Integer, Integer>, EnvironmentTile> tile : map.entrySet()) {
             Pair<Integer, Integer> pos = tile.getKey();
 
-            UnitTile possibleUnit = unitTileMapByTileId.get(tile.getValue().getId());
+            UnitTile possibleUnit = null;
+            if (unitTileMapByTileId != null) {
+                possibleUnit = unitTileMapByTileId.get(tile.getValue().getId());
+            }
 
             if (possibleUnit != null) {
                 InGamePlayer player = (InGamePlayer) InGameController.inGameObjects.get(possibleUnit.getLeader());
@@ -130,10 +160,18 @@ public class TextureManager {
 
         return canvas;
     }
-    
+
+    /**
+     * Creates a layered terrain texture.
+     *
+     * @param map Map of the gamefield.
+     * @param x   Horizontal position.
+     * @param y   Vertical position.
+     * @return A layered terrain texture.
+     */
     public static Pane computeTerrainTextureInstance(Map<Pair<Integer, Integer>, EnvironmentTile> map, int x, int y) {
         TextureFancy current = instance.texturesTerrain.get(map.get(new Pair<>(x, y)).getName());
-        
+
         GridPane overlay = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints(32);
         ColumnConstraints column2 = new ColumnConstraints(32);
@@ -141,22 +179,22 @@ public class TextureManager {
         RowConstraints row2 = new RowConstraints(32);
         overlay.getColumnConstraints().addAll(column1, column2);
         overlay.getRowConstraints().addAll(row1, row2);
-        
-        for (TextureFancyOverlayPosition pos : TextureFancyOverlayPosition.values()) { 
+
+        for (TextureFancyOverlayPosition pos : TextureFancyOverlayPosition.values()) {
             NavigableMap<Integer, Pane> currentOverlayPane = new TreeMap<>();
-            
-            for (Entry<String,TextureFancy> texture : instance.texturesTerrain.entrySet()) {
+
+            for (Entry<String, TextureFancy> texture : instance.texturesTerrain.entrySet()) {
                 if (texture.getValue().getDepth() <= current.getDepth()) {
                     continue;
                 }
-                
+
                 TextureFancyOverlayType type = null;
-                
+
                 EnvironmentTile horizontal = map.get(new Pair<>(x + pos.x, y));
                 EnvironmentTile vertical = map.get(new Pair<>(x, y + pos.y));
                 EnvironmentTile diagonal = map.get(new Pair<>(x + pos.x, y + pos.y));
-                
-                if (horizontal != null && vertical != null 
+
+                if (horizontal != null && vertical != null
                     && horizontal.getName().equals(texture.getKey()) && vertical.getName().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.BOTH;
                 } else if (horizontal != null && horizontal.getName().equals(texture.getKey())) {
@@ -166,22 +204,22 @@ public class TextureManager {
                 } else if (diagonal != null && diagonal.getName().equals(texture.getKey())) {
                     type = TextureFancyOverlayType.DIAGONAL;
                 }
-                
+
                 //Current Terrain OVerlay not found in Neighbours
                 if (type == null) {
                     continue;
                 }
-                    
+
                 currentOverlayPane.put(texture.getValue().getDepth(), texture.getValue().instantiateOverlay(pos, type));
             }
-            
+
             if (currentOverlayPane.isEmpty()) {
                 continue;
             }
-                
+
             Pane parent = currentOverlayPane.firstEntry().getValue();
             overlay.add(parent, (pos.x + 1) / 2, (pos.y + 1) / 2);
-            
+
             while (currentOverlayPane.size() > 1) {
                 currentOverlayPane = currentOverlayPane.tailMap(currentOverlayPane.firstKey(), false);
                 parent.getChildren().add(currentOverlayPane.firstEntry().getValue());
@@ -190,17 +228,29 @@ public class TextureManager {
         }
 
         Pane base = current.instantiateBase();
-        
+
         base.getChildren().add(overlay);
-        
+
         return base;
     }
 
+    /**
+     * Texture dimension getter.
+     *
+     * @param toFetch The texture's name.
+     * @return The texture's dimensions.
+     */
     public static Dimension2D getTextureDimensions(String toFetch) {
         Texture texture = instance.fetchTexture(toFetch);
         return new Dimension2D(texture.image.getWidth(), texture.image.getHeight());
     }
 
+    /**
+     * Returns one of the predefined textures.
+     *
+     * @param toFetch The texture's name.
+     * @return The texture with the given name if it exists or a standard texture if it doesnt.
+     */
     private Texture fetchTexture(String toFetch) {
         Texture texture = textures.get(toFetch);
 

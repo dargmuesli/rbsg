@@ -19,13 +19,18 @@ public class EasterEggKeyEventHandler {
     private static final KeyCodeCombination snake = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHIFT_ANY);
     private static final KeyCodeCombination tictactoe = new KeyCodeCombination(KeyCode.F2, KeyCombination.SHIFT_ANY);
 
+    /**
+     * Sets a scene's key combinations which open easter eggs.
+     *
+     * @param scene The screne to set the key combinations for.
+     */
     public static void setEvents(Scene scene) {
-
         scene.setOnKeyPressed(e -> {
             if (snake.match(e)) {
                 Snake game = new Snake();
                 game.start(Snake.classStage);
             }
+
             if (tictactoe.match(e)) {
                 try {
                     Parent root1 = FXMLLoader

@@ -20,6 +20,9 @@ public class SystemSocket extends AbstractWebSocket {
     private List<SystemSocketMessageHandler.SystemSocketPlayerJoinedGame> handlersPlayerJoinedGame
         = new ArrayList<>();
 
+    /**
+     * Default constructor, that registers the websocket handler.
+     */
     public SystemSocket() {
         registerWebSocketHandler((response) -> {
             String action = response.get("action").getAsString();

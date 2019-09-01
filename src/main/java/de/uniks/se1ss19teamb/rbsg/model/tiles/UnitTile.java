@@ -15,6 +15,11 @@ public class UnitTile extends AbstractTile {
     public UnitTile() {
     }
 
+    /**
+     * Constructor for a unit tile copy.
+     *
+     * @param unitTile The unit tile to clone.
+     */
     public UnitTile(UnitTile unitTile) {
         this.setId(unitTile.getId());
         this.type = unitTile.getType();

@@ -20,7 +20,7 @@ public class BotManagerController {
         this.maxPlayers = (int) maxPlayers;
     }
 
-    public void setBotSelections() {
+    void setBotSelections() {
         for (int i = 0; i < maxPlayers - 1; i++) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botSelection.fxml"));
@@ -37,10 +37,9 @@ public class BotManagerController {
         }
     }
 
-    public void createBot(int numberOfBot, BotSelectionController botSelectionController) {
+    public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
-        BotControl.createBotUser(numberOfBot, botSelectionController);
-        BotControl.setInGameController(InGameController.getInstance());
+        BotControl.createBotUser(numberOfBot, difficulty, botSelectionController);
     }
 
     public BotSelectionController getBotSelectionController(int number) {

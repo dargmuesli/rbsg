@@ -1,5 +1,8 @@
 package de.uniks.se1ss19teamb.rbsg.chat;
 
+import com.google.gson.JsonObject;
+import de.uniks.se1ss19teamb.rbsg.crypto.CipherUtils;
+import de.uniks.se1ss19teamb.rbsg.crypto.GenerateKeys;
 import de.uniks.se1ss19teamb.rbsg.model.ChatHistoryEntry;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.AbstractMessageWebSocket;
@@ -7,14 +10,14 @@ import de.uniks.se1ss19teamb.rbsg.sockets.ChatMessageHandler;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.SerializeUtil;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import java.nio.file.Paths;
+import java.security.PublicKey;
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +34,7 @@ public class Chat {
     /**
      * Defines that and how received messages are added to the chat history.
      */
-    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate)
+    public ChatMessageHandler chatMessageHandler = (message, from, isPrivate, wasEncrypted)
         -> addToHistory(message, from, isPrivate ? LoginController.getUserName() : "All");
 
     private static final Logger logger = LogManager.getLogger();
@@ -49,6 +52,42 @@ public class Chat {
         this.messageWebSocket = messageWebSocket;
         this.messageWebSocket.registerMessageHandler(chatMessageHandler);
         this.path = path;
+    }
+
+    /**
+     * Commonly used incoming message processing, like message decryption.
+     *
+     * @param response     The message to process.
+     * @param ignoreOwn    Indicates whether to ignore messages from the same username as the currently logged in one.
+     * @param userName     The username from which the message was sent.
+     * @param handlersChat The handler to further process this message with.
+     */
+    public static void defaultMessageHandler(
+        JsonObject response, boolean ignoreOwn, String userName, List<ChatMessageHandler> handlersChat) {
+
+        if (response.get("msg") != null) {
+            NotificationHandler.sendWarning(response.get("msg").getAsString(), LogManager.getLogger());
+            return;
+        }
+
+        String from = response.get("from").getAsString();
+
+        if (ignoreOwn && from.equals(userName)) {
+            return;
+        }
+
+        String message = response.get("message").getAsString();
+        boolean isPrivate = response.get("channel").getAsString().equals("private");
+        boolean wasEncrypted = false;
+
+        if (message.startsWith("[tbe]")) {
+            wasEncrypted = true;
+            message = CipherUtils.decryptMessage(message.substring(5));
+        }
+
+        for (ChatMessageHandler handler : handlersChat) {
+            handler.handle(message, from, isPrivate, wasEncrypted);
+        }
     }
 
     /**
@@ -89,6 +128,46 @@ public class Chat {
      */
     private void addToHistory(String message, String sender, String receiver) {
         history.add(new ChatHistoryEntry(message, sender, receiver));
+    }
+
+    /**
+     * Executes commands contained in chat messages, like encryption.
+     *
+     * @param message  The message to process.
+     * @param receiver The receiver's username.
+     * @return         Optionally, the processed message.
+     */
+    public static Optional<String> executeCommandsOnMessage(String message, String receiver) {
+
+        // Export the public key only.
+        if (message.equals("/enc_export")) {
+            Optional<File> optionalFile = SerializeUtil.chooseFile(true);
+            Optional<PublicKey> optionalPublicKey = GenerateKeys.readPublicKey(LoginController.getUserName());
+
+            if (optionalFile.isPresent() && optionalFile.get().exists() && optionalPublicKey.isPresent()) {
+                try {
+                    Files.write(optionalFile.get().toPath().resolve(
+                        "public-key_" + SerializeUtil.sanitizeFilename(LoginController.getUserName()) + ".der"),
+                        optionalPublicKey.get().getEncoded());
+                    NotificationHandler.sendSuccess("Public key exported successfully.", LogManager.getLogger());
+                } catch (IOException e) {
+                    NotificationHandler.sendError("Could not export public key!", LogManager.getLogger(), e);
+                }
+            }
+
+            return Optional.empty();
+        }
+
+        if (receiver != null) {
+
+            // Encrypt the message.
+            // tbe = team b encrypted
+            if (message.startsWith("/enc ")) {
+                message = "[tbe]" + CipherUtils.encryptMessage(message.substring(5), receiver);
+            }
+        }
+
+        return Optional.of(message);
     }
 
     /**
