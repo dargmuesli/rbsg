@@ -13,6 +13,11 @@ import org.testfx.robot.Motion;
 @ExtendWith(ApplicationExtension.class)
 public class PongTest {
 
+    /**
+     * Creates a new Pong instance and starts it on the specified stage.
+     *
+     * @param stage The stage to start with.
+     */
     @Start
     public void start(Stage stage) {
         Pong pong = new Pong();
