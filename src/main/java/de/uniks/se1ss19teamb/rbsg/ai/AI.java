@@ -189,9 +189,11 @@ public abstract class AI {
     
     static {
         aiModels.put(-1, Kaiten.class);
+        aiModels.put(0, Kongo.class);
         
         aiModelsStrategic.put(-1, Kaiten.class);
-        aiModelsStrategic.put(0, Nagato.class);
+        aiModelsStrategic.put(0, Kongo.class);
+        aiModelsStrategic.put(1, Nagato.class);
     }
     
     public static AI instantiate(int difficulty) {
