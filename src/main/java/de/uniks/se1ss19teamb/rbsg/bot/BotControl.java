@@ -10,11 +10,11 @@ import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
+
 import java.util.ArrayList;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
 
 
 public class BotControl {
@@ -74,9 +74,11 @@ public class BotControl {
     }
 
     //TODO: fix javadoc
+
     /**
      * Only for checkstyle.
      * Initializes the Bot.
+     *
      * @param inGameControllerInput input
      */
     public static void initializeBotAi(InGameController inGameControllerInput) {
@@ -94,9 +96,11 @@ public class BotControl {
     }
 
     //TODO: fix javadoc
+
     /**
      * Only for checkstyle.
      * Checks if bot has its turn.
+     *
      * @param playerId playerid
      */
     public static void checkForBotsTurn(String playerId) {
@@ -115,5 +119,10 @@ public class BotControl {
     public static void deactivateBotUser(int number) {
         botUsers.get(number).deactivate();
         botUsers.remove(number);
+    }
+
+    public static BotUser getBotUser(int number) {
+        if (number >= botUsers.size()) return null;
+        else return botUsers.get(number);
     }
 }

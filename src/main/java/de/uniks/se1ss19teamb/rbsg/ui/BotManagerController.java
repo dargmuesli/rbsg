@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,6 +33,11 @@ public class BotManagerController {
                 botSelectionVBox.getChildren().add(parent);
                 controller.setBotNumber(i);
                 controller.setBotManagerController(this);
+                BotUser bot = BotControl.getBotUser(i);
+                if (bot != null) {
+                    controller.setBot(bot);
+                    controller.setCheckbox();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

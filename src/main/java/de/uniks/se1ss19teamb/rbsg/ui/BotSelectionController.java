@@ -86,4 +86,8 @@ public class BotSelectionController {
     private void createBot(int difficulty) {
         botManagerController.createBot(botNumber, difficulty, this);
     }
+
+    public void setCheckbox() {
+        botCheckbox.setSelected(true);
+    }
 }
