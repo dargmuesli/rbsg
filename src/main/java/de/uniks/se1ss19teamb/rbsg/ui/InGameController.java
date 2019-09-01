@@ -568,8 +568,8 @@ public class InGameController {
     }
 
     /**
-     * (Optionally) leaves the game, differentiating between three ways: click on "back", on "concede > yes"
-     * or "concede > no".
+     * (Optionally) leaves the game, differentiating between three ways: click on "back", on "concede &amp; yes"
+     * or "concede &amp; no".
      *
      * @param event The click's source.
      */

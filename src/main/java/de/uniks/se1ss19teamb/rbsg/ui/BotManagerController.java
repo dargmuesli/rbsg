@@ -52,12 +52,14 @@ public class BotManagerController {
             }
         }
     }
-    //TODO: fix javadoc
-    /**
-     * Javadoc for checkstyle.
-     *
-     */
 
+    /**
+     * Creates a bot.
+     *
+     * @param numberOfBot            The bot's number.
+     * @param difficulty             The bot's difficulty.
+     * @param botSelectionController The selection controller to add this bot to.
+     */
     public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
         BotControl.createBotUser(numberOfBot, difficulty, botSelectionController);
@@ -68,19 +70,19 @@ public class BotManagerController {
         }
     }
 
-    //TODO: fix checkstyle
-
     /**
-     * javadoc for checkstyle.
+     * Deactivates a bot with the given number.
      *
+     * @param number The number of the bot to deactivate.
      */
-
     public void deactivateBot(int number) {
         botSelectorContrainsBot[number] = false;
         BotControl.deactivateBotUser(number);
+
         if (botSelectorContrainsBot[number + 1] == false) {
             if (botSelectionControllers.size() > number + 1) {
                 BotSelectionController botSelectionController = botSelectionControllers.get(number + 1);
+
                 if (botSelectionController != null) {
                     botSelectionController.deactivateCheckbox();
                 }

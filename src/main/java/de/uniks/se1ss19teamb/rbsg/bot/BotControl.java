@@ -35,6 +35,7 @@ public class BotControl {
      * Creates a temporary user that is run by an {@link AI}.
      *
      * @param number                 The bot's number that is used for {@link GameSocket} creation.
+     * @param difficulty             The bot's difficulty.
      * @param botSelectionController The controller on which the bot will be selected.
      */
     public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
@@ -121,10 +122,11 @@ public class BotControl {
         botUsers.remove(number);
     }
 
-    //TODO: fix javadoc
     /**
-     * Only for checkstyle.
+     * Getter for a bot's user.
      *
+     * @param number The bot's number.
+     * @return The bot's user.
      */
     public static BotUser getBotUser(int number) {
         if (number >= botUsers.size()) {
