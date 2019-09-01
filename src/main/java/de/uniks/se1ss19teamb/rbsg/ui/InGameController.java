@@ -48,6 +48,7 @@ public class InGameController {
     public static Map<String, String> previousTileAttackMapById = new HashMap<>();
     public static Map<String, UnitTile> unitTileMapByTileId = new HashMap<>();
     public static List<UnitTile> unitTiles = new ArrayList<>();
+    public static Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
 
     @FXML
     private AnchorPane apnRoot;
@@ -87,7 +88,6 @@ public class InGameController {
     private final Pane selectionOverlay = new Pane();
     private StackPane lastSelectedPane;
     private Map<StackPane, Pane> overlayedStacks = new HashMap<>();
-    private Map<String, StackPane> stackPaneMapByEnvironmentTileId = new HashMap<>();
     private int zoomCounter = 0;
     private Map<UnitTile, Pane> unitPaneMapbyUnitTile = new HashMap<>();
     private AI aI = null;

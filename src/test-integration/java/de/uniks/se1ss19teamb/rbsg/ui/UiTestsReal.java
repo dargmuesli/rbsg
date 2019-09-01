@@ -1,9 +1,20 @@
 package de.uniks.se1ss19teamb.rbsg.ui;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import de.uniks.se1ss19teamb.rbsg.Main;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
+import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
+import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+
+import java.util.Objects;
+
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -13,12 +24,14 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
+
 
 public class UiTestsReal extends ApplicationTest {
     public static final String TEST_GAME = "TeamBTestGame";
@@ -49,7 +62,6 @@ public class UiTestsReal extends ApplicationTest {
 
     // username and password: junit
     @Test
-    @Disabled
     public void testInGame() {
         // player with UI
         clickOn("#txtUserName");
@@ -87,7 +99,13 @@ public class UiTestsReal extends ApplicationTest {
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
 
-        //TODO select a bot
+        clickOn("#btnBots");
+        clickOn("#botCheckbox");
+
+        Assert.assertTrue(!BotControl.botUsers.isEmpty());
+
+        push(KeyCode.ALT, KeyCode.F4);
+        sleep(500);
 
         sleep(1000);
         clickOn("#tglReadiness");
@@ -113,6 +131,48 @@ public class UiTestsReal extends ApplicationTest {
             .press(MouseButton.PRIMARY)
             .drag(targetWindow().getX() + targetWindow().getX() / 2, targetWindow().getY() * 2)
             .drop();
+
+        clickOn("#btnBigger");
+        sleep(500);
+        clickOn("#btnSmaller");
+        sleep(500);
+        clickOn("#btnSmaller");
+        sleep(500);
+        clickOn("#btnSmaller");
+        sleep(500);
+        clickOn("#btnSmaller");
+        sleep(500);
+
+        //draw overlay test
+        StackPane stack = null;
+        EnvironmentTile tile = null;
+        UnitTile utile = null;
+        for (UnitTile unit : InGameController.unitTiles) {
+            if (unit.getLeader().equals(
+                Objects.requireNonNull(GameSocketDistributor.getGameSocket(0)).currentPlayer)) {
+                utile = unit;
+                stack = InGameController.stackPaneMapByEnvironmentTileId.get(unit.getPosition());
+                clickOn(stack);
+                tile = InGameController.environmentTileMapById.get(unit.getPosition());
+                break;
+            }
+        }
+
+        if (stack != null && tile != null) {
+            for (int i = 0; i < utile.getMp(); i++) {
+                EnvironmentTile neighbor = InGameController.environmentTileMapById.get(tile.getBottom());
+                if (neighbor.getName().equals("Grass") || neighbor.getName().equals("Forest")
+                    || neighbor.getName().equals("Mountain")) {
+                    clickOn(InGameController.stackPaneMapByEnvironmentTileId.get(neighbor.getId()));
+                    break;
+                }
+            }
+        }
+
+        //autoMode test
+        clickOn("#autoMode");
+
+        sleep(10000);
 
         //leaves game
         leaveGameTest();
@@ -180,8 +240,9 @@ public class UiTestsReal extends ApplicationTest {
 
         clickOn("#cmbArmies");
         sleep(1000);
-        type(KeyCode.DOWN);
-        type(KeyCode.DOWN);
+        for (int i = 0; i < nodeCounter; i++) {
+            type(KeyCode.DOWN);
+        }
         type(KeyCode.ENTER);
 
         clickOn("#btnRemove");

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="apnRoot" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
+<AnchorPane fx:id="apnRoot" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController">
     <stylesheets>
         <URL value="@../css/whiteDesign.css" />
         <URL value="@../css/darkDesign.css" />
@@ -30,7 +30,7 @@
                     </graphic>
                 </JFXButton>
                 <Pane HBox.hgrow="ALWAYS" />
-            <JFXButton fx:id="botMenu" mnemonicParsing="false" onMouseClicked="#openBotWindow" text="Bots" />
+            <JFXButton fx:id="btnBots" mnemonicParsing="false" onMouseClicked="#openBotWindow" text="Bots" />
                 <JFXButton fx:id="btnLogout" contentDisplay="GRAPHIC_ONLY" onAction="#logout">
                     <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="15" />
