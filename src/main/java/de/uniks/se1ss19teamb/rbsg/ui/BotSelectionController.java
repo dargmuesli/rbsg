@@ -90,4 +90,12 @@ public class BotSelectionController {
     public void setCheckbox() {
         botCheckbox.setSelected(true);
     }
+
+    public void deactivateCheckbox() {
+        botCheckbox.setDisable(true);
+    }
+
+    public void activateCheckbox() {
+        botCheckbox.setDisable(false);
+    }
 }
