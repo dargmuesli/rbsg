@@ -13,7 +13,7 @@ public class BotManagerController {
     @FXML
     private VBox botSelectionVBox;
 
-    private int maxPlayers = 0;
+    int maxPlayers = 0;
     private ArrayList<BotSelectionController> botSelectionControllers = new ArrayList<>();
 
     void setMaxPlayers(long maxPlayers) {
