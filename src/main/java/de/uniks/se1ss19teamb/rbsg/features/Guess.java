@@ -15,10 +15,10 @@ public class Guess extends Application {
     private HBox hBox = new HBox();
     private JFXTextField numberField = new JFXTextField();
     private int counter = 0;
-    int number = 0;
+    private int number = 0;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
         numberField.setPromptText("Press Button");
@@ -60,27 +60,22 @@ public class Guess extends Application {
         int yourNumber = Integer.parseInt(numberField.getText());
 
         if (counter == 0) {
-            System.out.println("Game Over ! You lose!!!");
-            numberField.setPromptText("Game Over ! You lose!!!");
+            System.out.println("Game over! You lost!");
+            numberField.setPromptText("Game over! You lost!");
             numberField.setText("");
         } else {
             if (yourNumber == number) {
-                System.out.println("You win !");
-                numberField.setPromptText("Your Number is correct , You win!");
+                System.out.println("You won!");
+                numberField.setPromptText("The number is correct, you won!");
                 numberField.setText("");
             } else if (yourNumber > number) {
-                System.out.println("Your number is to high");
-                numberField.setPromptText("Your number is to high, " + (counter-1) + "tries left");
-                numberField.setText("");
-                counter--;
-            } else if (yourNumber < number) {
-                System.out.println("Your number is to low");
-                numberField.setPromptText("Your number is to low, " + (counter-1) + "tries left");
+                System.out.println("Your number is too high.");
+                numberField.setPromptText("Your number is too high, " + (counter-1) + " tries left");
                 numberField.setText("");
                 counter--;
             } else {
-                System.out.println("Try again");
-                numberField.setPromptText("Try again you have, " + (counter-1) + "tries left");
+                System.out.println("Your number is to low");
+                numberField.setPromptText("Your number is too low, " + (counter-1) + " tries left");
                 numberField.setText("");
                 counter--;
             }
@@ -88,11 +83,11 @@ public class Guess extends Application {
     }
 
     private void initalGame() {
-        numberField.setPromptText("Enter your Number");
+        numberField.setPromptText("Enter your number");
         counter = 3;
 
         number = getRandomNumber();
-        System.out.println("The Number is : " + number);
+        System.out.println("The number is : " + number);
     }
 
     private int getRandomNumber() {
