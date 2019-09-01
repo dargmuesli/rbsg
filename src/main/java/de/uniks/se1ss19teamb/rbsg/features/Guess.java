@@ -19,7 +19,6 @@ public class Guess extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
         numberField.setPromptText("Press Button");
@@ -71,17 +70,17 @@ public class Guess extends Application {
                 numberField.setText("");
             } else if (yourNumber > number) {
                 System.out.println("Your number is to high");
-                numberField.setPromptText("Try again you have, " + counter + "tries left");
+                numberField.setPromptText("Your number is to high, " + (counter-1) + "tries left");
                 numberField.setText("");
                 counter--;
             } else if (yourNumber < number) {
                 System.out.println("Your number is to low");
-                numberField.setPromptText("Try again you have, " + counter + "tries left");
+                numberField.setPromptText("Your number is to low, " + (counter-1) + "tries left");
                 numberField.setText("");
                 counter--;
             } else {
                 System.out.println("Try again");
-                numberField.setPromptText("Try again you have, " + counter + "tries left");
+                numberField.setPromptText("Try again you have, " + (counter-1) + "tries left");
                 numberField.setText("");
                 counter--;
             }
@@ -97,6 +96,6 @@ public class Guess extends Application {
     }
 
     private int getRandomNumber() {
-        return (int) (Math.random() * 100) + 1;
+        return (int) (Math.random() * 50) + 1;
     }
 }

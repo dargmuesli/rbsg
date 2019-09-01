@@ -41,5 +41,7 @@ public class GuessTest {
         robot.write("4");
         robot.clickOn("#btnStart");
         robot.sleep(200);
+        robot.clickOn("#btnNewGame");
+        robot.sleep(200);
     }
 }
