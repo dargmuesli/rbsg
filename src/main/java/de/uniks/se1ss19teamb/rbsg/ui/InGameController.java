@@ -666,8 +666,8 @@ public class InGameController {
 
     private void updateHealth(String id) {
         Platform.runLater(() -> {
-            for (int i = 0; i < unitPanes.size(); i++) {
-                if (unitTiles.get(i).getId().equals(id)) {
+            for (int i = 0; i < unitTiles.size(); i++) {
+                if (unitTiles.get(i).getId().equals(id) && unitTiles.get(i) != null) {
                     unitPanes.get(i).getChildren().remove(3);
                     unitPanes.get(i).getChildren().add(TextureManager.getTextureInstanceWithSize("HealthBarForeground",
                         6, getUnitHealth() * 5));
