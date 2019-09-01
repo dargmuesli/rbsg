@@ -138,6 +138,7 @@ public class BotUser {
     public void deactivate() {
         UserKeys.setBotUserKey(botUserKey);
         gameSocket.leaveGame();
+        gameSocket.disconnect();
         UserKeys.revertUserKey();
     }
 }
