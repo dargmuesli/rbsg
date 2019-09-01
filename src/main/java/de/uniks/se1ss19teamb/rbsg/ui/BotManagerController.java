@@ -45,4 +45,8 @@ public class BotManagerController {
     public BotSelectionController getBotSelectionController(int number) {
         return botSelectionControllers.get(number);
     }
+
+    public void deactivateBot(int number) {
+        BotControl.deactivateBotUser(number);
+    }
 }

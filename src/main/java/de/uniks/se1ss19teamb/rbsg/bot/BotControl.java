@@ -111,4 +111,8 @@ public class BotControl {
         }
 
     }
+
+    public static void deactivateBotUser(int number) {
+        botUsers.get(number).deactivate();
+    }
 }

@@ -3,7 +3,6 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXSlider;
 import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 public class BotSelectionController {
@@ -43,7 +42,13 @@ public class BotSelectionController {
                 createBot((int) difficulty);
                 botCreated = true;
             }
+        } else {
+            deactivateBot();
         }
+    }
+
+    private void deactivateBot() {
+        botManagerController.deactivateBot(botNumber);
     }
 
 
