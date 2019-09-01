@@ -7,6 +7,7 @@ import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -40,6 +41,7 @@ public class TicTacToeController {
     private JFXButton btnReplay;
     @FXML
     private Label label;
+    private boolean turn = false;
 
     @FXML
     private void initialize() {
@@ -64,14 +66,18 @@ public class TicTacToeController {
     }
 
     @FXML
-    private void fieldClick() {
+    private void fieldClick(ActionEvent event) {
         String signX = "X";
 
+
         for (JFXButton button : buttons) {
-            button.setText(signX);
-            setNextTurn();
+            if (event.getSource().equals(button)) {
+                button.setText(signX);
+                button.setDisable(true);
+                turn = true;
+            }
             calculateWinner(signX, "Player wins!");
-            button.setDisable(true);
+            setNextTurn();
         }
     }
 
@@ -156,8 +162,11 @@ public class TicTacToeController {
             }
 
             if (label.getText().equals("")) {
-                buttons.get(number).setText(signO);
-                buttons.get(number).setDisable(true);
+                if (turn) {
+                    buttons.get(number).setText(signO);
+                    buttons.get(number).setDisable(true);
+                    turn = false;
+                }
             }
 
             calculateWinner(signO, "Computer Wins!");
