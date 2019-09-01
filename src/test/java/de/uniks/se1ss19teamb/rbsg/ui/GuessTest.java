@@ -10,6 +10,12 @@ import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
 public class GuessTest {
+
+    /**
+     * Creates a new Guess instance and starts it on the specified stage.
+     *
+     * @param stage The stage to start with.
+     */
     @Start
     public void start(Stage stage) throws Exception {
         Guess guess = new Guess();
