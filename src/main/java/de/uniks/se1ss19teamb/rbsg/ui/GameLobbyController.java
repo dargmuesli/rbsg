@@ -67,7 +67,7 @@ public class GameLobbyController {
 
         GameLobbyController.instance = this;
         GameSocketDistributor
-            .setGameSocket(0, GameSelectionController.joinedGame.getId());
+            .setGameSocket(0, GameSelectionController.joinedGame.getId(), null, GameSelectionController.spectator);
         gameSocket = GameSocketDistributor.getGameSocket(0);
         assert gameSocket != null;
         gameSocket.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> {

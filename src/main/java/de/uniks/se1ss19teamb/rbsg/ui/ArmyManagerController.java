@@ -35,7 +35,6 @@ public class ArmyManagerController {
 
     public static Map<String, Unit> availableUnits = new HashMap<>();
 
-    static boolean spectator = false;
     static Army army = null;
 
     boolean discardConfirmation = true;

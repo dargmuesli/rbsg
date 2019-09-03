@@ -38,8 +38,12 @@ public class GameSelectionController {
     private GameMeta gameMeta;
     private VBox chatWindow;
 
+    static boolean spectator = false;
+
     public void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
+
+        GameSelectionController.spectator = false;
     }
 
     void setUpGameLabel(GameMeta gameMeta) {
@@ -98,7 +102,7 @@ public class GameSelectionController {
      * Joins a game in spectator mode.
      */
     public void spectate() {
-        ArmyManagerController.spectator = true;
+        GameSelectionController.spectator = true;
         join();
         chatWindow.setVisible(false);
         spectate.setDisable(true);
