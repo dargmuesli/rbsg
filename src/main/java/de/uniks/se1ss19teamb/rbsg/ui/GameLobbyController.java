@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,7 +34,13 @@ public class GameLobbyController {
     @FXML
     public AnchorPane apnFade;
     @FXML
+    public VBox vbxArmyManager;
+    @FXML
+    public HBox hbxArmyManagerParent;
+    @FXML
     public VBox vbxMinimap;
+    @FXML
+    public VBox vbxReadiness;
     @FXML
     private AnchorPane apnRoot;
     @FXML
@@ -64,6 +71,12 @@ public class GameLobbyController {
     @FXML
     private void initialize() {
         UserInterfaceUtils.initialize(apnFade, apnRoot, GameLobbyController.class, btnFullscreen);
+
+        if (GameSelectionController.spectator) {
+            hbxArmyManagerParent.getChildren().remove(vbxArmyManager);
+            vbxReadiness.getChildren().clear();
+            vbxReadiness.getChildren().add(new Label("Wait for the game to start."));
+        }
 
         GameLobbyController.instance = this;
         GameSocketDistributor
