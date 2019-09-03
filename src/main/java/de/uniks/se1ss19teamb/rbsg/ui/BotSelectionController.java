@@ -10,8 +10,6 @@ import java.util.Map;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 
-
-
 public class BotSelectionController {
 
     @FXML
@@ -21,17 +19,11 @@ public class BotSelectionController {
 
     private int botNumber;
 
-    private BotUser botUser;
-
     private boolean botCreated = false;
 
-    BotManagerController botManagerController;
+    private BotManagerController botManagerController;
 
-    public int getBotNumber() {
-        return botNumber;
-    }
-
-    public void setBotManagerController(BotManagerController botManagerController) {
+    void setBotManagerController(BotManagerController botManagerController) {
         this.botManagerController = botManagerController;
     }
 
@@ -57,6 +49,7 @@ public class BotSelectionController {
                 NotificationHandler.sendInfo("There is no space for a bot anymore.", LogManager.getLogger());
                 return;
             }
+
             if (!botCreated) {
                 double difficulty = diffSlider.getValue();
                 createBot((int) difficulty);
@@ -78,7 +71,6 @@ public class BotSelectionController {
     }
 
     public void setBot(BotUser botUser) {
-        this.botUser = botUser;
         setCheckBoxName(botUser.getBotUserName());
     }
 
@@ -87,15 +79,15 @@ public class BotSelectionController {
         botManagerController.createBot(botNumber, difficulty, this);
     }
 
-    public void setCheckbox() {
+    void setCheckbox() {
         botCheckbox.setSelected(true);
     }
 
-    public void deactivateCheckbox() {
+    void deactivateCheckbox() {
         botCheckbox.setDisable(true);
     }
 
-    public void activateCheckbox() {
+    void activateCheckbox() {
         botCheckbox.setDisable(false);
     }
 }

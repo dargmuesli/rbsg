@@ -18,8 +18,8 @@ public class BotManagerController {
 
     int maxPlayers = 0;
     private ArrayList<BotSelectionController> botSelectionControllers = new ArrayList<>();
-    boolean deactivateNextSelection = false;
-    static boolean[] botSelectorContrainsBot;
+    private boolean deactivateNextSelection = false;
+    private static boolean[] botSelectorContrainsBot;
 
     void setMaxPlayers(long maxPlayers) {
         this.maxPlayers = (int) maxPlayers;
@@ -60,7 +60,7 @@ public class BotManagerController {
      * @param difficulty             The bot's difficulty.
      * @param botSelectionController The selection controller to add this bot to.
      */
-    public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
+    void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
         BotControl.createBotUser(numberOfBot, difficulty, botSelectionController);
         botSelectorContrainsBot[numberOfBot] = true;
@@ -75,11 +75,11 @@ public class BotManagerController {
      *
      * @param number The number of the bot to deactivate.
      */
-    public void deactivateBot(int number) {
+    void deactivateBot(int number) {
         botSelectorContrainsBot[number] = false;
         BotControl.deactivateBotUser(number);
 
-        if (botSelectorContrainsBot[number + 1] == false) {
+        if (!botSelectorContrainsBot[number + 1]) {
             if (botSelectionControllers.size() > number + 1) {
                 BotSelectionController botSelectionController = botSelectionControllers.get(number + 1);
 
