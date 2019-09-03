@@ -34,7 +34,8 @@ public class BotSelectionController {
     /**
      * Creates a bot when the checkbox is selected and a bot does not exist already.
      */
-    public void check() {
+    @FXML
+    public void toggleCheckBox() {
         int numberOfPlayers = 0;
 
         for (Map.Entry<String, InGameObject> entry : InGameController.inGameObjects.entrySet()) {

@@ -37,10 +37,13 @@ public class BotManagerController {
                 botSelectionVBox.getChildren().add(parent);
                 controller.setBotNumber(i);
                 controller.setBotManagerController(this);
+
                 if (deactivateNextSelection) {
                     controller.deactivateCheckbox();
                 }
+
                 BotUser bot = BotControl.getBotUser(i);
+
                 if (bot != null) {
                     controller.setBot(bot);
                     controller.setCheckbox();
