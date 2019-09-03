@@ -99,6 +99,6 @@ public class GameSelectionController {
         chatWindow.setVisible(false);
         spectate.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", hbxRoot, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow, false);
     }
 }
