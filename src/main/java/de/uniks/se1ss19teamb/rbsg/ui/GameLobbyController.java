@@ -55,14 +55,10 @@ public class GameLobbyController {
     private Label gameName;
     @FXML
     private VBox playerList;
-    @FXML
-    private JFXButton botButton;
 
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
-    private VBox chatBox;
-    private JFXButton btnMinimize;
 
     private GameSocket gameSocket;
 
@@ -96,8 +92,6 @@ public class GameLobbyController {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
             textArea = (VBox) btnLogout.getScene().lookup("#textArea");
             message = (TextField) btnLogout.getScene().lookup("#message");
-            chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
-            btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
 
         gameName.setText(GameSelectionController.joinedGame.getName());
@@ -191,14 +185,6 @@ public class GameLobbyController {
 
     public TextField getMessage() {
         return message;
-    }
-
-    public VBox getChatBox() {
-        return chatBox;
-    }
-
-    public JFXButton getBtnMinimize() {
-        return btnMinimize;
     }
 
     /**
