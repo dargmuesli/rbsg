@@ -92,6 +92,10 @@ public class BotUser {
         NotificationHandler.sendInfo(request.getResponse().toString(), LogManager.getLogger());
     }
 
+    public void startGame() {
+        gameSocket.startGame();
+    }
+
     void connectGamesocket() {
         UserKeys.setBotUserKey(botUserKey);
         gameSocket.connect();

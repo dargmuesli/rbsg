@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -11,6 +13,7 @@ import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -103,6 +106,7 @@ public class GameLobbyController {
     public void updatePlayers() {
         Platform.runLater(() -> {
             playerList.getChildren().clear();
+            AtomicInteger playerReadinessCounter = new AtomicInteger();
 
             InGameController.inGameObjects.entrySet().stream()
                 .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
@@ -113,12 +117,29 @@ public class GameLobbyController {
                     try {
                         Parent parent = fxmlLoader.load();
                         LobbyPlayerController controller = fxmlLoader.getController();
-                        controller.setInGamePlayer((InGamePlayer) inGameObjectEntry.getValue());
+                        InGamePlayer inGamePlayer = (InGamePlayer) inGameObjectEntry.getValue();
+                        controller.setInGamePlayer(inGamePlayer);
                         playerList.getChildren().add(parent);
+
+                        if (inGamePlayer.isReady()) {
+                            playerReadinessCounter.getAndIncrement();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
+
+            if (playerReadinessCounter.get() == GameSelectionController.joinedGame.getNeededPlayers()) {
+                if (GameSelectionController.spectator) {
+                    BotUser botUser = BotControl.getBotUser(0);
+
+                    if (botUser != null) {
+                        botUser.startGame();
+                    }
+                } else {
+                    gameSocket.startGame();
+                }
+            }
         });
     }
 
