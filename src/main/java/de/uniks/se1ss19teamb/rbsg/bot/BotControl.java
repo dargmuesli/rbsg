@@ -36,7 +36,6 @@ public class BotControl {
     public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
 
         BotUser botUser = new BotUser();
-        botUser.setBotNumber(number);
         botUser.setGameId(gameId);
         CreateTemporaryUserRequest ctur = new CreateTemporaryUserRequest();
         ctur.sendRequest();
