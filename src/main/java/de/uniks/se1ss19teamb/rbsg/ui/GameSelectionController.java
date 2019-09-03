@@ -40,7 +40,8 @@ public class GameSelectionController {
 
     static boolean spectator = false;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
 
         GameSelectionController.spectator = false;
