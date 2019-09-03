@@ -68,26 +68,17 @@ public class GameSelectionController {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
-        if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
-            return;
-        }
-
         joinedGame = gameMeta;
 
         chatWindow = (VBox) hbxRoot.getScene().lookup("#chatWindow");
-        // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
-        // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
-        // damit gehts:
-
-        /*
-        btnMinimize.setDisable(false);
-        btnMinimize.fire();
-        btnMinimize.setDisable(true);
-
-         */
-
         chatWindow.setPrefHeight(300);
         chatWindow.setPrefWidth(400);
+
+        if (!GameSelectionController.spectator) {
+            if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
+                NotificationHandler.sendError("Could not join game!", LogManager.getLogger());
+            }
+        }
     }
 
     /**
