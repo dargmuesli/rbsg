@@ -58,6 +58,7 @@ public class BotSelectionController {
             }
         } else {
             deactivateBot();
+            botCheckbox.setText("NO BOT");
             botCreated = false;
         }
     }
@@ -66,15 +67,9 @@ public class BotSelectionController {
         botManagerController.deactivateBot(botNumber);
     }
 
-
-    private void setCheckBoxName(String botName) {
-        botCheckbox.setText(botName);
-    }
-
     public void setBot(BotUser botUser) {
-        setCheckBoxName(botUser.getBotUserName());
+        botCheckbox.setText(botUser.getBotUserName());
     }
-
 
     private void createBot(int difficulty) {
         botManagerController.createBot(botNumber, difficulty, this);
