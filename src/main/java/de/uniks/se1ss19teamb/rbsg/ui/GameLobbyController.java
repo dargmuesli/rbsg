@@ -50,8 +50,6 @@ public class GameLobbyController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnStartGame;
-    @FXML
     private JFXToggleButton tglReadiness;
     @FXML
     private Label gameName;
@@ -155,19 +153,11 @@ public class GameLobbyController {
         tglReadiness.setDisable(true);
     }
 
-    @FXML
-    private void startGame() {
-        gameSocket.startGame();
-    }
-
     /**
      * Sets the player as ready.
      */
     public void confirmReadiness() {
-        Platform.runLater(() -> {
-            tglReadiness.setText("Ready");
-            btnStartGame.setDisable(false);
-        });
+        Platform.runLater(() -> tglReadiness.setText("Ready"));
     }
 
     /**

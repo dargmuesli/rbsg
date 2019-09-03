@@ -91,12 +91,6 @@
                         <children>
                             <JFXToggleButton fx:id="tglReadiness" mnemonicParsing="false" onAction="#toggleReadiness"
                                              text="Unready"/>
-                            <JFXButton fx:id="btnStartGame" alignment="CENTER" disable="true" onAction="#startGame"
-                                       prefWidth="100.0" text="Start Game">
-                                <VBox.margin>
-                                    <Insets bottom="20.0"/>
-                                </VBox.margin>
-                            </JFXButton>
                         </children>
                     </VBox>
                     <Pane layoutX="20.0" layoutY="87.0" VBox.vgrow="ALWAYS">
