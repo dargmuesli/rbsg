@@ -54,9 +54,9 @@ public class BotControl {
         botUser.setBotUserKey(loginUserRequest.getData());
 
         //Just info for dev. Will be deleted later
-        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
-            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
+        LogManager.getLogger().info(loginUserRequest.getData());
+        LogManager.getLogger().info("Bot Username: " + botUser.getBotUserName()
+            + "\nBot Password: " + botUser.getBotUserPassword());
         // end info
 
         botUsers.add(number, botUser);
@@ -73,8 +73,6 @@ public class BotControl {
         botUser.instantiateBotAi(difficulty);
         botUser.setReady();
     }
-
-    //TODO: fix javadoc
 
     /**
      * Only for checkstyle.

@@ -27,7 +27,7 @@ public class BotManagerController {
     }
 
     void setBotSelections() {
-        for (int i = 0; i < maxPlayers - 1; i++) {
+        for (int i = 0; i < maxPlayers ; i++) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botSelection.fxml"));
             try {
