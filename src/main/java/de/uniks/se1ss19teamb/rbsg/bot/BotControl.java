@@ -9,21 +9,16 @@ import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
-import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 public class BotControl {
 
-    private static final Logger logger = LogManager.getLogger();
-
     public static ArrayList<BotUser> botUsers = new ArrayList<>();
-
-    private static InGameController inGameController;
 
     private static String gameId;
 
@@ -41,7 +36,6 @@ public class BotControl {
     public static void createBotUser(int number, int difficulty, BotSelectionController botSelectionController) {
 
         BotUser botUser = new BotUser();
-        botUser.setBotNumber(number);
         botUser.setGameId(gameId);
         CreateTemporaryUserRequest ctur = new CreateTemporaryUserRequest();
         ctur.sendRequest();
@@ -54,9 +48,9 @@ public class BotControl {
         botUser.setBotUserKey(loginUserRequest.getData());
 
         //Just info for dev. Will be deleted later
-        NotificationHandler.sendInfo(loginUserRequest.getData(), logger);
-        NotificationHandler.sendInfo("Bot Username: " + botUser.getBotUserName()
-            + "\nBot Password: " + botUser.getBotUserPassword(), logger);
+        LogManager.getLogger().info(loginUserRequest.getData());
+        LogManager.getLogger().info("Bot Username: " + botUser.getBotUserName()
+            + "\nBot Password: " + botUser.getBotUserPassword());
         // end info
 
         botUsers.add(number, botUser);
@@ -68,13 +62,11 @@ public class BotControl {
         }
 
         botUser.setGameSocket(GameSocketDistributor.getGameSocket(number + 1));
-        GameSocketDistributor.getGameSocket(number + 1).setBotGameSocket();
+        Objects.requireNonNull(GameSocketDistributor.getGameSocket(number + 1)).setBotGameSocket();
         botUser.connectGamesocket();
         botUser.instantiateBotAi(difficulty);
         botUser.setReady();
     }
-
-    //TODO: fix javadoc
 
     /**
      * Only for checkstyle.
@@ -83,7 +75,6 @@ public class BotControl {
      * @param inGameControllerInput input
      */
     public static void initializeBotAi(InGameController inGameControllerInput) {
-        inGameController = inGameControllerInput;
         for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
             for (BotUser botUser : botUsers) {
                 if (botUser.getBotUserName().equals(player.getName())) {
@@ -95,8 +86,6 @@ public class BotControl {
             botUser.initializeBotAi(inGameControllerInput);
         }
     }
-
-    //TODO: fix javadoc
 
     /**
      * Only for checkstyle.

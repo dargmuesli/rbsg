@@ -10,8 +10,6 @@ import java.util.Map;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 
-
-
 public class BotSelectionController {
 
     @FXML
@@ -21,17 +19,11 @@ public class BotSelectionController {
 
     private int botNumber;
 
-    private BotUser botUser;
-
     private boolean botCreated = false;
 
-    BotManagerController botManagerController;
+    private BotManagerController botManagerController;
 
-    public int getBotNumber() {
-        return botNumber;
-    }
-
-    public void setBotManagerController(BotManagerController botManagerController) {
+    void setBotManagerController(BotManagerController botManagerController) {
         this.botManagerController = botManagerController;
     }
 
@@ -42,7 +34,8 @@ public class BotSelectionController {
     /**
      * Creates a bot when the checkbox is selected and a bot does not exist already.
      */
-    public void check() {
+    @FXML
+    public void toggleCheckBox() {
         int numberOfPlayers = 0;
 
         for (Map.Entry<String, InGameObject> entry : InGameController.inGameObjects.entrySet()) {
@@ -57,6 +50,7 @@ public class BotSelectionController {
                 NotificationHandler.sendInfo("There is no space for a bot anymore.", LogManager.getLogger());
                 return;
             }
+
             if (!botCreated) {
                 double difficulty = diffSlider.getValue();
                 createBot((int) difficulty);
@@ -64,6 +58,7 @@ public class BotSelectionController {
             }
         } else {
             deactivateBot();
+            botCheckbox.setText("NO BOT");
             botCreated = false;
         }
     }
@@ -72,30 +67,23 @@ public class BotSelectionController {
         botManagerController.deactivateBot(botNumber);
     }
 
-
-    private void setCheckBoxName(String botName) {
-        botCheckbox.setText(botName);
-    }
-
     public void setBot(BotUser botUser) {
-        this.botUser = botUser;
-        setCheckBoxName(botUser.getBotUserName());
+        botCheckbox.setText(botUser.getBotUserName());
     }
-
 
     private void createBot(int difficulty) {
         botManagerController.createBot(botNumber, difficulty, this);
     }
 
-    public void setCheckbox() {
+    void setCheckbox() {
         botCheckbox.setSelected(true);
     }
 
-    public void deactivateCheckbox() {
+    void deactivateCheckbox() {
         botCheckbox.setDisable(true);
     }
 
-    public void activateCheckbox() {
+    void activateCheckbox() {
         botCheckbox.setDisable(false);
     }
 }

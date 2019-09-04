@@ -38,8 +38,13 @@ public class GameSelectionController {
     private GameMeta gameMeta;
     private VBox chatWindow;
 
-    public void initialize() {
+    static boolean spectator = false;
+
+    @FXML
+    private void initialize() {
         Theming.setTheme(Arrays.asList(new Pane[]{hbxRoot}));
+
+        GameSelectionController.spectator = false;
     }
 
     void setUpGameLabel(GameMeta gameMeta) {
@@ -63,26 +68,17 @@ public class GameSelectionController {
         SystemSocket.instance.disconnect();
         ChatSocket.instance.disconnect();
 
-        if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
-            return;
-        }
-
         joinedGame = gameMeta;
 
         chatWindow = (VBox) hbxRoot.getScene().lookup("#chatWindow");
-        // sehr komisch, wenn man zuerst disable(true) und dann fire(), minimiert er das fenster nicht
-        // wenn man zuerst fire() macht dann disable(true), minimiert er das fenster auch nicht,
-        // damit gehts:
-
-        /*
-        btnMinimize.setDisable(false);
-        btnMinimize.fire();
-        btnMinimize.setDisable(true);
-
-         */
-
         chatWindow.setPrefHeight(300);
         chatWindow.setPrefWidth(400);
+
+        if (!GameSelectionController.spectator) {
+            if (!RequestUtil.request(new JoinGameRequest(gameMeta.getId(), LoginController.getUserToken()))) {
+                NotificationHandler.sendError("Could not join game!", LogManager.getLogger());
+            }
+        }
     }
 
     /**
@@ -98,11 +94,11 @@ public class GameSelectionController {
      * Joins a game in spectator mode.
      */
     public void spectate() {
-        ArmyManagerController.spectator = true;
+        GameSelectionController.spectator = true;
         join();
         chatWindow.setVisible(false);
         spectate.setDisable(true);
         UserInterfaceUtils.makeFadeOutTransition(
-            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", hbxRoot, chatWindow);
+            "/de/uniks/se1ss19teamb/rbsg/fxmls/gameLobby.fxml", MainController.instance.apnFade, chatWindow, false);
     }
 }

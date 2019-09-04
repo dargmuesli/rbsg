@@ -3,6 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
+import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
@@ -11,6 +13,7 @@ import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,7 +37,13 @@ public class GameLobbyController {
     @FXML
     public AnchorPane apnFade;
     @FXML
+    public VBox vbxArmyManager;
+    @FXML
+    public HBox hbxArmyManagerParent;
+    @FXML
     public VBox vbxMinimap;
+    @FXML
+    public VBox vbxReadiness;
     @FXML
     private AnchorPane apnRoot;
     @FXML
@@ -43,21 +53,15 @@ public class GameLobbyController {
     @FXML
     private JFXButton btnLogout;
     @FXML
-    private JFXButton btnStartGame;
-    @FXML
     private JFXToggleButton tglReadiness;
     @FXML
     private Label gameName;
     @FXML
     private VBox playerList;
-    @FXML
-    private JFXButton botButton;
 
     private JFXTabPane chatPane;
     private VBox textArea;
     private TextField message;
-    private VBox chatBox;
-    private JFXButton btnMinimize;
 
     private GameSocket gameSocket;
 
@@ -65,9 +69,15 @@ public class GameLobbyController {
     private void initialize() {
         UserInterfaceUtils.initialize(apnFade, apnRoot, GameLobbyController.class, btnFullscreen);
 
+        if (GameSelectionController.spectator) {
+            hbxArmyManagerParent.getChildren().remove(vbxArmyManager);
+            vbxReadiness.getChildren().clear();
+            vbxReadiness.getChildren().add(new Label("Wait for the game to start."));
+        }
+
         GameLobbyController.instance = this;
         GameSocketDistributor
-            .setGameSocket(0, GameSelectionController.joinedGame.getId());
+            .setGameSocket(0, GameSelectionController.joinedGame.getId(), null, GameSelectionController.spectator);
         gameSocket = GameSocketDistributor.getGameSocket(0);
         assert gameSocket != null;
         gameSocket.registerMessageHandler((message, from, isPrivate, wasEncrypted) -> {
@@ -85,8 +95,6 @@ public class GameLobbyController {
             chatPane = (JFXTabPane) btnLogout.getScene().lookup("#chatPane");
             textArea = (VBox) btnLogout.getScene().lookup("#textArea");
             message = (TextField) btnLogout.getScene().lookup("#message");
-            chatBox = (VBox) btnLogout.getScene().lookup("#chatBox");
-            btnMinimize = (JFXButton) btnLogout.getScene().lookup("#btnMinimize");
         });
 
         gameName.setText(GameSelectionController.joinedGame.getName());
@@ -98,6 +106,7 @@ public class GameLobbyController {
     public void updatePlayers() {
         Platform.runLater(() -> {
             playerList.getChildren().clear();
+            AtomicInteger playerReadinessCounter = new AtomicInteger();
 
             InGameController.inGameObjects.entrySet().stream()
                 .filter(stringInGameObjectEntry -> stringInGameObjectEntry.getValue() instanceof InGamePlayer)
@@ -108,12 +117,29 @@ public class GameLobbyController {
                     try {
                         Parent parent = fxmlLoader.load();
                         LobbyPlayerController controller = fxmlLoader.getController();
-                        controller.setInGamePlayer((InGamePlayer) inGameObjectEntry.getValue());
+                        InGamePlayer inGamePlayer = (InGamePlayer) inGameObjectEntry.getValue();
+                        controller.setInGamePlayer(inGamePlayer);
                         playerList.getChildren().add(parent);
+
+                        if (inGamePlayer.isReady()) {
+                            playerReadinessCounter.getAndIncrement();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
+
+            if (playerReadinessCounter.get() == GameSelectionController.joinedGame.getNeededPlayers()) {
+                if (GameSelectionController.spectator) {
+                    BotUser botUser = BotControl.getBotUser(0);
+
+                    if (botUser != null) {
+                        botUser.startGame();
+                    }
+                } else {
+                    gameSocket.startGame();
+                }
+            }
         });
     }
 
@@ -142,19 +168,11 @@ public class GameLobbyController {
         tglReadiness.setDisable(true);
     }
 
-    @FXML
-    private void startGame() {
-        gameSocket.startGame();
-    }
-
     /**
      * Sets the player as ready.
      */
     public void confirmReadiness() {
-        Platform.runLater(() -> {
-            tglReadiness.setText("Ready");
-            btnStartGame.setDisable(false);
-        });
+        Platform.runLater(() -> tglReadiness.setText("Ready"));
     }
 
     /**
@@ -188,14 +206,6 @@ public class GameLobbyController {
 
     public TextField getMessage() {
         return message;
-    }
-
-    public VBox getChatBox() {
-        return chatBox;
-    }
-
-    public JFXButton getBtnMinimize() {
-        return btnMinimize;
     }
 
     /**

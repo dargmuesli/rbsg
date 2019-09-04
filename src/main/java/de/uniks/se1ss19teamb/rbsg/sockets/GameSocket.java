@@ -195,10 +195,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                                     GameLobbyController.instance.updatePlayers();
                                 }
 
-                                // TODO handle in chat window
-                                NotificationHandler.sendInfo("New Player joined! \""
+                                LogManager.getLogger().info("New Player joined! \""
                                     + inGamePlayer.getName() + " (" + inGamePlayer.getColor() + ")"
-                                    + "\"", logger);
+                                    + "\"");
                                 break;
                             case "Unit":
                                 ThreadLocks.getUnitTilesLock().lock();
@@ -264,13 +263,12 @@ public class GameSocket extends AbstractMessageWebSocket {
                                         .append(") is ");
 
                                     if (inGamePlayer.isReady()) {
-                                        // TODO maybe handler to chat window
                                         readyMessage.append("now ready.");
                                     } else {
                                         readyMessage.append("not ready.");
                                     }
 
-                                    NotificationHandler.sendInfo(readyMessage.toString(), logger);
+                                    LogManager.getLogger().info(readyMessage.toString());
                                 }
                             }
                             break;
@@ -398,10 +396,9 @@ public class GameSocket extends AbstractMessageWebSocket {
                                 GameLobbyController.instance.updatePlayers();
                             }
 
-                            // TODO handle in chat window
-                            NotificationHandler.sendInfo(data.get("id").getAsString()
+                            LogManager.getLogger().info(data.get("id").getAsString()
                                 .replaceFirst("@.+", "")
-                                + " has left the game!", logger);
+                                + " has left the game!");
                             SoundManager.playSound("Omae_nani", 0);
                             break;
                         case "Unit":

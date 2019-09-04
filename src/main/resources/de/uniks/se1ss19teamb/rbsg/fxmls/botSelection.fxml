@@ -19,7 +19,7 @@
             <URL value="@../css/darkDesign.css" />
          </stylesheets>
          <children>
-            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#check" text="NO BOT">
+            <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#toggleCheckBox" text="NO BOT">
                <HBox.margin>
                   <Insets right="8.0" />
                </HBox.margin></JFXCheckBox>
