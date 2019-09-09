@@ -19,7 +19,7 @@
         </HBox>
     </HBox>
     <stylesheets>
-        <URL value="@../css/whiteDesign.css"/>
-        <URL value="@../css/darkDesign.css"/>
+        <URL value="@../../css/whiteDesign.css"/>
+        <URL value="@../../css/darkDesign.css"/>
     </stylesheets>
 </AnchorPane>
