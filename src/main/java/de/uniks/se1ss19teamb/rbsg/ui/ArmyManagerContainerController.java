@@ -2,6 +2,7 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import com.jfoenix.controls.JFXButton;
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.StringUtil;

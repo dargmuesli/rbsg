@@ -6,7 +6,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 import de.uniks.se1ss19teamb.rbsg.request.LogoutUserRequest;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
-import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,7 +14,6 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
