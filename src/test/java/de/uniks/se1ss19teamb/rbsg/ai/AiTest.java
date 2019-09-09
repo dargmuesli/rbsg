@@ -8,8 +8,8 @@ import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
-import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController;
 
 import java.util.ArrayList;
 import java.util.List;

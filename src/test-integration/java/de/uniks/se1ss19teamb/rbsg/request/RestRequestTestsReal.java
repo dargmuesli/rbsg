@@ -3,8 +3,8 @@ package de.uniks.se1ss19teamb.rbsg.request;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
-import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 
 import java.util.*;

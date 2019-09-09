@@ -12,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.model.tiles.UnitTile;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
 import de.uniks.se1ss19teamb.rbsg.sound.SoundManager;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.TurnUiController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
 import de.uniks.se1ss19teamb.rbsg.util.ThreadLocks;
@@ -34,7 +35,6 @@ import javafx.scene.transform.Scale;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.appender.rolling.action.IfAll;
 
 public class InGameController {
 

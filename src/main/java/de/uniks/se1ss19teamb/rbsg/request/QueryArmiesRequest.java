@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
-import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0"
       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-      xmlns="http://javafx.com/javafx/8.0.221" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController">
+      xmlns="http://javafx.com/javafx/8.0.221" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController">
     <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
         <JFXComboBox fx:id="cmbArmies" promptText="Select an Army"/>
         <JFXButton fx:id="btnAdd" contentDisplay="GRAPHIC_ONLY" onAction="#addArmy">

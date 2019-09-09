@@ -2,6 +2,8 @@ package de.uniks.se1ss19teamb.rbsg.ui;
 
 import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
 import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.BotSelectionController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.GameSelectionController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class BotManagerController {
     @FXML
     private VBox botSelectionVBox;
 
-    int maxPlayers = 0;
+    public int maxPlayers = 0;
     private ArrayList<BotSelectionController> botSelectionControllers = new ArrayList<>();
     private boolean deactivateNextSelection = false;
     private static boolean[] botSelectorContrainsBot;
@@ -29,7 +31,7 @@ public class BotManagerController {
     void setBotSelections() {
         for (int i = 0; i < maxPlayers; i++) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/botSelection.fxml"));
+                .getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/modules/botSelection.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
                 BotSelectionController controller = fxmlLoader.getController();
@@ -63,7 +65,7 @@ public class BotManagerController {
      * @param difficulty             The bot's difficulty.
      * @param botSelectionController The selection controller to add this bot to.
      */
-    void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
+    public void createBot(int numberOfBot, int difficulty, BotSelectionController botSelectionController) {
         BotControl.setGameId(GameSelectionController.joinedGame.getId());
         BotControl.createBotUser(numberOfBot, difficulty, botSelectionController);
         botSelectorContrainsBot[numberOfBot] = true;
@@ -78,7 +80,7 @@ public class BotManagerController {
      *
      * @param number The number of the bot to deactivate.
      */
-    void deactivateBot(int number) {
+    public void deactivateBot(int number) {
         botSelectorContrainsBot[number] = false;
         BotControl.deactivateBotUser(number);
 

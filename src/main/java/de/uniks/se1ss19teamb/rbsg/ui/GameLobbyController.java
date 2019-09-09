@@ -9,6 +9,8 @@ import de.uniks.se1ss19teamb.rbsg.chat.Chat;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.GameSelectionController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.LobbyPlayerController;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;

@@ -1,9 +1,10 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.ui.modules;
 
 import animatefx.animation.Wobble;
 
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 
 import java.util.ArrayList;
 import java.util.Objects;

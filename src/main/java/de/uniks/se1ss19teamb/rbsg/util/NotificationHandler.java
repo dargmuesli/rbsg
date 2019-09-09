@@ -1,12 +1,11 @@
 package de.uniks.se1ss19teamb.rbsg.util;
 
 import de.uniks.se1ss19teamb.rbsg.Main;
-import de.uniks.se1ss19teamb.rbsg.ui.NotificationController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.NotificationController;
 
 import java.io.IOException;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;

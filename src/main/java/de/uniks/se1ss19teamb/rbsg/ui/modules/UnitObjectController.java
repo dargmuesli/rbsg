@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.ui.modules;
 
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.textures.TextureManager;

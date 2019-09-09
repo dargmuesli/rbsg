@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.ui.modules;
 
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import javafx.fxml.FXML;
@@ -13,7 +13,12 @@ public class LobbyPlayerController {
     @FXML
     private Circle crclReadiness;
 
-    void setInGamePlayer(InGamePlayer inGamePlayer) {
+    /**
+     * Sets the player's name, id and readyness color.
+     *
+     * @param inGamePlayer The player data that is to be displayed.
+     */
+    public void setInGamePlayer(InGamePlayer inGamePlayer) {
         this.lblPlayerName.setText(inGamePlayer.getName());
         this.lblPlayerName.setId("inGamePlayer" + inGamePlayer.getColor());
         this.crclReadiness.setFill(inGamePlayer.isReady() ? Color.GREEN : Color.RED);

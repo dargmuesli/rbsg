@@ -6,8 +6,8 @@ import de.uniks.se1ss19teamb.rbsg.request.CreateArmyRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.UserKeys;
-import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 
 import java.util.ArrayList;

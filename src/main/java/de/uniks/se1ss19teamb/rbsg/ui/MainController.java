@@ -12,6 +12,7 @@ import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.GameSelectionController;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;

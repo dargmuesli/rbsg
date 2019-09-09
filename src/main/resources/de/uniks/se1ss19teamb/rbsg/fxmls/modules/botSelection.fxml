@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.HBox?>
 
 <?import java.net.URL?>
-<AnchorPane prefHeight="30.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController">
+<AnchorPane prefHeight="30.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.se1ss19teamb.rbsg.ui.modules.BotSelectionController">
    <stylesheets>
-      <URL value="@../css/whiteDesign.css" />
-      <URL value="@../css/darkDesign.css" />
+      <URL value="@../../css/whiteDesign.css" />
+      <URL value="@../../css/darkDesign.css" />
    </stylesheets>
    <children>
       <HBox prefHeight="15.0" prefWidth="300.0" AnchorPane.topAnchor="8.0">
          <stylesheets>
-            <URL value="@../css/whiteDesign.css" />
-            <URL value="@../css/darkDesign.css" />
+            <URL value="@../../css/whiteDesign.css" />
+            <URL value="@../../css/darkDesign.css" />
          </stylesheets>
          <children>
             <JFXCheckBox fx:id="botCheckbox" mnemonicParsing="false" onAction="#toggleCheckBox" text="NO BOT">

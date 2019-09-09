@@ -1,4 +1,4 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.ui.modules;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -8,6 +8,8 @@ import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
 import de.uniks.se1ss19teamb.rbsg.request.*;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
+import de.uniks.se1ss19teamb.rbsg.ui.GameLobbyController;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
 import de.uniks.se1ss19teamb.rbsg.util.*;
 
 import java.io.IOException;
@@ -35,9 +37,9 @@ public class ArmyManagerController {
 
     public static Map<String, Unit> availableUnits = new HashMap<>();
 
-    static Army army = null;
+    public static Army army = null;
 
-    boolean discardConfirmation = true;
+    public boolean discardConfirmation = true;
 
     private static final int MAXIMUM_UNIT_COUNT = 10;
     private static final Logger logger = LogManager.getLogger();

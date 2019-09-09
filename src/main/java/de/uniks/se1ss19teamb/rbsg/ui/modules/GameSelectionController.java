@@ -1,10 +1,12 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.ui.modules;
 
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.request.DeleteGameRequest;
 import de.uniks.se1ss19teamb.rbsg.request.JoinGameRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.ChatSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.SystemSocket;
+import de.uniks.se1ss19teamb.rbsg.ui.LoginController;
+import de.uniks.se1ss19teamb.rbsg.ui.MainController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 import de.uniks.se1ss19teamb.rbsg.util.Theming;
@@ -22,7 +24,7 @@ import org.apache.logging.log4j.LogManager;
 
 public class GameSelectionController {
 
-    static GameMeta joinedGame;
+    public static GameMeta joinedGame;
 
     @FXML
     private Button join;
@@ -38,7 +40,7 @@ public class GameSelectionController {
     private GameMeta gameMeta;
     private VBox chatWindow;
 
-    static boolean spectator = false;
+    public static boolean spectator = false;
 
     @FXML
     private void initialize() {
@@ -47,11 +49,15 @@ public class GameSelectionController {
         GameSelectionController.spectator = false;
     }
 
-    void setUpGameLabel(GameMeta gameMeta) {
+    /**
+     * Sets this element's labels' texts.
+     *
+     * @param gameMeta The data to source the information that is to be displayed from.
+     */
+    public void setUpGameLabel(GameMeta gameMeta) {
         this.gameMeta = gameMeta;
         gameNameLabel.setText(gameMeta.getName());
-        String s = gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ";
-        spaces.setText(s);
+        spaces.setText(gameMeta.getNeededPlayers() - gameMeta.getJoinedPlayers() + " ");
     }
 
     /**

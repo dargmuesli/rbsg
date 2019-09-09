@@ -6,9 +6,9 @@ import de.uniks.se1ss19teamb.rbsg.request.CreateTemporaryUserRequest;
 import de.uniks.se1ss19teamb.rbsg.request.LoginUserRequest;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocket;
 import de.uniks.se1ss19teamb.rbsg.sockets.GameSocketDistributor;
-import de.uniks.se1ss19teamb.rbsg.ui.BotSelectionController;
 import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
-import de.uniks.se1ss19teamb.rbsg.ui.TurnUiController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.BotSelectionController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.TurnUiController;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -1,10 +1,12 @@
-package de.uniks.se1ss19teamb.rbsg.ui;
+package de.uniks.se1ss19teamb.rbsg.ui.modules;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXSlider;
 import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
+import de.uniks.se1ss19teamb.rbsg.ui.BotManagerController;
+import de.uniks.se1ss19teamb.rbsg.ui.InGameController;
 import de.uniks.se1ss19teamb.rbsg.util.NotificationHandler;
 import java.util.Map;
 import javafx.fxml.FXML;
@@ -23,11 +25,11 @@ public class BotSelectionController {
 
     private BotManagerController botManagerController;
 
-    void setBotManagerController(BotManagerController botManagerController) {
+    public void setBotManagerController(BotManagerController botManagerController) {
         this.botManagerController = botManagerController;
     }
 
-    void setBotNumber(int botNumber) {
+    public void setBotNumber(int botNumber) {
         this.botNumber = botNumber;
     }
 
@@ -75,15 +77,15 @@ public class BotSelectionController {
         botManagerController.createBot(botNumber, difficulty, this);
     }
 
-    void setCheckbox() {
+    public void setCheckbox() {
         botCheckbox.setSelected(true);
     }
 
-    void deactivateCheckbox() {
+    public void deactivateCheckbox() {
         botCheckbox.setDisable(true);
     }
 
-    void activateCheckbox() {
+    public void activateCheckbox() {
         botCheckbox.setDisable(false);
     }
 }

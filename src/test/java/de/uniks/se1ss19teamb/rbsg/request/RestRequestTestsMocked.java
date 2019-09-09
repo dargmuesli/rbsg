@@ -6,7 +6,7 @@ import de.uniks.se1ss19teamb.rbsg.Main;
 import de.uniks.se1ss19teamb.rbsg.model.Army;
 import de.uniks.se1ss19teamb.rbsg.model.GameMeta;
 import de.uniks.se1ss19teamb.rbsg.model.Unit;
-import de.uniks.se1ss19teamb.rbsg.ui.ArmyManagerController;
+import de.uniks.se1ss19teamb.rbsg.ui.modules.ArmyManagerController;
 import de.uniks.se1ss19teamb.rbsg.util.RequestUtil;
 
 import java.util.ArrayList;
@@ -16,11 +16,9 @@ import java.util.Optional;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.http.ParseException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;

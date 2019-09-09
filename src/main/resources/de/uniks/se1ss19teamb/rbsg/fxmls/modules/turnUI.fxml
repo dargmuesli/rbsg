@@ -6,7 +6,7 @@
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.TurnUiController">
+            fx:controller="de.uniks.se1ss19teamb.rbsg.ui.modules.TurnUiController">
     <HBox alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
           AnchorPane.bottomAnchor="0.0">
         <HBox fx:id="lblBox" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="30">
