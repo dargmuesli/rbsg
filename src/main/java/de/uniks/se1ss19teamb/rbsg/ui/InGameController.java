@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXToggleButton;
 import de.uniks.se1ss19teamb.rbsg.ai.AI;
 import de.uniks.se1ss19teamb.rbsg.bot.BotControl;
+import de.uniks.se1ss19teamb.rbsg.bot.BotUser;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGameObject;
 import de.uniks.se1ss19teamb.rbsg.model.ingame.InGamePlayer;
 import de.uniks.se1ss19teamb.rbsg.model.tiles.EnvironmentTile;
@@ -245,16 +246,26 @@ public class InGameController {
     @FXML
     public void autoMode() {
         if (autoMode.isSelected()) {
-            if (aI == null) {
-                String userName = LoginController.getUserName();
+            String userName = LoginController.getUserName();
 
-                for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
-                    if (userName.equals(player.getName())) {
-                        playerId = player.getId();
+            outer:
+            for (InGamePlayer player : TurnUiController.getInstance().inGamePlayerList) {
+                if (userName.equals(player.getName())) {
+                    playerId = player.getId();
+                    break;
+                } else {
+                    for (BotUser botUser : BotControl.botUsers) {
+                        if (botUser.getBotUserName().equals(player.getName())) {
+                            playerId = player.getId();
+                            break outer;
+                        }
                     }
                 }
+            }
 
-                assert playerId != null;
+            assert playerId != null;
+
+            if (aI == null) {
                 aI = AI.instantiate(Integer.MAX_VALUE);
                 aI.initialize(playerId, GameSocketDistributor.getGameSocket(0), InGameController.instance);
             }
