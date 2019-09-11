@@ -23,7 +23,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader
             .load(getClass().getResource("/de/uniks/se1ss19teamb/rbsg/fxmls/login.fxml"));
-        primaryStage.setTitle("RSBG-Team B");
+        primaryStage.setTitle("RBSG-Team B");
         Scene scene = new Scene(root, 800, 650);
         primaryStage.setScene(scene);
         // values taken from the largest fxml's root container width & height
