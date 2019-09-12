@@ -14,7 +14,7 @@
     <Pane fx:id="imageUnitType"/>
     <Label fx:id="labelUnitType" text="Label" wrapText="true"/>
     <Pane HBox.hgrow="ALWAYS"/>
-    <Label text="Anzahl: " AnchorPane.leftAnchor="100.0"/>
+    <Label text="count: " AnchorPane.leftAnchor="100.0"/>
     <Label fx:id="labelUnitCount" text="#" AnchorPane.leftAnchor="143.0"/>
     <JFXButton fx:id="btnIncrease" mnemonicParsing="false"
                onMouseClicked="#increaseCount" prefWidth="30.0" text="+" AnchorPane.rightAnchor="45.0"/>
