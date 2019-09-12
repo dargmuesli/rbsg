@@ -47,11 +47,18 @@ You can select all armies that are saved on the game server and create, delete, 
 ![army-manager](./documentation/screenshots/army-manager.png "army-manager")
 
 
-### Lobby
+### Lobby (spectator)
 
 Below you can see a lobby that was joined in spectator mode. That's why the integrated army manager is not shown. A **bot** was created which is supposed to play by itself when the game will have started. A red or green circle to the right of each user name indicates the **player's readiness**.
 
 ![lobby](./documentation/screenshots/lobby.png "lobby")
+
+
+### Lobby (player)
+
+Below you can see a lobby that was joined in player mode. On the right you can see the integrated army manager. **Players, player readiness, minimap as well as chat window** is indentical to lobby in spectator mode.
+
+![lobby-game](./documentation/screenshots/GameLobby_new.png "lobby-game")
 
 
 ### Ingame
