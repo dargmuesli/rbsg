@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -28,6 +29,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class GenerateKeysTest {
 
     @Test
+    @Ignore
     public void getterTest() throws Exception {
         PowerMockito.spy(LoginController.class);
         Mockito.when(LoginController.getUserName())
