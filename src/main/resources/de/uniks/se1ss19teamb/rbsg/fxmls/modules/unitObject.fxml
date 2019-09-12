@@ -11,10 +11,6 @@
     <padding>
         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
     </padding>
-    <stylesheets>
-        <URL value="@../../css/whiteDesign.css"/>
-        <URL value="@../../css/darkDesign.css"/>
-    </stylesheets>
     <Pane fx:id="imageUnitType"/>
     <Label fx:id="labelUnitType" text="Label" wrapText="true"/>
     <Pane HBox.hgrow="ALWAYS"/>
