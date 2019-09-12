@@ -56,7 +56,7 @@ Below you can see a lobby that was joined in spectator mode. That's why the inte
 
 ### Lobby (player)
 
-Below you can see a lobby that was joined in player mode. On the right you can see the integrated army manager. **Players, player readiness, minimap as well as chat window** is indentical to lobby in spectator mode.
+Below you can see a lobby that was joined in player mode. On the right you can see the integrated army manager and on the left the chat window. **Joined players, player readiness and minimap** is indentical to lobby in spectator mode.
 
 ![lobby-game](./documentation/screenshots/GameLobby_new.png "lobby-game")
 
